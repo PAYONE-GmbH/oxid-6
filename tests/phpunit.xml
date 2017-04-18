@@ -1,0 +1,27 @@
+<phpunit backupGlobals="true"
+         backupStaticAttributes="false"
+         cacheTokens="true"
+         colors="false"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         forceCoversAnnotation="false"
+         mapTestClassNameToCoveredClassName="false"
+         processIsolation="false"
+         stopOnError="false"
+         stopOnFailure="false"
+         stopOnIncomplete="false"
+         stopOnSkipped="false"
+         verbose="false">
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">../application/models</directory>
+            <directory suffix=".php">../application/controllers</directory>
+            <directory suffix=".php">../extend</directory>
+            <exclude>
+                <directory suffix=".php">../extend/application/controllers/admin</directory>
+                <directory suffix=".php">../application/controllers/admin/inc</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+</phpunit>

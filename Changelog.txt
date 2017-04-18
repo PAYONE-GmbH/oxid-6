@@ -1,0 +1,274 @@
+  * Updated unit tests including some code refactoring
+  * Fixed some errors occured after refactoring
+  * Added switch for session frontend messages which should only be set if calls are not ajax based
+  * Fixed JS bug which seemed to occur on newer browser versions
+  
+==2.1.6==
+Releasdate: 2017-01-17
+  * Added check for personstatus UKN,PUG,PNZ and PNP
+  * Adjusted Addresscheck-Saves to NOT save an address as checked if personstatus is configured to lead user back to user-page and status occurs
+  * Fixed collation of foreign key fields of fcporatepay table
+  * Improved birthdate checking and displaying
+  * Integrated extension Addresscheck into core module
+  * Made 'No Boni Check' default value
+
+==2.1.5==
+	Releasedate: 2016-12-20
+  * Fixed AGB confirmation bug in EE
+  
+==2.1.4==
+	Releasedate: 2016-12-12
+  * Changed wording of SOFORT Überweisung
+  * Added RatePay Invoicing payment type
+  
+==2.1.3==
+	Releasedate: 2016-11-14
+
+ * Fixed presave order bug which avoided usage of oxordernr as refnr
+ * Fixed VATID requirement if B2B is deactivated
+
+==2.1.2==
+	Releasedate: 2016-10-21
+  * Fixed error which avoided saving orderarticles under certain circumstances	
+  * Added error mapping for hosted iframe
+  * Added error mapping feature
+  * Added optional cvc check
+  * Added direct check of cardexpiredate before sending to API
+
+==2.1.1==
+	Releasedate: 2016-10-13
+  * Removed commerz finanz and klarna installment payment methods
+  * Added option to show iban/bic fields for Sofortüberweisung
+  * Added payolution installment payment type
+  * Added payolution invoice and debit payment types
+  * Updated unit tests to current version
+
+==2.0.9==
+
+  * Fixed Bug #0027477
+Releasedate: 2016-08-12
+  * Use the LGPL (Lesser General Public License) instead of GPL.
+
+==2.0.8==  
+  Releasedate: 2016-07-22
+  * Optimized  markdown readme.md for Github.
+  * Fixed payment creditcard-form in 'flow'-theme.
+
+==2.0.7==
+  Releasedate: 2016-07-18
+  * Added Flow Theme Support
+  * Restructring and relocation of payment templates
+  * Fixes JS Error caused by some special configurations
+  * Fixed array_merge PHP Notice in backend
+  * Fixed boni check
+  * Removed spaces in smarty tags for better Editor highlighting
+  * Fixed state mapping and forwarding in backend
+  * Fixed database getter in assoc mode
+  * Fixed backend payone config display and saving
+  * Fixed paypal ecs error after redirect to shop
+  * Clear tmp-dir on module deactivation.
+  * Fixed PayPal Express after order redirect
+  * Dont show PayPal Express in payment list
+
+==2.0.6==
+  * Fixed compability issues for OXID 4.10.0_beta1
+  * Relocated some admin methods do remove duplicates
+  * Deactive Payone paymethods on module deactivation
+  * Disable address check on first module activation to prevent checkout blocker
+
+==2.0.5==
+  * Added version compare fix
+
+==2.0.4==
+  * Further refactoring for increasing code quality
+
+==2.0.3==
+  * Several bugfixes after refactoring
+
+==2.0.2==
+  * Rafactored controllers to not hold any sql inside them. Instead using models for each
+
+==2.0.1==
+  * Fixed problems with emails and redirect payments on certain configuration settings
+  
+==2.0.0==
+  * Code refactoring
+  * Added new unittests and removed the old ones
+  * Added automatic installation procedure for OXID versions >=4.7.x instead of using a setup-script
+
+==1.5.3==
+  * Added mechanism in setup-script to remove old/removed payment-methods from the database
+
+==1.5.2==
+  * Added payment-method Paydirekt
+
+==1.5.1==
+  * SEPA mandate on debitnote orders is now connected to every debitnote order
+
+==1.5.0==
+  * Added compatibility for the OXID mobile-theme
+
+==1.4.9==
+  * Added autocomplete="off" to all form- and input type="text"- tags
+  * State parameter is now sent for more countries
+
+==1.4.8==
+  * Added new client API integration for a PCI DSS 3.0 compliant creditcard-integration
+
+==1.4.7==
+  * Added payment-method Barzahlen
+
+==1.4.6==
+  * Fixed a problem with SEPA mandate download for unregistered users
+
+==1.4.5==
+  * Added payment-method creditcard iframe ( PCI DSS 3.0 compliant )
+
+==1.4.4==
+  * Added payment-method Yapital
+
+==1.4.3==
+  * Added payment-method PayPal Express
+  * Changed transmission of the vat
+  * Dont show creditcard payment-method if javascript is deactivated
+
+==1.4.2==
+  * Removed unnecessary SSL3-option for security reasons
+
+==1.4.1==
+  * Fixed problem when changing the reference-number-prefix
+  * Fixed a problem with download-products and redirect-payment-methods
+  * Html-tags can now be used in klarna and debit-descriptions too
+  * Extended validation of user input on payment-page
+
+==1.4.0==
+  * Added compatibility for Oxid 4.9/5.2
+
+==1.3.12==
+  * Added payment-method Klarna installment
+  * Show error in setup-script when copying a file failed
+  * The feature to save the bank-data of a customer will now also save the IBAN & BIC
+  * Added language-snippets for saved bank-data in admin
+
+==1.3.11==
+  * Added the reference-number-prefix to the configuration-export
+  * Fixed a problem with the admin-area of transactionstatus-mapping and transactionstatus-forwarding which happend in certain oxid-versions
+  * Reference-number-prefix will also be used on order-number, when used as reference ( if order is saved before authorization )
+
+==1.3.10==
+  * Added configuration-export feature
+
+==1.3.9==
+  * Added additional security mechanism to payment-process for external payment methods
+  * Added configurable IP whitelist to the transactionstatus script  
+  * Added key-validation in TransactionStatus-script
+  * Fixed state-parameter for oxid 4.8/5.1 and above
+
+==1.3.8==
+  * Added payment-method Klarna
+  * Added SEPA
+  * Added reference-number prefix feature
+  * Fixed a bug with the street parameter
+  * Fixed a bug generating a php warnig using bonification-check after payment-selection
+  * Added a bug with forwarding transactionstatus and array-parameters
+
+==1.3.7==
+  * Added two new admin-pages for configuring transactionstatus-mapping and transactionstatus-forwarding
+  * Fixed language problem in oxid 4.8/5.1
+  * Fixed a bug with greeting cards and wrappings
+
+==1.3.6==
+  * Added certificate-file for curl SSL certificate check
+
+==1.3.5==
+  * Show a message in the PAYONE tab of an order if the customer did not accept with a consumerscore being done
+  * Fixed a bug where the stock was changed even though an error occured
+
+==1.3.4==
+  * Fixed a bug with the capture request for BillSAFE orders
+  * Added an oxid bugfix to the module
+
+==1.3.3==
+  * fixed oxid 4.7/5.0 compatibility admin country popup bug
+
+==1.3.2==
+  * Fixed a bug with the addresscheck when consumerscore was requested after payment-selection
+  * Added an addresscheck caching, so that an address is only checked once
+
+==1.3.1==
+  * Added possibility to define the moment the consumerscore is happening for trusted shops certification
+  * Make module class instanciation of fcPayOneTransactionStatusHandler() use oxNew() to be overloadable by OXID framework.
+  * Added template override for block "select_payment" for better support with other payment modules
+  * Fixed some minor issues in payment templates
+  * Creating the TransactionStatus receiver object with oxNew instead of new to enable modules for the status script
+  * Fixed a bug in oxid 4.5.X and below when using option to save the order before authorization
+
+==1.3.0==
+  * Added compatibility for oxid 4.7 and 5.0.
+  * Obscure kkpruef for even more PCI compliance (credit card number already was obscured).
+  * Send updateuser request to payone only when payone userid is known
+
+==1.2.8==
+  * Implemented payment-methods BillSAFE and CommerzFinanz
+  * Corrected DB-query
+  * Reduce stock before or after redirect when order is saved before authorization
+  * Call parent-block in payment-block in emails
+  * Fixed wrong status-change
+
+==1.2.7==
+  * Order can be created before authorization to have an order-nr to send to payone
+  * Fixed error in payment form for Internet Explorer 8 and lower
+
+==1.2.6==
+  * Some changes for module certification
+  * Made proper build file for module
+
+==1.2.5==
+  * Module is now compatible from oxid 4.2.0 up to 4.6.X
+  * Changed creditcard-data handling
+
+==1.2.4==
+  * Added compatibility for oxid 4.6.0
+  * Enabled debitnote payment method for austria and switzerland
+  * Enabled Sofortüberweisung for austria
+  * Debitnote bankconnection can now be saved for direct usage on the next order
+
+==1.2.3==
+  * Adjusted the rules for capture and debit
+
+==1.2.2==
+  * Adjusted the account settlement for multi partial capture
+  * Adjusted unit tests for new version
+
+==1.2.1==
+  * The account settlement can now be controlled while capturing for multi partial capturing.
+  * Added english translation of admin interface.
+  * Adjusted some nessassary comments for achieving goal of certification.
+
+==1.2.0==
+  * Improved usage of OXID's framework technologies. 
+  * Uniformly usage of OXID's code style.
+  * Restructured Module Files.
+  * Refactored setAuthorizationParameters() method.
+  * New method setPaymentParameters().
+  * New method addParametersOnlineTransaction().
+  * Completed code comments of source and tests
+
+==1.1.7==
+  * Modul-Kompatibilität mit OXID eShop CE/PE/EE 4.5 hergestellt
+
+==1.1.5==
+  * Erweiterungskonzept für Individualisierungen
+
+==1.1.4==
+  * Optimierung des Modul - Setup-Prozesses und frei definierbarer Standard-Bonitätsindex
+
+==1.1.3==
+  * Bugfixes für Modul-Kompatibilität mit OXID eShop CE/PE/EE 4.4.7
+
+==1.1.2==
+  * PAYONE Payment-Modul wurde optimiert und hat "stable" Status erreicht
+
+==1.0.0==
+  * Initiale Bereitstellung des Payment-Moduls von PAYONE für OXID eShop
+

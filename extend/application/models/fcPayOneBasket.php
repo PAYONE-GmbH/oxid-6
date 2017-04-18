@@ -19,10 +19,12 @@
  * @version   OXID eShop CE
  */
  
-class fcPayOneBasket extends fcPayOneBasket_parent {
+class fcPayOneBasket extends fcPayOneBasket_parent
+{
     
     /**
      * Helper object for dealing with different shop versions
+     *
      * @var object
      */
     protected $_oFcpoHelper = null;
@@ -33,7 +35,8 @@ class fcPayOneBasket extends fcPayOneBasket_parent {
      * 
      * @return null
      */
-    public function __construct() {
+    public function __construct() 
+    {
         parent::__construct();
         $this->_oFcpoHelper = oxNew('fcpohelper');
     }
@@ -44,7 +47,8 @@ class fcPayOneBasket extends fcPayOneBasket_parent {
      * 
      * @return bool
      */
-    public function fcpoIsPayPalExpressActive() {
+    public function fcpoIsPayPalExpressActive() 
+    {
         $oDb = $this->_oFcpoHelper->fcpoGetDb();
         $sQuery = "SELECT oxactive FROM oxpayments WHERE oxid = 'fcpopaypal_express'";
         return (bool)$oDb->GetOne($sQuery);
@@ -54,10 +58,11 @@ class fcPayOneBasket extends fcPayOneBasket_parent {
     /**
      * Returns pic that is configured in database
      * 
-     * @param void
+     * @param  void
      * @return string
      */
-    public function fcpoGetPayPalExpressPic() {
+    public function fcpoGetPayPalExpressPic() 
+    {
         $oDb = $this->_oFcpoHelper->fcpoGetDb();
         $oLang = $this->_oFcpoHelper->fcpoGetLang();
         $iLangId = $oLang->getBaseLanguage();

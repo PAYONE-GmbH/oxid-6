@@ -10,11 +10,13 @@ class fcCheckChecksum
     protected $_sShopSystem = null;
     protected $_sVersionCheckUrl = 'http://version.fatchip.de/fcVerifyChecksum.php';
     
-    protected function _getBasePath() {
+    protected function _getBasePath() 
+    {
         return dirname(__FILE__).'/';
     }
     
-    protected function _getShopBasePath() {
+    protected function _getShopBasePath() 
+    {
         if($this->_sShopSystem == 'oxid') {
             return $this->_getBasePath().'../../';
         } elseif($this->_sShopSystem == 'magento2') {
@@ -24,7 +26,8 @@ class fcCheckChecksum
         }
     }
 
-    protected function _handleMetadata($sFilePath) {
+    protected function _handleMetadata($sFilePath) 
+    {
         include $sFilePath;
         if(isset($aModule)) {
             if(isset($aModule['id'])) {
@@ -41,7 +44,8 @@ class fcCheckChecksum
         }
     }
     
-    protected function _handleComposerJson($sFilePath) {
+    protected function _handleComposerJson($sFilePath) 
+    {
         $sFile = file_get_contents($sFilePath);
         if(!empty($sFile)) {
             $aFile = json_decode($sFile, true);
@@ -57,7 +61,8 @@ class fcCheckChecksum
         }
     }
     
-    protected function _getFilesToCheck() {
+    protected function _getFilesToCheck() 
+    {
         $aFiles = array();
         if(file_exists($this->_getBasePath().'metadata.php')) {
             $this->_handleMetadata($this->_getBasePath().'metadata.php');
@@ -75,7 +80,8 @@ class fcCheckChecksum
         return $aFiles;
     }
     
-    protected function _checkFiles($aFiles) {
+    protected function _checkFiles($aFiles) 
+    {
         $aChecksums = array();
         foreach ($aFiles as $sFilePath) {
             $sFullFilePath = $this->_getShopBasePath().$sFilePath;
@@ -86,24 +92,28 @@ class fcCheckChecksum
         return $aChecksums;
     }
     
-    protected function _getCheckResults($aChecksums) {
+    protected function _getCheckResults($aChecksums) 
+    {
         $oCurl = curl_init();
         curl_setopt($oCurl, CURLOPT_URL, $this->_sVersionCheckUrl);
         curl_setopt($oCurl, CURLOPT_HEADER, false);
         curl_setopt($oCurl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($oCurl, CURLOPT_POST, true);
-        curl_setopt($oCurl, CURLOPT_POSTFIELDS, array(
+        curl_setopt(
+            $oCurl, CURLOPT_POSTFIELDS, array(
             'checkdata' => json_encode($aChecksums),    // you'll have to change the name, here, I suppose
             'module' => $this->_sModuleId,
             'version' => $this->_sModuleVersion,
-        ));
+            )
+        );
         $sResult = curl_exec($oCurl);
         curl_close($oCurl);
         
         return $sResult;
     }
     
-    public function checkChecksumXml($blOutput = false) {
+    public function checkChecksumXml($blOutput = false) 
+    {
         if(ini_get('allow_url_fopen') == 0) {
             die("Cant verify checksums, allow_url_fopen is not activated on customer-server!");
         } elseif(!function_exists('curl_init')) {

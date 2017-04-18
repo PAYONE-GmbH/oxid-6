@@ -18,7 +18,8 @@
  * @version   OXID eShop CE
  */
  
-class fcPayOnePaymentgateway extends fcPayOnePaymentgateway_parent {
+class fcPayOnePaymentgateway extends fcPayOnePaymentgateway_parent
+{
 
     /**
      * Overrides standard oxid finalizeOrder method if the used payment method belongs to PAYONE.
@@ -29,11 +30,12 @@ class fcPayOnePaymentgateway extends fcPayOnePaymentgateway_parent {
      * @param double $dAmount Goods amount
      * @param object &$oOrder User ordering object
      *
-	 * @extend executePayment
+     * @extend executePayment
      * @return bool
      */
-    public function executePayment( $dAmount, &$oOrder ) {
-        #if($oOrder->isPayOnePaymentType() === false || $oOrder->isPayOneIframePayment()) {
+    public function executePayment( $dAmount, &$oOrder ) 
+    {
+        // if($oOrder->isPayOnePaymentType() === false || $oOrder->isPayOneIframePayment()) {
         if($oOrder->isPayOnePaymentType() === false) {    
             return parent::executePayment($dAmount, $oOrder);
         }
@@ -50,10 +52,11 @@ class fcPayOnePaymentgateway extends fcPayOnePaymentgateway_parent {
     /**
      * Setter for last error number
      * 
-     * @param int $iLastErrorNr
+     * @param  int $iLastErrorNr
      * @return void
      */
-    public function fcSetLastErrorNr($iLastErrorNr) {
+    public function fcSetLastErrorNr($iLastErrorNr) 
+    {
         $this->_iLastErrorNo = $iLastErrorNr;
     }
 
@@ -61,10 +64,11 @@ class fcPayOnePaymentgateway extends fcPayOnePaymentgateway_parent {
     /**
      * Setter for last error text
      * 
-     * @param int $sLastError
+     * @param  int $sLastError
      * @return void
      */
-    public function fcSetLastError($sLastError) {
+    public function fcSetLastError($sLastError) 
+    {
         $this->_sLastError = $sLastError;
     }
     

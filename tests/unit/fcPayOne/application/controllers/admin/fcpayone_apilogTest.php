@@ -18,7 +18,8 @@
  * @version   OXID eShop CE
  */
  
-class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_apilog extends OxidTestCase {
+class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_apilog extends OxidTestCase
+{
     
     /**
      * Call protected/private method of a class.
@@ -60,30 +61,31 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_apilog extends OxidTe
     /**
      * Run render method just for getting the coverage
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_Render_Coverage() {
+    public function test_Render_Coverage() 
+    {
         $oApiLog = oxNew('fcpayone_apilog');
         
         // prepared obeject
         $oFactoryObject = $this->getMockBuilder('fcporequestlog')
-                ->disableOriginalConstructor()
-                ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
         $oFactoryObject->expects($this->any())
-                ->method('load')
-                ->will($this->returnValue(true));
+            ->method('load')
+            ->will($this->returnValue(true));
         
         // helper answers
         $oHelper = $this->getMockBuilder('fcpohelper')
-                ->disableOriginalConstructor()
-                ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
         $oHelper->expects($this->any())
-                ->method('getFactoryObject')
-                ->will($this->returnValue($oFactoryObject));
+            ->method('getFactoryObject')
+            ->will($this->returnValue($oFactoryObject));
         $oHelper->expects($this->any())
-                ->method('fcpoGetRequestParameter')
-                ->will($this->returnValue($oFactoryObject));
+            ->method('fcpoGetRequestParameter')
+            ->will($this->returnValue($oFactoryObject));
 
         $this->invokeSetAttribute($oApiLog, '_oFcpoHelper', $oHelper);
         

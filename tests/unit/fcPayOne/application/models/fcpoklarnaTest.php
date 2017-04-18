@@ -19,16 +19,19 @@
  * @version   OXID eShop CE
  */
 
-class MockResultStoreIds {
+class MockResultStoreIds
+{
 
     public $EOF = false;
     public $fields = array(array('oxid' => 'someId', 'fcpo_storeid' => 'someStore'));
 
-    public function recordCount() {
+    public function recordCount() 
+    {
         return 1;
     }
 
-    public function moveNext() {
+    public function moveNext() 
+    {
         $this->EOF = true;
     }
 
@@ -39,9 +42,10 @@ class MockResultStoreIds {
  *
  * @author Andre Gregor-Herrmann <andre.herrmann@fatchip.de>
  * @author Fatchip GmbH
- * @date 2016-09-08
+ * @date   2016-09-08
  */
-class Unit_fcPayOne_Application_Models_fcpoklarna extends OxidTestCase {
+class Unit_fcPayOne_Application_Models_fcpoklarna extends OxidTestCase
+{
 
     /**
      * Call protected/private method of a class.
@@ -52,7 +56,8 @@ class Unit_fcPayOne_Application_Models_fcpoklarna extends OxidTestCase {
      *
      * @return mixed Method return.
      */
-    public function invokeMethod(&$object, $methodName, array $parameters = array()) {
+    public function invokeMethod(&$object, $methodName, array $parameters = array()) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
@@ -63,13 +68,14 @@ class Unit_fcPayOne_Application_Models_fcpoklarna extends OxidTestCase {
     /**
      * Set protected/private attribute value
      *
-     * @param object &$object    Instantiated object that we will run method on.
+     * @param object &$object      Instantiated object that we will run method on.
      * @param string $propertyName property that shall be set
-     * @param array  $value value to be set
+     * @param array  $value        value to be set
      *
      * @return mixed Method return.
      */
-    public function invokeSetAttribute(&$object, $propertyName, $value) {
+    public function invokeSetAttribute(&$object, $propertyName, $value) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $property = $reflection->getProperty($propertyName);
         $property->setAccessible(true);
@@ -80,7 +86,8 @@ class Unit_fcPayOne_Application_Models_fcpoklarna extends OxidTestCase {
     /**
      * Testing fcpoGetStoreIds for coverage
      */
-    public function test_fcpoGetStoreIds_Coverage() {
+    public function test_fcpoGetStoreIds_Coverage() 
+    {
         $oTestObject = oxNew('fcpoklarna');
 
         $oMockResult = new MockResultStoreIds();
@@ -96,7 +103,8 @@ class Unit_fcPayOne_Application_Models_fcpoklarna extends OxidTestCase {
     /**
      * Testing fcpoInsertCampaigns as Update and Delete call
      */
-    public function test_fcpoInsertCampaigns_UpdateAndDelete() {
+    public function test_fcpoInsertCampaigns_UpdateAndDelete() 
+    {
         $oTestObject = oxNew('fcpoklarna');
 
         $oMockDatabase = $this->getMock('oxDb', array('Execute'));
@@ -123,7 +131,8 @@ class Unit_fcPayOne_Application_Models_fcpoklarna extends OxidTestCase {
     /**
      * Testing fcpoInsertCampaigns not having valid data to insert
      */
-    public function test_fcpoInsertCampaigns_NoValidData() {
+    public function test_fcpoInsertCampaigns_NoValidData() 
+    {
         $oTestObject = oxNew('fcpoklarna');
 
         $oMockDatabase = $this->getMock('oxDb', array('Execute'));
@@ -140,7 +149,8 @@ class Unit_fcPayOne_Application_Models_fcpoklarna extends OxidTestCase {
     /**
      * Testing fcpoInsertStoreIds performing an update and delete task
      */
-    public function test_fcpoInsertStoreIds_UpdateAndDelete() {
+    public function test_fcpoInsertStoreIds_UpdateAndDelete() 
+    {
         $oTestObject = oxNew('fcpoklarna');
 
         $oMockDatabase = $this->getMock('oxDb', array('Execute'));
@@ -164,7 +174,8 @@ class Unit_fcPayOne_Application_Models_fcpoklarna extends OxidTestCase {
     /**
      * Testing fcpoInsertStoreIds performing an insert call with invalid data
      */
-    public function test_fcpoInsertStoreIds_Invalid() {
+    public function test_fcpoInsertStoreIds_Invalid() 
+    {
         $oTestObject = oxNew('fcpoklarna');
 
         $oMockDatabase = $this->getMock('oxDb', array('Execute'));
@@ -181,7 +192,8 @@ class Unit_fcPayOne_Application_Models_fcpoklarna extends OxidTestCase {
     /**
      * Testing fcpoAddKlarnaStoreId for coverage
      */
-    public function test_fcpoAddKlarnaStoreId_Coverage() {
+    public function test_fcpoAddKlarnaStoreId_Coverage() 
+    {
         $oTestObject = oxNew('fcpoklarna');
 
         $oMockDatabase = $this->getMock('oxDb', array('Execute'));
@@ -195,7 +207,8 @@ class Unit_fcPayOne_Application_Models_fcpoklarna extends OxidTestCase {
     /**
      * Testing fcpoAddKlarnaCampaign for coverage
      */
-    public function test_fcpoAddKlarnaCampaign_Coverage() {
+    public function test_fcpoAddKlarnaCampaign_Coverage() 
+    {
         $oTestObject = oxNew('fcpoklarna');
 
         $oMockDatabase = $this->getMock('oxDb', array('Execute'));

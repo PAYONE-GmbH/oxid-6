@@ -19,7 +19,8 @@
  * @version   OXID eShop CE
  */
  
-class fcpayone_apilog extends fcpayone_admindetails {
+class fcpayone_apilog extends fcpayone_admindetails
+{
 
     /**
      * Current class template name
@@ -43,15 +44,16 @@ class fcpayone_apilog extends fcpayone_admindetails {
      *
      * @return string
      */
-    public function render() {
+    public function render() 
+    {
         parent::render();
 
-        $oLogEntry = $this->_oFcpoHelper->getFactoryObject( "fcporequestlog" );
+        $oLogEntry = $this->_oFcpoHelper->getFactoryObject("fcporequestlog");
 
-        $sOxid = $this->_oFcpoHelper->fcpoGetRequestParameter( "oxid");
-        if ( $sOxid != "-1" && isset( $sOxid)) {
+        $sOxid = $this->_oFcpoHelper->fcpoGetRequestParameter("oxid");
+        if ($sOxid != "-1" && isset($sOxid)) {
             // load object
-            $oLogEntry->load( $sOxid);
+            $oLogEntry->load($sOxid);
             $this->_aViewData["edit"] = $oLogEntry;
         }
 

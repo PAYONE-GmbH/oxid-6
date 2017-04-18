@@ -19,10 +19,12 @@
  * @version   OXID eShop CE
  */
  
-class fcPayOneBasketitem extends fcPayOneBasketitem_parent {
+class fcPayOneBasketitem extends fcPayOneBasketitem_parent
+{
     
     /**
      * Helper object for dealing with different shop versions
+     *
      * @var object
      */
     protected $_oFcpoHelper = null;
@@ -32,7 +34,8 @@ class fcPayOneBasketitem extends fcPayOneBasketitem_parent {
      * 
      * @return null
      */
-    public function __construct() {
+    public function __construct() 
+    {
         parent::__construct();
         $this->_oFcpoHelper = oxNew('fcpohelper');
     }
@@ -52,7 +55,8 @@ class fcPayOneBasketitem extends fcPayOneBasketitem_parent {
      *
      * @return oxarticle
      */
-    public function getArticle( $blCheckProduct = true, $sProductId = null, $blDisableLazyLoading = false ) {
+    public function getArticle( $blCheckProduct = true, $sProductId = null, $blDisableLazyLoading = false ) 
+    {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $blReduceStockBefore    = !(bool)$oConfig->getConfigParam('blFCPOReduceStock');
         $blSuccess              = $this->_oFcpoHelper->fcpoGetRequestParameter('fcposuccess');
@@ -69,7 +73,8 @@ class fcPayOneBasketitem extends fcPayOneBasketitem_parent {
     }
     
     
-    protected function _fcpoParentGetArticle($blCheckProduct, $sProductId, $blDisableLazyLoading) {
+    protected function _fcpoParentGetArticle($blCheckProduct, $sProductId, $blDisableLazyLoading) 
+    {
         return parent::getArticle($blCheckProduct, $sProductId, $blDisableLazyLoading);
     }
 

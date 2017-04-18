@@ -18,28 +18,33 @@
  * @version   OXID eShop CE
  */
  
-class fcpayone_admindetails extends oxAdminDetails {
+class fcpayone_admindetails extends oxAdminDetails
+{
     
     /**
      * Helper object for dealing with different shop versions
+     *
      * @var object
      */
     protected $_oFcpoHelper = null;
     
     /**
      * Centralized Database instance
+     *
      * @var object
      */
     protected $_oFcpoDb = null;
     
     /**
      * fcpoconfigexport instance
+     *
      * @var object
      */
     protected $_oFcpoConfigExport = null;
     
     /**
      * fcpopaypal instance
+     *
      * @var object
      */
 
@@ -47,30 +52,35 @@ class fcpayone_admindetails extends oxAdminDetails {
 
     /**
      * fcpopaypal instance
+     *
      * @var object
      */
     protected $_oFcpoKlarna = null;
 
     /**
      * fcpomapping instance
+     *
      * @var object
      */
     protected $_oFcpoMapping = null;
 
     /**
      * fcpoforwarding instance
+     *
      * @var object
      */
     protected $_oFcpoForwarding = null;
 
     /**
      * fcporatepay instance
+     *
      * @var null|object
      */
     protected $_oFcpoRatePay = null;
 
     /**
      * fcpoerrormapping instance
+     *
      * @var null|object
      */
     protected $_oFcpoErrorMapping = null;
@@ -79,7 +89,8 @@ class fcpayone_admindetails extends oxAdminDetails {
     /**
      * Init needed data
      */
-    public function __construct() {
+    public function __construct() 
+    {
         parent::__construct();
         $this->_oFcpoHelper = oxNew('fcpohelper');
         $this->_oFcpoDb     = oxDb::getDb();
@@ -95,10 +106,11 @@ class fcpayone_admindetails extends oxAdminDetails {
     /**
      * Returns factory instance of given classname
      * 
-     * @param string $sClassName
+     * @param  string $sClassName
      * @return object
      */
-    public function fcpoGetInstance($sClassName) {
+    public function fcpoGetInstance($sClassName) 
+    {
         return oxNew($sClassName);
     }
     

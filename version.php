@@ -18,10 +18,10 @@
  * @version   OXID eShop CE
  */
  
-$mKey = filter_input( INPUT_GET, 'key', FILTER_NULL_ON_FAILURE );
-$blIsValidCall = ( $mKey && md5( $mKey ) === '5fce785e30dbf6e1181d452c6057bfd3' );
+$mKey = filter_input(INPUT_GET, 'key', FILTER_NULL_ON_FAILURE);
+$blIsValidCall = ( $mKey && md5($mKey) === '5fce785e30dbf6e1181d452c6057bfd3' );
 
-if( $blIsValidCall ) {
+if($blIsValidCall ) {
     if (!function_exists('getShopBasePath')) {
         /**
          * Returns shop base path.
@@ -41,17 +41,17 @@ if( $blIsValidCall ) {
      *
      * @return bool
      */
-    if ( !function_exists( 'isAdmin' )) {
+    if (!function_exists('isAdmin')) {
         function isAdmin()
         {
             return true;
         }
     }
 
-    error_reporting( E_ALL ^ E_NOTICE );
+    error_reporting(E_ALL ^ E_NOTICE);
 
     // Including main ADODB include
-    require_once getShopBasePath() . 'bootstrap.php';
+    include_once getShopBasePath() . 'bootstrap.php';
 
     echo fcpohelper::fcpoGetModuleVersion();
 }

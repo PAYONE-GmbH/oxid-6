@@ -19,10 +19,12 @@
  * @version   OXID eShop CE
  */
  
-class fcpayoneiframe extends oxUBase {
+class fcpayoneiframe extends oxUBase
+{
 
     /**
      * Helper object for dealing with different shop versions
+     *
      * @var object
      */
     protected $_oFcpoHelper = null;
@@ -36,6 +38,7 @@ class fcpayoneiframe extends oxUBase {
     
     /**
      * Order object
+     *
      * @var object
      */
     protected $_oOrder = null;
@@ -46,7 +49,8 @@ class fcpayoneiframe extends oxUBase {
      * 
      * @return null
      */
-    public function __construct() {
+    public function __construct() 
+    {
         parent::__construct();
         $this->_oFcpoHelper = oxNew('fcpohelper');
     }    
@@ -56,10 +60,11 @@ class fcpayoneiframe extends oxUBase {
     /**
      * The conbtroller renderer
      * 
-     * @param void
+     * @param  void
      * @return string
      */
-    public function render() {
+    public function render() 
+    {
         $iCurrVersion = $this->_oFcpoHelper->fcpoGetIntShopVersion();
         if($iCurrVersion >= 4500 && $iCurrVersion < 4700) {
             $this->_sThisTemplate = 'page/checkout/fcpayoneiframe.tpl';
@@ -71,10 +76,11 @@ class fcpayoneiframe extends oxUBase {
     /**
      * Returns a factory instance of given object
      * 
-     * @param string $sName
+     * @param  string $sName
      * @return object oxOrder
      */
-    public function getFactoryObject($sName) {
+    public function getFactoryObject($sName) 
+    {
         return oxNew($sName);
     }
     
@@ -82,12 +88,13 @@ class fcpayoneiframe extends oxUBase {
     /**
      * Returns the order object
      * 
-     * @param void
+     * @param  void
      * @return object
      */
-    public function getOrder() {
+    public function getOrder() 
+    {
         if($this->_oOrder === null) {
-            $sOrderId = $this->_oFcpoHelper->fcpoGetSessionVariable('sess_challenge' );
+            $sOrderId = $this->_oFcpoHelper->fcpoGetSessionVariable('sess_challenge');
             if($sOrderId) {
                 $oOrder = $this->_oFcpoHelper->getFactoryObject('oxOrder');
                 if($oOrder->load($sOrderId)) {
@@ -102,10 +109,11 @@ class fcpayoneiframe extends oxUBase {
     /**
      * Returns iframe url or redirects directly to it
      * 
-     * @param void
+     * @param  void
      * @return mixed
      */
-    public function getIframeUrl() {
+    public function getIframeUrl() 
+    {
         $sIframeUrl = $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoRedirectUrl');
         if($sIframeUrl) {
             return $sIframeUrl;
@@ -126,15 +134,16 @@ class fcpayoneiframe extends oxUBase {
     /**
      * Get the height of the iframe
      * 
-     * @param void
+     * @param  void
      * @return string
      */
-    public function getIframeHeight() {
+    public function getIframeHeight() 
+    {
         $sPaymentId = $this->getPaymentType();
         switch ($sPaymentId) {
-            case 'fcpocreditcard_iframe':
-                $sHeight = 700;
-                break;
+        case 'fcpocreditcard_iframe':
+            $sHeight = 700;
+            break;
         }
         return $sHeight;
     }
@@ -143,15 +152,16 @@ class fcpayoneiframe extends oxUBase {
     /**
      * Get the width of the iframe
      * 
-     * @param void
+     * @param  void
      * @return string
      */
-    public function getIframeWidth() {
+    public function getIframeWidth() 
+    {
         $sPaymentId = $this->getPaymentType();
         switch ($sPaymentId) {
-            case 'fcpocreditcard_iframe':
-                $sWidth = 360;
-                break;
+        case 'fcpocreditcard_iframe':
+            $sWidth = 360;
+            break;
         }
         return $sWidth;
     }
@@ -160,15 +170,16 @@ class fcpayoneiframe extends oxUBase {
     /**
      * Get the style of the iframe
      * 
-     * @param void
+     * @param  void
      * @return string
      */
-    public function getIframeStyle() {
+    public function getIframeStyle() 
+    {
         $sPaymentId = $this->getPaymentType();
         switch ($sPaymentId) {
-            case 'fcpocreditcard_iframe':
-                $sStyle = "border:0;margin-top:20px;";
-                break;
+        case 'fcpocreditcard_iframe':
+            $sStyle = "border:0;margin-top:20px;";
+            break;
         }
         return $sStyle;
     }
@@ -177,15 +188,16 @@ class fcpayoneiframe extends oxUBase {
     /**
      * Get the header of iframe
      * 
-     * @param void
+     * @param  void
      * @return string
      */
-    public function getIframeHeader() {
+    public function getIframeHeader() 
+    {
         $sPaymentId = $this->getPaymentType();
         switch ($sPaymentId) {
-            case 'fcpocreditcard_iframe':
-                $sHeader = $this->_oFcpoHelper->fcpoGetLang()->translateString('FCPO_CC_IFRAME_HEADER');
-                break;
+        case 'fcpocreditcard_iframe':
+            $sHeader = $this->_oFcpoHelper->fcpoGetLang()->translateString('FCPO_CC_IFRAME_HEADER');
+            break;
         }
         return $sHeader;
     }
@@ -194,15 +206,16 @@ class fcpayoneiframe extends oxUBase {
     /**
      * Get text of iframe
      * 
-     * @param void
+     * @param  void
      * @return mixed
      */
-    public function getIframeText() {
+    public function getIframeText() 
+    {
         $sPaymentId = $this->getPaymentType();
         switch ($sPaymentId) {
-            case 'fcpocreditcard_iframe':
-                $sText = false;
-                break;
+        case 'fcpocreditcard_iframe':
+            $sText = false;
+            break;
         }
         return $sText;
     }
@@ -211,10 +224,11 @@ class fcpayoneiframe extends oxUBase {
     /**
      * Get payment type
      * 
-     * @param void
+     * @param  void
      * @return string
      */
-    public function getPaymentType() {
+    public function getPaymentType() 
+    {
         $oOrder = $this->getOrder();
         if($oOrder && !empty($oOrder->oxorder__oxpaymenttype->value)) {
             $sPaymentId = $oOrder->oxorder__oxpaymenttype->value;

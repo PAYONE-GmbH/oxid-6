@@ -18,7 +18,8 @@
  * @version   OXID eShop CE
  */
   
-class Unit_fcPayOne_Extend_Application_Models_fcPayOneUserTest extends OxidTestCase {
+class Unit_fcPayOne_Extend_Application_Models_fcPayOneUserTest extends OxidTestCase
+{
 
     /**
      * Call protected/private method of a class.
@@ -29,7 +30,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneUserTest extends OxidTestC
      *
      * @return mixed Method return.
      */
-    public function invokeMethod(&$object, $methodName, array $parameters = array()) {
+    public function invokeMethod(&$object, $methodName, array $parameters = array()) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
@@ -40,13 +42,14 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneUserTest extends OxidTestC
     /**
      * Set protected/private attribute value
      *
-     * @param object &$object    Instantiated object that we will run method on.
+     * @param object &$object      Instantiated object that we will run method on.
      * @param string $propertyName property that shall be set
-     * @param array  $value value to be set
+     * @param array  $value        value to be set
      *
      * @return mixed Method return.
      */
-    public function invokeSetAttribute(&$object, $propertyName, $value) {
+    public function invokeSetAttribute(&$object, $propertyName, $value) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $property = $reflection->getProperty($propertyName);
         $property->setAccessible(true);
@@ -57,7 +60,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneUserTest extends OxidTestC
     /**
      * Testing fcpoSetBoni with scorevalue
      */
-    public function test_fcpoSetBoni_ScoreValue() {
+    public function test_fcpoSetBoni_ScoreValue() 
+    {
         $aMockResponse = array(
             'scorevalue' => 5000,
             'score' => 'R',
@@ -73,7 +77,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneUserTest extends OxidTestC
     /**
      * Testing fcpoSetBoni with score tag only
      */
-    public function test_fcpoSetBoni_Score() {
+    public function test_fcpoSetBoni_Score() 
+    {
         $aMockResponse = array(
             'score' => 'R',
         );
@@ -88,7 +93,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneUserTest extends OxidTestC
     /**
      * Testing isNewBonicheckNeeded for coverage
      */
-    public function test_isNewBonicheckNeeded_Coverage() {
+    public function test_isNewBonicheckNeeded_Coverage() 
+    {
         $oTestObject = oxNew('fcPayOneUser');
         $oTestObject->oxuser__fcpobonicheckdate = new oxField('2016-05-01');
 
@@ -105,7 +111,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneUserTest extends OxidTestC
     /**
      * Testing isBonicheckNeededForBasket for coverage
      */
-    public function test_isBonicheckNeededForBasket_Coverage() {
+    public function test_isBonicheckNeededForBasket_Coverage() 
+    {
         $oTestObject = oxNew('fcPayOneUser');
 
         $oMockPrice = $this->getMock('oxPrice', array('getBruttoPrice'));
@@ -131,7 +138,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneUserTest extends OxidTestC
     /**
      * Testing isBonicheckNeeded for coverage
      */
-    public function test_isBonicheckNeeded_Coverage() {
+    public function test_isBonicheckNeeded_Coverage() 
+    {
         $oTestObject = $this->getMock('fcPayOneUser', array('getBoni', 'isNewBonicheckNeeded', 'isBonicheckNeededForBasket'));
         $oTestObject->expects($this->any())->method('getBoni')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('isNewBonicheckNeeded')->will($this->returnValue(true));
@@ -143,7 +151,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneUserTest extends OxidTestC
     /**
      * Testing checkAddressAndScore in expection that the early return will be triggered with true
      */
-    public function test_checkAddressAndScore_ExpectEarlyTrue() {
+    public function test_checkAddressAndScore_ExpectEarlyTrue() 
+    {
         $oTestObject = $this->getMock('fcPayOneUser', array('isBonicheckNeeded', 'fcpoSetBoni', 'fcpoIsValidAddress'));
         $oTestObject->expects($this->any())->method('isBonicheckNeeded')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('fcpoSetBoni')->will($this->returnValue(true));
@@ -167,7 +176,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneUserTest extends OxidTestC
     /**
      * Testing checkAddressAndScore covering the rest of code
      */
-    public function test_checkAddressAndScore_Coverage() {
+    public function test_checkAddressAndScore_Coverage() 
+    {
         $oTestObject = $this->getMock('fcPayOneUser', array('isBonicheckNeeded', 'fcpoSetBoni', 'fcpoIsValidAddress'));
         $oTestObject->expects($this->any())->method('isBonicheckNeeded')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('fcpoSetBoni')->will($this->returnValue(true));
@@ -191,7 +201,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneUserTest extends OxidTestC
     /**
      * Testing checkAddressAndScore covering the rest of code
      */
-    public function test_checkAddressAndScore_Coverage_2() {
+    public function test_checkAddressAndScore_Coverage_2() 
+    {
         $oTestObject = $this->getMock('fcPayOneUser', array('isBonicheckNeeded', 'fcpoSetBoni', 'fcpoIsValidAddress'));
         $oTestObject->expects($this->any())->method('isBonicheckNeeded')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('fcpoSetBoni')->will($this->returnValue(true));
@@ -215,7 +226,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneUserTest extends OxidTestC
     /**
      * Testing getBoni from payone overwriting
      */
-    public function test_getBoni_DefaultBoni() {
+    public function test_getBoni_DefaultBoni() 
+    {
         $oTestObject = oxNew('fcPayOneUser');
         $oMockConfig = $this->getMock('oxConfig', array('getConfigParam'));
         $oMockConfig->expects($this->any())->method('getConfigParam')->will($this->returnValue(5000));
@@ -230,7 +242,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneUserTest extends OxidTestC
     /**
      * Testing getBoni from parent call
      */
-    public function test_getBoni_Parent() {
+    public function test_getBoni_Parent() 
+    {
         $oTestObject = oxNew('fcPayOneUser');
         $oMockConfig = $this->getMock('oxConfig', array('getConfigParam'));
         $oMockConfig->expects($this->any())->method('getConfigParam')->will($this->returnValue(null));
@@ -245,7 +258,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneUserTest extends OxidTestC
     /**
      * Testing fcpoIsValidAddress 
      */
-    public function test_fcpoIsValidAddress_EarlyTrue() {
+    public function test_fcpoIsValidAddress_EarlyTrue() 
+    {
         $aMockResponse = array(
             'fcWrongCountry' => true,
         );
@@ -258,7 +272,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneUserTest extends OxidTestC
     /**
      * Testing fcpoIsValidAddress for case that address check fails
      */
-    public function test_fcpoIsValidAddress_AddressCheckFails() {
+    public function test_fcpoIsValidAddress_AddressCheckFails() 
+    {
         $aMockResponse = array(
             'status' => 'VALID',
         );
@@ -272,7 +287,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneUserTest extends OxidTestC
     /**
      * Testing fcpoIsValidAddress for case that everything is ok
      */
-    public function test_fcpoIsValidAddress_EverythingOk() {
+    public function test_fcpoIsValidAddress_EverythingOk() 
+    {
         $aMockResponse = array(
             'status' => 'VALID',
             'firstname' => 'someValue',
@@ -294,7 +310,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneUserTest extends OxidTestC
     /**
      * Testing _fcpoValidateResponse for case that addresscheck response is valid
      */
-    public function test__fcpoValidateResponse_Valid() {
+    public function test__fcpoValidateResponse_Valid() 
+    {
         $aMockResponse = array(
             'status' => 'VALID',
             'firstname' => 'someValue',
@@ -330,7 +347,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneUserTest extends OxidTestC
     /**
      * Testing _fcpoValidateResponse for case that addresscheck response is invalid
      */
-    public function test__fcpoValidateResponse_Invalid() {
+    public function test__fcpoValidateResponse_Invalid() 
+    {
         $aMockResponse = array(
             'status' => 'INVALID',
             'firstname' => 'someValue',
@@ -366,7 +384,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneUserTest extends OxidTestC
     /**
      * Testing _fcpoValidateResponse for case that addresscheck response has error message
      */
-    public function test__fcpoValidateResponse_Error() {
+    public function test__fcpoValidateResponse_Error() 
+    {
         $aMockResponse = array(
             'status' => 'ERROR',
             'firstname' => 'someValue',
@@ -402,7 +421,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneUserTest extends OxidTestC
     /**
      * Testing _fcpoValidateResponse for case that addresscheck response has no response
      */
-    public function test__fcpoValidateResponse_None() {
+    public function test__fcpoValidateResponse_None() 
+    {
         $aMockResponse = array(
             'status' => 'SOMENONEXISTINGVALUE',
             'firstname' => 'someValue',
@@ -438,7 +458,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneUserTest extends OxidTestC
     /**
      * Testing _fcpoValidateUserDataByResponse for case that addresscheck response has error message
      */
-    public function test__fcpoValidateUserDataByResponse_Error() {
+    public function test__fcpoValidateUserDataByResponse_Error() 
+    {
         $aMockResponse = array(
             'status' => 'ERROR',
             'firstname' => 'someValue',
@@ -474,7 +495,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneUserTest extends OxidTestC
     /**
      * Testing _fcpoValidateUserDataByResponse for case that addresscheck response has error message
      */
-    public function test__fcpoValidateUserDataByResponse_Success() {
+    public function test__fcpoValidateUserDataByResponse_Success() 
+    {
         $aMockResponse = array(
             'status' => 'VALID',
             'firstname' => 'someValue',
@@ -512,7 +534,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneUserTest extends OxidTestC
     /**
      * Testing fcpoUnsetGroups for coverage
      */
-    public function test_fcpoUnsetGroups_Coverage() {
+    public function test_fcpoUnsetGroups_Coverage() 
+    {
         $oTestObject = oxNew('fcPayOneUser');
         $this->assertEquals(null, $oTestObject->fcpoUnsetGroups());
     }

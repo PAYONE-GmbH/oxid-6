@@ -18,16 +18,19 @@
  * @copyright (C) Payone GmbH
  * @version   OXID eShop CE
  */
-class fcPayOneViewConf extends fcPayOneViewConf_parent {
+class fcPayOneViewConf extends fcPayOneViewConf_parent
+{
 
     /**
      * Name of the module folder
+     *
      * @var string
      */
     protected $_sModuleFolder = "fcPayOne";
 
     /**
      * Helper object for dealing with different shop versions
+     *
      * @var object
      */
     protected $_oFcpoHelper = null;
@@ -42,7 +45,8 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent {
     /**
      * Initializing needed things
      */
-    public function __construct() {
+    public function __construct() 
+    {
         parent::__construct();
         $this->_oFcpoHelper = oxNew('fcpohelper');
     }
@@ -50,30 +54,33 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent {
     /**
      * Returns the path to module
      * 
-     * @param void
+     * @param  void
      * @return string
      */
-    public function fcpoGetModulePath() {
+    public function fcpoGetModulePath() 
+    {
         return $this->getModulePath($this->_sModuleFolder);
     }
 
     /**
      * Returns the url to module
      * 
-     * @param void
+     * @param  void
      * @return string
      */
-    public function fcpoGetModuleUrl() {
+    public function fcpoGetModuleUrl() 
+    {
         return $this->getModuleUrl($this->_sModuleFolder);
     }
 
     /**
      * Returns url to module img folder (admin)
      * 
-     * @param void
+     * @param  void
      * @return string
      */
-    public function fcpoGetAdminModuleImgUrl() {
+    public function fcpoGetAdminModuleImgUrl() 
+    {
         $sModuleUrl = $this->fcpoGetModuleUrl();
         $sModuleAdminImgUrl = $sModuleUrl . 'out/admin/img/';
 
@@ -83,10 +90,11 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent {
     /**
      * Returns the path to javascripts of module
      * 
-     * @param string $sFile
+     * @param  string $sFile
      * @return string
      */
-    public function fcpoGetAbsModuleJsPath($sFile = "") {
+    public function fcpoGetAbsModuleJsPath($sFile = "") 
+    {
         $sModulePath = $this->fcpoGetModulePath();
         $sModuleJsPath = $sModulePath . 'out/src/js/';
         if ($sFile) {
@@ -99,10 +107,11 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent {
     /**
      * Returns the path to javascripts of module
      * 
-     * @param string $sFile
+     * @param  string $sFile
      * @return string
      */
-    public function fcpoGetModuleJsPath($sFile = "") {
+    public function fcpoGetModuleJsPath($sFile = "") 
+    {
         $sModuleUrl = $this->fcpoGetModuleUrl();
         $sModuleJsUrl = $sModuleUrl . 'out/src/js/';
         if ($sFile) {
@@ -115,20 +124,22 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent {
     /**
      * Returns integer of shop version
      * 
-     * @param void
+     * @param  void
      * @return string
      */
-    public function fcpoGetIntShopVersion() {
+    public function fcpoGetIntShopVersion() 
+    {
         return $this->_oFcpoHelper->fcpoGetIntShopVersion();
     }
 
     /**
      * Returns the path to javascripts of module
      * 
-     * @param string $sFile
+     * @param  string $sFile
      * @return string
      */
-    public function fcpoGetModuleCssPath($sFile = "") {
+    public function fcpoGetModuleCssPath($sFile = "") 
+    {
         $sModuleUrl = $this->fcpoGetModuleUrl();
         $sModuleUrl = $sModuleUrl . 'out/src/css/';
         if ($sFile) {
@@ -141,10 +152,11 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent {
     /**
      * Returns the path to javascripts of module
      * 
-     * @param string $sFile
+     * @param  string $sFile
      * @return string
      */
-    public function fcpoGetAbsModuleTemplateFrontendPath($sFile = "") {
+    public function fcpoGetAbsModuleTemplateFrontendPath($sFile = "") 
+    {
         $sModulePath = $this->fcpoGetModulePath();
         $sModulePath = $sModulePath . 'application/views/frontend/tpl/';
         if ($sFile) {
@@ -159,17 +171,19 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent {
      * 
      * @return string
      */
-    public function fcpoGetHostedPayoneJs() {
+    public function fcpoGetHostedPayoneJs() 
+    {
         return $this->_sFcPoHostedJsUrl;
     }
     
     /**
      * Returns Iframe mappings
      * 
-     * @param void
+     * @param  void
      * @return array
      */
-    public function fcpoGetIframeMappings() {
+    public function fcpoGetIframeMappings() 
+    {
         $oErrorMapping = $this->_oFcpoHelper->getFactoryObject('fcpoerrormapping');
         $aExistingErrorMappings = $oErrorMapping->fcpoGetExistingMappings('iframe');
 
@@ -179,10 +193,11 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent {
     /**
      * Returns abbroviation by given id
      * 
-     * @param string $sLangId
+     * @param  string $sLangId
      * @return string
      */
-    public function fcpoGetLangAbbrById($sLangId) {
+    public function fcpoGetLangAbbrById($sLangId) 
+    {
         $oLang = $this->_oFcpoHelper->fcpoGetLang();
         return $oLang->getLanguageAbbr($sLangId);
     }

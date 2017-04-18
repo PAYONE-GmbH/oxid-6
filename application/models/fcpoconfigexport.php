@@ -18,58 +18,68 @@
  * @version   OXID eShop CE
  */
 
-class fcpoconfigexport extends oxBase {
+class fcpoconfigexport extends oxBase
+{
 
     /**
      * Helper object for dealing with different shop versions
+     *
      * @var object
      */
     protected $_oFcpoHelper = null;
 
     /**
      * Centralized Database instance
+     *
      * @var object
      */
     protected $_oFcpoDb = null;
 
     /**
      * Holds config values for all available shop ids
+     *
      * @var array
      */
     protected $_aShopConfigs = array();
 
     /**
      * List of boolean config values
+     *
      * @var array
      */
     protected $_aConfBools = array();
 
     /**
      * List of string config values
+     *
      * @var array
      */
     protected $_aConfStrs = array();
 
     /**
      * List of array config values
+     *
      * @var array
      */
     protected $_aConfArrs = array();
 
     /**
      * Newline
+     *
      * @var string
      */
     protected $_sN = "\n";
 
     /**
      * Tab
+     *
      * @var string
      */
     protected $_sT = "    ";
 
     /**
      * Definitions of multilang files
+     *
      * @var array
      */
     protected $_aMultiLangFields = array(
@@ -80,6 +90,7 @@ class fcpoconfigexport extends oxBase {
 
     /**
      * config fields which needs skipping multilines
+     *
      * @var array
      */
     protected $_aSkipMultiline = array('aFCPODebitCountries');
@@ -87,7 +98,8 @@ class fcpoconfigexport extends oxBase {
     /**
      * Init needed data
      */
-    public function __construct() {
+    public function __construct() 
+    {
         parent::__construct();
         $this->_oFcpoHelper = oxNew('fcpohelper');
         $this->_oFcpoDb = oxDb::getDb();
@@ -96,10 +108,11 @@ class fcpoconfigexport extends oxBase {
     /**
      * Returns payone configuration
      *
-     * @param string $sShopId
+     * @param  string $sShopId
      * @return void
      */
-    public function fcpoGetConfig($sShopId, $iLang=0) {
+    public function fcpoGetConfig($sShopId, $iLang=0) 
+    {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $oDb = $this->_oFcpoHelper->fcpoGetDb(true);
         $sQuery = "select oxvarname, oxvartype, DECODE( oxvarvalue, " . $oDb->quote($oConfig->getConfigParam('sConfigKey')) . ") as oxvarvalue from oxconfig where oxshopid = '$sShopId' AND (oxvartype = 'str' OR oxvartype = 'bool' OR oxvartype = 'arr')";
@@ -112,8 +125,9 @@ class fcpoconfigexport extends oxBase {
                 $sVarType = $aRow['oxvartype'];
                 $sVarVal = $aRow['oxvarvalue'];
 
-                if ($sVarType == "bool")
-                    $this->_aConfBools[$sVarName] = ($sVarVal == "true" || $sVarVal == "1");
+                if ($sVarType == "bool") {
+                    $this->_aConfBools[$sVarName] = ($sVarVal == "true" || $sVarVal == "1"); 
+                }
                 if ($sVarType == "str") {
                     $sVarName = $this->fcpoGetMultilangConfStrVarName($sVarName, $iLang);
 
@@ -143,10 +157,11 @@ class fcpoconfigexport extends oxBase {
     /**
      * Generates and delivers an xml export of configuration
      *
-     * @param void
+     * @param  void
      * @return null
      */
-    public function fcpoExportConfig() {
+    public function fcpoExportConfig() 
+    {
         $sXml = $this->fcpoGetConfigXml();
         if ($sXml !== false) {
             $this->_oFcpoHelper->fcpoHeader("Content-Type: text/xml; charset=\"utf8\"");
@@ -160,10 +175,11 @@ class fcpoconfigexport extends oxBase {
     /**
      * Returns xml configuration of all shops
      *
-     * @param void
+     * @param  void
      * @return string
      */
-    public function fcpoGetConfigXml() {
+    public function fcpoGetConfigXml() 
+    {
         $aShopIds = $this->fcpoGetShopIds();
         $this->_fcpoSetShopConfigVars($aShopIds);
 
@@ -191,10 +207,11 @@ class fcpoconfigexport extends oxBase {
     /**
      * Returns a list of shop ids
      *
-     * @param void
+     * @param  void
      * @return array
      */
-    public function fcpoGetShopIds() {
+    public function fcpoGetShopIds() 
+    {
         return $this->_oFcpoDb->getCol("SELECT `oxid` FROM `oxshops`");
     }
 
@@ -202,11 +219,12 @@ class fcpoconfigexport extends oxBase {
     /**
      * Returns multilang varname if multilangfield
      *
-     * @param string $sVarName
-     * @param int $iLang
+     * @param  string $sVarName
+     * @param  int    $iLang
      * @return string
      */
-    public function fcpoGetMultilangConfStrVarName($sVarName, $iLang) {
+    public function fcpoGetMultilangConfStrVarName($sVarName, $iLang) 
+    {
         if (!$iLang) {
             $iLang = 0;
         }
@@ -225,10 +243,11 @@ class fcpoconfigexport extends oxBase {
     /**
      * Returns collected checksum errors if there are any
      *
-     * @param void
+     * @param  void
      * @return mixed
      */
-    protected function _getChecksumErrors() {
+    protected function _getChecksumErrors() 
+    {
         $blOutput = false;
         $blCheckSumAvailable = $this->_oFcpoHelper->fcpoCheckClassExists('fcCheckChecksum');
         if ($blCheckSumAvailable) {
@@ -247,10 +266,11 @@ class fcpoconfigexport extends oxBase {
     /**
      * Sets needed shop values for later fetching from attribute
      *
-     * @param array $aShopIds
+     * @param  array $aShopIds
      * @return void
      */
-    protected function _fcpoSetShopConfigVars($aShopIds) {
+    protected function _fcpoSetShopConfigVars($aShopIds) 
+    {
         $oConf = $this->getConfig();
 
         foreach ($aShopIds as $sShopId) {
@@ -272,10 +292,11 @@ class fcpoconfigexport extends oxBase {
     /**
      * Returns the generic part of shop specific xml
      *
-     * @param array $aShopConfVars
+     * @param  array $aShopConfVars
      * @return string
      */
-    protected function _fcpoGetShopXmlGeneric($aShopConfVars) {
+    protected function _fcpoGetShopXmlGeneric($aShopConfVars) 
+    {
         $sXml = $this->_sT . $this->_sT . "<code>{$sShopId}</code>" . $this->_sN;
         $sXml .= $this->_sT . $this->_sT . "<name><![CDATA[{$aShopConfVars['sShopName']}]]></name>" . $this->_sN;
 
@@ -285,10 +306,11 @@ class fcpoconfigexport extends oxBase {
     /**
      * Returns system block of shop specific xml
      *
-     * @param type $aShopConfVars
+     * @param  type $aShopConfVars
      * @return string
      */
-    protected function _fcpoGetShopXmlSystem($aShopConfVars) {
+    protected function _fcpoGetShopXmlSystem($aShopConfVars) 
+    {
         $sXml = $this->_sT . $this->_sT . "<system>" . $this->_sN;
         $sXml .= $this->_sT . $this->_sT . $this->_sT . "<name>OXID</name>" . $this->_sN;
         $sXml .= $this->_sT . $this->_sT . $this->_sT . "<version>{$aShopConfVars['sShopVersion']}</version>" . $this->_sN;
@@ -309,10 +331,11 @@ class fcpoconfigexport extends oxBase {
     /**
      * Returns shop specific global block
      *
-     * @param array $aShopConfVars
+     * @param  array $aShopConfVars
      * @return string
      */
-    protected function _fcpoGetShopXmlGlobal($aShopConfVars) {
+    protected function _fcpoGetShopXmlGlobal($aShopConfVars) 
+    {
         $sXml = $this->_sT . $this->_sT . "<global>" . $this->_sN;
         $sXml .= $this->_sT . $this->_sT . $this->_sT . "<mid>" . $aShopConfVars['sFCPOMerchantID'] . "</mid>" . $this->_sN;
         $sXml .= $this->_sT . $this->_sT . $this->_sT . "<aid>" . $aShopConfVars['sFCPOSubAccountID'] . "</aid>" . $this->_sN;
@@ -337,10 +360,11 @@ class fcpoconfigexport extends oxBase {
     /**
      * Returns shop specific clearingtypes
      *
-     * @param type $aShopConfVars
+     * @param  type $aShopConfVars
      * @return string
      */
-    protected function _fcpoGetShopXmlClearingTypes($aShopConfVars) {
+    protected function _fcpoGetShopXmlClearingTypes($aShopConfVars) 
+    {
         $sXml = $this->_sT . $this->_sT . "<clearingtypes>" . $this->_sN;
         $aPayments = $this->_getPaymentTypes();
         foreach ($aPayments as $oPayment) {
@@ -366,10 +390,11 @@ class fcpoconfigexport extends oxBase {
     /**
      * Returns shop specific protect block of xml
      *
-     * @param void
+     * @param  void
      * @return string
      */
-    protected function _fcpoGetShopXmlProtect() {
+    protected function _fcpoGetShopXmlProtect() 
+    {
         $oConf = $this->getConfig();
         $sXml = $this->_sT . $this->_sT . "<protect>" . $this->_sN;
         $sXml .= $this->_sT . $this->_sT . $this->_sT . "<consumerscore>" . $this->_sN;
@@ -398,10 +423,11 @@ class fcpoconfigexport extends oxBase {
     /**
      * Returns miscelanous
      *
-     * @param void
+     * @param  void
      * @return string
      */
-    protected function _fcpoGetShopXmlMisc() {
+    protected function _fcpoGetShopXmlMisc() 
+    {
         $sXml = $this->_sT . $this->_sT . "<misc>" . $this->_sN;
         $sXml .= $this->_sT . $this->_sT . $this->_sT . "<transactionstatus_forwarding>" . $this->_sN;
         $aForwardings = $this->_getForwardings();
@@ -417,10 +443,11 @@ class fcpoconfigexport extends oxBase {
     /**
      * Returns shop specific checksum part of xml
      *
-     * @param void
+     * @param  void
      * @return string
      */
-    protected function _fcpoGetShopXmlChecksums() {
+    protected function _fcpoGetShopXmlChecksums() 
+    {
         $sXml = $this->_sT . $this->_sT . "<checksums>" . $this->_sN;
         $mUrlOpen = $this->_oFcpoHelper->fcpoIniGet('allow_url_fopen');
         $blCurlAvailable = $this->_oFcpoHelper->fcpoFunctionExists('curl_init');
@@ -450,10 +477,11 @@ class fcpoconfigexport extends oxBase {
     /**
      * Returns array of payments
      *
-     * @param void
+     * @param  void
      * @return array
      */
-    protected function _getPaymentTypes() {
+    protected function _getPaymentTypes() 
+    {
         $aPayments = array();
 
         $sQuery = "SELECT oxid FROM oxpayments WHERE fcpoispayone = 1";
@@ -471,10 +499,11 @@ class fcpoconfigexport extends oxBase {
     /**
      * Returns matching abbreviation for given payment id
      *
-     * @param string $sPaymentId
+     * @param  string $sPaymentId
      * @return string
      */
-    protected function _getPaymentAbbreviation($sPaymentId) {
+    protected function _getPaymentAbbreviation($sPaymentId) 
+    {
         $sAbbr = '';
 
         $aAbbreviations = array(
@@ -503,10 +532,11 @@ class fcpoconfigexport extends oxBase {
     /**
      * Returning red payments
      *
-     * @param void
+     * @param  void
      * @return string
      */
-    protected function _getRedPayments() {
+    protected function _getRedPayments() 
+    {
         $oPayment = $this->_oFcpoHelper->getFactoryObject('oxPayment');
         $sRedPayments = $oPayment->fcpoGetRedPayments();
 
@@ -516,10 +546,11 @@ class fcpoconfigexport extends oxBase {
     /**
      * Returning yellow payments
      *
-     * @param void
+     * @param  void
      * @return string
      */
-    protected function _getYellowPayments() {
+    protected function _getYellowPayments() 
+    {
         $oPayment = $this->_oFcpoHelper->getFactoryObject('oxPayment');
         $sYellowPayments = $oPayment->fcpoGetYellowPayments();
 
@@ -529,10 +560,11 @@ class fcpoconfigexport extends oxBase {
     /**
      * Returns payment countries
      *
-     * @param object $oPayment
+     * @param  object $oPayment
      * @return array
      */
-    protected function _getPaymentCountries($oPayment) {
+    protected function _getPaymentCountries($oPayment) 
+    {
         $aCountries = $oPayment->getCountries();
         $sCountries = '';
         foreach ($aCountries as $sCountryId) {
@@ -548,10 +580,11 @@ class fcpoconfigexport extends oxBase {
     /**
      * Returns the configured list of forwardings
      *
-     * @param void
+     * @param  void
      * @return array
      */
-    protected function _getForwardings() {
+    protected function _getForwardings() 
+    {
         $aForwardings = array();
         $oForwarding = $this->_oFcpoHelper->getFactoryObject('fcpoforwarding');
         $aForwardingsList = $oForwarding->fcpoGetExistingForwardings();
@@ -570,10 +603,11 @@ class fcpoconfigexport extends oxBase {
     /**
      * Returns the configured mappings
      *
-     * @param void
+     * @param  void
      * @return array
      */
-    protected function _getMappings() {
+    protected function _getMappings() 
+    {
         $aMappings = array();
 
         $oMapping = oxNew('fcpomapping');
@@ -596,10 +630,11 @@ class fcpoconfigexport extends oxBase {
     /**
      * Returns a list of available modules and their versions
      *
-     * @param void
+     * @param  void
      * @return array
      */
-    protected function _getModuleInfo() {
+    protected function _getModuleInfo() 
+    {
         $iVersion = $this->_oFcpoHelper->fcpoGetIntShopVersion();
         if ($iVersion < 4600) {
             $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
@@ -627,7 +662,8 @@ class fcpoconfigexport extends oxBase {
      *
      * @return string
      */
-    protected function _arrayToMultiline($aInput) {
+    protected function _arrayToMultiline($aInput) 
+    {
         $sVal = '';
         if (is_array($aInput)) {
             $sVal = implode("\n", $aInput);

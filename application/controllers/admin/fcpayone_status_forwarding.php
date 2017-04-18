@@ -20,10 +20,12 @@
  */
  
 
-class fcpayone_status_forwarding extends fcpayone_admindetails {
+class fcpayone_status_forwarding extends fcpayone_admindetails
+{
 
-	/**
+    /**
      * Current class template name.
+  *
      * @var string
      */
     protected $_sThisTemplate = 'fcpayone_status_forwarding.tpl';
@@ -32,10 +34,11 @@ class fcpayone_status_forwarding extends fcpayone_admindetails {
     /**
      * Returns list fo configured forwardings
      * 
-     * @param void
+     * @param  void
      * @return array
      */
-    public function getForwardings() {
+    public function getForwardings() 
+    {
         $aForwardings = $this->fcpoGetExistingForwardings();
         $aForwardings = $this->_fcpoGetNewForwarding($aForwardings);
         
@@ -46,10 +49,11 @@ class fcpayone_status_forwarding extends fcpayone_admindetails {
     /**
      * Returns an array of currently existing forwardings as an array with standard objects
      * 
-     * @param void
+     * @param  void
      * @return array
      */
-    protected function fcpoGetExistingForwardings() {
+    protected function fcpoGetExistingForwardings() 
+    {
         $oForwarding = oxNew('fcpoforwarding');
         $aForwardings = $oForwarding->fcpoGetExistingForwardings();
         
@@ -60,10 +64,11 @@ class fcpayone_status_forwarding extends fcpayone_admindetails {
     /**
      * Parses existing forwardings and add a new one if param has been set to
      * 
-     * @param array $aForwardings
+     * @param  array $aForwardings
      * @return array
      */
-    protected function _fcpoGetNewForwarding($aForwardings) {
+    protected function _fcpoGetNewForwarding($aForwardings) 
+    {
         if ($this->_oFcpoHelper->fcpoGetRequestParameter('add')) {
             $oForwarding = new stdClass();
             $oForwarding->sOxid = 'new';
@@ -80,10 +85,11 @@ class fcpayone_status_forwarding extends fcpayone_admindetails {
     /**
      * Returns payone status list
      * 
-     * @param void
+     * @param  void
      * @return array
      */
-    public function getPayoneStatusList() {
+    public function getPayoneStatusList() 
+    {
         $aPayoneStatusList = $this->_oFcpoHelper->fcpoGetPayoneStatusList();
         
         $aNewList = array();
@@ -101,10 +107,11 @@ class fcpayone_status_forwarding extends fcpayone_admindetails {
     /**
      * Save current configured forwardings
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function save() {
+    public function save() 
+    {
         $oForwarding = oxNew('fcpoforwarding');
         $aForwardings = $this->_oFcpoHelper->fcpoGetRequestParameter("editval");
         if(is_array($aForwardings) && count($aForwardings) > 0) {

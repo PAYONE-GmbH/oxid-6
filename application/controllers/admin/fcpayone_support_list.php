@@ -18,10 +18,12 @@
  * @version   OXID eShop CE
  */
 
-class fcpayone_support_list extends oxAdminList {
+class fcpayone_support_list extends oxAdminList
+{
     
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'fcpayone_support_list.tpl';

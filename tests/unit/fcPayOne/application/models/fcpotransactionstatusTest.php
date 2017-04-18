@@ -18,7 +18,8 @@
  * @version   OXID eShop CE
  */
  
-class Unit_fcPayOne_Application_Models_fcpotransactionstatus extends OxidTestCase {
+class Unit_fcPayOne_Application_Models_fcpotransactionstatus extends OxidTestCase
+{
 
     /**
      * Call protected/private method of a class.
@@ -29,7 +30,8 @@ class Unit_fcPayOne_Application_Models_fcpotransactionstatus extends OxidTestCas
      *
      * @return mixed Method return.
      */
-    public function invokeMethod(&$object, $methodName, array $parameters = array()) {
+    public function invokeMethod(&$object, $methodName, array $parameters = array()) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
@@ -40,13 +42,14 @@ class Unit_fcPayOne_Application_Models_fcpotransactionstatus extends OxidTestCas
     /**
      * Set protected/private attribute value
      *
-     * @param object &$object    Instantiated object that we will run method on.
+     * @param object &$object      Instantiated object that we will run method on.
      * @param string $propertyName property that shall be set
-     * @param array  $value value to be set
+     * @param array  $value        value to be set
      *
      * @return mixed Method return.
      */
-    public function invokeSetAttribute(&$object, $propertyName, $value) {
+    public function invokeSetAttribute(&$object, $propertyName, $value) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $property = $reflection->getProperty($propertyName);
         $property->setAccessible(true);
@@ -59,7 +62,8 @@ class Unit_fcPayOne_Application_Models_fcpotransactionstatus extends OxidTestCas
     /**
      * Testing getAction for coverage
      */
-    public function test_getAction_Coverage() {
+    public function test_getAction_Coverage() 
+    {
         $oTestObject = oxNew('fcpotransactionstatus');
         $oTestObject->fcpotransactionstatus__fcpo_txaction = new oxField('paid');
         $oTestObject->fcpotransactionstatus__fcpo_txreceivable = new oxField(10);
@@ -79,7 +83,8 @@ class Unit_fcPayOne_Application_Models_fcpotransactionstatus extends OxidTestCas
     /**
      * Testing getClearingtype for coverage
      */
-    public function test_getClearingtype_Coverage() {
+    public function test_getClearingtype_Coverage() 
+    {
         $oMockOrder = oxNew('oxOrder');
         $oMockOrder->oxorder__oxpaymenttype = new oxField('somePaymentType');
 
@@ -102,7 +107,8 @@ class Unit_fcPayOne_Application_Models_fcpotransactionstatus extends OxidTestCas
     /**
      * Testing _fcpoGetOrderByTxid for coverage
      */
-    public function test__fcpoGetOrderByTxid_Coverage() {
+    public function test__fcpoGetOrderByTxid_Coverage() 
+    {
         $oTestObject = oxNew('fcpotransactionstatus');
 
         $oMockDatabase = $this->getMock('oxDb', array('GetOne'));
@@ -122,7 +128,8 @@ class Unit_fcPayOne_Application_Models_fcpotransactionstatus extends OxidTestCas
     /**
      * Testing getCaptureAmount for coverage
      */
-    public function test_getCaptureAmount_Coverage() {
+    public function test_getCaptureAmount_Coverage() 
+    {
         $oMockOrder = $this->getMock('oxOrder', array('load'));
         $oMockOrder->expects($this->any())->method('load')->will($this->returnValue(true));
         $oMockOrder->oxorder__oxtotalordersum = new oxField(100);
@@ -137,7 +144,8 @@ class Unit_fcPayOne_Application_Models_fcpotransactionstatus extends OxidTestCas
     /**
      * Testing getCardtype for coverage
      */
-    public function test_getCardtype_Coverage() {
+    public function test_getCardtype_Coverage() 
+    {
         $oTestObject = oxNew('fcpotransactionstatus');
         $oTestObject->fcpotransactionstatus__fcpo_cardtype = new oxField('B');
 
@@ -147,7 +155,8 @@ class Unit_fcPayOne_Application_Models_fcpotransactionstatus extends OxidTestCas
     /**
      * Testing getDisplayNameReceivable for coverage
      */
-    public function test_getDisplayNameReceivable_Coverage() {
+    public function test_getDisplayNameReceivable_Coverage() 
+    {
         $oTestObject = $this->getMock('fcpotransactionstatus', array('_fcpoGetLangIdent', '_fcpoGetMapAction'));
         $oTestObject->expects($this->any())->method('_fcpoGetLangIdent')->will($this->returnValue('someTranslationIdent'));
         $oTestObject->expects($this->any())->method('_fcpoGetMapAction')->will($this->returnValue('someLangIdent'));
@@ -168,7 +177,8 @@ class Unit_fcPayOne_Application_Models_fcpotransactionstatus extends OxidTestCas
     /**
      * Testing getDisplayNamePayment for coverage
      */
-    public function test_getDisplayNamePayment_Coverage() {
+    public function test_getDisplayNamePayment_Coverage() 
+    {
         $oTestObject = $this->getMock('fcpotransactionstatus', array('_fcpoGetLangIdent', '_fcpoGetMapAction'));
         $oTestObject->expects($this->any())->method('_fcpoGetLangIdent')->will($this->returnValue('someTranslationIdent'));
         $oTestObject->expects($this->any())->method('_fcpoGetMapAction')->will($this->returnValue('someLangIdent'));
@@ -189,7 +199,8 @@ class Unit_fcPayOne_Application_Models_fcpotransactionstatus extends OxidTestCas
     /**
      * Testing _fcpoGetLangIdent for coverage
      */
-    public function test__fcpoGetLangIdent_Coverage() {
+    public function test__fcpoGetLangIdent_Coverage() 
+    {
         $oTestObject = oxNew('fcpotransactionstatus');
 
         $sResponse = $oTestObject->_fcpoGetLangIdent(100, 'Option1', 'Option2');
@@ -200,7 +211,8 @@ class Unit_fcPayOne_Application_Models_fcpotransactionstatus extends OxidTestCas
     /**
      * Testing _fcpoGetMapAction for coverage
      */
-    public function test__fcpoGetMapAction_Coverage() {
+    public function test__fcpoGetMapAction_Coverage() 
+    {
         $sMockTxAction = 'someTxAction';
         $aMockMatchMap = array($sMockTxAction => 'someAssignment');
 

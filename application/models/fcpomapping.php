@@ -18,16 +18,19 @@
  * @version   OXID eShop CE
  */
  
-class fcpomapping extends oxBase {
+class fcpomapping extends oxBase
+{
 
     /**
      * Helper object for dealing with different shop versions
+     *
      * @var object
      */
     protected $_oFcpoHelper = null;
 
     /**
      * Centralized Database instance
+     *
      * @var object
      */
     protected $_oFcpoDb = null;
@@ -35,7 +38,8 @@ class fcpomapping extends oxBase {
     /**
      * Init needed data
      */
-    public function __construct() {
+    public function __construct() 
+    {
         parent::__construct();
         $this->_oFcpoHelper = oxNew('fcpohelper');
         $this->_oFcpoDb = oxDb::getDb();
@@ -44,10 +48,11 @@ class fcpomapping extends oxBase {
     /**
      * Requests database for existing mappings and returns an array of mapping objects
      * 
-     * @param void
+     * @param  void
      * @return array
      */
-    public function fcpoGetExistingMappings() {
+    public function fcpoGetExistingMappings() 
+    {
         $aMappings = array();
         $oDb = $this->_oFcpoHelper->fcpoGetDb(true);
 
@@ -75,10 +80,11 @@ class fcpomapping extends oxBase {
     /**
      * Updates current set of mappings into database
      * 
-     * @param array $aMappings
+     * @param  array $aMappings
      * @return void
      */
-    public function fcpoUpdateMappings($aMappings) {
+    public function fcpoUpdateMappings($aMappings) 
+    {
         $oDb = $this->_oFcpoHelper->fcpoGetDb();
         // iterate through mappings
         foreach ($aMappings as $sMappingId => $aData) {
@@ -90,11 +96,12 @@ class fcpomapping extends oxBase {
     /**
      * Returns the matching query for updating/adding data
      * 
-     * @param string $sMappingId
-     * @param array $aData
+     * @param  string $sMappingId
+     * @param  array  $aData
      * @return string
      */
-    protected function _fcpoGetQuery($sMappingId, $aData) {
+    protected function _fcpoGetQuery($sMappingId, $aData) 
+    {
         // quote values from outer space
         if (array_key_exists('delete', $aData) !== false) {
             $oDb = $this->_oFcpoHelper->fcpoGetDb();
@@ -110,11 +117,12 @@ class fcpomapping extends oxBase {
     /**
      * Returns wether an insert or update query, depending on data
      * 
-     * @param string $sMappingId
-     * @param array $aData
+     * @param  string $sMappingId
+     * @param  array  $aData
      * @return string
      */
-    protected function _fcpoGetUpdateQuery($sMappingId, $aData) {
+    protected function _fcpoGetUpdateQuery($sMappingId, $aData) 
+    {
         $blValidNewEntry = $this->_fcpoIsValidNewEntry($sMappingId, $aData['sPaymentType'], $aData['sPayoneStatus'], $aData['sShopStatus']);
 
         $sOxid = $this->_oFcpoDb->quote($sMappingId);
@@ -144,13 +152,14 @@ class fcpomapping extends oxBase {
     /**
      * Checks if current entry is new and complete
      * 
-     * @param type $sMappingId
-     * @param type $sPaymentId
-     * @param type $sPayoneStatus
-     * @param type $sFolder
+     * @param  type $sMappingId
+     * @param  type $sPaymentId
+     * @param  type $sPayoneStatus
+     * @param  type $sFolder
      * @return bool
      */
-    protected function _fcpoIsValidNewEntry($sMappingId, $sPaymentId, $sPayoneStatus, $sFolder) {
+    protected function _fcpoIsValidNewEntry($sMappingId, $sPaymentId, $sPayoneStatus, $sFolder) 
+    {
         $blComplete = (!empty($sPayoneStatus) || !empty($sPaymentId) || !empty($sFolder));
         $blValid = ($sMappingId == 'new' && $blComplete) ? true : false;
 

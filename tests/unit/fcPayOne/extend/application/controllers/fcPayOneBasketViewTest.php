@@ -18,7 +18,8 @@
  * @copyright (C) Payone GmbH
  * @version   OXID eShop CE
  */
-class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneBasketView extends OxidTestCase {
+class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneBasketView extends OxidTestCase
+{
 
     /**
      * Call protected/private method of a class.
@@ -29,7 +30,8 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneBasketView extends Ox
      *
      * @return mixed Method return.
      */
-    public function invokeMethod(&$object, $methodName, array $parameters = array()) {
+    public function invokeMethod(&$object, $methodName, array $parameters = array()) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
@@ -40,13 +42,14 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneBasketView extends Ox
     /**
      * Set protected/private attribute value
      *
-     * @param object &$object    Instantiated object that we will run method on.
+     * @param object &$object      Instantiated object that we will run method on.
      * @param string $propertyName property that shall be set
-     * @param array  $value value to be set
+     * @param array  $value        value to be set
      *
      * @return mixed Method return.
      */
-    public function invokeSetAttribute(&$object, $propertyName, $value) {
+    public function invokeSetAttribute(&$object, $propertyName, $value) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $property = $reflection->getProperty($propertyName);
         $property->setAccessible(true);
@@ -57,10 +60,11 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneBasketView extends Ox
     /**
      * Testing _fcpoIsPayPalExpressActive for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test__fcpoIsPayPalExpressActive_Coverage() {
+    public function test__fcpoIsPayPalExpressActive_Coverage() 
+    {
         $oTestObject = oxNew('fcPayOneBasketView');
 
         $oMockBasket = $this->getMock('oxBasket', array('fcpoIsPayPalExpressActive'));
@@ -76,10 +80,11 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneBasketView extends Ox
     /**
      * Testing fcpoGetPayPalExpressPic for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcpoGetPayPalExpressPic_Coverage() {
+    public function test_fcpoGetPayPalExpressPic_Coverage() 
+    {
         $oTestObject = $this->getMock('fcPayOneBasketView', array('_fcpoIsPayPalExpressActive', '_fcpoGetPayPalExpressPic'));
         $oTestObject->expects($this->any())->method('_fcpoIsPayPalExpressActive')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcpoGetPayPalExpressPic')->will($this->returnValue('somePic'));
@@ -93,10 +98,11 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneBasketView extends Ox
     /**
      * Testing _fcpoGetPayPalExpressPic for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test__fcpoGetPayPalExpressPic_Coverage() {
+    public function test__fcpoGetPayPalExpressPic_Coverage() 
+    {
         $oMockBasket = $this->getMock('oxBasket', array('fcpoGetPayPalExpressPic'));
         $oMockBasket->expects($this->any())->method('fcpoGetPayPalExpressPic')->will($this->returnValue('somePic.jpg'));
 
@@ -122,10 +128,11 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneBasketView extends Ox
     /**
      * Testing fcpoUsePayPalExpress for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcpoUsePayPalExpress_Error() {
+    public function test_fcpoUsePayPalExpress_Error() 
+    {
         $oTestObject = $this->getMock('fcPayOneBasketView', array('_fcpoIsPayPalExpressActive'));
 
         $oMockUtils = $this->getMock('oxUtils', array('redirect'));
@@ -146,10 +153,11 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneBasketView extends Ox
     /**
      * Testing fcpoUsePayPalExpress for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcpoUsePayPalExpress_Redirect() {
+    public function test_fcpoUsePayPalExpress_Redirect() 
+    {
         $oTestObject = $this->getMock('fcPayOneBasketView', array('_fcpoIsPayPalExpressActive'));
 
         $oMockUtils = $this->getMock('oxUtils', array('redirect'));
@@ -171,10 +179,11 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneBasketView extends Ox
     /**
      * Lil' paypalexpresslogo database helper
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    protected function _fcpoPreparePaypalExpressLogos() {
+    protected function _fcpoPreparePaypalExpressLogos() 
+    {
         $this->_fcpoTruncateTable('fcpopayoneexpresslogos');
         $sQuery = "
             INSERT INTO `fcpopayoneexpresslogos` (`OXID`, `FCPO_ACTIVE`, `FCPO_LANGID`, `FCPO_LOGO`, `FCPO_DEFAULT`) VALUES
@@ -188,10 +197,11 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneBasketView extends Ox
     /**
      * Truncates table
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    protected function _fcpoTruncateTable($sTableName) {
+    protected function _fcpoTruncateTable($sTableName) 
+    {
         $sQuery = "DELETE FROM `{$sTableName}` ";
 
         oxDb::getDb()->Execute($sQuery);

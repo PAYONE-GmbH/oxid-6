@@ -18,7 +18,8 @@
  * @version   OXID eShop CE
  */
  
-class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_boni extends OxidTestCase {
+class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_boni extends OxidTestCase
+{
     /**
      * Call protected/private method of a class.
      *
@@ -41,10 +42,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_boni extends OxidTest
     /**
      * Testing getViewId for getting coverage
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_getViewId_Coverage() {
+    public function test_getViewId_Coverage() 
+    {
         $oBoni = oxNew('fcpayone_boni');
         $this->assertEquals('dyn_fcpayone', $oBoni->getViewId());
     }
@@ -53,10 +55,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_boni extends OxidTest
     /**
      * Testing respond fcGetAdminSeperator on older shop version
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcGetAdminSeperator_OlderShopVersion() {
+    public function test_fcGetAdminSeperator_OlderShopVersion() 
+    {
         $oBoni = oxNew('fcpayone_boni');
         
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
@@ -73,10 +76,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_boni extends OxidTest
     /**
      * Testing respond fcGetAdminSeperator on newer shop version
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcGetAdminSeperator_NewerShopVersion() {
+    public function test_fcGetAdminSeperator_NewerShopVersion() 
+    {
         $oBoni = oxNew('fcpayone_boni');
         
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();

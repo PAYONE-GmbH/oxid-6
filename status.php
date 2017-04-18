@@ -19,9 +19,9 @@
  */
  
 set_time_limit(0);
-ini_set ('memory_limit', '1024M');
-ini_set ('log_errors', 1);
-ini_set ('error_log', '../../log/fcpoErrors.log');
+ini_set('memory_limit', '1024M');
+ini_set('log_errors', 1);
+ini_set('error_log', '../../log/fcpoErrors.log');
 
 if(file_exists(dirname(__FILE__)."/config.ipwhitelist.php")) {
     include_once dirname(__FILE__)."/config.ipwhitelist.php";
@@ -62,73 +62,76 @@ if(array_search($sRemoteIp, $aWhitelist) === false) {
 }
 
 if(file_exists(dirname(__FILE__)."/../../bootstrap.php")) {
-    require_once dirname(__FILE__) . "/../../bootstrap.php";
+    include_once dirname(__FILE__) . "/../../bootstrap.php";
 } else {
-	if (!function_exists('getShopBasePath')) {
-		/**
-		 * Returns shop base path.
-		 *
-		 * @return string
-		 */
-		function getShopBasePath()
-		{
-			return dirname(__FILE__).'/../../';
-		}
-	}
+    if (!function_exists('getShopBasePath')) {
+        /**
+         * Returns shop base path.
+         *
+         * @return string
+         */
+        function getShopBasePath()
+        {
+            return dirname(__FILE__).'/../../';
+        }
+    }
 
-	set_include_path(get_include_path() . PATH_SEPARATOR . getShopBasePath());
+    set_include_path(get_include_path() . PATH_SEPARATOR . getShopBasePath());
 
-	/**
-	 * Returns true.
-	 *
-	 * @return bool
-	 */
-	if ( !function_exists( 'isAdmin' )) {
-		function isAdmin()
-		{
-			return true;
-		}
-	}
+    /**
+     * Returns true.
+     *
+     * @return bool
+     */
+    if (!function_exists('isAdmin')) {
+        function isAdmin()
+        {
+            return true;
+        }
+    }
 
-	error_reporting( E_ALL ^ E_NOTICE );
+    error_reporting(E_ALL ^ E_NOTICE);
 
-	// custom functions file
-	require getShopBasePath() . 'modules/functions.php';
+    // custom functions file
+    include getShopBasePath() . 'modules/functions.php';
 
-	// Generic utility method file
-	require_once getShopBasePath() . 'core/oxfunctions.php';
+    // Generic utility method file
+    include_once getShopBasePath() . 'core/oxfunctions.php';
 
 }
 
-class fcPayOneTransactionStatusHandler extends oxBase {
+class fcPayOneTransactionStatusHandler extends oxBase
+{
 
     protected $_aShopList = null;
     
     /**
      * Check and return post parameter
      * 
-     * @param string $sKey
+     * @param  string $sKey
      * @return string
      */
-    public function fcGetPostParam( $sKey ) {
+    public function fcGetPostParam( $sKey ) 
+    {
         $sReturn    = '';
-        $mValue     = filter_input( INPUT_GET, $sKey );
+        $mValue     = filter_input(INPUT_GET, $sKey);
         if (!$mValue) {
-            $mValue = filter_input( INPUT_POST, $sKey );
+            $mValue = filter_input(INPUT_POST, $sKey);
         }
     
-        if ( $mValue ) {
-            if( $this->getConfig()->isUtf() ) {
-                $mValue = utf8_encode( $mValue );
+        if ($mValue ) {
+            if($this->getConfig()->isUtf() ) {
+                $mValue = utf8_encode($mValue);
             }
             
-            $sReturn = mysql_real_escape_string( $mValue );
+            $sReturn = mysql_real_escape_string($mValue);
         }
         
         return $sReturn;
     }
     
-    protected function _getShopList() {
+    protected function _getShopList() 
+    {
         if($this->_aShopList === null) {
             $aShops = array();
             
@@ -144,7 +147,8 @@ class fcPayOneTransactionStatusHandler extends oxBase {
         return $this->_aShopList;
     }
     
-    protected function _getConfigParams($sParam) {
+    protected function _getConfigParams($sParam) 
+    {
         $aParams = array();
         foreach ($this->_getShopList() as $sShop) {
             $mValue = $this->getConfig()->getShopConfVar($sParam, $sShop);
@@ -155,7 +159,8 @@ class fcPayOneTransactionStatusHandler extends oxBase {
         return $aParams;
     }
     
-    protected function _isKeyValid() {
+    protected function _isKeyValid() 
+    {
         $sKey = $this->fcGetPostParam('key');
         if($sKey) {
             $aKeys = $this->_getConfigParams('sFCPOPortalKey');
@@ -168,7 +173,8 @@ class fcPayOneTransactionStatusHandler extends oxBase {
         return false;
     }
     
-    protected function _getOrderNr() {
+    protected function _getOrderNr() 
+    {
         $sQuery = "SELECT oxordernr FROM oxorder WHERE fcpotxid = '".$this->fcGetPostParam('txid')."' LIMIT 1";
         $iOrderNr = oxDb::getDb()->GetOne($sQuery);
         
@@ -189,7 +195,8 @@ class fcPayOneTransactionStatusHandler extends oxBase {
         return $iOrderNr;
     }
     
-    public function log() {
+    public function log() 
+    {
         $iOrderNr = $this->_getOrderNr();
 
         $sQuery = "
@@ -205,7 +212,8 @@ class fcPayOneTransactionStatusHandler extends oxBase {
         }
     }
     
-    protected function _addParam($sKey, $mValue) {
+    protected function _addParam($sKey, $mValue) 
+    {
         $sParams = '';
         if(is_array($mValue)) {
             foreach ($mValue as $sKey2 => $mValue2) {
@@ -217,7 +225,8 @@ class fcPayOneTransactionStatusHandler extends oxBase {
         return $sParams;
     }
 
-    protected function _forwardRequest($sUrl, $iTimeout) {
+    protected function _forwardRequest($sUrl, $iTimeout) 
+    {
         if($iTimeout == 0) {
             $iTimeout = 45;
         }
@@ -227,7 +236,7 @@ class fcPayOneTransactionStatusHandler extends oxBase {
             $sParams .= $this->_addParam($sKey, $mValue);
         }
 
-        $sParams = substr($sParams,1);
+        $sParams = substr($sParams, 1);
 
         $oCurl = curl_init($sUrl);
         curl_setopt($oCurl, CURLOPT_POST, 1);
@@ -236,7 +245,7 @@ class fcPayOneTransactionStatusHandler extends oxBase {
         curl_setopt($oCurl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($oCurl, CURLOPT_SSL_VERIFYHOST, false);
 
-        curl_setopt($oCurl, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($oCurl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($oCurl, CURLOPT_TIMEOUT, $iTimeout);
 
         $oResult = curl_exec($oCurl);
@@ -244,7 +253,8 @@ class fcPayOneTransactionStatusHandler extends oxBase {
         curl_close($oCurl);
     }
 
-    protected function _handleForwarding() {
+    protected function _handleForwarding() 
+    {
         $sPayoneStatus = $this->fcGetPostParam('txaction');
         
         $sQuery = "SELECT fcpo_url, fcpo_timeout FROM fcpostatusforwarding WHERE fcpo_payonestatus = '{$sPayoneStatus}'";
@@ -254,7 +264,8 @@ class fcPayOneTransactionStatusHandler extends oxBase {
         }
     }
     
-    protected function _handleMapping($oOrder) {
+    protected function _handleMapping($oOrder) 
+    {
         $sPayoneStatus = $this->fcGetPostParam('txaction');
         $sPaymentId = mysql_real_escape_string($oOrder->oxorder__oxpaymenttype->value);
         
@@ -266,7 +277,8 @@ class fcPayOneTransactionStatusHandler extends oxBase {
         }
     }
     
-    public function handle() {
+    public function handle() 
+    {
         if($this->_isKeyValid()) {
             $this->log();
             $sTxid = $this->fcGetPostParam('txid');
@@ -297,10 +309,11 @@ class fcPayOneTransactionStatusHandler extends oxBase {
      * Checks based on the transaction status received by PAYONE whether
      * the debit request is available for this order at the moment.
      * 
-     * @param void
+     * @param  void
      * @return bool
      */
-    protected function _allowDebit($sTxid) {
+    protected function _allowDebit($sTxid) 
+    {
         $sAuthMode = oxDb::getDb()->GetOne("SELECT fcpoauthmode FROM oxorder WHERE fcpotxid = '".$sTxid."'");
         if ($sAuthMode == 'authorization') {
             $blReturn = true;

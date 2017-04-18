@@ -18,13 +18,15 @@
  * @version   OXID eShop CE
  */
  
-class Unit_fcPayOne_Application_Models_fcporequestlog extends OxidTestCase {
+class Unit_fcPayOne_Application_Models_fcporequestlog extends OxidTestCase
+{
     
     
     /**
      * Testing getRequestArray for coverage
      */
-    public function test_getRequestArray_Coverage() {
+    public function test_getRequestArray_Coverage() 
+    {
         $oTestObject = $this->getMock('fcporequestlog', array('getArray'));
         $oTestObject->expects($this->any())->method('getArray')->will($this->returnValue('someValue'));
         
@@ -35,7 +37,8 @@ class Unit_fcPayOne_Application_Models_fcporequestlog extends OxidTestCase {
     /**
      * Testing getResponseArray for coverage
      */
-    public function test_getResponseArray_Coverage() {
+    public function test_getResponseArray_Coverage() 
+    {
         $oTestObject = $this->getMock('fcporequestlog', array('getArray'));
         $oTestObject->expects($this->any())->method('getArray')->will($this->returnValue('someValue'));
         
@@ -46,7 +49,8 @@ class Unit_fcPayOne_Application_Models_fcporequestlog extends OxidTestCase {
     /**
      * Testing getArray for coverage
      */
-    public function test_getArray_Coverage() {
+    public function test_getArray_Coverage() 
+    {
         $oTestObject = oxNew('fcporequestlog');
         
         $aMockData = array('someVar'=>'someValue');

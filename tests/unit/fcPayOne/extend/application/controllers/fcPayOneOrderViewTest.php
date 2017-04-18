@@ -18,7 +18,8 @@
  * @version   OXID eShop CE
  */
  
-class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends OxidTestCase {
+class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends OxidTestCase
+{
     
     /**
      * Call protected/private method of a class.
@@ -29,7 +30,8 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
      *
      * @return mixed Method return.
      */
-    public function invokeMethod(&$object, $methodName, array $parameters = array()) {
+    public function invokeMethod(&$object, $methodName, array $parameters = array()) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $method     = $reflection->getMethod($methodName);
         $method->setAccessible(true);
@@ -40,13 +42,14 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
     /**
      * Set protected/private attribute value
      *
-     * @param object &$object    Instantiated object that we will run method on.
+     * @param object &$object      Instantiated object that we will run method on.
      * @param string $propertyName property that shall be set
-     * @param array  $value value to be set
+     * @param array  $value        value to be set
      *
      * @return mixed Method return.
      */
-    public function invokeSetAttribute(&$object, $propertyName, $value) {
+    public function invokeSetAttribute(&$object, $propertyName, $value) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $property   = $reflection->getProperty($propertyName);
         $property->setAccessible(true);
@@ -58,18 +61,19 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
     /**
      * Testing execute if mandate feature will be used
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_execute_Mandate() {
+    public function test_execute_Mandate() 
+    {
         $oTestObject = $this->getMock('fcPayOneOrderView', array('_fcpoMandateAcceptanceNeeded'));
         $oTestObject->expects($this->any())->method('_fcpoMandateAcceptanceNeeded')->will($this->returnValue(true));
         
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
         $oHelper->expects($this->any())->method('fcpoGetRequestParameter')->will($this->returnValue('false'));
         
-//        $this->invokeSetAttribute($oTestObject, '_sPayPalExpressPic', null);
-//        $this->invokeSetAttribute($oTestObject, '_oFcpoDb', $oMockDatabase);
+        //        $this->invokeSetAttribute($oTestObject, '_sPayPalExpressPic', null);
+        //        $this->invokeSetAttribute($oTestObject, '_oFcpoDb', $oMockDatabase);
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
         
         $mResponse = $mExpect = $oTestObject->execute();
@@ -80,10 +84,11 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
     /**
      * Testing execute if parent call will be used
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_execute_Parent() {
+    public function test_execute_Parent() 
+    {
         $oTestObject = $this->getMock('fcPayOneOrderView', array('_fcpoMandateAcceptanceNeeded'));
         $oTestObject->expects($this->any())->method('_fcpoMandateAcceptanceNeeded')->will($this->returnValue(false));
         
@@ -100,10 +105,11 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
     /**
      * Testing fcpoHandlePayPalExpress for PositiveCall
      *  
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcpoHandlePayPalExpress_PositiveCall() {
+    public function test_fcpoHandlePayPalExpress_PositiveCall() 
+    {
         $oTestObject = $this->getMock('fcPayOneOrderView', array('_handlePayPalExpressCall'));
         $oTestObject->expects($this->any())->method('_handlePayPalExpressCall')->will($this->returnValue(true));
         
@@ -122,10 +128,11 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
     /**
      * Testing fcpoHandlePayPalExpress for Exception
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcpoHandlePayPalExpress_Exception() {
+    public function test_fcpoHandlePayPalExpress_Exception() 
+    {
         $oMockException = new oxException;
         
         $oTestObject = $this->getMock('fcPayOneOrderView', array('_handlePayPalExpressCall'));
@@ -148,10 +155,11 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
     /**
      * Testing _fcpoDoesUserAlreadyExist for Coverage
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test__fcpoDoesUserAlreadyExist_Coverage() {
+    public function test__fcpoDoesUserAlreadyExist_Coverage() 
+    {
         $oTestObject = oxNew('fcPayOneOrderView');
         
         $oMockOrder = $this->getMock('oxOrder', array('fcpoDoesUserAlreadyExist'));
@@ -169,10 +177,11 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
     /**
      * Testing _fcpoGetIdByUserName for coverage
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test__fcpoGetIdByUserName_Coverage() {
+    public function test__fcpoGetIdByUserName_Coverage() 
+    {
         $oTestObject = oxNew('fcPayOneOrderView');
         
         $oMockOrder = $this->getMock('oxOrder', array('fcpoGetIdByUserName'));
@@ -190,10 +199,11 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
     /**
      * Testing _fcpoGetIdByCode for coverage
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test__fcpoGetIdByCode_Coverage() {
+    public function test__fcpoGetIdByCode_Coverage() 
+    {
         $oTestObject = oxNew('fcPayOneOrderView');
 
         $oMockOrder = $this->getMock('oxOrder', array('fcpoGetIdByCode'));
@@ -211,10 +221,11 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
     /**
      * Testing _fcpoGetSal MR as response
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test__fcpoGetSal_MR() {
+    public function test__fcpoGetSal_MR() 
+    {
         $oTestObject = oxNew('fcPayOneOrderView');
 
         $oMockOrder = $this->getMock('oxOrder', array('fcpoGetSalByFirstName'));
@@ -231,10 +242,11 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
     /**
      * Testing _fcpoGetSal MRS as response
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test__fcpoGetSal_MRS() {
+    public function test__fcpoGetSal_MRS() 
+    {
         $oTestObject = oxNew('fcPayOneOrderView');
 
         $oMockOrder = $this->getMock('oxOrder', array('fcpoGetSalByFirstName'));
@@ -252,11 +264,13 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
     /**
      * Testing _fcpoCreatePayPalUser
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test__fcpoCreatePayPalUser_Coverage() {
-        $oTestObject = $this->getMock('fcPayOneOrderView', array(
+    public function test__fcpoCreatePayPalUser_Coverage() 
+    {
+        $oTestObject = $this->getMock(
+            'fcPayOneOrderView', array(
                 '_fcpoGetIdByUserName', 
                 '_fcpoSplitAddress', 
                 '_fcpoGetSal', 
@@ -293,17 +307,18 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
 
         $mResponse = $mExpect = $this->invokeMethod($oTestObject, '_fcpoCreatePayPalUser', array($aParams));
         
-        $this->assertEquals($mExpect,$mResponse);
+        $this->assertEquals($mExpect, $mResponse);
     }
     
     
     /**
      * Testing _fcpoIsSamePayPalUser for coverage
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test__fcpoIsSamePayPalUser_Coverage() {
+    public function test__fcpoIsSamePayPalUser_Coverage() 
+    {
         $oTestObject = oxNew('fcPayOneOrderView');
         
         $aReponseParam = array(
@@ -327,16 +342,18 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
     /**
      * Testing _fcpoHandleUser on case RemoveAddressFromSession
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test__fcpoHandleUser_RemoveAddressFromSession() {
+    public function test__fcpoHandleUser_RemoveAddressFromSession() 
+    {
         $oMockUserObject = $this->getMock('oxUser', array('getId','load'));
         $oMockUserObject->expects($this->any())->method('getId')->will($this->returnValue(true));
         $oMockUserObject->expects($this->any())->method('load')->will($this->returnValue(true));
         $oMockUserObject->oxuser__oxusername = new oxField('someEmail');
 
-        $oTestObject = $this->getMock('fcPayOneOrderView', array(
+        $oTestObject = $this->getMock(
+            'fcPayOneOrderView', array(
                 'getUser', 
                 '_fcpoDoesUserAlreadyExist', 
                 '_fcpoIsSamePayPalUser', 
@@ -346,17 +363,17 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
             )
         );
         $oTestObject->expects($this->any())->method('getUser')
-                ->will($this->returnValue($oMockUserObject));
+            ->will($this->returnValue($oMockUserObject));
         $oTestObject->expects($this->any())->method('_fcpoDoesUserAlreadyExist')
-                ->will($this->returnValue(true));
+            ->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcpoIsSamePayPalUser')
-                ->will($this->onConsecutiveCalls(true,true));
+            ->will($this->onConsecutiveCalls(true, true));
         $oTestObject->expects($this->any())->method('_fcpoCreatePayPalDelAddress')
-                ->will($this->returnValue(true));
+            ->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcpoCreatePayPalUser')
-                ->will($this->returnValue(true));
+            ->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcpoThrowException')
-                ->will($this->returnValue(true));
+            ->will($this->returnValue(true));
         
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
         $oHelper->expects($this->any())->method('fcpoSetSessionVariable')->will($this->returnValue(true));
@@ -386,16 +403,18 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
     /**
      * Testing _fcpoHandleUser on case CreatePaypalDelAddress
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test__fcpoHandleUser_CreatePaypalDelAddress() {
+    public function test__fcpoHandleUser_CreatePaypalDelAddress() 
+    {
         $oMockUserObject = $this->getMock('oxUser', array('getId','load'));
         $oMockUserObject->expects($this->any())->method('getId')->will($this->returnValue(true));
         $oMockUserObject->expects($this->any())->method('load')->will($this->returnValue(true));
         $oMockUserObject->oxuser__oxusername = new oxField('someEmail');
 
-        $oTestObject = $this->getMock('fcPayOneOrderView', array(
+        $oTestObject = $this->getMock(
+            'fcPayOneOrderView', array(
                 'getUser', 
                 '_fcpoDoesUserAlreadyExist', 
                 '_fcpoIsSamePayPalUser', 
@@ -405,17 +424,17 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
             )
         );
         $oTestObject->expects($this->any())->method('getUser')
-                ->will($this->returnValue($oMockUserObject));
+            ->will($this->returnValue($oMockUserObject));
         $oTestObject->expects($this->any())->method('_fcpoDoesUserAlreadyExist')
-                ->will($this->returnValue(true));
+            ->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcpoIsSamePayPalUser')
-                ->will($this->onConsecutiveCalls(false,false));
+            ->will($this->onConsecutiveCalls(false, false));
         $oTestObject->expects($this->any())->method('_fcpoCreatePayPalDelAddress')
-                ->will($this->returnValue(true));
+            ->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcpoCreatePayPalUser')
-                ->will($this->returnValue(true));
+            ->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcpoThrowException')
-                ->will($this->returnValue(true));
+            ->will($this->returnValue(true));
         
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
         $oHelper->expects($this->any())->method('fcpoSetSessionVariable')->will($this->returnValue(true));
@@ -444,16 +463,18 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
     /**
      * Testing _fcpoHandleUser on case CreatePaypalDelAddress
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test__fcpoHandleUser_ThrowException() {
+    public function test__fcpoHandleUser_ThrowException() 
+    {
         $oMockUserObject = $this->getMock('oxUser', array('getId','load'));
         $oMockUserObject->expects($this->any())->method('getId')->will($this->returnValue(true));
         $oMockUserObject->expects($this->any())->method('load')->will($this->returnValue(true));
         $oMockUserObject->oxuser__oxusername = new oxField('someEmail');
 
-        $oTestObject = $this->getMock('fcPayOneOrderView', array(
+        $oTestObject = $this->getMock(
+            'fcPayOneOrderView', array(
                 'getUser', 
                 '_fcpoDoesUserAlreadyExist', 
                 '_fcpoIsSamePayPalUser', 
@@ -463,17 +484,17 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
             )
         );
         $oTestObject->expects($this->any())->method('getUser')
-                ->will($this->returnValue(false));
+            ->will($this->returnValue(false));
         $oTestObject->expects($this->any())->method('_fcpoDoesUserAlreadyExist')
-                ->will($this->returnValue(true));
+            ->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcpoIsSamePayPalUser')
-                ->will($this->onConsecutiveCalls(false,false));
+            ->will($this->onConsecutiveCalls(false, false));
         $oTestObject->expects($this->any())->method('_fcpoCreatePayPalDelAddress')
-                ->will($this->returnValue(true));
+            ->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcpoCreatePayPalUser')
-                ->will($this->returnValue(true));
+            ->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcpoThrowException')
-                ->will($this->returnValue(true));
+            ->will($this->returnValue(true));
         
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
         $oHelper->expects($this->any())->method('fcpoSetSessionVariable')->will($this->returnValue(true));
@@ -502,16 +523,18 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
     /**
      * Testing _fcpoHandleUser on case CreatePaypalAddress
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test__fcpoHandleUser_CreatePaypalAddress() {
+    public function test__fcpoHandleUser_CreatePaypalAddress() 
+    {
         $oMockUserObject = $this->getMock('oxUser', array('getId','load'));
         $oMockUserObject->expects($this->any())->method('getId')->will($this->returnValue(true));
         $oMockUserObject->expects($this->any())->method('load')->will($this->returnValue(true));
         $oMockUserObject->oxuser__oxusername = new oxField('someEmail');
 
-        $oTestObject = $this->getMock('fcPayOneOrderView', array(
+        $oTestObject = $this->getMock(
+            'fcPayOneOrderView', array(
                 'getUser', 
                 '_fcpoDoesUserAlreadyExist', 
                 '_fcpoIsSamePayPalUser', 
@@ -521,17 +544,17 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
             )
         );
         $oTestObject->expects($this->any())->method('getUser')
-                ->will($this->returnValue($oMockUserObject));
+            ->will($this->returnValue($oMockUserObject));
         $oTestObject->expects($this->any())->method('_fcpoDoesUserAlreadyExist')
-                ->will($this->returnValue(false));
+            ->will($this->returnValue(false));
         $oTestObject->expects($this->any())->method('_fcpoIsSamePayPalUser')
-                ->will($this->onConsecutiveCalls(true,false));
+            ->will($this->onConsecutiveCalls(true, false));
         $oTestObject->expects($this->any())->method('_fcpoCreatePayPalDelAddress')
-                ->will($this->returnValue(true));
+            ->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcpoCreatePayPalUser')
-                ->will($this->returnValue($oMockUserObject));
+            ->will($this->returnValue($oMockUserObject));
         $oTestObject->expects($this->any())->method('_fcpoThrowException')
-                ->will($this->returnValue(true));
+            ->will($this->returnValue(true));
         
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
         $oHelper->expects($this->any())->method('fcpoSetSessionVariable')->will($this->returnValue(true));
@@ -560,21 +583,24 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
     /**
      * Testing _fcpoThrowException for coverage
      */
-    public function test__fcpoThrowException_Coverage() {
+    public function test__fcpoThrowException_Coverage() 
+    {
         $oTestObject = oxNew('fcPayOneOrderView');
         $this->setExpectedException('oxException');
-        $this->assertEquals( '', $oTestObject->_fcpoThrowException('someMessage') );
+        $this->assertEquals('', $oTestObject->_fcpoThrowException('someMessage'));
     }
     
     
     /**
      * Testing _handlePayPalExpressCall for coverage
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test__handlePayPalExpressCall_Coverage() {
-        $oMockBasket = $this->getMock('oxBasket', array(
+    public function test__handlePayPalExpressCall_Coverage() 
+    {
+        $oMockBasket = $this->getMock(
+            'oxBasket', array(
                 'setBasketUser',
                 'setPayment',
                 'setShipping',
@@ -608,7 +634,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
         $oHelper = $this->getMock('fcpohelper', array('fcpoGetSessionVariable', 'fcpoDeleteSessionVariable', 'getFactoryObject', 'fcpoGetSession'));
         $oHelper->expects($this->any())->method('fcpoGetSessionVariable')->will($this->returnValue('someValue'));
         $oHelper->expects($this->any())->method('fcpoDeleteSessionVariable')->will($this->returnValue(true));
-        $oHelper->expects($this->any())->method('getFactoryObject')->will($this->onConsecutiveCalls($oMockRequest,$oMockOxDeliverySet));
+        $oHelper->expects($this->any())->method('getFactoryObject')->will($this->onConsecutiveCalls($oMockRequest, $oMockOxDeliverySet));
         $oHelper->expects($this->any())->method('fcpoGetSession')->will($this->returnValue($oMockSession));
         
         
@@ -623,10 +649,11 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
     /**
      * Testing _fcpoMandateAcceptanceNeeded for case that accestance needed
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test__fcpoMandateAcceptanceNeeded_Yes() {
+    public function test__fcpoMandateAcceptanceNeeded_Yes() 
+    {
         $oTestObject    = oxNew('fcPayOneOrderView');
         $aMockMandate   = array(
             'mandate_status'    => 'pending',
@@ -639,16 +666,17 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
         
         $this->assertEquals(true, $this->invokeMethod($oTestObject, '_fcpoMandateAcceptanceNeeded'));
-   }
+    }
 
    
     /**
      * Testing _fcpoMandateAcceptanceNeeded for case that acceptance is not needed
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test__fcpoMandateAcceptanceNeeded_No() {
+    public function test__fcpoMandateAcceptanceNeeded_No() 
+    {
         $oTestObject    = oxNew('fcPayOneOrderView');
         
         $aMockMandate   = array(
@@ -662,31 +690,33 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
         
         $this->assertEquals(false, $this->invokeMethod($oTestObject, '_fcpoMandateAcceptanceNeeded'));
-   }
+    }
    
    
-   /**
+    /**
     * Testing fcpoIsMandateError for coverage
     * 
-    * @param void
+    * @param  void
     * @return void
     */
-   public function test_fcpoIsMandateError_Coverage() {
+    public function test_fcpoIsMandateError_Coverage() 
+    {
         $oTestObject    = oxNew('fcPayOneOrderView');
         
         $this->invokeSetAttribute($oTestObject, '_blFcpoConfirmMandateError', false);
         
         $this->assertEquals(false, $this->invokeMethod($oTestObject, 'fcpoIsMandateError'));
-   }
+    }
    
    
-   /**
+    /**
     * Testing _validateTermsAndConditions for Coverage
     * 
-    * @param void
+    * @param  void
     * @retutn void
     */
-   public function test__validateTermsAndConditions_Coverage() {
+    public function test__validateTermsAndConditions_Coverage() 
+    {
         $oMockBasket = $this->getMock('oxBasket', array('hasArticlesWithDownloadableAgreement'));
         $oMockBasket->expects($this->any())->method('hasArticlesWithDownloadableAgreement')->will($this->returnValue(true));
         
@@ -706,35 +736,37 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
         $blResponse = $this->invokeMethod($oTestObject, '_validateTermsAndConditions');
         
         $this->assertEquals(true, $blResponse);
-   }
+    }
    
    
-   /**
+    /**
     * Testing _fcpoSplitAddress for coverage
     * 
-    * @param void
+    * @param  void
     * @return void
     */
-   public function test__fcpoSplitAddress_Coverage() {
-       $oTestObject = oxNew('fcPayOneOrderView');
+    public function test__fcpoSplitAddress_Coverage() 
+    {
+        $oTestObject = oxNew('fcPayOneOrderView');
        
-       $sInput = "MyStreet 123";
+        $sInput = "MyStreet 123";
        
-       $aExpect = array('MyStreet','123');
+        $aExpect = array('MyStreet','123');
        
-       $aResult = $this->invokeMethod($oTestObject, '_fcpoSplitAddress', array($sInput));
+        $aResult = $this->invokeMethod($oTestObject, '_fcpoSplitAddress', array($sInput));
        
-       $this->assertEquals($aExpect, $aResult);
-   }
+        $this->assertEquals($aExpect, $aResult);
+    }
    
    
-   /**
+    /**
     * Testing _fcpoCreatePayPalDelAddress for coverage
     * 
-    * @param void
+    * @param  void
     * @return void
     */
-   public function test__fcpoCreatePayPalDelAddress_HasAddressId() {
+    public function test__fcpoCreatePayPalDelAddress_HasAddressId() 
+    {
         $oTestObject = $this->getMock('fcPayOneOrderView', array('_fcpoGetExistingPayPalAddressId', '_fcpoSplitAddress'));
         $oTestObject->expects($this->any())->method('_fcpoGetExistingPayPalAddressId')->will($this->returnValue('someAddressId'));
         $oTestObject->expects($this->any())->method('_fcpoSplitAddress')->will($this->returnValue(array('MySreet', '123')));
@@ -747,15 +779,16 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
         $aMockResponse = array('add_paydata[shipping_addressaddition]' => 'someAddition');
         
         $this->assertEquals(null, $this->invokeMethod($oTestObject, '_fcpoCreatePayPalDelAddress', array($aMockResponse, 'someUserId')));
-   }
+    }
    
-   /**
+    /**
     * Testing _fcpoCreatePayPalDelAddress for coverage
     * 
-    * @param void
+    * @param  void
     * @return void
     */
-   public function test__fcpoCreatePayPalDelAddress_NoAddressId() {
+    public function test__fcpoCreatePayPalDelAddress_NoAddressId() 
+    {
         $oTestObject = $this->getMock('fcPayOneOrderView', array('_fcpoGetExistingPayPalAddressId', '_fcpoSplitAddress', '_fcpoGetIdByCode','_fcpoGetSal'));
         $oTestObject->expects($this->any())->method('_fcpoGetExistingPayPalAddressId')->will($this->returnValue(false));
         $oTestObject->expects($this->any())->method('_fcpoSplitAddress')->will($this->returnValue(array('MySreet', '123')));
@@ -775,17 +808,18 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
         $aMockResponse = array('add_paydata[shipping_addressaddition]' => 'someAddition');
         
         $this->assertEquals(null, $this->invokeMethod($oTestObject, '_fcpoCreatePayPalDelAddress', array($aMockResponse, 'someUserId')));
-   }
+    }
 
    
    
-   /**
+    /**
     * Testing _fcpoGetExistingPayPalAddressId for coverage
     * 
-    * @param void
+    * @param  void
     * @return void
     */
-   public function test__fcpoGetExistingPayPalAddressId_Success() {
+    public function test__fcpoGetExistingPayPalAddressId_Success() 
+    {
         $oTestObject = $this->getMock('fcPayOneOrderView', array('_fcpoGetIdByCode'));
         
         $oMockOrder = $this->getMock('oxOrder', array('fcpoGetAddressIdByResponse'));
@@ -799,6 +833,6 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
         $aMockResponse = array('add_paydata[shipping_street]' => 'MyStreet 123');
 
         $this->assertEquals('someAddressId', $oTestObject->_fcpoGetExistingPayPalAddressId($aMockResponse));
-   }
+    }
    
 }

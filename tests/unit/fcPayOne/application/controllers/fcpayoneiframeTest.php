@@ -18,7 +18,8 @@
  * @version   OXID eShop CE
  */
  
-class Unit_fcPayOne_Application_Controllers_fcpayoneiframeTest extends OxidTestCase {
+class Unit_fcPayOne_Application_Controllers_fcpayoneiframeTest extends OxidTestCase
+{
     
     
     /**
@@ -61,19 +62,20 @@ class Unit_fcPayOne_Application_Controllers_fcpayoneiframeTest extends OxidTestC
     /**
      * Test render method to cover code
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_Render_CheckCoverage() {
+    public function test_Render_CheckCoverage() 
+    {
         $oFcPoIframe = oxNew('fcpayoneiframe');
 
         
         $oHelper = $this->getMockBuilder('fcpohelper')
-                ->disableOriginalConstructor()
-                ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
         $oHelper->expects($this->any())
-                ->method('fcpoGetIntShopVersion')
-                ->will($this->returnValue(4600));
+            ->method('fcpoGetIntShopVersion')
+            ->will($this->returnValue(4600));
 
         $this->invokeSetAttribute($oFcPoIframe, '_oFcpoHelper', $oHelper);
         
@@ -85,29 +87,30 @@ class Unit_fcPayOne_Application_Controllers_fcpayoneiframeTest extends OxidTestC
     /**
      * Test getOrder method to cover code
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_getOrder_CheckCoverage() {
+    public function test_getOrder_CheckCoverage() 
+    {
         $oFcPoIframe = oxNew('fcpayoneiframe');
         
         // mock order object
         $oMockOrder = $this->getMockBuilder('oxOrder')
-                           ->disableOriginalConstructor()
-                           ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
         $oMockOrder->expects($this->any())
-                   ->method('load')
-                   ->will($this->returnValue(true));
+            ->method('load')
+            ->will($this->returnValue(true));
 
         // mock helper object
         $oHelper    = $this->getMockBuilder('fcpohelper')
-                           ->disableOriginalConstructor()
-                           ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
         $oHelper->expects($this->any())
-                ->method('fcpoGetSessionVariable')
-                ->will($this->returnValue(1));
+            ->method('fcpoGetSessionVariable')
+            ->will($this->returnValue(1));
         $oHelper->method('getFactoryObject')
-                    ->will($this->returnValue($oMockOrder));
+            ->will($this->returnValue($oMockOrder));
                 
         
         $this->invokeSetAttribute($oFcPoIframe, '_oFcpoHelper', $oHelper);
@@ -127,10 +130,11 @@ class Unit_fcPayOne_Application_Controllers_fcpayoneiframeTest extends OxidTestC
     /**
      * Test getFactoryObject method to cover code
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_getFactoryObject_Coverage() {
+    public function test_getFactoryObject_Coverage() 
+    {
         $oFcPoIframe = oxNew('fcpayoneiframe');
         $this->assertInstanceOf('fcPayOneOrder', $this->invokeMethod($oFcPoIframe, 'getFactoryObject', array('fcPayOneOrder')));
     }
@@ -139,18 +143,19 @@ class Unit_fcPayOne_Application_Controllers_fcpayoneiframeTest extends OxidTestC
     /**
      * Testing getIframeUrl on session variable set
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_getIframeUrl_InSession() {
+    public function test_getIframeUrl_InSession() 
+    {
         $oFcPoIframe = oxNew('fcpayoneiframe');
         // mock helper object
         $oHelper    = $this->getMockBuilder('fcpohelper')
-                           ->disableOriginalConstructor()
-                           ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
         $oHelper->expects($this->any())
-                ->method('fcpoGetSessionVariable')
-                ->will($this->returnValue('http://www.example.org'));
+            ->method('fcpoGetSessionVariable')
+            ->will($this->returnValue('http://www.example.org'));
         $this->invokeSetAttribute($oFcPoIframe, '_oFcpoHelper', $oHelper);
 
         $this->assertEquals('http://www.example.org', $oFcPoIframe->getIframeUrl());
@@ -160,10 +165,11 @@ class Unit_fcPayOne_Application_Controllers_fcpayoneiframeTest extends OxidTestC
     /**
      * Testing getIframeUrl on session variable set
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_getIframeUrl_NoSession() {
+    public function test_getIframeUrl_NoSession() 
+    {
         // mock config
         $oConfig = $this->getMock('oxConfig', array('getShopCurrentURL'));
         $oConfig->method('getShopCurrentURL')->will($this->returnValue('http://www.example.org'));
@@ -189,10 +195,11 @@ class Unit_fcPayOne_Application_Controllers_fcpayoneiframeTest extends OxidTestC
     /**
      * Covers the code for getIframeHeight
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_getIframeHeight_Coverage() {
+    public function test_getIframeHeight_Coverage() 
+    {
         $oFcPoIframe = $this->getMock('fcpayoneiframe', array('getPaymentType'));
         $oFcPoIframe->method('getPaymentType')->will($this->returnValue('fcpocreditcard_iframe'));
         
@@ -203,10 +210,11 @@ class Unit_fcPayOne_Application_Controllers_fcpayoneiframeTest extends OxidTestC
     /**
      * Covers the code for getIframeWidth
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_getIframeWidth_Coverage() {
+    public function test_getIframeWidth_Coverage() 
+    {
         $oFcPoIframe = $this->getMock('fcpayoneiframe', array('getPaymentType'));
         $oFcPoIframe->method('getPaymentType')->will($this->returnValue('fcpocreditcard_iframe'));
         
@@ -217,10 +225,11 @@ class Unit_fcPayOne_Application_Controllers_fcpayoneiframeTest extends OxidTestC
     /**
      * Covers the code for getIframeStyle
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_getIframeStyle_Coverage() {
+    public function test_getIframeStyle_Coverage() 
+    {
         $oFcPoIframe = $this->getMock('fcpayoneiframe', array('getPaymentType'));
         $oFcPoIframe->method('getPaymentType')->will($this->returnValue('fcpocreditcard_iframe'));
         
@@ -231,10 +240,11 @@ class Unit_fcPayOne_Application_Controllers_fcpayoneiframeTest extends OxidTestC
     /**
      * Covers the code for getIframeHeader
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_getIframeHeader_Coverage() {
+    public function test_getIframeHeader_Coverage() 
+    {
         $oFcPoIframe = $this->getMock('fcpayoneiframe', array('getPaymentType'));
         $oFcPoIframe->method('getPaymentType')->will($this->returnValue('fcpocreditcard_iframe'));
         
@@ -250,10 +260,11 @@ class Unit_fcPayOne_Application_Controllers_fcpayoneiframeTest extends OxidTestC
     /**
      * Covers the code for getIframeText
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_getIframeText_Coverage() {
+    public function test_getIframeText_Coverage() 
+    {
         $oFcPoIframe = $this->getMock('fcpayoneiframe', array('getPaymentType'));
         $oFcPoIframe->method('getPaymentType')->will($this->returnValue('fcpocreditcard_iframe'));
         
@@ -264,10 +275,11 @@ class Unit_fcPayOne_Application_Controllers_fcpayoneiframeTest extends OxidTestC
     /**
      * Testing getIframeUrl on session variable set
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_getPaymentType_PaymentTypeSet() {
+    public function test_getPaymentType_PaymentTypeSet() 
+    {
         // mock oxorder
         $oOrder = oxNew('oxOrder');
         $oOrder->oxorder__oxpaymenttype = new oxField('mockpaymentid');
@@ -282,10 +294,11 @@ class Unit_fcPayOne_Application_Controllers_fcpayoneiframeTest extends OxidTestC
     /**
      * Testing getIframeUrl on session variable set
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_getPaymentType_PaymentTypeFromSession() {
+    public function test_getPaymentType_PaymentTypeFromSession() 
+    {
         // mock oxorder
         $oOrder = oxNew('oxOrder');
         $oOrder->oxorder__oxpaymenttype = new oxField(false);

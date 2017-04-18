@@ -19,16 +19,19 @@
  * @version   OXID eShop CE
  */
  
-class fcpoTransactionStatus extends oxBase {
+class fcpoTransactionStatus extends oxBase
+{
 
     /**
      * Helper object for dealing with different shop versions
+     *
      * @var object
      */
     protected $_oFcpoHelper = null;
 
     /**
      * Instance of oxid database
+     *
      * @var object
      */
     protected $_oFcpoDb = null;
@@ -52,7 +55,8 @@ class fcpoTransactionStatus extends oxBase {
      *
      * @return null
      */
-    public function __construct() {
+    public function __construct() 
+    {
         parent::__construct();
         $this->init('fcpotransactionstatus');
         $this->_oFcpoHelper = oxNew('fcpohelper');
@@ -64,7 +68,8 @@ class fcpoTransactionStatus extends oxBase {
      * 
      * @return string
      */
-    public function getAction() {
+    public function getAction() 
+    {
         $oLang = $this->_oFcpoHelper->fcpoGetLang();
         $sAction = $this->fcpotransactionstatus__fcpo_txaction->value;
         $dReceivable = (double) $this->fcpotransactionstatus__fcpo_txreceivable->value;
@@ -82,7 +87,8 @@ class fcpoTransactionStatus extends oxBase {
      * 
      * @return string
      */
-    public function getClearingtype() {
+    public function getClearingtype() 
+    {
         $oLang = $this->_oFcpoHelper->fcpoGetLang();
         $sTxid = $this->fcpotransactionstatus__fcpo_txid->value;
         $sClearingType = $this->fcpotransactionstatus__fcpo_clearingtype->value;
@@ -99,7 +105,8 @@ class fcpoTransactionStatus extends oxBase {
      * 
      * @return double
      */
-    public function getCaptureAmount() {
+    public function getCaptureAmount() 
+    {
         $sTxid = $this->fcpotransactionstatus__fcpo_txid->value;
         $oOrder = $this->_fcpoGetOrderByTxid($sTxid);
         return $oOrder->oxorder__oxtotalordersum;
@@ -110,7 +117,8 @@ class fcpoTransactionStatus extends oxBase {
      * 
      * @return string
      */
-    public function getCardtype() {
+    public function getCardtype() 
+    {
         $aMatchMap = array(
             'V' => 'Visa',
             'M' => 'Mastercard',
@@ -136,7 +144,8 @@ class fcpoTransactionStatus extends oxBase {
      * 
      * @return string
      */
-    public function getDisplayNameReceivable($dReceivable) {
+    public function getDisplayNameReceivable($dReceivable) 
+    {
         $oLang = $this->_oFcpoHelper->fcpoGetLang();
         $sLangAppointed = $this->_fcpoGetLangIdent($dReceivable, 'fcpo_receivable_appointed1', 'fcpo_receivable_appointed2');
         $sLangReminder = $this->_fcpoGetLangIdent($dReceivable, 'fcpo_receivable_reminder', '');
@@ -165,7 +174,8 @@ class fcpoTransactionStatus extends oxBase {
      * 
      * @return string
      */
-    public function getDisplayNamePayment($dPayment) {
+    public function getDisplayNamePayment($dPayment) 
+    {
         $oLang = $this->_oFcpoHelper->fcpoGetLang();
 
         $sLangCapture = $this->_fcpoGetLangIdent($dPayment, 'fcpo_payment_capture1', 'fcpo_payment_capture2');
@@ -193,12 +203,13 @@ class fcpoTransactionStatus extends oxBase {
     /**
      * This method decides if given option1 or 2 will be used by checking if given value
      * 
-     * @param double $dValue
-     * @param string $sOption1
-     * @param string $sOption2
+     * @param  double $dValue
+     * @param  string $sOption1
+     * @param  string $sOption2
      * @return string
      */
-    protected function _fcpoGetLangIdent($dValue, $sOption1, $sOption2) {
+    protected function _fcpoGetLangIdent($dValue, $sOption1, $sOption2) 
+    {
         $sReturn = ($dValue > 0) ? $sOption1 : $sOption2;
 
         return $sReturn;
@@ -207,11 +218,12 @@ class fcpoTransactionStatus extends oxBase {
     /**
      * Returns a certain action of a given map
      * 
-     * @param string $sTxAction
-     * @param array $aMatchMap
+     * @param  string $sTxAction
+     * @param  array  $aMatchMap
      * @return string
      */
-    protected function _fcpoGetMapAction($sTxAction, $aMatchMap, $sDefault) {
+    protected function _fcpoGetMapAction($sTxAction, $aMatchMap, $sDefault) 
+    {
         $sReturn = (isset($aMatchMap[$sTxAction])) ? $aMatchMap[$sTxAction] : $sDefault;
 
         return $sReturn;
@@ -220,10 +232,11 @@ class fcpoTransactionStatus extends oxBase {
     /**
      * Returns order object by txid
      * 
-     * @param string $sTxid
+     * @param  string $sTxid
      * @return object
      */
-    protected function _fcpoGetOrderByTxid($sTxid) {
+    protected function _fcpoGetOrderByTxid($sTxid) 
+    {
         $sOxid = $this->_oFcpoDb->GetOne("SELECT oxid FROM oxorder WHERE fcpotxid = '{$sTxid}'");
         $oOrder = $this->_oFcpoHelper->getFactoryObject('oxorder');
         $oOrder->load($sOxid);

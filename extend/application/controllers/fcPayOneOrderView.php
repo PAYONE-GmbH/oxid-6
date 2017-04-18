@@ -19,22 +19,26 @@
  * @version   OXID eShop CE
  */
  
-class fcPayOneOrderView extends fcPayOneOrderView_parent {
+class fcPayOneOrderView extends fcPayOneOrderView_parent
+{
     
     /**
      * Helper object for dealing with different shop versions
+     *
      * @var object
      */
     protected $_oFcpoHelper = null;
 
     /**
      * Database instance
+     *
      * @var object
      */
     protected $_oFcpoDb = null;
 
     /**
      * Boolean of option "blConfirmAGB" error
+     *
      * @var bool
      */
     protected $_blFcpoConfirmMandateError = null;
@@ -45,7 +49,8 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
      * 
      * @return null
      */
-    public function __construct() {
+    public function __construct() 
+    {
         parent::__construct();
         $this->_oFcpoHelper = oxNew('fcpohelper');
         $this->_oFcpoDb     = oxDb::getDb();
@@ -66,7 +71,8 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
      *
      * @return string
      */
-    public function execute() {
+    public function execute() 
+    {
         $sFcpoMandateCheckbox = $this->_oFcpoHelper->fcpoGetRequestParameter('fcpoMandateCheckbox');
         
         $blConfirmMandateError = ((!$sFcpoMandateCheckbox || $sFcpoMandateCheckbox == 'false') && $this->_fcpoMandateAcceptanceNeeded());
@@ -83,10 +89,11 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
     /**
      * Handles paypal express
      * 
-     * @param void
+     * @param  void
      * @return string
      */
-    public function fcpoHandlePayPalExpress() {
+    public function fcpoHandlePayPalExpress() 
+    {
         try {
             $this->_handlePayPalExpressCall();
         } 
@@ -101,10 +108,11 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
     /**
      * Checks if user already exists
      * 
-     * @param string $sEmail
+     * @param  string $sEmail
      * @return mixed
      */
-    protected function _fcpoDoesUserAlreadyExist($sEmail) {
+    protected function _fcpoDoesUserAlreadyExist($sEmail) 
+    {
         $oOrder = $this->_oFcpoHelper->getFactoryObject('oxOrder');
         return $oOrder->fcpoDoesUserAlreadyExist($sEmail);
     }
@@ -113,10 +121,11 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
     /**
      * Get userid by given username
      * 
-     * @param string $sUserName
+     * @param  string $sUserName
      * @return string
      */
-    public function _fcpoGetIdByUserName($sUserName) {
+    public function _fcpoGetIdByUserName($sUserName) 
+    {
         $oOrder = $this->_oFcpoHelper->getFactoryObject('oxOrder');
         return $oOrder->fcpoGetIdByUserName($sUserName);
     }
@@ -125,10 +134,11 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
     /**
      * Get CountryID by countrycode
      * 
-     * @param string $sCode
+     * @param  string $sCode
      * @return string
      */
-    protected function _fcpoGetIdByCode($sCode) {
+    protected function _fcpoGetIdByCode($sCode) 
+    {
         $oOrder = $this->_oFcpoHelper->getFactoryObject('oxOrder');
         return (string)$oOrder->fcpoGetIdByCode($sCode);
     }
@@ -137,10 +147,11 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
     /**
      * Returns salutation of customer in the expected form
      * 
-     * @param string $sFirstname
+     * @param  string $sFirstname
      * @return string
      */
-    protected function _fcpoGetSal($sFirstname) {
+    protected function _fcpoGetSal($sFirstname) 
+    {
         $oOrder = $this->_oFcpoHelper->getFactoryObject('oxOrder');
         $sSal = $oOrder->fcpoGetSalByFirstName($sFirstname);
         $sSal = (!$sSal) ? 'MR' : $sSal;
@@ -159,10 +170,11 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
     /**
      * Create paypal user by API response
      * 
-     * @param array $aResponse
+     * @param  array $aResponse
      * @return object
      */
-    protected function _fcpoCreatePayPalUser($aResponse) {
+    protected function _fcpoCreatePayPalUser($aResponse) 
+    {
         $oUser = $this->_oFcpoHelper->getFactoryObject("oxUser");
 
         $sUserId = $this->_fcpoGetIdByUserName($aResponse['add_paydata[email]']);
@@ -202,11 +214,12 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
     /**
      * Compares user object and api response for validating user is the same
      * 
-     * @param object $oUser
-     * @param array $aResponse
+     * @param  object $oUser
+     * @param  array  $aResponse
      * @return bool
      */
-    protected function _fcpoIsSamePayPalUser($oUser, $aResponse) {
+    protected function _fcpoIsSamePayPalUser($oUser, $aResponse) 
+    {
         
         $blIsSamePayPalUser = (
             $oUser->oxuser__oxfname->value == $aResponse['add_paydata[shipping_firstname]'] ||
@@ -222,10 +235,11 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
     /**
      * Handles user related things corresponding to API-Response
      * 
-     * @param array $aResponse
+     * @param  array $aResponse
      * @return object
      */
-    protected function _fcpoHandleUser($aResponse) {
+    protected function _fcpoHandleUser($aResponse) 
+    {
         $sEmail = $aResponse['add_paydata[email]'];
         
         $oCurrentUser = $this->getUser();
@@ -262,10 +276,11 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
     /**
      * Method throws an exception with given message
      * 
-     * @param string $sMessage
+     * @param  string $sMessage
      * @return void
      */
-    protected function _fcpoThrowException($sMessage) {
+    protected function _fcpoThrowException($sMessage) 
+    {
         // user is not logged in and the address is different
         $oEx = oxNew('oxException');
         $oEx->setMessage($sMessage);
@@ -276,10 +291,11 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
     /**
      * Handles the paypal express call
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    protected function _handlePayPalExpressCall() {
+    protected function _handlePayPalExpressCall() 
+    {
         $sWorkorderId = $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoWorkorderId');
         if($sWorkorderId) {
             $oRequest   = $this->_oFcpoHelper->getFactoryObject('fcporequest');
@@ -316,7 +332,8 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
      *
      * @return bool
      */
-    protected function _fcpoMandateAcceptanceNeeded() {
+    protected function _fcpoMandateAcceptanceNeeded() 
+    {
         $aMandate = $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoMandate');
         if($aMandate && array_key_exists('mandate_status', $aMandate) !== false && $aMandate['mandate_status'] == 'pending') {
             if(array_key_exists('mandate_text', $aMandate) !== false) {
@@ -332,7 +349,8 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
      *
      * @return bool
      */
-    public function fcpoIsMandateError() {
+    public function fcpoIsMandateError() 
+    {
         return $this->_blFcpoConfirmMandateError;
     }
     
@@ -343,7 +361,8 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
      *
      * @return bool
      */
-    protected function _validateTermsAndConditions() {
+    protected function _validateTermsAndConditions() 
+    {
         if (parent::_validateTermsAndConditions() === true) {
             return true;
         }
@@ -376,10 +395,11 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
     /**
      * Splits street and number from concatenated combofield
      * 
-     * @param string $sPayPalStreet
+     * @param  string $sPayPalStreet
      * @return array
      */
-    protected function _fcpoSplitAddress($sPayPalStreet) {
+    protected function _fcpoSplitAddress($sPayPalStreet) 
+    {
         $sStreetNr = '';
         $aSplit = explode(' ', $sPayPalStreet);
         if(is_array($aSplit) && count($aSplit) == 2) {
@@ -394,11 +414,12 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
     /**
      * Creating paypal delivery address
      * 
-     * @param array $aResponse
-     * @param string $sUserId
+     * @param  array  $aResponse
+     * @param  string $sUserId
      * @return void
      */
-    protected function _fcpoCreatePayPalDelAddress($aResponse, $sUserId) {
+    protected function _fcpoCreatePayPalDelAddress($aResponse, $sUserId) 
+    {
         if ($sAddressId = $this->_fcpoGetExistingPayPalAddressId($aResponse)) {
             $this->_oFcpoHelper->fcpoSetSessionVariable("deladrid", $sAddressId);
         } 
@@ -433,10 +454,11 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
     /**
      * Searches an existing addressid by extracting response of payone
      * 
-     * @param array $aResponse
+     * @param  array $aResponse
      * @return mixed
      */
-    protected function _fcpoGetExistingPayPalAddressId($aResponse) {
+    protected function _fcpoGetExistingPayPalAddressId($aResponse) 
+    {
         list($sStreet, $sStreetNr) = $this->_fcpoSplitAddress($aResponse['add_paydata[shipping_street]']);
 
         $oOrder = $this->_oFcpoHelper->getFactoryObject('oxOrder');

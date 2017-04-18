@@ -18,16 +18,19 @@
  * @version   OXID eShop CE
  */
  
-class MockResultMapping {
+class MockResultMapping
+{
 
     public $EOF = false;
     public $fields = array('someValue', 'someValue', 'someValue', 'someValue', 'someValue');
 
-    public function recordCount() {
+    public function recordCount() 
+    {
         return 1;
     }
 
-    public function moveNext() {
+    public function moveNext() 
+    {
         $this->EOF = true;
     }
 
@@ -38,9 +41,10 @@ class MockResultMapping {
  *
  * @author Andre Gregor-Herrmann <andre.herrmann@fatchip.de>
  * @author Fatchip GmbH
- * @date 2016-06-01
+ * @date   2016-06-01
  */
-class Unit_fcPayOne_Application_Models_fcpomapping extends OxidTestCase {
+class Unit_fcPayOne_Application_Models_fcpomapping extends OxidTestCase
+{
 
     /**
      * Call protected/private method of a class.
@@ -51,7 +55,8 @@ class Unit_fcPayOne_Application_Models_fcpomapping extends OxidTestCase {
      *
      * @return mixed Method return.
      */
-    public function invokeMethod(&$object, $methodName, array $parameters = array()) {
+    public function invokeMethod(&$object, $methodName, array $parameters = array()) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
@@ -62,13 +67,14 @@ class Unit_fcPayOne_Application_Models_fcpomapping extends OxidTestCase {
     /**
      * Set protected/private attribute value
      *
-     * @param object &$object    Instantiated object that we will run method on.
+     * @param object &$object      Instantiated object that we will run method on.
      * @param string $propertyName property that shall be set
-     * @param array  $value value to be set
+     * @param array  $value        value to be set
      *
      * @return mixed Method return.
      */
-    public function invokeSetAttribute(&$object, $propertyName, $value) {
+    public function invokeSetAttribute(&$object, $propertyName, $value) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $property = $reflection->getProperty($propertyName);
         $property->setAccessible(true);
@@ -79,7 +85,8 @@ class Unit_fcPayOne_Application_Models_fcpomapping extends OxidTestCase {
     /**
      * Testing fcpoGetExistingMappings for coverage
      */
-    public function test_fcpoGetExistingMappings_Coverage() {
+    public function test_fcpoGetExistingMappings_Coverage() 
+    {
         $oTestObject = oxNew('fcpomapping');
 
         $oMockResult = new MockResultMapping();
@@ -98,7 +105,8 @@ class Unit_fcPayOne_Application_Models_fcpomapping extends OxidTestCase {
     /**
      * Testing fcpoUpdateMappings for coverage
      */
-    public function test_fcpoUpdateMappings_Coverage() {
+    public function test_fcpoUpdateMappings_Coverage() 
+    {
         $oTestObject = $this->getMock('fcpomapping', array('_fcpoGetQuery'));
         $oTestObject->expects($this->any())->method('_fcpoGetQuery')->will($this->returnValue(true));
 
@@ -117,7 +125,8 @@ class Unit_fcPayOne_Application_Models_fcpomapping extends OxidTestCase {
     /**
      * Testing _fcpoGetQuery for case of removing an entry
      */
-    public function test__fcpoGetQuery_Delete() {
+    public function test__fcpoGetQuery_Delete() 
+    {
         $oTestObject = $this->getMock('fcpomapping', array('_fcpoGetUpdateQuery'));
         $oTestObject->expects($this->any())->method('_fcpoGetUpdateQuery')->will($this->returnValue(true));
 
@@ -133,7 +142,8 @@ class Unit_fcPayOne_Application_Models_fcpomapping extends OxidTestCase {
     /**
      * Testing _fcpoGetQuery for case of adding/updating an entry
      */
-    public function test__fcpoGetQuery_Update() {
+    public function test__fcpoGetQuery_Update() 
+    {
         $oTestObject = $this->getMock('fcpomapping', array('_fcpoGetUpdateQuery'));
         $oTestObject->expects($this->any())->method('_fcpoGetUpdateQuery')->will($this->returnValue('someValue'));
 
@@ -147,7 +157,8 @@ class Unit_fcPayOne_Application_Models_fcpomapping extends OxidTestCase {
     /**
      * Testing _fcpoGetUpdateQuery inserting a new entry
      */
-    public function test__fcpoGetUpdateQuery_Insert() {
+    public function test__fcpoGetUpdateQuery_Insert() 
+    {
         $oTestObject = $this->getMock('fcpomapping', array('_fcpoIsValidNewEntry'));
         $oTestObject->expects($this->any())->method('_fcpoIsValidNewEntry')->will($this->returnValue(true));
 
@@ -173,7 +184,8 @@ class Unit_fcPayOne_Application_Models_fcpomapping extends OxidTestCase {
     /**
      * Testing _fcpoGetUpdateQuery inserting a new entry
      */
-    public function test__fcpoGetUpdateQuery_Update() {
+    public function test__fcpoGetUpdateQuery_Update() 
+    {
         $oTestObject = $this->getMock('fcpomapping', array('_fcpoIsValidNewEntry'));
         $oTestObject->expects($this->any())->method('_fcpoIsValidNewEntry')->will($this->returnValue(false));
 
@@ -199,7 +211,8 @@ class Unit_fcPayOne_Application_Models_fcpomapping extends OxidTestCase {
     /**
      * Testing _fcpoIsValidNewEntry for coverage
      */
-    public function test__fcpoIsValidNewEntry_Coverage() {
+    public function test__fcpoIsValidNewEntry_Coverage() 
+    {
         $oTestObject = oxNew('fcpomapping');
 
         $sMockMappingId = 'new';

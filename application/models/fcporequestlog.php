@@ -19,7 +19,8 @@
  * @version   OXID eShop CE
  */
  
-class fcporequestlog extends oxBase {
+class fcporequestlog extends oxBase
+{
 
     /**
      * Object core table name
@@ -41,9 +42,10 @@ class fcporequestlog extends oxBase {
      *
      * @return null
      */
-    public function __construct() {
+    public function __construct() 
+    {
         parent::__construct();
-        $this->init( 'fcporequestlog' );
+        $this->init('fcporequestlog');
     }
 
     
@@ -52,7 +54,8 @@ class fcporequestlog extends oxBase {
      * 
      * @return array
      */
-    public function getRequestArray() {
+    public function getRequestArray() 
+    {
         return $this->getArray($this->fcporequestlog__fcpo_request->rawValue);
     }
     
@@ -62,7 +65,8 @@ class fcporequestlog extends oxBase {
      * 
      * @return array
      */
-    public function getResponseArray() {
+    public function getResponseArray() 
+    {
         return $this->getArray($this->fcporequestlog__fcpo_response->rawValue);
     }
     
@@ -72,7 +76,8 @@ class fcporequestlog extends oxBase {
      * 
      * @return array
      */
-    protected function getArray($sParam) {
+    protected function getArray($sParam) 
+    {
         $aArray     = unserialize($sParam);
         $mReturn    = (is_array($aArray)) ? $aArray : false;
         

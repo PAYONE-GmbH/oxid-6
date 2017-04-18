@@ -18,16 +18,19 @@
  * @copyright (C) Payone GmbH
  * @version   OXID eShop CE
  */
-class fcPayOneOrderarticle extends fcPayOneOrderarticle_parent {
+class fcPayOneOrderarticle extends fcPayOneOrderarticle_parent
+{
 
     /**
      * Helper object for dealing with different shop versions
+     *
      * @var object
      */
     protected $_oFcpoHelper = null;
 
     /**
      * Flag for redirecting after save
+     *
      * @var bool
      */
     protected $_blIsRedirectAfterSave = null;
@@ -37,7 +40,8 @@ class fcPayOneOrderarticle extends fcPayOneOrderarticle_parent {
      * 
      * @return null
      */
-    public function __construct() {
+    public function __construct() 
+    {
         parent::__construct();
         $this->_oFcpoHelper = oxNew('fcpohelper');
     }
@@ -51,7 +55,8 @@ class fcPayOneOrderarticle extends fcPayOneOrderarticle_parent {
      *
      * @return bool
      */
-    public function save($oOrder = false, $blFinishingSave = true) {
+    public function save($oOrder = false, $blFinishingSave = true) 
+    {
         $oSession = $this->_oFcpoHelper->fcpoGetSession();
         $oBasket = $oSession->getBasket();
         $sPaymentId = $oBasket->getPaymentId();
@@ -79,10 +84,10 @@ class fcPayOneOrderarticle extends fcPayOneOrderarticle_parent {
             if ($oConfig->getConfigParam('blUseStock')) {
                 if ($oConfig->getConfigParam('blPsBasketReservationEnabled')) {
                     $this->getSession()
-                            ->getBasketReservations()
-                            ->commitArticleReservation(
-                                    $this->oxorderarticles__oxartid->value, $this->oxorderarticles__oxamount->value
-                    );
+                        ->getBasketReservations()
+                        ->commitArticleReservation(
+                            $this->oxorderarticles__oxartid->value, $this->oxorderarticles__oxamount->value
+                        );
                 }
             }
 
@@ -102,10 +107,11 @@ class fcPayOneOrderarticle extends fcPayOneOrderarticle_parent {
      * Method checks conditions for reducing stock after using a redirect payment
      * It depends on settings and payment method
      * 
-     * @param boolean $blFinishingSave
+     * @param  boolean $blFinishingSave
      * @return boolean
      */
-    protected function _fcCheckReduceStockAfterRedirect($blFinishingSave, $oOrder) {
+    protected function _fcCheckReduceStockAfterRedirect($blFinishingSave, $oOrder) 
+    {
         $oSession = $this->_oFcpoHelper->fcpoGetSession();
         $oBasket = $oSession->getBasket();
         $sPaymentId = $oBasket->getPaymentId();
@@ -131,7 +137,8 @@ class fcPayOneOrderarticle extends fcPayOneOrderarticle_parent {
      * 
      * @return bool
      */
-    protected function _isRedirectAfterSave($oOrder) {
+    protected function _isRedirectAfterSave($oOrder) 
+    {
         if ($this->_blIsRedirectAfterSave === null) {
             $this->_blIsRedirectAfterSave = false;
             $oSession = $this->_oFcpoHelper->fcpoGetSession();
@@ -163,7 +170,8 @@ class fcPayOneOrderarticle extends fcPayOneOrderarticle_parent {
      *
      * @return bool
      */
-    public function delete($sOXID = null) {
+    public function delete($sOXID = null) 
+    {
         $oSession = $this->_oFcpoHelper->fcpoGetSession();
         $oBasket = $oSession->getBasket();
         $sPaymentId = $oBasket->getPaymentId();
@@ -191,10 +199,11 @@ class fcPayOneOrderarticle extends fcPayOneOrderarticle_parent {
     /**
      * Processes the base version fo delete method and returns its result
      * 
-     * @param string $sOXID
+     * @param  string $sOXID
      * @return mixed
      */
-    protected function _fcpoProcessBaseDelete($sOXID) {
+    protected function _fcpoProcessBaseDelete($sOXID) 
+    {
         return oxBase::delete($sOXID);
     }
 
@@ -204,7 +213,8 @@ class fcPayOneOrderarticle extends fcPayOneOrderarticle_parent {
      * @param bool $blFinishingSave
      * @retur bool
      */
-    protected function _fcpoGetBefore($blFinishingSave) {
+    protected function _fcpoGetBefore($blFinishingSave) 
+    {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $blPresaveOrder = (bool) $oConfig->getConfigParam('blFCPOPresaveOrder');
         $blReduceStockBefore = !(bool) $oConfig->getConfigParam('blFCPOReduceStock');
@@ -222,11 +232,12 @@ class fcPayOneOrderarticle extends fcPayOneOrderarticle_parent {
     /**
      * Returns wether given paymentid is of payone type
      * 
-     * @param string $sId
-     * @param bool $blIFrame
+     * @param  string $sId
+     * @param  bool   $blIFrame
      * @return bool
      */
-    protected function _fcpoIsPayonePaymentType($sId, $blIFrame = false) {
+    protected function _fcpoIsPayonePaymentType($sId, $blIFrame = false) 
+    {
         if ($blIFrame) {
             $blReturn = fcPayOnePayment::fcIsPayOnePaymentType($sId);
         } else {

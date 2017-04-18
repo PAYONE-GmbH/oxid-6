@@ -18,7 +18,8 @@
  * @version   OXID eShop CE
  */
  
-class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_boni_main extends OxidTestCase {
+class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_boni_main extends OxidTestCase
+{
 
     /**
      * Call protected/private method of a class.
@@ -29,7 +30,8 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_boni_main extends Oxi
      *
      * @return mixed Method return.
      */
-    public function invokeMethod(&$object, $methodName, array $parameters = array()) {
+    public function invokeMethod(&$object, $methodName, array $parameters = array()) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
@@ -46,7 +48,8 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_boni_main extends Oxi
      *
      * @return mixed Method return.
      */
-    public function invokeSetAttribute(&$object, $propertyName, $value) {
+    public function invokeSetAttribute(&$object, $propertyName, $value) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $property = $reflection->getProperty($propertyName);
         $property->setAccessible(true);
@@ -57,10 +60,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_boni_main extends Oxi
     /**
      * Testing render method for code coverage
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_Render_Coverage() {
+    public function test_Render_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_boni_main');
         $oMockLang = oxNew('oxLang');
 
@@ -77,10 +81,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_boni_main extends Oxi
     /**
      * Testing render method for code coverage
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_Save_Coverage() {
+    public function test_Save_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_boni_main');
 
         $oMockConfig = $this->getMockBuilder('oxConfig')->disableOriginalConstructor()->getMock();

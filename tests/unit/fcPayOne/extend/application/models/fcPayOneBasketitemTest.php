@@ -18,7 +18,8 @@
  * @version   OXID eShop CE
  */
  
-class Unit_fcPayOne_Extend_Application_Models_fcPayOneBasketitem extends OxidTestCase {
+class Unit_fcPayOne_Extend_Application_Models_fcPayOneBasketitem extends OxidTestCase
+{
     
     /**
      * Call protected/private method of a class.
@@ -29,7 +30,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneBasketitem extends OxidTes
      *
      * @return mixed Method return.
      */
-    public function invokeMethod(&$object, $methodName, array $parameters = array()) {
+    public function invokeMethod(&$object, $methodName, array $parameters = array()) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $method     = $reflection->getMethod($methodName);
         $method->setAccessible(true);
@@ -41,13 +43,14 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneBasketitem extends OxidTes
     /**
      * Set protected/private attribute value
      *
-     * @param object &$object    Instantiated object that we will run method on.
+     * @param object &$object      Instantiated object that we will run method on.
      * @param string $propertyName property that shall be set
-     * @param array  $value value to be set
+     * @param array  $value        value to be set
      *
      * @return mixed Method return.
      */
-    public function invokeSetAttribute(&$object, $propertyName, $value) {
+    public function invokeSetAttribute(&$object, $propertyName, $value) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $property   = $reflection->getProperty($propertyName);
         $property->setAccessible(true);
@@ -59,7 +62,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneBasketitem extends OxidTes
     /**
      * Testing getArticle on throwing and oxArticleException
      */
-    public function test_getArticle_Exception() {
+    public function test_getArticle_Exception() 
+    {
         $oTestObject = oxNew('fcPayOneBasketitem');
         
         $this->setExpectedException('oxArticleException');
@@ -70,7 +74,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneBasketitem extends OxidTes
     /**
      * Testing getArticle for coverage
      */
-    public function test_getArticle_Coverage() {
+    public function test_getArticle_Coverage() 
+    {
         $oTestObject = $this->getMock('fcPayOneBasketitem', array('_fcpoParentGetArticle'));
         $oTestObject->expects($this->any())->method('_fcpoParentGetArticle')->will($this->returnValue(true));
         

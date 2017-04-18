@@ -20,7 +20,8 @@
  */
  
 
-class fcpayone_log_list extends fcpayone_adminlist {
+class fcpayone_log_list extends fcpayone_adminlist
+{
 
     /**
      * Name of chosen object class (default null).
@@ -49,7 +50,8 @@ class fcpayone_log_list extends fcpayone_adminlist {
      *
      * @return $string
      */
-    public function getPortalId() {
+    public function getPortalId() 
+    {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $sReturn = $oConfig->getConfigParam('sFCPOPortalID');
         return $sReturn;
@@ -61,7 +63,8 @@ class fcpayone_log_list extends fcpayone_adminlist {
      *
      * @return $string
      */
-    public function getSubAccountId() {
+    public function getSubAccountId() 
+    {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $sReturn = $oConfig->getConfigParam('sFCPOSubAccountID');
         return $sReturn;
@@ -76,8 +79,9 @@ class fcpayone_log_list extends fcpayone_adminlist {
      *
      * @return string
      */
-    protected function _prepareWhereQuery( $aWhere, $sQ ) {
-        $sQ = parent::_prepareWhereQuery( $aWhere, $sQ );
+    protected function _prepareWhereQuery( $aWhere, $sQ ) 
+    {
+        $sQ = parent::_prepareWhereQuery($aWhere, $sQ);
         $sPortalId = $this->getPortalId();
         $sAid = $this->getSubAccountId();
         return $sQ." AND fcpotransactionstatus.fcpo_portalid = '{$sPortalId}' AND fcpotransactionstatus.fcpo_aid = '{$sAid}' ";
@@ -91,8 +95,8 @@ class fcpayone_log_list extends fcpayone_adminlist {
      */
     public function getListFilter()
     {
-        if ( $this->_aListFilter === null ) {
-            $this->_aListFilter = $this->_oFcpoHelper->fcpoGetRequestParameter( "where" );
+        if ($this->_aListFilter === null ) {
+            $this->_aListFilter = $this->_oFcpoHelper->fcpoGetRequestParameter("where");
         }
 
         return $this->_aListFilter;
@@ -106,10 +110,10 @@ class fcpayone_log_list extends fcpayone_adminlist {
      */
     public function getListSorting()
     {
-        if ( $this->_aCurrSorting === null ) {
-            $this->_aCurrSorting = $this->_oFcpoHelper->fcpoGetRequestParameter( 'sort' );
+        if ($this->_aCurrSorting === null ) {
+            $this->_aCurrSorting = $this->_oFcpoHelper->fcpoGetRequestParameter('sort');
 
-            if ( !$this->_aCurrSorting && $this->_sDefSortField && ( $oBaseObject = $this->getItemListBaseObject() ) ) {
+            if (!$this->_aCurrSorting && $this->_sDefSortField && ( $oBaseObject = $this->getItemListBaseObject() ) ) {
                 $this->_aCurrSorting[$oBaseObject->getCoreTableName()] = array( $this->_sDefSortField => "asc" );
             }
         }
@@ -123,7 +127,8 @@ class fcpayone_log_list extends fcpayone_adminlist {
      *
      * @return string
      */
-    public function fcGetInputName($sTable, $sField) {
+    public function fcGetInputName($sTable, $sField) 
+    {
         if($this->_oFcpoHelper->fcpoGetIntShopVersion() >= 4500) {
             return "where[{$sTable}][{$sField}]";
         }
@@ -136,7 +141,8 @@ class fcpayone_log_list extends fcpayone_adminlist {
      *
      * @return string
      */
-    public function fcGetWhereValue($sTable, $sField) {
+    public function fcGetWhereValue($sTable, $sField) 
+    {
         $aWhere = $this->getListFilter();
         if($this->_oFcpoHelper->fcpoGetIntShopVersion() >= 4500) {
             return $aWhere[$sTable][$sField];
@@ -150,7 +156,8 @@ class fcpayone_log_list extends fcpayone_adminlist {
      *
      * @return string
      */
-    public function fcGetSortingJavascript($sTable, $sField) {
+    public function fcGetSortingJavascript($sTable, $sField) 
+    {
         if($this->_oFcpoHelper->fcpoGetIntShopVersion() >= 4500) {
             return "Javascript:top.oxid.admin.setSorting( document.search, '{$sTable}', '{$sField}', 'asc');document.search.submit();";
         }

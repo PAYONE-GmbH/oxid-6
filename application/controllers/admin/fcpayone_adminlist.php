@@ -18,16 +18,19 @@
  * @version   OXID eShop CE
  */
  
-class fcpayone_adminlist extends oxAdminList {
+class fcpayone_adminlist extends oxAdminList
+{
     
     /**
      * Helper object for dealing with different shop versions
+     *
      * @var object
      */
     protected $_oFcpoHelper = null;
     
     /**
      * Centralized Database instance
+     *
      * @var object
      */
     protected $_oFcpoDb = null;
@@ -36,7 +39,8 @@ class fcpayone_adminlist extends oxAdminList {
     /**
      * Init needed data
      */
-    public function __construct() {
+    public function __construct() 
+    {
         parent::__construct();
         $this->_oFcpoHelper = oxNew('fcpohelper');
         $this->_oFcpoDb     = oxDb::getDb();

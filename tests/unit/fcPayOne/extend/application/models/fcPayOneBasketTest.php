@@ -18,7 +18,8 @@
  * @version   OXID eShop CE
  */
  
-class Unit_fcPayOne_Extend_Application_Models_fcPayOneBasket extends OxidTestCase {
+class Unit_fcPayOne_Extend_Application_Models_fcPayOneBasket extends OxidTestCase
+{
     
     /**
      * Call protected/private method of a class.
@@ -29,7 +30,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneBasket extends OxidTestCas
      *
      * @return mixed Method return.
      */
-    public function invokeMethod(&$object, $methodName, array $parameters = array()) {
+    public function invokeMethod(&$object, $methodName, array $parameters = array()) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $method     = $reflection->getMethod($methodName);
         $method->setAccessible(true);
@@ -41,13 +43,14 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneBasket extends OxidTestCas
     /**
      * Set protected/private attribute value
      *
-     * @param object &$object    Instantiated object that we will run method on.
+     * @param object &$object      Instantiated object that we will run method on.
      * @param string $propertyName property that shall be set
-     * @param array  $value value to be set
+     * @param array  $value        value to be set
      *
      * @return mixed Method return.
      */
-    public function invokeSetAttribute(&$object, $propertyName, $value) {
+    public function invokeSetAttribute(&$object, $propertyName, $value) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $property   = $reflection->getProperty($propertyName);
         $property->setAccessible(true);
@@ -59,7 +62,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneBasket extends OxidTestCas
     /**
      * Testing fcpoIsPayPalExpressActive for coverage
      */
-    public function test_fcpoIsPayPalExpressActive_Coverage() {
+    public function test_fcpoIsPayPalExpressActive_Coverage() 
+    {
         $oTestObject = oxNew('fcPayOneBasket');
 
         $oMockDatabase = $this->getMock('oxDb', array('GetOne'));
@@ -73,7 +77,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneBasket extends OxidTestCas
     /**
      * Testing fcpoGetPayPalExpressPic for coverage
      */
-    public function test_fcpoGetPayPalExpressPic_Coverage() {
+    public function test_fcpoGetPayPalExpressPic_Coverage() 
+    {
         $oTestObject = oxNew('fcPayOneBasket');
 
         $oMockDatabase = $this->getMock('oxDb', array('GetOne'));

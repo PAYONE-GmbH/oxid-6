@@ -18,10 +18,12 @@
  * @copyright (C) Payone GmbH
  * @version   OXID eShop CEPYD
  */
-class fcpoRequest extends oxSuperCfg {
+class fcpoRequest extends oxSuperCfg
+{
 
     /**
      * Helper object for dealing with different shop versions
+     *
      * @var object
      */
     protected $_oFcpoHelper = null;
@@ -121,6 +123,7 @@ class fcpoRequest extends oxSuperCfg {
     
     /**
      * List of RatePay related payment Ids
+     *
      * @var array
      */
     protected $_aRatePayPayments = array(
@@ -132,7 +135,8 @@ class fcpoRequest extends oxSuperCfg {
      * 
      * @return null
      */
-    public function __construct() {
+    public function __construct() 
+    {
         $oConfig = $this->getConfig();
         $this->_oFcpoHelper = oxNew('fcpohelper');
 
@@ -146,7 +150,7 @@ class fcpoRequest extends oxSuperCfg {
         $this->addParameter('integrator_name', 'oxid');
         $this->addParameter('integrator_version', $this->_oFcpoHelper->fcpoGetIntegratorVersion());
         $this->addParameter('solution_name', 'fatchip');
-//        $this->addParameter('solution_version', $this->_oFcpoHelper->fcpoGetModuleVersion());
+        //        $this->addParameter('solution_version', $this->_oFcpoHelper->fcpoGetModuleVersion());
         $this->addParameter('solution_version', '2.0.10');
     }
 
@@ -155,20 +159,22 @@ class fcpoRequest extends oxSuperCfg {
      *
      * @return string
      */
-    protected function getIntegratorId() {
+    protected function getIntegratorId() 
+    {
         return $this->_oFcpoHelper->fcpoGetIntegratorId();
     }
 
     /**
      * Add parameter to request
      * 
-     * @param string $sKey parameter key
-     * @param string $sValue parameter value
-     * @param bool $blAddAsNullIfEmpty add parameter with value NULL if empty. Default is false
+     * @param string $sKey               parameter key
+     * @param string $sValue             parameter value
+     * @param bool   $blAddAsNullIfEmpty add parameter with value NULL if empty. Default is false
      *
      * @return null
      */
-    public function addParameter($sKey, $sValue, $blAddAsNullIfEmpty = false) {
+    public function addParameter($sKey, $sValue, $blAddAsNullIfEmpty = false) 
+    {
         if ($blAddAsNullIfEmpty === true && empty($sValue)) {
             $sValue = 'NULL';
         }
@@ -182,7 +188,8 @@ class fcpoRequest extends oxSuperCfg {
      *
      * @return null
      */
-    public function removeParameter($sKey) {
+    public function removeParameter($sKey) 
+    {
         if (array_key_exists($sKey, $this->_aParameters)) {
             unset($this->_aParameters[$sKey]);
         }
@@ -195,7 +202,8 @@ class fcpoRequest extends oxSuperCfg {
      * 
      * @return string
      */
-    public function getParameter($sKey) {
+    public function getParameter($sKey) 
+    {
         if (array_key_exists($sKey, $this->_aParameters)) {
             return $this->_aParameters[$sKey];
         }
@@ -206,17 +214,19 @@ class fcpoRequest extends oxSuperCfg {
      * Get get PAYONE operation mode ( live or test ) for given order
      * 
      * @param object $sOrder order object
-     * @param string $sType subtype for the paymentmethod ( Visa, MC, etc. ) Default is ''
+     * @param string $sType  subtype for the paymentmethod ( Visa, MC, etc. ) Default is ''
      *
      * @return string
      */
-    protected function getOperationMode($sPaymentType, $sType = '') {
+    protected function getOperationMode($sPaymentType, $sType = '') 
+    {
         $oPayment = oxNew('oxpayment');
         $oPayment->load($sPaymentType);
         return $oPayment->fcpoGetOperationMode($sType);
     }
 
-    protected function _fcpoGetRemoteAddress() {
+    protected function _fcpoGetRemoteAddress() 
+    {
         $oUtilsServer = $this->_oFcpoHelper->fcpoGetUtilsServer();
         $sIpAddress = $oUtilsServer->getRemoteAddress();
 
@@ -226,14 +236,15 @@ class fcpoRequest extends oxSuperCfg {
     /**
      * Set authorization parameters and return true if payment-method is known or false if payment-method is unknown
      *
-     * @param object $oOrder order object
-     * @param object $oUser user object
-     * @param array $aDynvalue form data
-     * @param string $sRefNr payone reference number
+     * @param object $oOrder    order object
+     * @param object $oUser     user object
+     * @param array  $aDynvalue form data
+     * @param string $sRefNr    payone reference number
      * 
      * @return bool
      */
-    protected function setAuthorizationParameters($oOrder, $oUser, $aDynvalue, $sRefNr, $blIsPreauthorization = false) {
+    protected function setAuthorizationParameters($oOrder, $oUser, $aDynvalue, $sRefNr, $blIsPreauthorization = false) 
+    {
         $this->_checkAddress($oOrder, $oUser);
 
         $oConfig = $this->getConfig();
@@ -246,8 +257,9 @@ class fcpoRequest extends oxSuperCfg {
         $this->_addUserDataParameters($oOrder, $oUser);
 
         $sIp = $this->_fcpoGetRemoteAddress();
-        if ($sIp != '')
-            $this->addParameter('ip', $sIp);
+        if ($sIp != '') {
+            $this->addParameter('ip', $sIp); 
+        }
 
         $blIsWalletTypePaymentWithDelAddress = (
                 $oOrder->oxorder__oxpaymenttype->value == 'fcpopaydirekt' ||
@@ -261,11 +273,13 @@ class fcpoRequest extends oxSuperCfg {
 
             $this->addParameter('shipping_firstname', $oOrder->oxorder__oxdelfname->value);
             $this->addParameter('shipping_lastname', $oOrder->oxorder__oxdellname->value);
-            if ($oOrder->oxorder__oxdelcompany->value)
-                $this->addParameter('shipping_company', $oOrder->oxorder__oxdelcompany->value);
+            if ($oOrder->oxorder__oxdelcompany->value) {
+                $this->addParameter('shipping_company', $oOrder->oxorder__oxdelcompany->value); 
+            }
             $this->addParameter('shipping_street', trim($oOrder->oxorder__oxdelstreet->value . ' ' . $oOrder->oxorder__oxdelstreetnr->value));
-            if ($oOrder->oxorder__oxdeladdinfo->value)
-                $this->addParameter('shipping_addressaddition', $oOrder->oxorder__oxdeladdinfo->value);
+            if ($oOrder->oxorder__oxdeladdinfo->value) {
+                $this->addParameter('shipping_addressaddition', $oOrder->oxorder__oxdeladdinfo->value); 
+            }
             $this->addParameter('shipping_zip', $oOrder->oxorder__oxdelzip->value);
             $this->addParameter('shipping_city', $oOrder->oxorder__oxdelcity->value);
             $this->addParameter('shipping_country', $oDelCountry->oxcountry__oxisoalpha2->value);
@@ -278,11 +292,13 @@ class fcpoRequest extends oxSuperCfg {
 
             $this->addParameter('shipping_firstname', $oOrder->oxorder__oxbillfname->value);
             $this->addParameter('shipping_lastname', $oOrder->oxorder__oxbilllname->value);
-            if ($oOrder->oxorder__oxbillcompany->value)
-                $this->addParameter('shipping_company', $oOrder->oxorder__oxbillcompany->value);
+            if ($oOrder->oxorder__oxbillcompany->value) {
+                $this->addParameter('shipping_company', $oOrder->oxorder__oxbillcompany->value); 
+            }
             $this->addParameter('shipping_street', trim($oOrder->oxorder__oxbillstreet->value . ' ' . $oOrder->oxorder__oxbillstreetnr->value));
-            if ($oOrder->oxorder__oxbilladdinfo->value)
-                $this->addParameter('shipping_addressaddition', $oOrder->oxorder__oxbilladdinfo->value);
+            if ($oOrder->oxorder__oxbilladdinfo->value) {
+                $this->addParameter('shipping_addressaddition', $oOrder->oxorder__oxbilladdinfo->value); 
+            }
             $this->addParameter('shipping_zip', $oOrder->oxorder__oxbillzip->value);
             $this->addParameter('shipping_city', $oOrder->oxorder__oxbillcity->value);
             $this->addParameter('shipping_country', $oDelCountry->oxcountry__oxisoalpha2->value);
@@ -303,10 +319,11 @@ class fcpoRequest extends oxSuperCfg {
     /**
      * Set payment params for creditcard
      * 
-     * @param array $aDynvalue
+     * @param  array $aDynvalue
      * @return boolean
      */
-    protected function _setPaymentParamsCC($aDynvalue) {
+    protected function _setPaymentParamsCC($aDynvalue) 
+    {
         $this->addParameter('clearingtype', 'cc'); //Payment method
         $this->addParameter('pseudocardpan', $aDynvalue['fcpo_pseudocardpan']);
         // Override mode for creditcard-type
@@ -318,10 +335,11 @@ class fcpoRequest extends oxSuperCfg {
     /**
      * Set payment params for debitnote
      * 
-     * @param type $aDynvalue
+     * @param  type $aDynvalue
      * @return boolean
      */
-    protected function _setPaymentParamsDebitNote($aDynvalue) {
+    protected function _setPaymentParamsDebitNote($aDynvalue) 
+    {
         $oConfig = $this->getConfig();
         $blFCPODebitBICMandatory = $oConfig->getConfigParam('blFCPODebitBICMandatory');
 
@@ -357,11 +375,12 @@ class fcpoRequest extends oxSuperCfg {
     /**
      * Set payment params paypal
      * 
-     * @param object $oOrder
-     * @param string $sRefNr
+     * @param  object $oOrder
+     * @param  string $sRefNr
      * @return boolean
      */
-    protected function _setPaymentParamsPayPal($oOrder, $sRefNr) {
+    protected function _setPaymentParamsPayPal($oOrder, $sRefNr) 
+    {
         $this->addParameter('clearingtype', 'wlt'); //Payment method
         $this->addParameter('wallettype', 'PPE');
         $this->addParameter('narrative_text', 'Ihre Bestellung Nr. ' . $sRefNr . ' bei ' . $this->_oFcpoHelper->fcpoGetShopName());
@@ -376,10 +395,11 @@ class fcpoRequest extends oxSuperCfg {
     /**
      * Set payment params for klarna
      * 
-     * @param void
+     * @param  void
      * @return boolean
      */
-    protected function _setPaymentParamsKlarna() {
+    protected function _setPaymentParamsKlarna() 
+    {
         $this->addParameter('clearingtype', 'fnc'); //Payment method
         $this->addParameter('financingtype', 'KLS');
         $sCampaign = $this->_oFcpoHelper->fcpoGetSessionVariable('fcpo_klarna_campaign');
@@ -392,77 +412,78 @@ class fcpoRequest extends oxSuperCfg {
     /**
      * Set payment parameters and return true if payment-method is known or false if payment-method is unknown
      *
-     * @param object $oOrder order object
-     * @param array $aDynvalue form data
-     * @param string $sRefNr payone reference number
+     * @param object $oOrder    order object
+     * @param array  $aDynvalue form data
+     * @param string $sRefNr    payone reference number
      * 
      * @return bool
      */
-    protected function setPaymentParameters($oOrder, $aDynvalue, $sRefNr) {
+    protected function setPaymentParameters($oOrder, $aDynvalue, $sRefNr) 
+    {
         $blAddRedirectUrls = false;
 
         switch ($oOrder->oxorder__oxpaymenttype->value) {
-            case 'fcpocreditcard':
-                $blAddRedirectUrls = $this->_setPaymentParamsCC($aDynvalue);
+        case 'fcpocreditcard':
+            $blAddRedirectUrls = $this->_setPaymentParamsCC($aDynvalue);
+            break;
+        case 'fcpocreditcard_iframe':
+            $this->addParameter('clearingtype', 'cc'); //Payment method
+            $blAddRedirectUrls = true;
+            break;
+        case 'fcpocashondel':
+            $this->addParameter('clearingtype', 'cod'); //Payment method
+            $this->addParameter('shippingprovider', 'DHL');
+            break;
+        case 'fcpodebitnote':
+            $blAddRedirectUrls = $this->_setPaymentParamsDebitNote($aDynvalue);
+            break;
+        case 'fcpopayadvance':
+            $this->addParameter('clearingtype', 'vor'); //Payment method
+            break;
+        case 'fcpoinvoice':
+            $this->addParameter('clearingtype', 'rec'); //Payment method
+            break;
+        case 'fcpoonlineueberweisung':
+            $this->addParametersOnlineTransaction($oOrder, $aDynvalue);
+            $blAddRedirectUrls = true;
+            break;
+        case 'fcpopaypal':
+        case 'fcpopaypal_express':
+            $blAddRedirectUrls = $this->_setPaymentParamsPayPal($oOrder, $sRefNr);
+            break;
+        case 'fcpobillsafe':
+            $this->addParameter('clearingtype', 'fnc'); //Payment method
+            $this->addParameter('financingtype', 'BSV');
+            $blAddRedirectUrls = true;
+            break;
+        case 'fcpoklarna':
+            $this->addParameter('clearingtype', 'fnc'); //Payment method
+            $this->addParameter('financingtype', 'KLV');
+            break;
                 break;
-            case 'fcpocreditcard_iframe':
-                $this->addParameter('clearingtype', 'cc'); //Payment method
-                $blAddRedirectUrls = true;
-                break;
-            case 'fcpocashondel':
-                $this->addParameter('clearingtype', 'cod'); //Payment method
-                $this->addParameter('shippingprovider', 'DHL');
-                break;
-            case 'fcpodebitnote':
-                $blAddRedirectUrls = $this->_setPaymentParamsDebitNote($aDynvalue);
-                break;
-            case 'fcpopayadvance':
-                $this->addParameter('clearingtype', 'vor'); //Payment method
-                break;
-            case 'fcpoinvoice':
-                $this->addParameter('clearingtype', 'rec'); //Payment method
-                break;
-            case 'fcpoonlineueberweisung':
-                $this->addParametersOnlineTransaction($oOrder, $aDynvalue);
-                $blAddRedirectUrls = true;
-                break;
-            case 'fcpopaypal':
-            case 'fcpopaypal_express':
-                $blAddRedirectUrls = $this->_setPaymentParamsPayPal($oOrder, $sRefNr);
-                break;
-            case 'fcpobillsafe':
-                $this->addParameter('clearingtype', 'fnc'); //Payment method
-                $this->addParameter('financingtype', 'BSV');
-                $blAddRedirectUrls = true;
-                break;
-            case 'fcpoklarna':
-                $this->addParameter('clearingtype', 'fnc'); //Payment method
-                $this->addParameter('financingtype', 'KLV');
-                break;
-                break;
-            case 'fcpobarzahlen':
-                $this->addParameter('clearingtype', 'csh'); //Payment method
-                $this->addParameter('cashtype', 'BZN');
-                $this->addParameter('api_version', '3.10');
-                break;
-            case 'fcpopaydirekt':
-                $this->addParameter('clearingtype', 'wlt'); //Payment method
-                $this->addParameter('wallettype', 'PDT');
-                if (strlen($sRefNr) <= 37) {// 37 is the max in this parameter for paydirekt - otherwise the request will fail
-                    $this->addParameter('narrative_text', $sRefNr);
-                }
-                $blAddRedirectUrls = true;
-                break;
-            case 'fcpopo_bill':
-            case 'fcpopo_debitnote':
-            case 'fcpopo_installment':
-                $blAddRedirectUrls = $this->_fcpoAddPayolutionParameters($oOrder);
-                break;
-            case 'fcporp_bill':
-                $blAddRedirectUrls = $this->_fcpoAddRatePayParameters($oOrder);
-                break;
-            default:
-                return false;
+        case 'fcpobarzahlen':
+            $this->addParameter('clearingtype', 'csh'); //Payment method
+            $this->addParameter('cashtype', 'BZN');
+            $this->addParameter('api_version', '3.10');
+            break;
+        case 'fcpopaydirekt':
+            $this->addParameter('clearingtype', 'wlt'); //Payment method
+            $this->addParameter('wallettype', 'PDT');
+            if (strlen($sRefNr) <= 37) {// 37 is the max in this parameter for paydirekt - otherwise the request will fail
+                $this->addParameter('narrative_text', $sRefNr);
+            }
+            $blAddRedirectUrls = true;
+            break;
+        case 'fcpopo_bill':
+        case 'fcpopo_debitnote':
+        case 'fcpopo_installment':
+            $blAddRedirectUrls = $this->_fcpoAddPayolutionParameters($oOrder);
+            break;
+        case 'fcporp_bill':
+            $blAddRedirectUrls = $this->_fcpoAddRatePayParameters($oOrder);
+            break;
+        default:
+            return false;
         }
 
         if ($blAddRedirectUrls === true) {
@@ -471,7 +492,8 @@ class fcpoRequest extends oxSuperCfg {
         return true;
     }
 
-    protected function _addRedirectUrls($sAbortClass, $sRefNr = false, $blIsPayPalExpress = false) {
+    protected function _addRedirectUrls($sAbortClass, $sRefNr = false, $blIsPayPalExpress = false) 
+    {
         $oConfig = $this->getConfig();
         $oSession = $this->_oFcpoHelper->fcpoGetSession();
         $sShopURL = $oConfig->getCurrentShopUrl();
@@ -525,52 +547,53 @@ class fcpoRequest extends oxSuperCfg {
      * Set payment parameters for the payment method "Online ?berweisung"
      * and return true if payment-method is known or false if payment-method is unknown
      *
-     * @param object $oOrder order object
-     * @param array $aDynvalue form data
+     * @param object $oOrder    order object
+     * @param array  $aDynvalue form data
      * 
      * @return null
      */
-    protected function addParametersOnlineTransaction($oOrder, $aDynvalue) {
+    protected function addParametersOnlineTransaction($oOrder, $aDynvalue) 
+    {
         $this->addParameter('clearingtype', 'sb'); //Payment method
         $this->addParameter('onlinebanktransfertype', $aDynvalue['fcpo_sotype']);
         // Override mode for Sofort-?berweisung type
         $this->addParameter('mode', $this->getOperationMode($oOrder->oxorder__oxpaymenttype->value, $aDynvalue['fcpo_sotype']));
         switch ($aDynvalue['fcpo_sotype']) {
-            case 'PNT':
-                $oBillCountry = oxNew('oxcountry');
-                $oBillCountry->load($oOrder->oxorder__oxbillcountryid->value);
-                $this->addParameter('bankcountry', $oBillCountry->oxcountry__oxisoalpha2->value);
-                if (isset($aDynvalue['fcpo_ou_ktonr']) && $aDynvalue['fcpo_ou_ktonr'] != '' && isset($aDynvalue['fcpo_ou_blz']) && $aDynvalue['fcpo_ou_blz'] != '') {
-                    $this->addParameter('bankaccount', $aDynvalue['fcpo_ou_ktonr']);
-                    $this->addParameter('bankcode', $aDynvalue['fcpo_ou_blz']);
-                } elseif (isset($aDynvalue['fcpo_ou_iban']) && $aDynvalue['fcpo_ou_iban'] != '' && isset($aDynvalue['fcpo_ou_bic']) && $aDynvalue['fcpo_ou_bic'] != '') {
-                    $this->addParameter('iban', $aDynvalue['fcpo_ou_iban']);
-                    $this->addParameter('bic', $aDynvalue['fcpo_ou_bic']);
-                }
-                break;
-            case 'GPY':
-                $this->addParameter('bankcountry', 'DE');
+        case 'PNT':
+            $oBillCountry = oxNew('oxcountry');
+            $oBillCountry->load($oOrder->oxorder__oxbillcountryid->value);
+            $this->addParameter('bankcountry', $oBillCountry->oxcountry__oxisoalpha2->value);
+            if (isset($aDynvalue['fcpo_ou_ktonr']) && $aDynvalue['fcpo_ou_ktonr'] != '' && isset($aDynvalue['fcpo_ou_blz']) && $aDynvalue['fcpo_ou_blz'] != '') {
+                $this->addParameter('bankaccount', $aDynvalue['fcpo_ou_ktonr']);
+                $this->addParameter('bankcode', $aDynvalue['fcpo_ou_blz']);
+            } elseif (isset($aDynvalue['fcpo_ou_iban']) && $aDynvalue['fcpo_ou_iban'] != '' && isset($aDynvalue['fcpo_ou_bic']) && $aDynvalue['fcpo_ou_bic'] != '') {
                 $this->addParameter('iban', $aDynvalue['fcpo_ou_iban']);
                 $this->addParameter('bic', $aDynvalue['fcpo_ou_bic']);
-                break;
-            case 'EPS':
-                $this->addParameter('bankcountry', 'AT');
-                $this->addParameter('bankgrouptype', $aDynvalue['fcpo_so_bankgrouptype_eps']);
-                break;
-            case 'PFF':
-                $this->addParameter('bankcountry', 'CH');
-                break;
-            case 'PFC':
-                $this->addParameter('bankcountry', 'CH');
-                break;
-            case 'IDL':
-                $this->addParameter('bankcountry', 'NL');
-                $this->addParameter('bankgrouptype', $aDynvalue['fcpo_so_bankgrouptype_idl']);
-                break;
-            case 'P24':
-                $this->addParameter('bankcountry', 'PL');
-            default:
-                break;
+            }
+            break;
+        case 'GPY':
+            $this->addParameter('bankcountry', 'DE');
+            $this->addParameter('iban', $aDynvalue['fcpo_ou_iban']);
+            $this->addParameter('bic', $aDynvalue['fcpo_ou_bic']);
+            break;
+        case 'EPS':
+            $this->addParameter('bankcountry', 'AT');
+            $this->addParameter('bankgrouptype', $aDynvalue['fcpo_so_bankgrouptype_eps']);
+            break;
+        case 'PFF':
+            $this->addParameter('bankcountry', 'CH');
+            break;
+        case 'PFC':
+            $this->addParameter('bankcountry', 'CH');
+            break;
+        case 'IDL':
+            $this->addParameter('bankcountry', 'NL');
+            $this->addParameter('bankgrouptype', $aDynvalue['fcpo_so_bankgrouptype_idl']);
+            break;
+        case 'P24':
+            $this->addParameter('bankcountry', 'PL');
+        default:
+            break;
         }
     }
 
@@ -581,7 +604,8 @@ class fcpoRequest extends oxSuperCfg {
      * 
      * @return null
      */
-    public function addProductInfo($oOrder, $aPositions = false, $blDebit = false) {
+    public function addProductInfo($oOrder, $aPositions = false, $blDebit = false) 
+    {
         $dAmount = 0;
 
         $aOrderArticleListe = $oOrder->getOrderArticles();
@@ -690,14 +714,15 @@ class fcpoRequest extends oxSuperCfg {
     /**
      * Send request to PAYONE Server-API with request-type "authorization" or "preauthorization"
      *
-     * @param object $oOrder order object
-     * @param object $oUser user object
-     * @param array $aDynvalue form data
-     * @param string $sRefNr payone reference number
+     * @param object $oOrder    order object
+     * @param object $oUser     user object
+     * @param array  $aDynvalue form data
+     * @param string $sRefNr    payone reference number
      * 
      * @return array
      */
-    public function sendRequestAuthorization($sType, $oOrder, $oUser, $aDynvalue, $sRefNr) {
+    public function sendRequestAuthorization($sType, $oOrder, $oUser, $aDynvalue, $sRefNr) 
+    {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $this->addParameter('request', $sType); //Request method
         $this->addParameter('mode', $this->getOperationMode($oOrder->oxorder__oxpaymenttype->value)); //PayOne Portal Operation Mode (live or test)
@@ -715,7 +740,8 @@ class fcpoRequest extends oxSuperCfg {
         }
     }
 
-    protected function _getFrontendHash($aHashParams) {
+    protected function _getFrontendHash($aHashParams) 
+    {
         $oConfig = $this->getConfig();
         ksort($aHashParams, SORT_STRING);
         unset($aHashParams['key']);
@@ -728,7 +754,8 @@ class fcpoRequest extends oxSuperCfg {
         return md5($sHashString);
     }
 
-    protected function _getFrontendApiUrl() {
+    protected function _getFrontendApiUrl() 
+    {
         $this->_aParameters['targetwindow'] = 'parent';
 
         $aHashParams = array();
@@ -753,7 +780,8 @@ class fcpoRequest extends oxSuperCfg {
         return $sFrontendApiUrl;
     }
 
-    protected function _handleFrontendApiCall() {
+    protected function _handleFrontendApiCall() 
+    {
         $sFrontendApiUrl = $this->_getFrontendApiUrl();
 
         $aStatus = array(
@@ -767,10 +795,11 @@ class fcpoRequest extends oxSuperCfg {
     /**
      * Template getter for checking which kind of field should be shown
      * 
-     * @param void
+     * @param  void
      * @return bool
      */
-    public function fcpoIsB2B($oUser) {
+    public function fcpoIsB2B($oUser) 
+    {
         $oConfig = $this->getConfig();
         $blB2BModeActive = $oConfig->getConfigParam('blFCPOPayolutionB2BMode');
 
@@ -791,10 +820,11 @@ class fcpoRequest extends oxSuperCfg {
     /**
      * Method adds all bunch of ratepay-params
      * 
-     * @param oxOrder $oOrder
+     * @param  oxOrder $oOrder
      * @return false => no redirect params 
      */
-    protected function _fcpoAddRatePayParameters($oOrder) {
+    protected function _fcpoAddRatePayParameters($oOrder) 
+    {
         // needed objects and data
         $oConfig = $this->getConfig();
         $oSession = $this->_oFcpoHelper->fcpoGetSession();
@@ -894,10 +924,11 @@ class fcpoRequest extends oxSuperCfg {
     /**
      * Item price in smallest available unit
      * 
-     * @param oxBasketItem/double $mValue
+     * @param  oxBasketItem/double $mValue
      * @return int
      */
-    protected function _fcpoGetCentPrice($mValue) {
+    protected function _fcpoGetCentPrice($mValue) 
+    {
         $oConfig = $this->getConfig();
         $dBruttoPrice = 0.00;
         if ($mValue instanceof oxBasketItem) {
@@ -921,10 +952,11 @@ class fcpoRequest extends oxSuperCfg {
     /**
      * Adds needed parameters for payolution
      * 
-     * @param oxOrder $oOrder
+     * @param  oxOrder $oOrder
      * @return bool
      */
-    protected function _fcpoAddPayolutionParameters($oOrder) {
+    protected function _fcpoAddPayolutionParameters($oOrder) 
+    {
         $oConfig = $this->getConfig();
         $sPaymentId = $oOrder->oxorder__oxpaymenttype->value;
         $oUser = $oOrder->getOrderUser();
@@ -968,8 +1000,9 @@ class fcpoRequest extends oxSuperCfg {
         }
 
         $sIp = $this->_fcpoGetRemoteAddress();
-        if ($sIp != '')
-            $this->addParameter('ip', $sIp);
+        if ($sIp != '') {
+            $this->addParameter('ip', $sIp); 
+        }
 
         $this->addParameter('language', $this->_oFcpoHelper->fcpoGetLang()->getLanguageAbbr());
 
@@ -987,10 +1020,11 @@ class fcpoRequest extends oxSuperCfg {
     /**
      * Performs a refund_anouncement call
      * 
-     * @param oxOrder $oOrder
+     * @param  oxOrder $oOrder
      * @return array
      */
-    public function sendRequestPayolutionRefundAnnouncement($oOrder) {
+    public function sendRequestPayolutionRefundAnnouncement($oOrder) 
+    {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $oSession = $this->_oFcpoHelper->fcpoGetSession();
         $sTxid = $oOrder->oxorder__fcpotxid->value;
@@ -1015,12 +1049,13 @@ class fcpoRequest extends oxSuperCfg {
      * 
      * @param string $sPaymentId
      * @param oxUser $oUser
-     * @param array $aBankData
+     * @param array  $aBankData
      * @param string $sAction
      * @param string $sWorkorderId
      * @return array
      */
-    public function sendRequestPayolutionInstallment($sPaymentId, $oUser, $aBankData = null, $sAction = 'calculation', $sWorkorderId = null, $sDuration = null) {
+    public function sendRequestPayolutionInstallment($sPaymentId, $oUser, $aBankData = null, $sAction = 'calculation', $sWorkorderId = null, $sDuration = null) 
+    {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $oSession = $this->_oFcpoHelper->fcpoGetSession();
 
@@ -1054,8 +1089,9 @@ class fcpoRequest extends oxSuperCfg {
         }
 
         $sIp = $this->_fcpoGetRemoteAddress();
-        if ($sIp != '')
-            $this->addParameter('ip', $sIp);
+        if ($sIp != '') {
+            $this->addParameter('ip', $sIp); 
+        }
 
         $this->addParameter('language', $this->_oFcpoHelper->fcpoGetLang()->getLanguageAbbr());
 
@@ -1079,12 +1115,13 @@ class fcpoRequest extends oxSuperCfg {
     /**
      * Sends a payolution precheck request to 
      * 
-     * @param string $sType
-     * @param object $oUser
-     * @param string $sWorkorderId
+     * @param  string $sType
+     * @param  object $oUser
+     * @param  string $sWorkorderId
      * @return array
      */
-    public function sendRequestPayolutionPreCheck($sPaymentId, $oUser, $aBankData, $sWorkorderId = null) {
+    public function sendRequestPayolutionPreCheck($sPaymentId, $oUser, $aBankData, $sWorkorderId = null) 
+    {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $oSession = $this->_oFcpoHelper->fcpoGetSession();
 
@@ -1121,8 +1158,9 @@ class fcpoRequest extends oxSuperCfg {
         }
 
         $sIp = $this->_fcpoGetRemoteAddress();
-        if ($sIp != '')
-            $this->addParameter('ip', $sIp);
+        if ($sIp != '') {
+            $this->addParameter('ip', $sIp); 
+        }
 
         $this->addParameter('language', $this->_oFcpoHelper->fcpoGetLang()->getLanguageAbbr());
 
@@ -1146,11 +1184,12 @@ class fcpoRequest extends oxSuperCfg {
     /**
      * Adds userdata by offering a user object
      * 
-     * @param object $oUser
-     * @param string $sPaymentId
+     * @param  object $oUser
+     * @param  string $sPaymentId
      * @return void
      */
-    protected function _fcpoAddPayolutionUserData($oUser, $sPaymentId) {
+    protected function _fcpoAddPayolutionUserData($oUser, $sPaymentId) 
+    {
         $this->addParameter('email', $oUser->oxuser__oxusername->value);
         $this->addParameter('firstname', $oUser->oxuser__oxfname->value);
         $this->addParameter('lastname', $oUser->oxuser__oxlname->value);
@@ -1180,11 +1219,12 @@ class fcpoRequest extends oxSuperCfg {
     /**
      * Returns if company data should be added to call deepending on settings and payment type
      * 
-     * @param oxUser $oUser
-     * @param string $sPaymentId
+     * @param  oxUser $oUser
+     * @param  string $sPaymentId
      * @return bool
      */
-    protected function _fcpoCheckAddCompanyData($oUser, $sPaymentId) {
+    protected function _fcpoCheckAddCompanyData($oUser, $sPaymentId) 
+    {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $blB2BModeActive = $oConfig->getConfigParam('blFCPOPayolutionB2BMode');
         $blValidPaymentForCompanyData = in_array($sPaymentId, array('fcpopo_bill'));
@@ -1196,10 +1236,11 @@ class fcpoRequest extends oxSuperCfg {
     /**
      * Method returns matching financing type for a given payment id
      * 
-     * @param string $sPaymentId
+     * @param  string $sPaymentId
      * @return string
      */
-    protected function _fcpoGetFinancingTypeByPaymentId($sPaymentId) {
+    protected function _fcpoGetFinancingTypeByPaymentId($sPaymentId) 
+    {
         $aMap = array(
             'fcpopo_bill' => 'PYV',
             'fcpopo_debitnote' => 'PYD',
@@ -1220,10 +1261,11 @@ class fcpoRequest extends oxSuperCfg {
     /**
      * Returns matching payolution payment type for given paymentid
      * 
-     * @param string $sPaymentId
+     * @param  string $sPaymentId
      * @return string
      */
-    protected function _fcpoGetPayolutionPaymentTypeById($sPaymentId) {
+    protected function _fcpoGetPayolutionPaymentTypeById($sPaymentId) 
+    {
         $aPayolutionPaymentMap = array(
             'fcpopo_bill' => 'Payolution-Invoicing',
             'fcpopo_debitnote' => 'Payolution-Debit',
@@ -1244,7 +1286,8 @@ class fcpoRequest extends oxSuperCfg {
      * 
      * @return array
      */
-    public function sendRequestRatePayProfile($aRatePayData, $sWorkorderId = false) {
+    public function sendRequestRatePayProfile($aRatePayData, $sWorkorderId = false) 
+    {
         $sPaymentId = $aRatePayData['OXPAYMENTID'];
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $oSession = $this->_oFcpoHelper->fcpoGetSession();
@@ -1276,7 +1319,8 @@ class fcpoRequest extends oxSuperCfg {
      * 
      * @return array
      */
-    public function sendRequestGenericPayment($sWorkorderId = false) {
+    public function sendRequestGenericPayment($sWorkorderId = false) 
+    {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $oSession = $this->_oFcpoHelper->fcpoGetSession();
 
@@ -1311,12 +1355,13 @@ class fcpoRequest extends oxSuperCfg {
     /**
      * Send request to PAYONE Server-API with request-type "capture"
      *
-     * @param object $oOrder order object
+     * @param object $oOrder  order object
      * @param double $dAmount capture amount
      * 
      * @return array
      */
-    public function sendRequestCapture($oOrder, $dAmount, $blSettleAccount = true, $aPositions = false) {
+    public function sendRequestCapture($oOrder, $dAmount, $blSettleAccount = true, $aPositions = false) 
+    {
         $this->addParameter('request', 'capture'); //Request method
         $sMode = $oOrder->oxorder__fcpomode->value;
         if ($sMode == '') {
@@ -1368,10 +1413,11 @@ class fcpoRequest extends oxSuperCfg {
     /**
      * Adds RatePay specific parameters
      * 
-     * @param type $oOrder
+     * @param  type $oOrder
      * @return void
      */
-    protected function _fcpoAddCaptureAndDebitRatePayParams($oOrder) {
+    protected function _fcpoAddCaptureAndDebitRatePayParams($oOrder) 
+    {
         $sPaymentId = $oOrder->oxorder__oxpaymenttype->value;
         if (in_array($sPaymentId, $this->_aRatePayPayments)) {
             $oRatePay = oxNew('fcporatepay');
@@ -1384,18 +1430,19 @@ class fcpoRequest extends oxSuperCfg {
     /**
      * Send request to PAYONE Server-API with request-type "debit"
      *
-     * @param object $oOrder order object
-     * @param double $dAmount capture amount
-     * @param string $sBankCountry ISO2 of the country of the bank. Default is false
-     * @param string $sBankAccount bank account number. Default is false
-     * @param string $sBankCode bank code. Default is false
+     * @param object $oOrder             order object
+     * @param double $dAmount            capture amount
+     * @param string $sBankCountry       ISO2 of the country of the bank. Default is false
+     * @param string $sBankAccount       bank account number. Default is false
+     * @param string $sBankCode          bank code. Default is false
      * @param string $sBankaccountholder bank account holder. Default is false
      * 
      * @return array
      */
-    public function sendRequestDebit($oOrder, $dAmount, $sBankCountry = false, $sBankAccount = false, $sBankCode = '', $sBankaccountholder = '', $aPositions = false) {
+    public function sendRequestDebit($oOrder, $dAmount, $sBankCountry = false, $sBankAccount = false, $sBankCode = '', $sBankaccountholder = '', $aPositions = false) 
+    {
         $this->_fcpoAddCaptureAndDebitRatePayParams($oOrder);
-		$this->addParameter('request', 'debit'); //Request method
+        $this->addParameter('request', 'debit'); //Request method
         $sMode = $oOrder->oxorder__fcpomode->value;
         if ($sMode == '') {
             $sMode = $this->getOperationMode($oOrder->oxorder__oxpaymenttype->value);
@@ -1434,27 +1481,27 @@ class fcpoRequest extends oxSuperCfg {
         if ($aPositions && $aResponse && array_key_exists('status', $aResponse) !== false && $aResponse['status'] == 'APPROVED') {
             foreach ($aPositions as $sOrderArtId => $aPos) {
                 switch ($sOrderArtId) {
-                    case 'oxdelcost':
-                        $sQuery = "UPDATE oxorder SET fcpodelcostdebited = 1 WHERE oxid = '{$oOrder->getId()}'";
-                        break;
-                    case 'oxpaycost':
-                        $sQuery = "UPDATE oxorder SET fcpopaycostdebited = 1 WHERE oxid = '{$oOrder->getId()}'";
-                        break;
-                    case 'oxwrapcost':
-                        $sQuery = "UPDATE oxorder SET fcpowrapcostdebited = 1 WHERE oxid = '{$oOrder->getId()}'";
-                        break;
-                    case 'oxgiftcardcost':
-                        $sQuery = "UPDATE oxorder SET fcpogiftcardcostdebited = 1 WHERE oxid = '{$oOrder->getId()}'";
-                        break;
-                    case 'oxvoucherdiscount':
-                        $sQuery = "UPDATE oxorder SET fcpovoucherdiscountdebited = 1 WHERE oxid = '{$oOrder->getId()}'";
-                        break;
-                    case 'oxdiscount':
-                        $sQuery = "UPDATE oxorder SET fcpodiscountdebited = 1 WHERE oxid = '{$oOrder->getId()}'";
-                        break;
-                    default:
-                        $sQuery = "UPDATE oxorderarticles SET fcpodebitedamount = fcpodebitedamount + {$aPos['amount']} WHERE oxid = '{$sOrderArtId}'";
-                        break;
+                case 'oxdelcost':
+                    $sQuery = "UPDATE oxorder SET fcpodelcostdebited = 1 WHERE oxid = '{$oOrder->getId()}'";
+                    break;
+                case 'oxpaycost':
+                    $sQuery = "UPDATE oxorder SET fcpopaycostdebited = 1 WHERE oxid = '{$oOrder->getId()}'";
+                    break;
+                case 'oxwrapcost':
+                    $sQuery = "UPDATE oxorder SET fcpowrapcostdebited = 1 WHERE oxid = '{$oOrder->getId()}'";
+                    break;
+                case 'oxgiftcardcost':
+                    $sQuery = "UPDATE oxorder SET fcpogiftcardcostdebited = 1 WHERE oxid = '{$oOrder->getId()}'";
+                    break;
+                case 'oxvoucherdiscount':
+                    $sQuery = "UPDATE oxorder SET fcpovoucherdiscountdebited = 1 WHERE oxid = '{$oOrder->getId()}'";
+                    break;
+                case 'oxdiscount':
+                    $sQuery = "UPDATE oxorder SET fcpodiscountdebited = 1 WHERE oxid = '{$oOrder->getId()}'";
+                    break;
+                default:
+                    $sQuery = "UPDATE oxorderarticles SET fcpodebitedamount = fcpodebitedamount + {$aPos['amount']} WHERE oxid = '{$sOrderArtId}'";
+                    break;
                 }
                 oxDb::getDb()->Execute($sQuery);
             }
@@ -1463,7 +1510,8 @@ class fcpoRequest extends oxSuperCfg {
         return $aResponse;
     }
 
-    protected function _stateNeeded($sIso2Country) {
+    protected function _stateNeeded($sIso2Country) 
+    {
         if (array_search($sIso2Country, $this->_aStateNeededCountries) !== false) {
             return true;
         }
@@ -1477,7 +1525,8 @@ class fcpoRequest extends oxSuperCfg {
      * 
      * @return null
      */
-    protected function addAddressParamsByAddress($oAddress) {
+    protected function addAddressParamsByAddress($oAddress) 
+    {
         $oCountry = oxNew('oxcountry');
         $oCountry->load($oAddress->oxaddress__oxcountryid->value);
 
@@ -1500,7 +1549,8 @@ class fcpoRequest extends oxSuperCfg {
         }
     }
 
-    protected function _getShortState($sStateId) {
+    protected function _getShortState($sStateId) 
+    {
         if ($this->_oFcpoHelper->fcpoGetIntShopVersion() >= 4800) {
             $oDb = oxDb::getDb();
             $sQuery = "SELECT OXISOALPHA2 FROM oxstates WHERE oxid = " . $oDb->quote($sStateId) . " LIMIT 1";
@@ -1516,7 +1566,8 @@ class fcpoRequest extends oxSuperCfg {
      * 
      * @return null
      */
-    protected function addAddressParamsByUser($oUser) {
+    protected function addAddressParamsByUser($oUser) 
+    {
         $oCountry = oxNew('oxcountry');
         $oCountry->load($oUser->oxuser__oxcountryid->value);
 
@@ -1546,7 +1597,8 @@ class fcpoRequest extends oxSuperCfg {
      * 
      * @return string
      */
-    protected function getCountryIso2($sCountryId) {
+    protected function getCountryIso2($sCountryId) 
+    {
         $oCountry = oxNew('oxcountry');
         $oCountry->load($sCountryId);
         return $oCountry->oxcountry__oxisoalpha2->value;
@@ -1555,11 +1607,12 @@ class fcpoRequest extends oxSuperCfg {
     /**
      * This is the wrapper for address checks that has been called from the admin
      *
-     * @param $oUser
-     * @param bool $blCheckDeliveryAddress
+     * @param  $oUser
+     * @param  bool  $blCheckDeliveryAddress
      * @return mixed
      */
-    public function sendRequestAddresscheck($oUser, $blCheckDeliveryAddress = false) {
+    public function sendRequestAddresscheck($oUser, $blCheckDeliveryAddress = false) 
+    {
         $mReturn = $this->sendStandardRequestAddresscheck($oUser, $blCheckDeliveryAddress);
         if(is_array($mReturn) && isset($mReturn['personstatus'])) {
             $this->setPayoneMalus($oUser, $mReturn);
@@ -1571,11 +1624,12 @@ class fcpoRequest extends oxSuperCfg {
     /**
      * Method sets malus depending on addresscheck
      *
-     * @param $oUser
-     * @param $aResponse
+     * @param  $oUser
+     * @param  $aResponse
      * @return void
      */
-    public function setPayoneMalus($oUser, $aResponse) {
+    public function setPayoneMalus($oUser, $aResponse) 
+    {
         if(isset($aResponse['personstatus'])) {
             $iNewMalus = $oUser->getConfig()->getConfigParam('sFCPOMalus'.strtoupper($aResponse['personstatus']));
             if($iNewMalus !== null) {// null comes if personstatus is unkown
@@ -1613,12 +1667,13 @@ class fcpoRequest extends oxSuperCfg {
      * OR
      * Return true if address-check was skipped because the address has been checked before
      *
-     * @param object $oUser user object
-     * @param bool $blCheckDeliveryAddress check delivery address? Default is false
+     * @param object $oUser                  user object
+     * @param bool   $blCheckDeliveryAddress check delivery address? Default is false
      * 
      * @return array
      */
-    public function sendStandardRequestAddresscheck($oUser, $blCheckDeliveryAddress = false) {
+    public function sendStandardRequestAddresscheck($oUser, $blCheckDeliveryAddress = false) 
+    {
         $oConfig = $this->getConfig();
         $this->addParameter('request', 'addresscheck');
         $this->addParameter('mode', $oConfig->getConfigParam('sFCPOBoniOpMode')); //Operationmode live or test
@@ -1666,10 +1721,11 @@ class fcpoRequest extends oxSuperCfg {
     /**
      * Method checks if current address can be saved after call for address check
      *
-     * @param $aResponse
+     * @param  $aResponse
      * @return bool
      */
-    protected function _fcpoCheckAddressCanBeSaved($aResponse) {
+    protected function _fcpoCheckAddressCanBeSaved($aResponse) 
+    {
         $blReturn = (
             $aResponse['status'] == 'VALID' &&
             $this->_fcpoNotBlockingPersonstatus($aResponse)
@@ -1681,10 +1737,11 @@ class fcpoRequest extends oxSuperCfg {
     /**
      * Method checks if personstatus and settings block saving former addresschecks
      *
-     * @param $aResponse
+     * @param  $aResponse
      * @return bool
      */
-    protected function _fcpoNotBlockingPersonstatus($aResponse) {
+    protected function _fcpoNotBlockingPersonstatus($aResponse) 
+    {
         $oConfig = $this->getConfig();
         $sFCPOAddresscheck = $oConfig->getConfigParam('sFCPOAddresscheck');
         $sResponsePersonstatus = $aResponse['personstatus'];
@@ -1712,10 +1769,11 @@ class fcpoRequest extends oxSuperCfg {
     /**
      * Create a unique hash of the valid address
      * 
-     * @param array $aResponse response from the address-check request
+     * @param  array $aResponse response from the address-check request
      * @return string
      */
-    protected function _getAddressHash($aResponse = false) {
+    protected function _getAddressHash($aResponse = false) 
+    {
         $sHash = false;
 
         $aAddressParameters = array(
@@ -1751,7 +1809,8 @@ class fcpoRequest extends oxSuperCfg {
      * 
      * @return bool 
      */
-    protected function _wasAddressCheckedBefore() {
+    protected function _wasAddressCheckedBefore() 
+    {
         $sCheckHash = $this->_getAddressHash();
         $sQuery = "SELECT fcpo_checkdate FROM fcpocheckedaddresses WHERE fcpo_address_hash = '{$sCheckHash}'";
         $sDate = oxDb::getDb()->GetOne($sQuery);
@@ -1766,19 +1825,22 @@ class fcpoRequest extends oxSuperCfg {
      * 
      * @param array $aResponse response from the address-check request
      */
-    protected function _saveCheckedAddress($aResponse) {
+    protected function _saveCheckedAddress($aResponse) 
+    {
         $sCheckHash = $this->_getAddressHash($aResponse);
         $sQuery = "INSERT INTO fcpocheckedaddresses ( fcpo_address_hash ) VALUES ( '{$sCheckHash}' )";
         oxDb::getDb()->Execute($sQuery);
     }
 
-    /** Send request to PAYONE Server-API with request-type "consumerscore"
+    /**
+ * Send request to PAYONE Server-API with request-type "consumerscore"
      *
      * @param object $oUser user object
      *
      * @return array;
      */
-    public function sendRequestConsumerscore($oUser) {
+    public function sendRequestConsumerscore($oUser) 
+    {
         // Consumerscore nur f?r Deutschland zul?ssig
         if ($this->getCountryIso2($oUser->oxuser__oxcountryid->value) == 'DE') {
             $oConfig = $this->getConfig();
@@ -1807,10 +1869,11 @@ class fcpoRequest extends oxSuperCfg {
     /**
      * Checks available methods for contacting request target and triggers request with found method
      * 
-     * @param type $aUrlArray
+     * @param  type $aUrlArray
      * @return array $aResponse
      */
-    protected function _getResponseForParsedRequest($aUrlArray) {
+    protected function _getResponseForParsedRequest($aUrlArray) 
+    {
         $aResponse = array();
 
         if (function_exists("curl_init")) {
@@ -1831,21 +1894,22 @@ class fcpoRequest extends oxSuperCfg {
     /**
      * Tries to fetch a response via network socket
      * 
-     * @param type $aUrlArray
+     * @param  type $aUrlArray
      * @return array $aResponse
      */
-    protected function _getSocketResponse($aUrlArray) {
+    protected function _getSocketResponse($aUrlArray) 
+    {
         $aResponse = array();
 
         switch ($aUrlArray['scheme']) {
-            case 'https':
-                $sScheme = 'ssl://';
-                $iPort = 443;
-                break;
-            case 'http':
-            default:
-                $sScheme = '';
-                $iPort = 80;
+        case 'https':
+            $sScheme = 'ssl://';
+            $iPort = 443;
+            break;
+        case 'http':
+        default:
+            $sScheme = '';
+            $iPort = 80;
         }
 
         $oFsockOpen = fsockopen($sScheme . $aUrlArray['host'], $iPort, $iErrorNumber, $sErrorString, 45);
@@ -1880,11 +1944,12 @@ class fcpoRequest extends oxSuperCfg {
     /**
      * Using installed CLI version of curl by building the command
      * 
-     * @param array $aUrlArray
-     * @param string $sCurlPath
+     * @param  array  $aUrlArray
+     * @param  string $sCurlPath
      * @return array
      */
-    protected function _getCurlCliResponse($aUrlArray, $sCurlPath) {
+    protected function _getCurlCliResponse($aUrlArray, $sCurlPath) 
+    {
         $aResponse = array();
 
         $sPostUrl = $aUrlArray['scheme'] . "://" . $aUrlArray['host'] . $aUrlArray['path'];
@@ -1903,10 +1968,11 @@ class fcpoRequest extends oxSuperCfg {
     /**
      * Using native php curl to perform request
      * 
-     * @param type $aUrlArray
+     * @param  type $aUrlArray
      * @return array $aResponse
      */
-    protected function _getCurlPhpResponse($aUrlArray) {
+    protected function _getCurlPhpResponse($aUrlArray) 
+    {
         $aResponse = array();
 
         $oCurl = curl_init($aUrlArray['scheme'] . "://" . $aUrlArray['host'] . $aUrlArray['path']);
@@ -1923,7 +1989,7 @@ class fcpoRequest extends oxSuperCfg {
             curl_setopt($oCurl, CURLOPT_SSL_VERIFYHOST, false);
         }
 
-        curl_setopt($oCurl, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($oCurl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($oCurl, CURLOPT_TIMEOUT, 45);
 
         $result = curl_exec($oCurl);
@@ -1942,14 +2008,16 @@ class fcpoRequest extends oxSuperCfg {
      *
      * @return array;
      */
-    protected function send($blOnlyGetUrl = false) {
+    protected function send($blOnlyGetUrl = false) 
+    {
         ksort($this->_aParameters);
 
         $iErrorNumber = '';
         $sErrorString = '';
 
-        if ($this->getParameter('mid') === false || $this->getParameter('portalid') === false ||
-                $this->getParameter('key') === false || $this->getParameter('mode') === false) {
+        if ($this->getParameter('mid') === false || $this->getParameter('portalid') === false 
+            || $this->getParameter('key') === false || $this->getParameter('mode') === false
+        ) {
             $aOutput['errormessage'] = "Payone API Setup Data not complete (API-URL, MID, AID, PortalID, Key, Mode)";
             return $aOutput;
         }
@@ -1987,10 +2055,11 @@ class fcpoRequest extends oxSuperCfg {
     /**
      * Adds mapped error message to response if available
      * 
-     * @param array $aInput
+     * @param  array $aInput
      * @return array
      */
-    protected function _addMappedErrorIfAvailable($aInput) {
+    protected function _addMappedErrorIfAvailable($aInput) 
+    {
         $aOutput = $aInput;
 
         if ($aInput['status'] == 'ERROR') {
@@ -2009,10 +2078,11 @@ class fcpoRequest extends oxSuperCfg {
     /**
      * Parses request respond and format it to needed form
      * 
-     * @param array $aResponse
+     * @param  array $aResponse
      * @return array
      */
-    protected function _getResponseOutput($aResponse) {
+    protected function _getResponseOutput($aResponse) 
+    {
         $aOutput = array();
         foreach ($aResponse as $iLinenum => $sLine) {
             $iPos = strpos($sLine, "=");
@@ -2026,7 +2096,8 @@ class fcpoRequest extends oxSuperCfg {
         return $aOutput;
     }
 
-    protected function _logRequest($sResponse, $sStatus = '') {
+    protected function _logRequest($sResponse, $sStatus = '') 
+    {
         $oConfig = $this->getConfig();
         $oDb = oxDb::getDb();
         $sRequest = serialize($this->_aParameters);
@@ -2049,11 +2120,12 @@ class fcpoRequest extends oxSuperCfg {
      * If yes, send the updateuser request to payone
      *
      * @param object $oOrder order object
-     * @param object $oUser user object
+     * @param object $oUser  user object
      * 
      * @return null
      */
-    protected function _checkAddress($oOrder, $oUser) {
+    protected function _checkAddress($oOrder, $oUser) 
+    {
         $oDb = oxDb::getDb();
 
         $sQuery = " SELECT 
@@ -2081,7 +2153,8 @@ class fcpoRequest extends oxSuperCfg {
         }
     }
 
-    protected function _getPayoneUserIdByCustNr($sCustNr) {
+    protected function _getPayoneUserIdByCustNr($sCustNr) 
+    {
         $sQuery = " SELECT 
                         fcpo_userid 
                     FROM 
@@ -2098,13 +2171,14 @@ class fcpoRequest extends oxSuperCfg {
     /**
      * Add the the user information parameters
      *
-     * @param object $oOrder order object
-     * @param object $oUser user object
-     * @param bool $blIsUpdateUser is update user request? Default is false
+     * @param object $oOrder         order object
+     * @param object $oUser          user object
+     * @param bool   $blIsUpdateUser is update user request? Default is false
      * 
      * @return null
      */
-    protected function _addUserDataParameters($oOrder, $oUser, $blIsUpdateUser = false) {
+    protected function _addUserDataParameters($oOrder, $oUser, $blIsUpdateUser = false) 
+    {
         $oCountry = oxNew('oxcountry');
         $oCountry->load($oOrder->oxorder__oxbillcountryid->value);
 
@@ -2115,11 +2189,13 @@ class fcpoRequest extends oxSuperCfg {
         $this->addParameter('gender', ($oOrder->oxorder__oxbillsal->value == 'MR' ? 'm' : 'f'), $blIsUpdateUser);
         $this->addParameter('firstname', $oOrder->oxorder__oxbillfname->value, $blIsUpdateUser);
         $this->addParameter('lastname', $oOrder->oxorder__oxbilllname->value, $blIsUpdateUser);
-        if ($blIsUpdateUser || $oOrder->oxorder__oxbillcompany->value != '')
-            $this->addParameter('company', $oOrder->oxorder__oxbillcompany->value, $blIsUpdateUser);
+        if ($blIsUpdateUser || $oOrder->oxorder__oxbillcompany->value != '') {
+            $this->addParameter('company', $oOrder->oxorder__oxbillcompany->value, $blIsUpdateUser); 
+        }
         $this->addParameter('street', trim($oOrder->oxorder__oxbillstreet->value . ' ' . $oOrder->oxorder__oxbillstreetnr->value), $blIsUpdateUser);
-        if ($blIsUpdateUser || $oOrder->oxorder__oxbilladdinfo->value != '')
-            $this->addParameter('addressaddition', $oOrder->oxorder__oxbilladdinfo->value, $blIsUpdateUser);
+        if ($blIsUpdateUser || $oOrder->oxorder__oxbilladdinfo->value != '') {
+            $this->addParameter('addressaddition', $oOrder->oxorder__oxbilladdinfo->value, $blIsUpdateUser); 
+        }
         $this->addParameter('zip', $oOrder->oxorder__oxbillzip->value, $blIsUpdateUser);
         $this->addParameter('city', $oOrder->oxorder__oxbillcity->value, $blIsUpdateUser);
         $this->addParameter('country', $oCountry->oxcountry__oxisoalpha2->value, $blIsUpdateUser);
@@ -2127,35 +2203,37 @@ class fcpoRequest extends oxSuperCfg {
             $this->addParameter('state', $this->_getShortState($oOrder->oxorder__oxbillstateid->value));
         }
         $this->addParameter('email', $oOrder->oxorder__oxbillemail->value, $blIsUpdateUser);
-        if ($blIsUpdateUser || $oOrder->oxorder__oxbillfon->value != '')
-            $this->addParameter('telephonenumber', $oOrder->oxorder__oxbillfon->value, $blIsUpdateUser);
+        if ($blIsUpdateUser || $oOrder->oxorder__oxbillfon->value != '') {
+            $this->addParameter('telephonenumber', $oOrder->oxorder__oxbillfon->value, $blIsUpdateUser); 
+        }
 
-        if ((
-                in_array($oOrder->oxorder__oxpaymenttype->value, array('fcpoklarna')) &&
-                in_array($oCountry->oxcountry__oxisoalpha2->value, array('DE', 'NL', 'AT'))
-                ) || ($blIsUpdateUser || ($oUser->oxuser__oxbirthdate != '0000-00-00' && $oUser->oxuser__oxbirthdate != ''))
+        if ((            in_array($oOrder->oxorder__oxpaymenttype->value, array('fcpoklarna')) 
+            && in_array($oCountry->oxcountry__oxisoalpha2->value, array('DE', 'NL', 'AT'))            ) || ($blIsUpdateUser || ($oUser->oxuser__oxbirthdate != '0000-00-00' && $oUser->oxuser__oxbirthdate != ''))
         ) {
             $this->addParameter('birthday', str_ireplace('-', '', $oUser->oxuser__oxbirthdate->value), $blIsUpdateUser);
         }
         if (in_array($oOrder->oxorder__oxpaymenttype->value, array('fcpoklarna'))) {
-            if ($blIsUpdateUser || $oUser->oxuser__fcpopersonalid->value != '')
-                $this->addParameter('personalid', $oUser->oxuser__fcpopersonalid->value, $blIsUpdateUser);
+            if ($blIsUpdateUser || $oUser->oxuser__fcpopersonalid->value != '') {
+                $this->addParameter('personalid', $oUser->oxuser__fcpopersonalid->value, $blIsUpdateUser); 
+            }
         }
         $this->addParameter('language', $this->_oFcpoHelper->fcpoGetLang()->getLanguageAbbr(), $blIsUpdateUser);
-        if ($blIsUpdateUser || $oOrder->oxorder__oxbillustid->value != '')
-            $this->addParameter('vatid', $oOrder->oxorder__oxbillustid->value, $blIsUpdateUser);
+        if ($blIsUpdateUser || $oOrder->oxorder__oxbillustid->value != '') {
+            $this->addParameter('vatid', $oOrder->oxorder__oxbillustid->value, $blIsUpdateUser); 
+        }
     }
 
     /**
      * Send request to PAYONE Server-API with request-type "updateuser"
      *
-     * @param object $oOrder order object
-     * @param object $oUser user object
+     * @param object $oOrder        order object
+     * @param object $oUser         user object
      * @param string $sPayOneUserId payone user-id for this user
      * 
      * @return array
      */
-    public function sendRequestUpdateuser($oOrder, $oUser, $sPayOneUserId) {
+    public function sendRequestUpdateuser($oOrder, $oUser, $sPayOneUserId) 
+    {
         $this->addParameter('request', 'updateuser'); //Request method
         $this->addParameter('mode', $this->getOperationMode($oOrder->oxorder__oxpaymenttype->value)); //PayOne Portal Operation Mode (live or test)
         $this->addParameter('customerid', $sPayOneUserId);
@@ -2167,13 +2245,14 @@ class fcpoRequest extends oxSuperCfg {
     /**
      * Send request to PAYONE Server-API with request-type "managemandate"
      *
-     * @param string $sMode operation-mode ( live/test )
-     * @param array $aDynvalue payment form-data
-     * @param object $oUser user object
+     * @param string $sMode     operation-mode ( live/test )
+     * @param array  $aDynvalue payment form-data
+     * @param object $oUser     user object
      * 
      * @return array
      */
-    public function sendRequestManagemandate($sMode, $aDynvalue, $oUser) {
+    public function sendRequestManagemandate($sMode, $aDynvalue, $oUser) 
+    {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
 
         $this->addParameter('request', 'managemandate'); //Request method
@@ -2212,13 +2291,14 @@ class fcpoRequest extends oxSuperCfg {
     /**
      * Send request to PAYONE Server-API with request-type "getfile"
      *
-     * @param string $sOrderId oxid order id
+     * @param string $sOrderId               oxid order id
      * @param string $sMandateIdentification payone mandate identification
-     * @param string $sMode operation-mode ( live/test )
+     * @param string $sMode                  operation-mode ( live/test )
      * 
      * @return string
      */
-    public function sendRequestGetFile($sOrderId, $sMandateIdentification, $sMode) {
+    public function sendRequestGetFile($sOrderId, $sMandateIdentification, $sMode) 
+    {
         $sReturn = false;
         $sStatus = 'ERROR';
         $sResponse = '';
@@ -2280,7 +2360,8 @@ class fcpoRequest extends oxSuperCfg {
      * 
      * @return string
      */
-    public function getRefNr($oOrder = false) {
+    public function getRefNr($oOrder = false) 
+    {
         $oDb = oxDb::getDb();
         $sRawPrefix = (string) $this->getConfig()->getConfigParam('sFCPORefPrefix');
         $sPrefix = $oDb->quote($sRawPrefix);

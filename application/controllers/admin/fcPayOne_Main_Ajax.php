@@ -24,10 +24,12 @@
  * @version   OXID eShop CE
  */
  
-class fcPayOne_Main_Ajax extends ajaxListComponent {
+class fcPayOne_Main_Ajax extends ajaxListComponent
+{
     
     /**
      * Helper object for dealing with different shop versions
+     *
      * @var object
      */
     protected $_oFcpoHelper = null;
@@ -38,7 +40,8 @@ class fcPayOne_Main_Ajax extends ajaxListComponent {
      * 
      * @return null
      */
-    public function __construct() {
+    public function __construct() 
+    {
         parent::__construct();
         $this->_oFcpoHelper = oxNew('fcpohelper');
     }    
@@ -69,15 +72,16 @@ class fcPayOne_Main_Ajax extends ajaxListComponent {
      *
      * @return string
      */
-    protected function _getQuery() {
+    protected function _getQuery() 
+    {
         // looking for table/view
         $sCountryTable = getViewName('oxcountry');
-        $sCountryId      = $this->_oFcpoHelper->fcpoGetRequestParameter( 'oxid' );
-        $sSynchCountryId = $this->_oFcpoHelper->fcpoGetRequestParameter( 'synchoxid' );        
-        $sType           = $this->_oFcpoHelper->fcpoGetRequestParameter( 'type' );
+        $sCountryId      = $this->_oFcpoHelper->fcpoGetRequestParameter('oxid');
+        $sSynchCountryId = $this->_oFcpoHelper->fcpoGetRequestParameter('synchoxid');        
+        $sType           = $this->_oFcpoHelper->fcpoGetRequestParameter('type');
 
         // category selected or not ?
-        if ( !$sCountryId) {
+        if (!$sCountryId) {
             // which fields to load ?
             $sQAdd = " from $sCountryTable where $sCountryTable.oxactive = '1' ";
         } else {
@@ -86,7 +90,7 @@ class fcPayOne_Main_Ajax extends ajaxListComponent {
             $sQAdd .= "where $sCountryTable.oxactive = '1' and fcpopayment2country.fcpo_paymentid = '$sCountryId' and fcpopayment2country.fcpo_type = '{$sType}' ";
         }
 
-        if ( $sSynchCountryId && $sSynchCountryId != $sCountryId ) {
+        if ($sSynchCountryId && $sSynchCountryId != $sCountryId ) {
             $sQAdd .= "and $sCountryTable.oxid not in ( ";
             $sQAdd .= "select $sCountryTable.oxid from fcpopayment2country left join $sCountryTable on $sCountryTable.oxid=fcpopayment2country.fcpo_countryid ";
             $sQAdd .= "where fcpopayment2country.fcpo_paymentid = '$sSynchCountryId' and fcpopayment2country.fcpo_type = '{$sType}' ) ";
@@ -100,18 +104,19 @@ class fcPayOne_Main_Ajax extends ajaxListComponent {
      *
      * @return null
      */
-    public function addpaycountry() {
-        $aChosenCntr = $this->_getActionIds( 'oxcountry.oxid' );
-        $soxId       = $this->_oFcpoHelper->fcpoGetRequestParameter( 'synchoxid');
-        $sType       = $this->_oFcpoHelper->fcpoGetRequestParameter( 'type' );
-        if ( $this->_oFcpoHelper->fcpoGetRequestParameter( 'all' ) ) {
+    public function addpaycountry() 
+    {
+        $aChosenCntr = $this->_getActionIds('oxcountry.oxid');
+        $soxId       = $this->_oFcpoHelper->fcpoGetRequestParameter('synchoxid');
+        $sType       = $this->_oFcpoHelper->fcpoGetRequestParameter('type');
+        if ($this->_oFcpoHelper->fcpoGetRequestParameter('all') ) {
             $sCountryTable = getViewName('oxcountry');
-            $aChosenCntr = $this->_getAll( $this->_addFilter( "select $sCountryTable.oxid ".$this->_getQuery() ) );
+            $aChosenCntr = $this->_getAll($this->_addFilter("select $sCountryTable.oxid ".$this->_getQuery()));
         }
-        if ( $soxId && $soxId != "-1" && is_array( $aChosenCntr ) ) {
+        if ($soxId && $soxId != "-1" && is_array($aChosenCntr) ) {
             foreach ( $aChosenCntr as $sChosenCntr) {
-                $oObject2Payment = oxNew( 'oxbase' );
-                $oObject2Payment->init( 'fcpopayment2country' );
+                $oObject2Payment = oxNew('oxbase');
+                $oObject2Payment->init('fcpopayment2country');
                 $oObject2Payment->fcpopayment2country__fcpo_paymentid  = new oxField($soxId);
                 $oObject2Payment->fcpopayment2country__fcpo_countryid  = new oxField($sChosenCntr);
                 $oObject2Payment->fcpopayment2country__fcpo_type       = new oxField($sType);
@@ -125,16 +130,17 @@ class fcPayOne_Main_Ajax extends ajaxListComponent {
      *
      * @return null
      */
-    public function removepaycountry() {
+    public function removepaycountry() 
+    {
         $oDbInstance    = oxDb::getInstance();
         $oDb            = oxDb::getDb();
-        $aChosenCntr = $this->_getActionIds( 'fcpopayment2country.oxid' );
-        if ( $this->_oFcpoHelper->fcpoGetRequestParameter( 'all' ) ) {
-            $sQ = $this->_addFilter( "delete fcpopayment2country.* ".$this->_getQuery() );
-            $oDb->Execute( $sQ );
-        } elseif ( is_array( $aChosenCntr ) ) {
-            $sQ = "delete from fcpopayment2country where fcpopayment2country.oxid in (" . implode( ", ", $oDbInstance->quoteArray( $aChosenCntr ) ) . ") ";
-            $oDb->Execute( $sQ );
+        $aChosenCntr = $this->_getActionIds('fcpopayment2country.oxid');
+        if ($this->_oFcpoHelper->fcpoGetRequestParameter('all') ) {
+            $sQ = $this->_addFilter("delete fcpopayment2country.* ".$this->_getQuery());
+            $oDb->Execute($sQ);
+        } elseif (is_array($aChosenCntr) ) {
+            $sQ = "delete from fcpopayment2country where fcpopayment2country.oxid in (" . implode(", ", $oDbInstance->quoteArray($aChosenCntr)) . ") ";
+            $oDb->Execute($sQ);
         }
     }
     

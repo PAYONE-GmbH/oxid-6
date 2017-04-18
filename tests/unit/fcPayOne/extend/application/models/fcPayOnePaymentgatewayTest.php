@@ -18,41 +18,45 @@
  * @version   OXID eShop CE
  */
  
-class Unit_fcPayOne_Extend_Application_Models_fcPayOnePaymentgatewayTest extends OxidTestCase {
+class Unit_fcPayOne_Extend_Application_Models_fcPayOnePaymentgatewayTest extends OxidTestCase
+{
     
 
     /**
      * Testing parent call of execute payment
      */
-    public function test_executePayment_Parent() {
+    public function test_executePayment_Parent() 
+    {
         $oMockOrder = $this->getMock('oxOrder', array('isPayOnePaymentType'));
         $oMockOrder->expects($this->any())->method('isPayOnePaymentType')->will($this->returnValue(false));
         
         $oTestObject = oxNew('fcPayOnePaymentgateway');
         $mResult = $mExpect = $oTestObject->executePayment(1, $oMockOrder);
         
-        $this->assertEquals($mExpect,$mResult);
+        $this->assertEquals($mExpect, $mResult);
     }
     
     
     /**
      * Covering the extended part of executePayment
      */
-    public function test_executePayment_Coverage() {
+    public function test_executePayment_Coverage() 
+    {
         $oMockOrder = $this->getMock('oxOrder', array('isPayOnePaymentType','fcHandleAuthorization'));
         $oMockOrder->expects($this->any())->method('isPayOnePaymentType')->will($this->returnValue(true));
         $oMockOrder->expects($this->any())->method('fcHandleAuthorization')->will($this->returnValue('someValue'));
         
         $oTestObject = oxNew('fcPayOnePaymentgateway');
         
-        $this->assertEquals('someValue',$oTestObject->executePayment(1, $oMockOrder));
+        $this->assertEquals('someValue', $oTestObject->executePayment(1, $oMockOrder));
     }
     
     
     /**
      * Testing fcSetLastErrorNr for coverage
      */
-    public function test_fcSetLastErrorNr_Coverage() {
+    public function test_fcSetLastErrorNr_Coverage() 
+    {
         $oTestObject = oxNew('fcPayOnePaymentgateway');
         $this->assertEquals(null, $oTestObject->fcSetLastErrorNr('someValue'));
     }
@@ -61,7 +65,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOnePaymentgatewayTest extends
     /**
      * Testing fcSetLastError for coverage
      */
-    public function test_fcSetLastError_Coverage() {
+    public function test_fcSetLastError_Coverage() 
+    {
         $oTestObject = oxNew('fcPayOnePaymentgateway');
         $this->assertEquals(null, $oTestObject->fcSetLastError('someValue'));
     }

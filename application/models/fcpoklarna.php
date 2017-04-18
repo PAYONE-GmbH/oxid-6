@@ -18,16 +18,19 @@
  * @copyright (C) Payone GmbH
  * @version   OXID eShop CE
  */
-class fcpoklarna extends oxBase {
+class fcpoklarna extends oxBase
+{
 
     /**
      * Helper object for dealing with different shop versions
+     *
      * @var object
      */
     protected $_oFcpoHelper = null;
 
     /**
      * Centralized Database instance
+     *
      * @var object
      */
     protected $_oFcpoDb = null;
@@ -35,7 +38,8 @@ class fcpoklarna extends oxBase {
     /**
      * Init needed data
      */
-    public function __construct() {
+    public function __construct() 
+    {
         parent::__construct();
         $this->_oFcpoHelper = oxNew('fcpohelper');
         $this->_oFcpoDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
@@ -44,10 +48,11 @@ class fcpoklarna extends oxBase {
     /**
      * Returns stored store ids
      * 
-     * @param void
+     * @param  void
      * @return array
      */
-    public function fcpoGetStoreIds() {
+    public function fcpoGetStoreIds() 
+    {
         $aStoreIds = array();
         $sQuery = "SELECT oxid, fcpo_storeid FROM fcpoklarnastoreids ORDER BY oxid ASC";
         $aRows = $this->_oFcpoDb->getAll($sQuery);
@@ -61,10 +66,11 @@ class fcpoklarna extends oxBase {
     /**
      * Add/Update klarna campaigns into database
      * 
-     * @param array $aCampaigns
+     * @param  array $aCampaigns
      * @return void
      */
-    public function fcpoInsertCampaigns($aCampaigns) {
+    public function fcpoInsertCampaigns($aCampaigns) 
+    {
         if (is_array($aCampaigns) && count($aCampaigns) > 0) {
             foreach ($aCampaigns as $iId => $aCampaignData) {
                 if (array_key_exists('delete', $aCampaignData) !== false) {
@@ -88,10 +94,11 @@ class fcpoklarna extends oxBase {
     /**
      * Add/Update klarna storeid into database
      * 
-     * @param array $aStoreIds
+     * @param  array $aStoreIds
      * @return void
      */
-    public function fcpoInsertStoreIds($aStoreIds) {
+    public function fcpoInsertStoreIds($aStoreIds) 
+    {
         if (is_array($aStoreIds) && count($aStoreIds) > 0) {
             foreach ($aStoreIds as $iId => $aStoreIdData) {
 
@@ -110,10 +117,11 @@ class fcpoklarna extends oxBase {
     /**
      * Add Klarna store id
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function fcpoAddKlarnaStoreId() {
+    public function fcpoAddKlarnaStoreId() 
+    {
         $sQuery = "INSERT INTO fcpoklarnastoreids (fcpo_storeid) VALUES ('')";
         $this->_oFcpoDb->Execute($sQuery);
     }
@@ -121,10 +129,11 @@ class fcpoklarna extends oxBase {
     /**
      * Add Klarna campaign id
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function fcpoAddKlarnaCampaign() {
+    public function fcpoAddKlarnaCampaign() 
+    {
         $sQuery = "INSERT INTO fcpoklarnacampaigns (fcpo_campaign_code, fcpo_campaign_title) VALUES ('', '')";
         $this->_oFcpoDb->Execute($sQuery);
     }

@@ -19,7 +19,8 @@
  * @version   OXID eShop CE
  */
  
-class fcpayone_order extends fcpayone_admindetails {
+class fcpayone_order extends fcpayone_admindetails
+{
 
     /**
      * Current class template name
@@ -37,18 +38,21 @@ class fcpayone_order extends fcpayone_admindetails {
 
     /**
      * Holds prefix of request message to be able to translate right
+     *
      * @var array
      */
     protected $_sResponsePrefix = null;
 
     /**
      * Holds a current response status 
+     *
      * @var array
      */
     protected $_aResponse = null;
 
     /**
      * Holds current status oxid
+     *
      * @var string
      */
     protected $_sStatusOxid = null;
@@ -60,7 +64,8 @@ class fcpayone_order extends fcpayone_admindetails {
      *
      * @return string
      */
-    public function render() {
+    public function render() 
+    {
         parent::render();
 
         $oOrder = $this->_oFcpoHelper->getFactoryObject("oxorder");
@@ -83,7 +88,8 @@ class fcpayone_order extends fcpayone_admindetails {
      * @params void
      * @return mixed
      */
-    public function fcpoGetStatusOxid() {
+    public function fcpoGetStatusOxid() 
+    {
         if (!$this->_sStatusOxid) {
             $sStatusOxid = $this->_oFcpoHelper->fcpoGetRequestParameter("status_oxid");
             if ($sStatusOxid) {
@@ -103,7 +109,8 @@ class fcpayone_order extends fcpayone_admindetails {
      * @params void
      * @return mixed
      */
-    public function fcpoGetCurrentStatus() {
+    public function fcpoGetCurrentStatus() 
+    {
         $oReturn = false;
         $sStatusOxid = $this->fcpoGetStatusOxid();
         $sOrderOxid = $this->_oFcpoHelper->fcpoGetRequestParameter('oxid');
@@ -127,10 +134,11 @@ class fcpayone_order extends fcpayone_admindetails {
     /**
      * Get all transaction status for the given order
      *
-     * @param void
+     * @param  void
      * @return array
      */
-    public function getStatus() {
+    public function getStatus() 
+    {
         if (!$this->_aStatus) {
             $this->_aStatus = array();
             $sOxid = $this->_oFcpoHelper->fcpoGetRequestParameter("oxid");
@@ -149,10 +157,11 @@ class fcpayone_order extends fcpayone_admindetails {
     /**
      * Triggers capture request to PAYONE API and displays the result
      *
-     * @param void
+     * @param  void
      * @return null
      */
-    public function capture() {
+    public function capture() 
+    {
         $sOxid = $this->_oFcpoHelper->fcpoGetRequestParameter("oxid");
         if ($sOxid != "-1" && isset($sOxid)) {
             $oOrder = $this->_oFcpoHelper->getFactoryObject("oxorder");
@@ -188,10 +197,11 @@ class fcpayone_order extends fcpayone_admindetails {
     /**
      * Triggers debit request to PAYONE API and displays the result
      *
-     * @param void
+     * @param  void
      * @return null
      */
-    public function debit() {
+    public function debit() 
+    {
         $sOxid = $this->_oFcpoHelper->fcpoGetRequestParameter("oxid");
         if ($sOxid != "-1" && isset($sOxid)) {
             $oOrder = $this->_oFcpoHelper->getFactoryObject("oxorder");
@@ -235,10 +245,11 @@ class fcpayone_order extends fcpayone_admindetails {
     /**
      * Gets the url of mandate pdf
      * 
-     * @param void
+     * @param  void
      * @return string
      */
-    public function fcpoGetMandatePdfUrl() {
+    public function fcpoGetMandatePdfUrl() 
+    {
         $sPdfUrl = '';
         $sOxid = $this->_oFcpoHelper->fcpoGetRequestParameter("oxid");
 
@@ -264,10 +275,11 @@ class fcpayone_order extends fcpayone_admindetails {
     /**
      * Trigger redownloading the mandate
      * 
-     * @param string $sMandateFilename
+     * @param  string $sMandateFilename
      * @return void
      */
-    protected function _redownloadMandate($sMandateFilename) {
+    protected function _redownloadMandate($sMandateFilename) 
+    {
         $sOxid = $this->_oFcpoHelper->fcpoGetRequestParameter("oxid");
         if ($sOxid != "-1" && isset($sOxid)) {
             $oOrder = $this->_oFcpoHelper->getFactoryObject("oxOrder");
@@ -284,10 +296,11 @@ class fcpayone_order extends fcpayone_admindetails {
     /**
      * The download of mandate
      * 
-     * @param bool $blUnitTest
+     * @param  bool $blUnitTest
      * @return void
      */
-    public function download($blUnitTest = false) {
+    public function download($blUnitTest = false) 
+    {
         $sOxid = $this->_oFcpoHelper->fcpoGetRequestParameter("oxid");
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $blFCPOMandateDownload = $oConfig->getConfigParam('blFCPOMandateDownload');
@@ -304,27 +317,32 @@ class fcpayone_order extends fcpayone_admindetails {
                 }
 
                 if ($this->_oFcpoHelper->fcpoFileExists($sPath)) {
-                    if (!$blUnitTest)
-                        header("Content-Type: application/pdf");
-                    if (!$blUnitTest)
-                        header("Content-Disposition: attachment; filename=\"{$sFilename}\"");
-                    if (!$blUnitTest)
-                        readfile($sPath);
+                    if (!$blUnitTest) {
+                        header("Content-Type: application/pdf"); 
+                    }
+                    if (!$blUnitTest) {
+                        header("Content-Disposition: attachment; filename=\"{$sFilename}\""); 
+                    }
+                    if (!$blUnitTest) {
+                        readfile($sPath); 
+                    }
                 }
             }
         }
 
-        if (!$blUnitTest)
-            exit();
+        if (!$blUnitTest) {
+            exit(); 
+        }
     }
 
     /**
      * Returns request message if there is a relevant one
      * 
-     * @param void
+     * @param  void
      * @return string
      */
-    public function fcpoGetRequestMessage() {
+    public function fcpoGetRequestMessage() 
+    {
         $sReturn = "";
 
         if ($this->_aResponse && is_array($this->_aResponse) && $this->_sResponsePrefix) {

@@ -20,10 +20,12 @@
  */
  
 
-class fcpayone_boni_list extends oxAdminList {
+class fcpayone_boni_list extends oxAdminList
+{
     
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'fcpayone_boni_list.tpl';

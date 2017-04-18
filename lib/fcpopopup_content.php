@@ -25,8 +25,8 @@ function getShopBasePath()
     return dirname(__FILE__).'/../../../';
 }
 
-if ( file_exists( getShopBasePath() . "/bootstrap.php" ) ) {
-	require_once getShopBasePath() . "/bootstrap.php";
+if (file_exists(getShopBasePath() . "/bootstrap.php") ) {
+    include_once getShopBasePath() . "/bootstrap.php";
 }
 else {
     // global variables which are important for older OXID.
@@ -36,16 +36,16 @@ else {
     $_SERVER['HTTP_REFERER'] = '';
     $_SERVER['QUERY_STRING'] = '';
     
-    require getShopBasePath() . 'modules/functions.php';
-    require_once getShopBasePath() . 'core/oxfunctions.php';
-    require_once getShopBasePath() . 'views/oxubase.php';
+    include getShopBasePath() . 'modules/functions.php';
+    include_once getShopBasePath() . 'core/oxfunctions.php';
+    include_once getShopBasePath() . 'views/oxubase.php';
 }
 
 
 // receive params
-$sLoadUrl = filter_input( INPUT_GET, 'loadurl' );
-$sDuration = filter_input( INPUT_GET, 'duration' );
-$sUseLogin = filter_input( INPUT_GET, 'login' );
+$sLoadUrl = filter_input(INPUT_GET, 'loadurl');
+$sDuration = filter_input(INPUT_GET, 'duration');
+$sUseLogin = filter_input(INPUT_GET, 'login');
 
 
 /**
@@ -53,28 +53,33 @@ $sUseLogin = filter_input( INPUT_GET, 'login' );
  *
  * @author andre
  */
-class fcpopopup_content extends oxBase {
+class fcpopopup_content extends oxBase
+{
     
     /**
      * url to be fetched
+     *
      * @var string
      */
     protected $_sUrl = null;
     
     /**
      * Flag that indicates, that login should be used
+     *
      * @var bool
      */
     protected $_blUseLogin = null;
     
     /**
      * Flag if fetched content should be returned with pdf header
+     *
      * @var bool
      */
     protected $_blPdfHeader = null;
     
     /**
      * Duration for installment
+     *
      * @var string 
      */
     protected $_sDuration = null;
@@ -83,9 +88,10 @@ class fcpopopup_content extends oxBase {
      * Initialization
      * 
      * @param string $sUrl
-     * @param bool $blUseLogin
+     * @param bool   $blUseLogin
      */
-    public function __construct($sUrl, $sDuration, $blPdfHeader=true, $blUseLogin=false) {
+    public function __construct($sUrl, $sDuration, $blPdfHeader=true, $blUseLogin=false) 
+    {
         $this->_sUrl = $sUrl;
         $this->_blUseLogin = $blUseLogin;
         $this->_blPdfHeader = $blPdfHeader;
@@ -95,10 +101,11 @@ class fcpopopup_content extends oxBase {
     /**
      * Fetch and return content
      * 
-     * @param void
+     * @param  void
      * @return string
      */
-    public function fcpo_fetch_content() {
+    public function fcpo_fetch_content() 
+    {
         $resCurl = curl_init();
         $sUrl = $this->_sUrl."&duration=".$this->_sDuration;
         
@@ -136,10 +143,11 @@ class fcpopopup_content extends oxBase {
     /**
      * Formats error message to be displayed in a error box
      * 
-     * @param string $sMessage
+     * @param  string $sMessage
      * @return string
      */
-    protected function _fcpoReturnErrorMessage($sMessage) {
+    protected function _fcpoReturnErrorMessage($sMessage) 
+    {
         $oConfig = $this->getConfig();
         if (!$oConfig->isUtf()) {
             $sMessage = utf8_encode($sMessage);
@@ -156,10 +164,11 @@ class fcpopopup_content extends oxBase {
     /**
      * Returns configured credentials
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    protected function _fcpoGetPayolutionCredentials() {
+    protected function _fcpoGetPayolutionCredentials() 
+    {
         $oConfig = $this->getConfig();
         $aCredentials = array();
         $aCredentials['user'] = (string)$oConfig->getConfigParam('sFCPOPayolutionAuthUser');

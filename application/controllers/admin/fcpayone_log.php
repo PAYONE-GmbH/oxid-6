@@ -20,7 +20,8 @@
  */
  
 
-class fcpayone_log extends fcpayone_admindetails {
+class fcpayone_log extends fcpayone_admindetails
+{
 
     /**
      * Current class template name
@@ -39,6 +40,7 @@ class fcpayone_log extends fcpayone_admindetails {
     
     /**
      * Holds a current response status 
+     *
      * @var array
      */
     protected $_aResponse = null;
@@ -51,15 +53,16 @@ class fcpayone_log extends fcpayone_admindetails {
      *
      * @return string
      */
-    public function render() {
+    public function render() 
+    {
         parent::render();
 
-        $oLogEntry = oxNew( "fcpotransactionstatus" );
+        $oLogEntry = oxNew("fcpotransactionstatus");
 
-        $sOxid = $this->_oFcpoHelper->fcpoGetRequestParameter( "oxid");
-        if ( $sOxid != "-1" && isset( $sOxid)) {
+        $sOxid = $this->_oFcpoHelper->fcpoGetRequestParameter("oxid");
+        if ($sOxid != "-1" && isset($sOxid)) {
             // load object
-            $oLogEntry->load( $sOxid);
+            $oLogEntry->load($sOxid);
             $this->_aViewData["edit"] = $oLogEntry;
         }
 
@@ -76,13 +79,14 @@ class fcpayone_log extends fcpayone_admindetails {
      *
      * @return array
      */
-    public function getStatus($oOrder) {
+    public function getStatus($oOrder) 
+    {
         if(!$this->_aStatus) {
             $oDb = $this->_oFcpoHelper->fcpoGetDb();
             $aRows = $oDb->getAll("SELECT oxid FROM fcpotransactionstatus WHERE fcpo_txid = '{$oOrder->oxorder__fcpotxid->value}' ORDER BY oxid ASC");
             $aStatus = array();
             foreach ($aRows as $aRow) {
-                $oTransactionStatus = oxNew ('fcpotransactionstatus');
+                $oTransactionStatus = oxNew('fcpotransactionstatus');
                 $oTransactionStatus->load($aRow[0]);
                 $aStatus[] = $oTransactionStatus;
             }
@@ -97,11 +101,12 @@ class fcpayone_log extends fcpayone_admindetails {
      *
      * @return null
      */
-    public function capture() {
-        $sOxid = $this->_oFcpoHelper->fcpoGetRequestParameter( "oxid");
-        if ( $sOxid != "-1" && isset( $sOxid)) {
-            $oOrder = oxNew( "oxorder" );
-            $oOrder->load( $sOxid);
+    public function capture() 
+    {
+        $sOxid = $this->_oFcpoHelper->fcpoGetRequestParameter("oxid");
+        if ($sOxid != "-1" && isset($sOxid)) {
+            $oOrder = oxNew("oxorder");
+            $oOrder->load($sOxid);
 
             $dAmount = $this->_oFcpoHelper->fcpoGetRequestParameter('capture_amount');
             if($dAmount && $dAmount > 0) {
@@ -116,19 +121,20 @@ class fcpayone_log extends fcpayone_admindetails {
     /**
      * Returns capture message if there is a relevant one
      * 
-     * @param void
+     * @param  void
      * @return string
      */
-    public function getCaptureMessage() {
+    public function getCaptureMessage() 
+    {
         $sReturn = "";
         
-        if ( $this->_aResponse ) {
+        if ($this->_aResponse ) {
             $oLang = $this->_oFcpoHelper->fcpoGetLang();
-            if( $this->_aResponse['status'] == 'APPROVED' ) {
-                $sReturn = '<span style="color: green;">'.$oLang->translateString( 'FCPO_CAPTURE_APPROVED', null, true ).'</span>';
+            if($this->_aResponse['status'] == 'APPROVED' ) {
+                $sReturn = '<span style="color: green;">'.$oLang->translateString('FCPO_CAPTURE_APPROVED', null, true).'</span>';
             } 
-            else if( $this->_aResponse['status'] == 'ERROR' ) {
-                $sReturn = '<span style="color: red;">'.$oLang->translateString( 'FCPO_CAPTURE_ERROR', null, true ).$this->_aResponse['errormessage'].'</span>';
+            else if($this->_aResponse['status'] == 'ERROR' ) {
+                $sReturn = '<span style="color: red;">'.$oLang->translateString('FCPO_CAPTURE_ERROR', null, true).$this->_aResponse['errormessage'].'</span>';
             }
         }
         

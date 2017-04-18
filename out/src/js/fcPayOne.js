@@ -94,7 +94,7 @@ function fcCheckOUType(select, SofoShowIban) {
     if(document.getElementById('fcpo_ou_eps')) {
         document.getElementById('fcpo_ou_eps').style.display = 'none';
     }
-    if(document.getElementById('fcpo_ou_idl')){
+    if(document.getElementById('fcpo_ou_idl')) {
         document.getElementById('fcpo_ou_idl').style.display = 'none';
     }
     if(oForm['dynvalue[fcpo_sotype]'].value == 'PNT') {
@@ -590,7 +590,7 @@ function fcHandleDebitInputs(sDebitBICMandatory) {
 }
 function fcEnableDebitInputsTypeIban() {
     var oForm = getPaymentForm();
-    if (  oForm['dynvalue[fcpo_elv_iban]'] && oForm['dynvalue[fcpo_elv_bic]'] ) {
+    if (oForm['dynvalue[fcpo_elv_iban]'] && oForm['dynvalue[fcpo_elv_bic]'] ) {
         oForm['dynvalue[fcpo_elv_iban]'].disabled = false;
         oForm['dynvalue[fcpo_elv_iban]'].style.backgroundColor = "";
         oForm['dynvalue[fcpo_elv_bic]'].disabled = false;
@@ -599,7 +599,7 @@ function fcEnableDebitInputsTypeIban() {
 }
 function fcEnableDebitInputsTypeBlz() {
     var oForm = getPaymentForm();
-    if ( oForm['dynvalue[fcpo_elv_ktonr]'] && oForm['dynvalue[fcpo_elv_blz]'] ) {
+    if (oForm['dynvalue[fcpo_elv_ktonr]'] && oForm['dynvalue[fcpo_elv_blz]'] ) {
         oForm['dynvalue[fcpo_elv_ktonr]'].disabled = false;
         oForm['dynvalue[fcpo_elv_ktonr]'].style.backgroundColor = "";
         oForm['dynvalue[fcpo_elv_blz]'].disabled = false;
@@ -608,7 +608,7 @@ function fcEnableDebitInputsTypeBlz() {
 }
 function fcDisableDebitInputsTypeIban() {
     var oForm = getPaymentForm();
-    if (  oForm['dynvalue[fcpo_elv_iban]'] && oForm['dynvalue[fcpo_elv_bic]'] ) {
+    if (oForm['dynvalue[fcpo_elv_iban]'] && oForm['dynvalue[fcpo_elv_bic]'] ) {
         oForm['dynvalue[fcpo_elv_iban]'].disabled = true;
         oForm['dynvalue[fcpo_elv_iban]'].style.backgroundColor = "#EEE";
         oForm['dynvalue[fcpo_elv_bic]'].disabled = true;
@@ -617,7 +617,7 @@ function fcDisableDebitInputsTypeIban() {
 }
 function fcDisableDebitInputsTypeBlz() {
     var oForm = getPaymentForm();
-    if ( oForm['dynvalue[fcpo_elv_ktonr]'] && oForm['dynvalue[fcpo_elv_blz]'] ) {
+    if (oForm['dynvalue[fcpo_elv_ktonr]'] && oForm['dynvalue[fcpo_elv_blz]'] ) {
         oForm['dynvalue[fcpo_elv_ktonr]'].disabled = true;
         oForm['dynvalue[fcpo_elv_ktonr]'].style.backgroundColor = "#EEE";
         oForm['dynvalue[fcpo_elv_blz]'].disabled = true;
@@ -627,9 +627,9 @@ function fcDisableDebitInputsTypeBlz() {
 function fcHandleDebitInputsTypeIban() {
     var oForm = getPaymentForm();
     if((oForm['dynvalue[fcpo_elv_bic]'] && oForm['dynvalue[fcpo_elv_iban]'])) {
-        if( fcpoGetElvCountry() == 'DE' &&
-            (oForm['dynvalue[fcpo_elv_iban]'].value != '' || oForm['dynvalue[fcpo_elv_bic]'].value != '' )    
-          ) {
+        if(fcpoGetElvCountry() == 'DE' 
+            && (oForm['dynvalue[fcpo_elv_iban]'].value != '' || oForm['dynvalue[fcpo_elv_bic]'].value != '' )    
+        ) {
             fcEnableDebitInputsTypeIban();
             fcDisableDebitInputsTypeBlz();
         } else {
@@ -641,9 +641,9 @@ function fcHandleDebitInputsTypeIban() {
 function fcHandleDebitInputsTypeBlz() {
     var oForm = getPaymentForm();
     if((oForm['dynvalue[fcpo_elv_ktonr]'] && oForm['dynvalue[fcpo_elv_blz]'])) {
-        if( fcpoGetElvCountry() == 'DE' &&
-            (oForm['dynvalue[fcpo_elv_ktonr]'].value != '' || oForm['dynvalue[fcpo_elv_blz]'].value != '')    
-          ) {
+        if(fcpoGetElvCountry() == 'DE' 
+            && (oForm['dynvalue[fcpo_elv_ktonr]'].value != '' || oForm['dynvalue[fcpo_elv_blz]'].value != '')    
+        ) {
             fcEnableDebitInputsTypeBlz();
             fcDisableDebitInputsTypeIban();
         } else {
@@ -731,7 +731,7 @@ function processPayoneResponseCCHosted(response) {
 /**
  * validates the expiredate given in response
  * 
- * @param object response
+ * @param   object response
  * @returns bool
  */
 function validateCardExpireDate(response) {
@@ -760,9 +760,9 @@ function validateCardExpireDate(response) {
 /**
  * Creates payone form input fields and appends it at the form end
  * 
- * @param {type} oForm
- * @param {type} sName
- * @param {type} sValue
+ * @param   {type} oForm
+ * @param   {type} sName
+ * @param   {type} sValue
  * @returns {undefined}
  */
 function fcSetPayoneInput(oForm, sName, sValue) {
@@ -774,14 +774,14 @@ function fcSetPayoneInput(oForm, sName, sValue) {
 /**
  * Sets payone form input fields
  * 
- * @param {type} oForm
+ * @param   {type} oForm
  * @returns {undefined}
  */
 function fcSetPayoneInputFields(oForm) {
     for(var sInput in oFcPayoneData.inputs) {
         var sInputName = sInput;
         var sInputValue = oFcPayoneData.inputs[sInput];
-        if ( sInput.indexOf('dynvalue') != -1 ) {
+        if (sInput.indexOf('dynvalue') != -1 ) {
             sInputName = sInputName.replace('dynvalue_', '');
             sInputName = 'dynvalue['+sInputName+']';
         }
@@ -794,77 +794,85 @@ function fcSetPayoneInputFields(oForm) {
  * 
  * @param void
  */
-$('#payolution_installment_check_availability').click(function(){
-    // trigger loading animation and disable button
-    $('#payolution_installment_calculation_selection').html('<div id="payolution_center_animation"><img src="modules/fcPayOne/out/img/ajax-loader.gif"</div>');
-    $('#payolution_installment_check_availability').attr('disabled', true);
-    // collect data from form to pass it through to controller
-    var formParams = '{';
-    $('[name^="dynvalue"]').each(function(key, value) {
-        var formType = $(this).attr('type'); 
-        var rawName = $(this).attr("name");
+$('#payolution_installment_check_availability').click(
+    function(){
+        // trigger loading animation and disable button
+        $('#payolution_installment_calculation_selection').html('<div id="payolution_center_animation"><img src="modules/fcPayOne/out/img/ajax-loader.gif"</div>');
+        $('#payolution_installment_check_availability').attr('disabled', true);
+        // collect data from form to pass it through to controller
+        var formParams = '{';
+        $('[name^="dynvalue"]').each(
+            function(key, value) {
+                var formType = $(this).attr('type'); 
+                var rawName = $(this).attr("name");
         
-        var regExp = /\[([^)]+)\]/;
-        var matches = regExp.exec(rawName);
-        if (matches === null) {
-            return true;
-        }
-        
-        var nameInBrackets = matches[1];
-        if (key > 0 && formParams != '{') {
-            formParams += ', ';
-        }
-        
-        if (formType == 'checkbox') {
-            var inputValue = '';
-            if ($(this).is(':checked')) {
-                inputValue = $(this).val();
-            }
-        }
-        else {
-            var inputValue = $(this).val();
-        }
-        formParams += '"' + nameInBrackets + '":"' + inputValue + '"';
-    });
-    formParams += '}';
-    
-    $.ajax({
-        url: 'modules/fcPayOne/application/models/fcpayone_ajax.php',
-        method: 'POST',
-        type: 'POST',
-        dataType: 'text',
-        data: { paymentid: "fcpopo_installment", action: "precheck", params: formParams },
-        success: function(Response) {
-            $('#payolution_installment_calculation_selection').html(Response);
-            $('#payolution_installment_check_availability').attr('disabled', false);
-            var numberOfInstallments = $('#payolution_no_installments').val();
-            $('#payolution_sum_number_installments').html(numberOfInstallments);
-            $('input[name=payolution_installment_selection]').bind( 'change', function() {
-                // selected interest data will be set into summary box
-                var selectedInstallmentIndex = $('input[name=payolution_installment_selection]:checked').val();
-                // disable all installment details and enable selected
-                for (i=1;i<=numberOfInstallments;i++) {
-                    $('#payolution_rates_details_'+i).removeClass('payolution_rates_visible');
-                    $('#payolution_rates_details_'+i).addClass('payolution_rates_invisible');
+                var regExp = /\[([^)]+)\]/;
+                var matches = regExp.exec(rawName);
+                if (matches === null) {
+                    return true;
                 }
-                $('#payolution_rates_details_'+selectedInstallmentIndex).addClass('payolution_rates_visible');
-                $('#payolution_rates_details_'+selectedInstallmentIndex).removeClass('payolution_rates_invisible');
-                // set needed values to foreseen fields
-                $('#payolution_sum_number_installments').html(numberOfInstallments);
-                $('#payolution_financing_sum').html($('#payolution_installment_total_amount_' + selectedInstallmentIndex).val());
-                $('#payolution_sum_interest_rate').html($('#payolution_installment_interest_rate_' + selectedInstallmentIndex).val());
-                $('#payolution_sum_eff_interest_rate').html($('#payolution_installment_eff_interest_rate_' + selectedInstallmentIndex).val());
-                $('#payolution_sum_monthly_rate').html($('#payolution_installment_value_' + selectedInstallmentIndex).val());
-                $('#payolution_selected_installment_index').val(selectedInstallmentIndex);
-            });
-        }
-    });    
-});
+        
+                var nameInBrackets = matches[1];
+                if (key > 0 && formParams != '{') {
+                    formParams += ', ';
+                }
+        
+                if (formType == 'checkbox') {
+                    var inputValue = '';
+                    if ($(this).is(':checked')) {
+                        inputValue = $(this).val();
+                    }
+                }
+                else {
+                    var inputValue = $(this).val();
+                }
+                formParams += '"' + nameInBrackets + '":"' + inputValue + '"';
+            }
+        );
+        formParams += '}';
+    
+        $.ajax(
+            {
+                url: 'modules/fcPayOne/application/models/fcpayone_ajax.php',
+                method: 'POST',
+                type: 'POST',
+                dataType: 'text',
+                data: { paymentid: "fcpopo_installment", action: "precheck", params: formParams },
+                success: function(Response) {
+                    $('#payolution_installment_calculation_selection').html(Response);
+                    $('#payolution_installment_check_availability').attr('disabled', false);
+                    var numberOfInstallments = $('#payolution_no_installments').val();
+                    $('#payolution_sum_number_installments').html(numberOfInstallments);
+                    $('input[name=payolution_installment_selection]').bind(
+                        'change', function() {
+                            // selected interest data will be set into summary box
+                            var selectedInstallmentIndex = $('input[name=payolution_installment_selection]:checked').val();
+                            // disable all installment details and enable selected
+                            for (i=1;i<=numberOfInstallments;i++) {
+                                $('#payolution_rates_details_'+i).removeClass('payolution_rates_visible');
+                                $('#payolution_rates_details_'+i).addClass('payolution_rates_invisible');
+                            }
+                            $('#payolution_rates_details_'+selectedInstallmentIndex).addClass('payolution_rates_visible');
+                            $('#payolution_rates_details_'+selectedInstallmentIndex).removeClass('payolution_rates_invisible');
+                            // set needed values to foreseen fields
+                            $('#payolution_sum_number_installments').html(numberOfInstallments);
+                            $('#payolution_financing_sum').html($('#payolution_installment_total_amount_' + selectedInstallmentIndex).val());
+                            $('#payolution_sum_interest_rate').html($('#payolution_installment_interest_rate_' + selectedInstallmentIndex).val());
+                            $('#payolution_sum_eff_interest_rate').html($('#payolution_installment_eff_interest_rate_' + selectedInstallmentIndex).val());
+                            $('#payolution_sum_monthly_rate').html($('#payolution_installment_value_' + selectedInstallmentIndex).val());
+                            $('#payolution_selected_installment_index').val(selectedInstallmentIndex);
+                        }
+                    );
+                }
+            }
+        );    
+    }
+);
 
 /**
  * Reaction on changes on radio interest selection
  * 
- * @param void
+ * @param  void
  * @return void
  */
 
@@ -887,15 +895,17 @@ $('#payolution_installment_check_availability').click(function(){
             fcCheckDebitCountry(oForm["dynvalue[fcpo_elv_country]"]);
         }
         oForm.onsubmit = function(e){
-            if ( fcCheckPaymentSelection() == false ) {
+            if (fcCheckPaymentSelection() == false ) {
                 e.preventDefault();
             }
         };
     }
-    setTimeout(function(){
-        if(document.getElementById('fcpoCreditcard') && typeof PayoneRequest == 'function') {
-            document.getElementById('fcpoCreditcard').style.display = '';
-        }
-    }, 2000);
+    setTimeout(
+        function(){
+            if(document.getElementById('fcpoCreditcard') && typeof PayoneRequest == 'function') {
+                document.getElementById('fcpoCreditcard').style.display = '';
+            }
+        }, 2000
+    );
     
 }(document, 'script'));

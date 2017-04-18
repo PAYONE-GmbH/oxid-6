@@ -18,22 +18,26 @@
  * @version   OXID eShop CE
  */
  
-class MockResultRatepay {
+class MockResultRatepay
+{
 
     public $EOF = false;
     public $fields = array('someValue','someValue','someValue','someValue','someValue');
 
-    public function recordCount() {
+    public function recordCount() 
+    {
         return 1;
     }
 
-    public function moveNext() {
+    public function moveNext() 
+    {
         $this->EOF = true;
     }
 
 }
 
-class Unit_fcPayOne_Application_Models_fcporatepay extends OxidTestCase {
+class Unit_fcPayOne_Application_Models_fcporatepay extends OxidTestCase
+{
     /**
      * Call protected/private method of a class.
      *
@@ -43,7 +47,8 @@ class Unit_fcPayOne_Application_Models_fcporatepay extends OxidTestCase {
      *
      * @return mixed Method return.
      */
-    public function invokeMethod(&$object, $methodName, array $parameters = array()) {
+    public function invokeMethod(&$object, $methodName, array $parameters = array()) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
@@ -54,13 +59,14 @@ class Unit_fcPayOne_Application_Models_fcporatepay extends OxidTestCase {
     /**
      * Set protected/private attribute value
      *
-     * @param object &$object    Instantiated object that we will run method on.
+     * @param object &$object      Instantiated object that we will run method on.
      * @param string $propertyName property that shall be set
-     * @param array  $value value to be set
+     * @param array  $value        value to be set
      *
      * @return mixed Method return.
      */
-    public function invokeSetAttribute(&$object, $propertyName, $value) {
+    public function invokeSetAttribute(&$object, $propertyName, $value) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $property = $reflection->getProperty($propertyName);
         $property->setAccessible(true);
@@ -72,7 +78,8 @@ class Unit_fcPayOne_Application_Models_fcporatepay extends OxidTestCase {
     /**
      * testing fcpoInsertProfile for deletion
      */
-    public function test_fcpoInsertProfile_Delete() {
+    public function test_fcpoInsertProfile_Delete() 
+    {
         $aMockData = array('delete'=>'someValue');
         $oTestObject = $this->getMock('fcporatepay', array('_fcpoUpdateRatePayProfile'));
         $oTestObject->expects($this->any())->method('_fcpoUpdateRatePayProfile')->will($this->returnValue(null));
@@ -87,7 +94,8 @@ class Unit_fcPayOne_Application_Models_fcporatepay extends OxidTestCase {
     /**
      * testing fcpoInsertProfile for updating
      */
-    public function test_fcpoInsertProfile_Update() {
+    public function test_fcpoInsertProfile_Update() 
+    {
         $aMockData = array('someIndex'=>'someValue');
         $oTestObject = $this->getMock('fcporatepay', array('_fcpoUpdateRatePayProfile'));
         $oTestObject->expects($this->any())->method('_fcpoUpdateRatePayProfile')->will($this->returnValue(null));
@@ -102,7 +110,8 @@ class Unit_fcPayOne_Application_Models_fcporatepay extends OxidTestCase {
     /**
      * Testing fcpoGetRatePayProfiles for coverage
      */
-    public function test_fcpoGetRatePayProfiles_Coverage() {
+    public function test_fcpoGetRatePayProfiles_Coverage() 
+    {
         $oTestObject = $this->getMock('fcporatepay', array('fcpoGetFields'));
         $oTestObject->expects($this->any())->method('fcpoGetFields')->will($this->returnValue(null));
 
@@ -122,7 +131,8 @@ class Unit_fcPayOne_Application_Models_fcporatepay extends OxidTestCase {
     /**
      * Testing fcpoAddRatePayProfile for coverage
      */
-    public function test_fcpoAddRatePayProfile_Coverage() {
+    public function test_fcpoAddRatePayProfile_Coverage() 
+    {
         $oTestObject = oxNew('fcporatepay');
 
         $oMockDb = $this->getMock('oxdb', array('Execute'));
@@ -142,7 +152,8 @@ class Unit_fcPayOne_Application_Models_fcporatepay extends OxidTestCase {
     /**
      * Testing fcpoGetProfileData for coverage
      */
-    public function test_fcpoGetProfileData_Coverage() {
+    public function test_fcpoGetProfileData_Coverage() 
+    {
         $aMockFields = array('one', 'two', 'three');
         $aMockResult = array('value1', 'value2', 'value3');
         $aExpect = array('one'=>'value1', 'two'=>'value2', 'three'=>'value3');
@@ -161,7 +172,8 @@ class Unit_fcPayOne_Application_Models_fcporatepay extends OxidTestCase {
     /**
      * Testing fcpoGetFields for coverage
      */
-    public function test_fcpoGetFields_Coverage() {
+    public function test_fcpoGetFields_Coverage() 
+    {
         $oTestObject = oxNew('fcporatepay');
 
         $oMockDbResult = new MockResultRatepay();
@@ -177,7 +189,8 @@ class Unit_fcPayOne_Application_Models_fcporatepay extends OxidTestCase {
     /**
      * Testing  _fcpoUpdateRatePayProfile for coverage
      */
-    public function test__fcpoUpdateRatePayProfile_Coverage() {
+    public function test__fcpoUpdateRatePayProfile_Coverage() 
+    {
         $aMockResponse = array('status'=>'OK');
 
         $oTestObject = $this->getMock('fcporatepay', array('fcpoGetProfileData', '_fcpoUpdateRatePayProfileByResponse'));
@@ -197,7 +210,8 @@ class Unit_fcPayOne_Application_Models_fcporatepay extends OxidTestCase {
     /**
      * Testing _fcpoUpdateRatePayProfileByResponse for coverage
      */
-    public function test__fcpoUpdateRatePayProfileByResponse_Coverage() {
+    public function test__fcpoUpdateRatePayProfileByResponse_Coverage() 
+    {
         $oTestObject = oxNew('fcporatepay');
 
         $oMockDb = $this->getMock('oxdb', array('Execute', 'quote'));

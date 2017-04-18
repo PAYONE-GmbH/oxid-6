@@ -19,7 +19,8 @@
  * @version   OXID eShop CE
  */
  
-class fcpayone_boni_main extends fcpayone_admindetails {
+class fcpayone_boni_main extends fcpayone_admindetails
+{
 
     /**
      * Current class template name
@@ -30,6 +31,7 @@ class fcpayone_boni_main extends fcpayone_admindetails {
 
     /**
      * Definitions of multilang files
+     *
      * @var array
      */
     protected $_aMultiLangFields = array(
@@ -54,7 +56,8 @@ class fcpayone_boni_main extends fcpayone_admindetails {
      *
      * @return string
      */
-    public function render() {
+    public function render() 
+    {
         $sReturn = parent::render();
         $oLang = $this->_oFcpoHelper->fcpoGetLang();
 
@@ -90,7 +93,8 @@ class fcpayone_boni_main extends fcpayone_admindetails {
      *
      * @return mixed
      */
-    public function save() {
+    public function save() 
+    {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
 
         $iLang = $this->_oFcpoHelper->fcpoGetRequestParameter("subjlang");

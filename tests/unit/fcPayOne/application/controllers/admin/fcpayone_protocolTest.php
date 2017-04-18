@@ -18,7 +18,8 @@
  * @version   OXID eShop CE
  */
  
-class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_protocol extends OxidTestCase {
+class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_protocol extends OxidTestCase
+{
 
     
     /**
@@ -30,7 +31,8 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_protocol extends Oxid
      *
      * @return mixed Method return.
      */
-    public function invokeMethod(&$object, $methodName, array $parameters = array()) {
+    public function invokeMethod(&$object, $methodName, array $parameters = array()) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $method     = $reflection->getMethod($methodName);
         $method->setAccessible(true);
@@ -41,13 +43,14 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_protocol extends Oxid
     /**
      * Set protected/private attribute value
      *
-     * @param object &$object    Instantiated object that we will run method on.
+     * @param object &$object      Instantiated object that we will run method on.
      * @param string $propertyName property that shall be set
-     * @param array  $value value to be set
+     * @param array  $value        value to be set
      *
      * @return mixed Method return.
      */
-    public function invokeSetAttribute(&$object, $propertyName, $value) {
+    public function invokeSetAttribute(&$object, $propertyName, $value) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $property   = $reflection->getProperty($propertyName);
         $property->setAccessible(true);
@@ -59,10 +62,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_protocol extends Oxid
     /**
      * Testing getting view id for coverage
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_getViewId_Coverage() {
+    public function test_getViewId_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_protocol');
         $this->assertEquals('dyn_fcpayone', $oTestObject->getViewId());
     }
@@ -71,17 +75,18 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_protocol extends Oxid
     /**
      * Testing the return of an old shop version 
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcGetAdminSeperator_OldShopVersion() {
+    public function test_fcGetAdminSeperator_OldShopVersion() 
+    {
         $oPayoneAdmin = oxNew('fcpayone_protocol');
         $oHelper    = $this->getMockBuilder('fcpohelper')
-                           ->disableOriginalConstructor()
-                           ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
         $oHelper->expects($this->any())
-                ->method('fcpoGetIntShopVersion')
-                ->will($this->returnValue(4200));
+            ->method('fcpoGetIntShopVersion')
+            ->will($this->returnValue(4200));
         
         $this->invokeSetAttribute($oPayoneAdmin, '_oFcpoHelper', $oHelper);
         
@@ -91,17 +96,18 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_protocol extends Oxid
     /**
      * Testing the return of an old shop version 
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcGetAdminSeperator_NewerShopVersion() {
+    public function test_fcGetAdminSeperator_NewerShopVersion() 
+    {
         $oPayoneAdmin = oxNew('fcpayone_protocol');
         $oHelper    = $this->getMockBuilder('fcpohelper')
-                           ->disableOriginalConstructor()
-                           ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
         $oHelper->expects($this->any())
-                ->method('fcpoGetIntShopVersion')
-                ->will($this->returnValue(4700));
+            ->method('fcpoGetIntShopVersion')
+            ->will($this->returnValue(4700));
         
         $this->invokeSetAttribute($oPayoneAdmin, '_oFcpoHelper', $oHelper);
         

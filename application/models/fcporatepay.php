@@ -18,15 +18,18 @@
  * @copyright (C) Payone GmbH
  * @version   OXID eShop CE
  */
-class fcporatepay extends oxBase {
+class fcporatepay extends oxBase
+{
     /**
      * Helper object for dealing with different shop versions
+     *
      * @var object
      */
     protected $_oFcpoHelper = null;
 
     /**
      * Centralized Database instance
+     *
      * @var object
      */
     protected $_oFcpoDb = null;
@@ -34,7 +37,8 @@ class fcporatepay extends oxBase {
     /**
      * Init needed data
      */
-    public function __construct() {
+    public function __construct() 
+    {
         parent::__construct();
         $this->_oFcpoHelper = oxNew('fcpohelper');
         $this->_oFcpoDb = oxDb::getDb();
@@ -43,10 +47,11 @@ class fcporatepay extends oxBase {
     /**
      * Add/Update RatePay profile
      * 
-     * @param array $aRatepayData
+     * @param  array $aRatepayData
      * @return void
      */
-    public function fcpoInsertProfile($sOxid, $aRatePayData) {
+    public function fcpoInsertProfile($sOxid, $aRatePayData) 
+    {
         if (array_key_exists('delete', $aRatePayData) !== false) {
             $sQuery = "DELETE FROM fcporatepay WHERE oxid = " . oxDb::getDb()->quote($sOxid);
             $this->_oFcpoDb->Execute($sQuery);
@@ -67,10 +72,11 @@ class fcporatepay extends oxBase {
     /**
      * Returns an array with RatePay profiles
      * 
-     * @param string $sPaymentId (optional)
+     * @param  string $sPaymentId (optional)
      * @return void
      */
-    public function fcpoGetRatePayProfiles($sPaymentId = null) {
+    public function fcpoGetRatePayProfiles($sPaymentId = null) 
+    {
         $aReturn = array();
         
         $sFilterPaymentId = "";
@@ -96,10 +102,11 @@ class fcporatepay extends oxBase {
     /**
      * Add RatePay shop
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function fcpoAddRatePayProfile() {
+    public function fcpoAddRatePayProfile() 
+    {
         $oUtilsObject = $this->_oFcpoHelper->fcpoGetUtilsObject();
         $sNewOxid = $oUtilsObject->generateUId();
         $sQuery = "
@@ -179,10 +186,11 @@ class fcporatepay extends oxBase {
     /**
      * Returns profiledata by id
      * 
-     * @param type $sOxid
+     * @param  type $sOxid
      * @return array
      */
-    public function fcpoGetProfileData($sOxid) {
+    public function fcpoGetProfileData($sOxid) 
+    {
         $sQuery = "SELECT * FROM fcporatepay WHERE OXID=".$this->_oFcpoDb->quote($sOxid);
         $aResult = $this->_oFcpoDb->GetRow($sQuery);
         $aFields = $this->fcpoGetFields();
@@ -202,10 +210,11 @@ class fcporatepay extends oxBase {
     /**
      * Returns matching profiledata by giving paymentid
      *
-     * @param $sPaymentId
+     * @param  $sPaymentId
      * @return array
      */
-    public function fcpoGetProfileDataByPaymentId($sPaymentId) {
+    public function fcpoGetProfileDataByPaymentId($sPaymentId) 
+    {
         $sQuery = "SELECT * FROM fcporatepay WHERE OXPAYMENTID=".$this->_oFcpoDb->quote($sPaymentId)." LIMIT 1";
         $sOxid = $this->_oFcpoDb->GetOne($sQuery);
         $aProfile = array();
@@ -219,10 +228,11 @@ class fcporatepay extends oxBase {
     /**
      * Helper method that returns field-names of ratepay-table
      * 
-     * @param void
+     * @param  void
      * @return array
      */
-    public function fcpoGetFields() {
+    public function fcpoGetFields() 
+    {
         $sQuery = "SHOW FIELDS FROM fcporatepay";
         $aRows = $this->_oFcpoDb->getAll($sQuery);
         $aReturn = array();
@@ -238,10 +248,11 @@ class fcporatepay extends oxBase {
     /**
      * Requests and updates payment information for given shop_id
      * 
-     * @param $aRatePayData
+     * @param  $aRatePayData
      * @return void
      */
-    protected function _fcpoUpdateRatePayProfile($sOxid) {
+    protected function _fcpoUpdateRatePayProfile($sOxid) 
+    {
         $aRatePayData = $this->fcpoGetProfileData($sOxid);
         $oRequest = $this->_oFcpoHelper->getFactoryObject('fcporequest');
         $aResponse = $oRequest->sendRequestRatePayProfile($aRatePayData);
@@ -253,11 +264,12 @@ class fcporatepay extends oxBase {
     /**
      * Collects profile information and save it into profile
      * 
-     * @param string $sOxid
-     * @param array $aResponse
+     * @param  string $sOxid
+     * @param  array  $aResponse
      * @return void
      */
-    protected function _fcpoUpdateRatePayProfileByResponse($sOxid, $aResponse) {
+    protected function _fcpoUpdateRatePayProfileByResponse($sOxid, $aResponse) 
+    {
         $sQuery = "
             UPDATE fcporatepay SET
                 `merchant_name`=".$this->_oFcpoDb->quote($aResponse['add_paydata[merchant-name]']).",

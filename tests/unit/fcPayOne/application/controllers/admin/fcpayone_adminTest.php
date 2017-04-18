@@ -18,7 +18,8 @@
  * @version   OXID eShop CE
  */
  
-class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_adminTest extends OxidTestCase {
+class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_adminTest extends OxidTestCase
+{
     
     /**
      * Call protected/private method of a class.
@@ -60,10 +61,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_adminTest extends Oxi
     /**
      * Call method for getting coverage
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_getViewId_Coverage() {
+    public function test_getViewId_Coverage() 
+    {
         $oPayoneAdmin = oxNew('fcpayone_admin');
         $this->assertEquals('dyn_fcpayone', $oPayoneAdmin->getViewId());
     }
@@ -72,17 +74,18 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_adminTest extends Oxi
     /**
      * Testing the return of an old shop version 
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcGetAdminSeperator_OldShopVersion() {
+    public function test_fcGetAdminSeperator_OldShopVersion() 
+    {
         $oPayoneAdmin = oxNew('fcpayone_admin');
         $oHelper    = $this->getMockBuilder('fcpohelper')
-                           ->disableOriginalConstructor()
-                           ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
         $oHelper->expects($this->any())
-                ->method('fcpoGetIntShopVersion')
-                ->will($this->returnValue(4200));
+            ->method('fcpoGetIntShopVersion')
+            ->will($this->returnValue(4200));
         
         $this->invokeSetAttribute($oPayoneAdmin, '_oFcpoHelper', $oHelper);
         
@@ -92,17 +95,18 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_adminTest extends Oxi
     /**
      * Testing the return of an old shop version 
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcGetAdminSeperator_NewerShopVersion() {
+    public function test_fcGetAdminSeperator_NewerShopVersion() 
+    {
         $oPayoneAdmin = oxNew('fcpayone_admin');
         $oHelper    = $this->getMockBuilder('fcpohelper')
-                           ->disableOriginalConstructor()
-                           ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
         $oHelper->expects($this->any())
-                ->method('fcpoGetIntShopVersion')
-                ->will($this->returnValue(4700));
+            ->method('fcpoGetIntShopVersion')
+            ->will($this->returnValue(4700));
         
         $this->invokeSetAttribute($oPayoneAdmin, '_oFcpoHelper', $oHelper);
         

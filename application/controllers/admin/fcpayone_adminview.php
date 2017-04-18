@@ -19,16 +19,19 @@
  * @version   OXID eShop CE
  */
  
-class fcpayone_adminview extends oxAdminView {
+class fcpayone_adminview extends oxAdminView
+{
     
     /**
      * Helper object for dealing with different shop versions
+     *
      * @var object
      */
     protected $_oFcpoHelper = null;
     
     /**
      * Centralized Database instance
+     *
      * @var object
      */
     protected $_oFcpoDb = null;
@@ -37,7 +40,8 @@ class fcpayone_adminview extends oxAdminView {
     /**
      * Init needed data
      */
-    public function __construct() {
+    public function __construct() 
+    {
         parent::__construct();
         $this->_oFcpoHelper = oxNew('fcpohelper');
         $this->_oFcpoDb     = oxDb::getDb();
@@ -49,7 +53,8 @@ class fcpayone_adminview extends oxAdminView {
      *
      * @return string
      */
-    public function fcGetAdminSeperator() {
+    public function fcGetAdminSeperator() 
+    {
         $iVersion = $this->_oFcpoHelper->fcpoGetIntShopVersion();
         if($iVersion < 4300) {
             return '?';
@@ -63,7 +68,8 @@ class fcpayone_adminview extends oxAdminView {
      *
      * @return string
      */
-    public function getViewId() {
+    public function getViewId() 
+    {
         return 'dyn_fcpayone';
     }
     
@@ -71,7 +77,7 @@ class fcpayone_adminview extends oxAdminView {
     /**
      * Template getter for integrator ID
      * 
-     * @param void
+     * @param  void
      * @return string
      */
     public function fcpoGetIntegratorId()
@@ -83,7 +89,7 @@ class fcpayone_adminview extends oxAdminView {
     /**
      * Template getter returns payone connector version
      * 
-     * @param void
+     * @param  void
      * @return string
      */
     public function fcpoGetVersion()
@@ -94,7 +100,7 @@ class fcpayone_adminview extends oxAdminView {
     /**
      * Template getter for Merchant ID
      * 
-     * @param void
+     * @param  void
      * @return string
      */
     public function fcpoGetMerchantId()

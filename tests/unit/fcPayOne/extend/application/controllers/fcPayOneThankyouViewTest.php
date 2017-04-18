@@ -18,7 +18,8 @@
  * @version   OXID eShop CE
  */
  
-class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneThankyouView extends OxidTestCase {
+class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneThankyouView extends OxidTestCase
+{
     
     /**
      * Call protected/private method of a class.
@@ -29,7 +30,8 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneThankyouView extends 
      *
      * @return mixed Method return.
      */
-    public function invokeMethod(&$object, $methodName, array $parameters = array()) {
+    public function invokeMethod(&$object, $methodName, array $parameters = array()) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $method     = $reflection->getMethod($methodName);
         $method->setAccessible(true);
@@ -41,13 +43,14 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneThankyouView extends 
     /**
      * Set protected/private attribute value
      *
-     * @param object &$object    Instantiated object that we will run method on.
+     * @param object &$object      Instantiated object that we will run method on.
      * @param string $propertyName property that shall be set
-     * @param array  $value value to be set
+     * @param array  $value        value to be set
      *
      * @return mixed Method return.
      */
-    public function invokeSetAttribute(&$object, $propertyName, $value) {
+    public function invokeSetAttribute(&$object, $propertyName, $value) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $property   = $reflection->getProperty($propertyName);
         $property->setAccessible(true);
@@ -59,10 +62,11 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneThankyouView extends 
     /**
      * Testing fcpoGetMandatePdfUrl active status
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcpoGetMandatePdfUrl_Active() {
+    public function test_fcpoGetMandatePdfUrl_Active() 
+    {
         $oMockDatabase = $this->getMock('oxDb', array('Execute'));
         $oMockDatabase->expects($this->any())->method('Execute')->will($this->returnValue(true));
         
@@ -77,7 +81,8 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneThankyouView extends 
         $oMockUser = new stdClass();
         $oMockUser->oxuser__oxpassword = new oxField(false);
 
-        $oTestObject = $this->getMock('fcPayOneThankyouView', array(
+        $oTestObject = $this->getMock(
+            'fcPayOneThankyouView', array(
                 'getConfig',
                 'getOrder',
                 'getUser',
@@ -97,7 +102,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneThankyouView extends 
         );
         
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
-        $oHelper->expects($this->any())->method('fcpoGetSessionVariable')->will($this->onConsecutiveCalls($aMockMandate,'someUserId'));
+        $oHelper->expects($this->any())->method('fcpoGetSessionVariable')->will($this->onConsecutiveCalls($aMockMandate, 'someUserId'));
         $oHelper->expects($this->any())->method('getFactoryObject')->will($this->returnValue($oMockRequest));
         
         
@@ -113,10 +118,11 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneThankyouView extends 
     /**
      * Testing fcpoGetMandatePdfUrl inactive status
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcpoGetMandatePdfUrl_Inactive() {
+    public function test_fcpoGetMandatePdfUrl_Inactive() 
+    {
         $oMockDatabase = $this->getMock('oxDb', array('Execute'));
         $oMockDatabase->expects($this->any())->method('Execute')->will($this->returnValue(true));
         
@@ -131,7 +137,8 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneThankyouView extends 
         $oMockUser = new stdClass();
         $oMockUser->oxuser__oxpassword = new oxField(false);
 
-        $oTestObject = $this->getMock('fcPayOneThankyouView', array(
+        $oTestObject = $this->getMock(
+            'fcPayOneThankyouView', array(
                 'getConfig',
                 'getOrder',
                 'getUser',
@@ -151,7 +158,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneThankyouView extends 
         );
         
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
-        $oHelper->expects($this->any())->method('fcpoGetSessionVariable')->will($this->onConsecutiveCalls($aMockMandate,'someUserId'));
+        $oHelper->expects($this->any())->method('fcpoGetSessionVariable')->will($this->onConsecutiveCalls($aMockMandate, 'someUserId'));
         $oHelper->expects($this->any())->method('getFactoryObject')->will($this->returnValue($oMockRequest));
         
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
@@ -166,10 +173,11 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneThankyouView extends 
     /**
      * Testing fcpoIsAppointedError for coverage
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcpoIsAppointedError_Coverage() {
+    public function test_fcpoIsAppointedError_Coverage() 
+    {
         $oMockOrder = $this->getMock('oxOrder', array('isPayOnePaymentType'));
         $oMockOrder->expects($this->any())->method('isPayOnePaymentType')->will($this->returnValue(true));
         $oMockOrder->oxorder__oxfolder      = new oxField('ORDERFOLDER_PROBLEMS');
@@ -185,10 +193,11 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneThankyouView extends 
     /**
      * Testting render method for coverage
      * 
-     * @param voiud
+     * @param  voiud
      * @return void
      */
-    public function test_Render_Coverage() {
+    public function test_Render_Coverage() 
+    {
         $oMockUser = $this->getMock('oxUser', array('getId'));
         $oMockUser->expects($this->any())->method('getId')->will($this->returnValue('someId'));
         
@@ -207,10 +216,11 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneThankyouView extends 
     /**
      * Testing fcpoGetBarzahlenHtml for coverage
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcpoGetBarzahlenHtml_Coverage() {
+    public function test_fcpoGetBarzahlenHtml_Coverage() 
+    {
         $oTestObject = oxNew('fcPayOneThankyouView');
         $this->invokeSetAttribute($oTestObject, '_sBarzahlenHtml', null);
         

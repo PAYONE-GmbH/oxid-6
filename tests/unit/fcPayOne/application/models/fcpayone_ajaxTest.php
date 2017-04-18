@@ -18,22 +18,26 @@
  * @version   OXID eShop CE
  */
  
-class MockResultAjax {
+class MockResultAjax
+{
 
     public $EOF = false;
     public $fields = array('someValue','someValue','someValue','someValue','someValue');
 
-    public function recordCount() {
+    public function recordCount() 
+    {
         return 1;
     }
 
-    public function moveNext() {
+    public function moveNext() 
+    {
         $this->EOF = true;
     }
 
 }
 
-class Unit_fcPayOne_Application_Models_fcpayone_ajax extends OxidTestCase {
+class Unit_fcPayOne_Application_Models_fcpayone_ajax extends OxidTestCase
+{
     /**
      * Call protected/private method of a class.
      *
@@ -43,7 +47,8 @@ class Unit_fcPayOne_Application_Models_fcpayone_ajax extends OxidTestCase {
      *
      * @return mixed Method return.
      */
-    public function invokeMethod(&$object, $methodName, array $parameters = array()) {
+    public function invokeMethod(&$object, $methodName, array $parameters = array()) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
@@ -54,13 +59,14 @@ class Unit_fcPayOne_Application_Models_fcpayone_ajax extends OxidTestCase {
     /**
      * Set protected/private attribute value
      *
-     * @param object &$object    Instantiated object that we will run method on.
+     * @param object &$object      Instantiated object that we will run method on.
      * @param string $propertyName property that shall be set
-     * @param array  $value value to be set
+     * @param array  $value        value to be set
      *
      * @return mixed Method return.
      */
-    public function invokeSetAttribute(&$object, $propertyName, $value) {
+    public function invokeSetAttribute(&$object, $propertyName, $value) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $property = $reflection->getProperty($propertyName);
         $property->setAccessible(true);
@@ -71,7 +77,8 @@ class Unit_fcPayOne_Application_Models_fcpayone_ajax extends OxidTestCase {
     /**
      * Testing fcpoTriggerPrecheck for coverage
      */
-    public function test_fcpoTriggerPrecheck_Coverage() {
+    public function test_fcpoTriggerPrecheck_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_ajax');
         $oMockPayment = $this->getMock('payment', array('setPayolutionAjaxParams', 'fcpoPayolutionPreCheck'));
         $oMockPayment->expects($this->any())->method('setPayolutionAjaxParams')->will($this->returnValue(null));
@@ -87,7 +94,8 @@ class Unit_fcPayOne_Application_Models_fcpayone_ajax extends OxidTestCase {
     /**
      * Testing fcpoTriggerInstallmentCalculation coverage
      */
-    public function test_fcpoTriggerInstallmentCalculation_Coverage() {
+    public function test_fcpoTriggerInstallmentCalculation_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_ajax');
         $oMockPayment = $this->getMock('payment', array('fcpoPerformInstallmentCalculation', 'fcpoGetInstallments'));
         $oMockPayment->expects($this->any())->method('fcpoPerformInstallmentCalculation')->will($this->returnValue(null));
@@ -103,7 +111,8 @@ class Unit_fcPayOne_Application_Models_fcpayone_ajax extends OxidTestCase {
     /**
      * Testing fcpoParseCalculation2Html coverage
      */
-    public function test_fcpoParseCalculation2Html_Coverage() {
+    public function test_fcpoParseCalculation2Html_Coverage() 
+    {
         $aMockCalculation = array(
             'someIndex' => array(
                 'Months' => array(
@@ -112,13 +121,15 @@ class Unit_fcPayOne_Application_Models_fcpayone_ajax extends OxidTestCase {
             ),
         );
 
-        $oTestObject = $this->getMock('fcpayone_ajax', array(
+        $oTestObject = $this->getMock(
+            'fcpayone_ajax', array(
             '_fcpoGetInsterestHiddenFields',
             '_fcpoGetInsterestRadio',
             '_fcpoGetInsterestLabel',
             '_fcpoGetInsterestMonthDetail',
             '_fcpoGetLightView',
-        ));
+            )
+        );
         $oTestObject->expects($this->any())->method('_fcpoGetInsterestHiddenFields')->will($this->returnValue('someValue'));
         $oTestObject->expects($this->any())->method('_fcpoGetInsterestRadio')->will($this->returnValue('someValue'));
         $oTestObject->expects($this->any())->method('_fcpoGetInsterestLabel')->will($this->returnValue('someValue'));
@@ -140,7 +151,8 @@ class Unit_fcPayOne_Application_Models_fcpayone_ajax extends OxidTestCase {
     /**
      * Testing _fcpoGetLightView for coverage
      */
-    public function test__fcpoGetLightView_Coverage() {
+    public function test__fcpoGetLightView_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_ajax');
         $sResponse = $sExpect = $oTestObject->_fcpoGetLightView();
         $this->assertEquals($sExpect, $sResponse);
@@ -149,7 +161,8 @@ class Unit_fcPayOne_Application_Models_fcpayone_ajax extends OxidTestCase {
     /**
      * Testing fcpoReturnErrorMessage for coverage
      */
-    public function test_fcpoReturnErrorMessage_Coverage() {
+    public function test_fcpoReturnErrorMessage_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_ajax');
         $oMockConfig = $this->getMock('oxconfig', array('isUtf'));
         $oMockConfig->expects($this->any())->method('isUtf')->will($this->returnValue(false));
@@ -165,7 +178,8 @@ class Unit_fcPayOne_Application_Models_fcpayone_ajax extends OxidTestCase {
     /**
      * Testing _fcpoGetInsterestHiddenFields for coverage
      */
-    public function test__fcpoGetInsterestHiddenFields_Coverage() {
+    public function test__fcpoGetInsterestHiddenFields_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_ajax');
         $aMockInstallment = array(
             'Amount'=>'someAmount',
@@ -182,7 +196,8 @@ class Unit_fcPayOne_Application_Models_fcpayone_ajax extends OxidTestCase {
     /**
      * Testing _fcpoGetInsterestMonthDetail for coverage
      */
-    public function test__fcpoGetInsterestMonthDetail_Coverage() {
+    public function test__fcpoGetInsterestMonthDetail_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_ajax');
         $aMockRatesDetail = array(
             'Due'=>'someDue',
@@ -204,7 +219,8 @@ class Unit_fcPayOne_Application_Models_fcpayone_ajax extends OxidTestCase {
     /**
      * Testing _fcpoGetInsterestRadio for coverage
      */
-    public function test__fcpoGetInsterestRadio_Coverage() {
+    public function test__fcpoGetInsterestRadio_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_ajax');
 
         $sResponse = $sExpect = $oTestObject->_fcpoGetInsterestRadio('someKey', array());
@@ -214,7 +230,8 @@ class Unit_fcPayOne_Application_Models_fcpayone_ajax extends OxidTestCase {
     /**
      * Testing _fcpoGetInsterestRadio for coverage
      */
-    public function test__fcpoGetInsterestLabel_Coverage() {
+    public function test__fcpoGetInsterestLabel_Coverage() 
+    {
         $oTestObject = $this->getMock('fcpayone_ajax', array('_fcpoGetInsterestCaption'));
         $oTestObject->expects($this->any())->method('_fcpoGetInsterestCaption')->will($this->returnValue('someCaption'));
 
@@ -225,7 +242,8 @@ class Unit_fcPayOne_Application_Models_fcpayone_ajax extends OxidTestCase {
     /**
      * Testing _fcpoGetInsterestCaption for coverage
      */
-    public function test__fcpoGetInsterestCaption_Coverage() {
+    public function test__fcpoGetInsterestCaption_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_ajax');
         $aMockInstallment = array(
             'Duration'=>'someDuration',

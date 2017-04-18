@@ -18,7 +18,8 @@
  * @version   OXID eShop CE
  */
  
-class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_status_mapping extends OxidTestCase {
+class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_status_mapping extends OxidTestCase
+{
 
     /**
      * Call protected/private method of a class.
@@ -29,7 +30,8 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_status_mapping extend
      *
      * @return mixed Method return.
      */
-    public function invokeMethod(&$object, $methodName, array $parameters = array()) {
+    public function invokeMethod(&$object, $methodName, array $parameters = array()) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
@@ -40,13 +42,14 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_status_mapping extend
     /**
      * Set protected/private attribute value
      *
-     * @param object &$object    Instantiated object that we will run method on.
+     * @param object &$object      Instantiated object that we will run method on.
      * @param string $propertyName property that shall be set
-     * @param array  $value value to be set
+     * @param array  $value        value to be set
      *
      * @return mixed Method return.
      */
-    public function invokeSetAttribute(&$object, $propertyName, $value) {
+    public function invokeSetAttribute(&$object, $propertyName, $value) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $property = $reflection->getProperty($propertyName);
         $property->setAccessible(true);
@@ -57,10 +60,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_status_mapping extend
     /**
      * Testings getMappings for coverage
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_getMappings_Coverage() {
+    public function test_getMappings_Coverage() 
+    {
         $aMockMapping = array('someValue');
 
         $oTestObject = $this->getMock('fcpayone_status_mapping', array('_fcpoGetExistingMappings', '_fcpoAddNewMapping'));
@@ -75,7 +79,8 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_status_mapping extend
     /**
      * Testing _fcpoAddNewMapping for coverage
      */
-    public function test__fcpoAddNewMapping_Coverage() {
+    public function test__fcpoAddNewMapping_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_status_mapping');
 
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
@@ -89,7 +94,8 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_status_mapping extend
     /**
      * Testing _fcpoGetExistingMappings for coverage
      */
-    public function test__fcpoGetExistingMappings_Coverage() {
+    public function test__fcpoGetExistingMappings_Coverage() 
+    {
         $aResult = array('someIndex' => 'someValue');
         $oTestObject = oxNew('fcpayone_status_mapping');
 
@@ -103,10 +109,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_status_mapping extend
     /**
      * Testing getPaymentTypeList on coverage
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_getPaymentTypeList_Coverage() {
+    public function test_getPaymentTypeList_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_status_mapping');
         $aResponse = $aExpect = $oTestObject->getPaymentTypeList();
         $this->assertEquals($aExpect, $aResponse);
@@ -115,10 +122,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_status_mapping extend
     /**
      * Testing getPayoneStatusList on coverage
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_getPayoneStatusList_Coverage() {
+    public function test_getPayoneStatusList_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_status_mapping');
         $aResponse = $aExpect = $oTestObject->getPayoneStatusList();
         $this->assertEquals($aExpect, $aResponse);
@@ -127,10 +135,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_status_mapping extend
     /**
      * Testing getShopStatusList on coverage
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_getShopStatusList_Coverage() {
+    public function test_getShopStatusList_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_status_mapping');
         $aResponse = $aExpect = $oTestObject->getShopStatusList();
         $this->assertEquals($aExpect, $aResponse);
@@ -139,10 +148,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_status_mapping extend
     /**
      * Testing save method for coverage
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_save_Coverage() {
+    public function test_save_Coverage() 
+    {
         $oMockMapping = $this->getMock('fcpomapping', array('fcpoUpdateMappings'));
         $oMockMapping->expects($this->any())->method('fcpoUpdateMappings')->will($this->returnValue(true));
 

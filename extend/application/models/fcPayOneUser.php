@@ -18,10 +18,12 @@
  * @version   OXID eShop CE
  */
  
-class fcPayOneUser extends fcPayOneUser_parent {
+class fcPayOneUser extends fcPayOneUser_parent
+{
 
     /**
      * Helper object for dealing with different shop versions
+     *
      * @var object
      */
     protected $_oFcpoHelper = null;
@@ -31,7 +33,8 @@ class fcPayOneUser extends fcPayOneUser_parent {
      * 
      * @return null
      */
-    public function __construct() {
+    public function __construct() 
+    {
         parent::__construct();
         $this->_oFcpoHelper = oxNew('fcpohelper');
     }
@@ -43,7 +46,8 @@ class fcPayOneUser extends fcPayOneUser_parent {
      *
      * @return null
      */
-    protected function fcpoSetBoni($aResponse) {
+    protected function fcpoSetBoni($aResponse) 
+    {
         $boni = 100;
         if ($aResponse['scorevalue']) {
             $boni = $aResponse['scorevalue'];
@@ -70,7 +74,8 @@ class fcPayOneUser extends fcPayOneUser_parent {
      *
      * @return bool
      */
-    protected function isNewBonicheckNeeded() {
+    protected function isNewBonicheckNeeded() 
+    {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $sTimeLastCheck = strtotime($this->oxuser__fcpobonicheckdate->value);
         $iEnduranceBoniCheck = (int) $oConfig->getConfigParam('sFCPODurabilityBonicheck');
@@ -86,7 +91,8 @@ class fcPayOneUser extends fcPayOneUser_parent {
      *
      * @return bool
      */
-    protected function isBonicheckNeededForBasket() {
+    protected function isBonicheckNeededForBasket() 
+    {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $iStartlimitBonicheck = $oConfig->getConfigParam('sFCPOStartlimitBonicheck');
 
@@ -109,7 +115,8 @@ class fcPayOneUser extends fcPayOneUser_parent {
      *
      * @return bool
      */
-    protected function isBonicheckNeeded() {
+    protected function isBonicheckNeeded() 
+    {
         $blBoniCheckNeeded = (
                 (
                 $this->oxuser__oxboni->value == $this->getBoni() ||
@@ -126,7 +133,8 @@ class fcPayOneUser extends fcPayOneUser_parent {
      *
      * @return bool
      */
-    public function checkAddressAndScore($blCheckAddress = true, $blCheckBoni = true) {
+    public function checkAddressAndScore($blCheckAddress = true, $blCheckBoni = true) 
+    {
         $blReturn = true;
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $aResponse = array();
@@ -178,11 +186,12 @@ class fcPayOneUser extends fcPayOneUser_parent {
     /**
      * Validating delivery address
      * 
-     * @param bool $blIsValidAddress
-     * @param bool $blFCPOCheckDelAddress
+     * @param  bool $blIsValidAddress
+     * @param  bool $blFCPOCheckDelAddress
      * @return boolean
      */
-    protected function _fcpoValidateDelAddress($blIsValidAddress, $blFCPOCheckDelAddress) {
+    protected function _fcpoValidateDelAddress($blIsValidAddress, $blFCPOCheckDelAddress) 
+    {
         if ($blIsValidAddress && $blFCPOCheckDelAddress === true) {
             //Check Lieferadresse
             $oPORequest = $this->_oFcpoHelper->getFactoryObject('fcporequest');
@@ -203,12 +212,13 @@ class fcPayOneUser extends fcPayOneUser_parent {
     /**
      * Validates address by requesting payone
      * 
-     * @param string $sFCPOBonicheck
-     * @param bool $blCheckedBoni
-     * @param bool $blFCPOCorrectAddress
+     * @param  string $sFCPOBonicheck
+     * @param  bool   $blCheckedBoni
+     * @param  bool   $blFCPOCorrectAddress
      * @return bool
      */
-    protected function _fcpoValidateAddress($sFCPOBonicheck, $blCheckedBoni, $blFCPOCorrectAddress) {
+    protected function _fcpoValidateAddress($sFCPOBonicheck, $blCheckedBoni, $blFCPOCorrectAddress) 
+    {
         if ($sFCPOBonicheck == '-1' || $blCheckedBoni === false) {
             //Check Rechnungsadresse
             $oPORequest = $this->_oFcpoHelper->getFactoryObject('fcporequest');
@@ -223,10 +233,11 @@ class fcPayOneUser extends fcPayOneUser_parent {
     /**
      * Requesting for boni of user if conditions are alright
      * 
-     * @param bool $blBoniCheckValid
+     * @param  bool $blBoniCheckValid
      * @return boolean
      */
-    protected function _fcpoValidateBoni($blBoniCheckValid) {
+    protected function _fcpoValidateBoni($blBoniCheckValid) 
+    {
         $blCheckedBoni = false;
         if ($blBoniCheckValid) {
             //Consumerscore
@@ -246,7 +257,8 @@ class fcPayOneUser extends fcPayOneUser_parent {
      * @return int
      * @extend getBoni()
      */
-    public function getBoni() {
+    public function getBoni() 
+    {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $iDefaultBoni = $oConfig->getConfigParam('sFCPODefaultBoni');
         if ($iDefaultBoni !== null && is_numeric($iDefaultBoni) === true) {
@@ -260,7 +272,8 @@ class fcPayOneUser extends fcPayOneUser_parent {
      *
      * @return bool
      */
-    protected function fcpoIsValidAddress($aResponse, $blCorrectUserAddress) {
+    protected function fcpoIsValidAddress($aResponse, $blCorrectUserAddress) 
+    {
         if ($aResponse && is_array($aResponse) && array_key_exists('fcWrongCountry', $aResponse) && $aResponse['fcWrongCountry'] === true) {
             return true;
         }
@@ -273,11 +286,12 @@ class fcPayOneUser extends fcPayOneUser_parent {
     /**
      * Validating response of address check
      * 
-     * @param array $aResponse
-     * @param bool $blCorrectUserAddress
+     * @param  array $aResponse
+     * @param  bool  $blCorrectUserAddress
      * @return boolean
      */
-    protected function _fcpoValidateResponse($aResponse, $blCorrectUserAddress) {
+    protected function _fcpoValidateResponse($aResponse, $blCorrectUserAddress) 
+    {
         $oLang = $this->_oFcpoHelper->fcpoGetLang();
         $oUtilsView = $this->_oFcpoHelper->fcpoGetUtilsView();
 
@@ -298,11 +312,12 @@ class fcPayOneUser extends fcPayOneUser_parent {
     /**
      * Validate user data against request response and correct address if configured
      * 
-     * @param array $aResponse
-     * @param bool $blCorrectUserAddress
+     * @param  array $aResponse
+     * @param  bool  $blCorrectUserAddress
      * @return boolean
      */
-    protected function _fcpoValidateUserDataByResponse($aResponse, $blCorrectUserAddress) {
+    protected function _fcpoValidateUserDataByResponse($aResponse, $blCorrectUserAddress) 
+    {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $oLang = $this->_oFcpoHelper->fcpoGetLang();
         $oUtilsView = $this->_oFcpoHelper->fcpoGetUtilsView();
@@ -334,8 +349,8 @@ class fcPayOneUser extends fcPayOneUser_parent {
                 }
                 $this->save();
             }
-            #Country auch noch ?!? ( umwandlung iso nach id )
-            #$this->oxuser__oxfname->value = $aResponse['country'];
+            // Country auch noch ?!? ( umwandlung iso nach id )
+            // $this->oxuser__oxfname->value = $aResponse['country'];
             return true;
         }
     }
@@ -343,10 +358,11 @@ class fcPayOneUser extends fcPayOneUser_parent {
     /**
      * Unsetting groups
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function fcpoUnsetGroups() {
+    public function fcpoUnsetGroups() 
+    {
         $this->_oGroups = null;
     }
 

@@ -18,7 +18,8 @@
  * @version   OXID eShop CE
  */
 
-class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_status_forwarding extends OxidTestCase {
+class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_status_forwarding extends OxidTestCase
+{
 
     /**
      * Call protected/private method of a class.
@@ -29,7 +30,8 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_status_forwarding ext
      *
      * @return mixed Method return.
      */
-    public function invokeMethod(&$object, $methodName, array $parameters = array()) {
+    public function invokeMethod(&$object, $methodName, array $parameters = array()) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $method     = $reflection->getMethod($methodName);
         $method->setAccessible(true);
@@ -40,13 +42,14 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_status_forwarding ext
     /**
      * Set protected/private attribute value
      *
-     * @param object &$object    Instantiated object that we will run method on.
+     * @param object &$object      Instantiated object that we will run method on.
      * @param string $propertyName property that shall be set
-     * @param array  $value value to be set
+     * @param array  $value        value to be set
      *
      * @return mixed Method return.
      */
-    public function invokeSetAttribute(&$object, $propertyName, $value) {
+    public function invokeSetAttribute(&$object, $propertyName, $value) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $property   = $reflection->getProperty($propertyName);
         $property->setAccessible(true);
@@ -58,10 +61,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_status_forwarding ext
     /**
      * Testing getting forwardings on coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_getForwardings_Coverage() {
+    public function test_getForwardings_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_status_forwarding');
         $this->_fcpoAddSampleForwarding();
 
@@ -82,10 +86,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_status_forwarding ext
     /**
      * Testing getPayoneStatusList on coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_getPayoneStatusList_Coverage() {
+    public function test_getPayoneStatusList_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_status_forwarding');
         $aResponse = $aExpect = $oTestObject->getPayoneStatusList();
         $this->assertEquals($aExpect, $aResponse);
@@ -95,10 +100,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_status_forwarding ext
     /**
      * Testing save method on deleting an entry
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_save_Delete() {
+    public function test_save_Delete() 
+    {
         $oTestObject = oxNew('fcpayone_status_forwarding');
 
         $this->_fcpoAddSampleForwarding();
@@ -126,10 +132,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_status_forwarding ext
     /**
      * Testing save method on adding an entry
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_save_NewEntry() {
+    public function test_save_NewEntry() 
+    {
         $oTestObject = oxNew('fcpayone_status_forwarding');
 
         $this->_fcpoAddSampleForwarding();
@@ -156,10 +163,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_status_forwarding ext
     /**
      * Testing save method on adding an entry
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_save_UpdateEntry() {
+    public function test_save_UpdateEntry() 
+    {
         $oTestObject = oxNew('fcpayone_status_forwarding');
 
         $this->_fcpoAddSampleForwarding();
@@ -186,10 +194,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_status_forwarding ext
     /**
      * Adds a sample forwarding
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    protected function _fcpoAddSampleForwarding() {
+    protected function _fcpoAddSampleForwarding() 
+    {
         $this->_fcpoTruncateTable('fcpostatusforwarding');
         $sQuery = "
             INSERT INTO `fcpostatusforwarding` (`OXID`, `FCPO_PAYONESTATUS`, `FCPO_URL`, `FCPO_TIMEOUT`) VALUES
@@ -203,10 +212,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_status_forwarding ext
     /**
      * Truncates table
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    protected function _fcpoTruncateTable($sTableName) {
+    protected function _fcpoTruncateTable($sTableName) 
+    {
         $sQuery = "DELETE FROM `{$sTableName}` ";
 
         oxDb::getDb()->Execute($sQuery);

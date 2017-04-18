@@ -18,22 +18,26 @@
  * @version   OXID eShop CE
  */
  
-class MockResultPayPal {
+class MockResultPayPal
+{
 
     public $EOF = false;
     public $fields = array('someValue','someValue','someValue','someValue','someValue');
 
-    public function recordCount() {
+    public function recordCount() 
+    {
         return 1;
     }
 
-    public function moveNext() {
+    public function moveNext() 
+    {
         $this->EOF = true;
     }
 
 }
 
-class Unit_fcPayOne_Application_Models_fcpopaypal extends OxidTestCase {
+class Unit_fcPayOne_Application_Models_fcpopaypal extends OxidTestCase
+{
     /**
      * Call protected/private method of a class.
      *
@@ -43,7 +47,8 @@ class Unit_fcPayOne_Application_Models_fcpopaypal extends OxidTestCase {
      *
      * @return mixed Method return.
      */
-    public function invokeMethod(&$object, $methodName, array $parameters = array()) {
+    public function invokeMethod(&$object, $methodName, array $parameters = array()) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
@@ -54,13 +59,14 @@ class Unit_fcPayOne_Application_Models_fcpopaypal extends OxidTestCase {
     /**
      * Set protected/private attribute value
      *
-     * @param object &$object    Instantiated object that we will run method on.
+     * @param object &$object      Instantiated object that we will run method on.
      * @param string $propertyName property that shall be set
-     * @param array  $value value to be set
+     * @param array  $value        value to be set
      *
      * @return mixed Method return.
      */
-    public function invokeSetAttribute(&$object, $propertyName, $value) {
+    public function invokeSetAttribute(&$object, $propertyName, $value) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $property = $reflection->getProperty($propertyName);
         $property->setAccessible(true);
@@ -72,7 +78,8 @@ class Unit_fcPayOne_Application_Models_fcpopaypal extends OxidTestCase {
     /**
      * Testing fcpoGetMessages for coverage
      */
-    public function test_fcpoGetMessages_Coverage() {
+    public function test_fcpoGetMessages_Coverage() 
+    {
         $oTestObject = oxNew('fcpopaypal');
         $this->invokeSetAttribute($oTestObject, '_aAdminMessages', 'someValue');
         
@@ -83,7 +90,8 @@ class Unit_fcPayOne_Application_Models_fcpopaypal extends OxidTestCase {
     /**
      * Testing fcpoGetPayPalLogos for coverage
      */
-    public function test_fcpoGetPayPalLogos_Coverage() {
+    public function test_fcpoGetPayPalLogos_Coverage() 
+    {
         $oTestObject = oxNew('fcpopaypal');
 
         $oMockResult = new MockResultPayPal();
@@ -103,7 +111,8 @@ class Unit_fcPayOne_Application_Models_fcpopaypal extends OxidTestCase {
     /**
      * Testing _fcpoAddLogoPath for coverage
      */
-    public function test__fcpoAddLogoPath_Coverage() {
+    public function test__fcpoAddLogoPath_Coverage() 
+    {
         $oTestObject = $this->getMock('fcpopaypal', array('_fcpoGetLogoEnteredAndExisting'));
         $oTestObject->expects($this->any())->method('_fcpoGetLogoEnteredAndExisting')->will($this->returnValue(true));
         $aResponse = $oTestObject->_fcpoAddLogoPath('someLogo', array('existingLogos'));
@@ -114,7 +123,8 @@ class Unit_fcPayOne_Application_Models_fcpopaypal extends OxidTestCase {
     /**
      * Testing fcpoUpdatePayPalLogos for coverage
      */
-    public function test_fcpoUpdatePayPalLogos_Coverage() {
+    public function test_fcpoUpdatePayPalLogos_Coverage() 
+    {
         $oTestObject = $this->getMock('fcpopaypal', array('_handleUploadPaypalExpressLogo', '_fcpoTriggerUpdateLogos'));
         $oTestObject->expects($this->any())->method('_handleUploadPaypalExpressLogo')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcpoTriggerUpdateLogos')->will($this->returnValue(true));
@@ -136,7 +146,8 @@ class Unit_fcPayOne_Application_Models_fcpopaypal extends OxidTestCase {
     /**
      * Testing _fcpoTriggerUpdateLogos for coverage
      */
-    public function test__fcpoTriggerUpdateLogos_Coverage() {
+    public function test__fcpoTriggerUpdateLogos_Coverage() 
+    {
         $oTestObject = oxNew('fcpopaypal');
         
         $oMockDatabase = $this->getMock('oxDb', array('Execute', 'quote'));
@@ -155,7 +166,8 @@ class Unit_fcPayOne_Application_Models_fcpopaypal extends OxidTestCase {
     /**
      * Testing fcpoAddPaypalExpressLogo for coverage
      */
-    public function test_fcpoAddPaypalExpressLogo_Coverage() {
+    public function test_fcpoAddPaypalExpressLogo_Coverage() 
+    {
         $oTestObject = oxNew('fcpopaypal');
         
         $oMockDatabase = $this->getMock('oxDb', array('Execute'));
@@ -169,7 +181,8 @@ class Unit_fcPayOne_Application_Models_fcpopaypal extends OxidTestCase {
     /**
      * Testing _fcpoGetLogoEnteredAndExisting for coverage
      */
-    public function test__fcpoGetLogoEnteredAndExisting_Coverage() {
+    public function test__fcpoGetLogoEnteredAndExisting_Coverage() 
+    {
         $oTestObject = oxNew('fcpopaypal');
         
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
@@ -182,10 +195,11 @@ class Unit_fcPayOne_Application_Models_fcpopaypal extends OxidTestCase {
     /**
      * Testing _handleUploadPaypalExpressLogo for current shop versions
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test__handleUploadPaypalExpressLogo_NewerShopVersion() {
+    public function test__handleUploadPaypalExpressLogo_NewerShopVersion() 
+    {
         $oTestObject = $this->getMock('fcpopaypal', array('_fcpoValidateFile','_fcpoHandleFile'));
         $oTestObject->expects($this->any())->method('_fcpoValidateFile')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcpoHandleFile')->will($this->returnValue('someQueryAddition'));
@@ -206,7 +220,8 @@ class Unit_fcPayOne_Application_Models_fcpopaypal extends OxidTestCase {
     /**
      * Testing _fcpoHandleFile for coverage
      */
-    public function test__fcpoHandleFile_Coverage() {
+    public function test__fcpoHandleFile_Coverage() 
+    {
         $oTestObject = $this->getMock('fcpopaypal', array('_fcpoFetchMediaUrl'));
         $oTestObject->expects($this->any())->method('_fcpoFetchMediaUrl')->will($this->returnValue('someValue'));
         
@@ -214,14 +229,15 @@ class Unit_fcPayOne_Application_Models_fcpopaypal extends OxidTestCase {
             'logo_1' => array('error'=>0),
         );
         
-        $this->assertEquals(", FCPO_LOGO = 'someValue'", $oTestObject->_fcpoHandleFile(1,$aFiles));
+        $this->assertEquals(", FCPO_LOGO = 'someValue'", $oTestObject->_fcpoHandleFile(1, $aFiles));
     }
     
     
     /**
      * Testing _fcpoFetchMediaUrl for newer shop versions
      */
-    public function test__fcpoFetchMediaUrl_NewerShopVersion() {
+    public function test__fcpoFetchMediaUrl_NewerShopVersion() 
+    {
         $oTestObject = oxNew('fcpopaypal');
         
         $oMockUtilsFile = $this->getMock('oxUtilsFile', array('handleUploadedFile', 'processFile'));
@@ -244,7 +260,8 @@ class Unit_fcPayOne_Application_Models_fcpopaypal extends OxidTestCase {
     /**
      * Testing _fcpoFetchMediaUrl for older shop versions
      */
-    public function test__fcpoFetchMediaUrl_OlderShopVersion() {
+    public function test__fcpoFetchMediaUrl_OlderShopVersion() 
+    {
         $oTestObject = oxNew('fcpopaypal');
         
         $oMockUtilsFile = $this->getMock('oxUtilsFile', array('handleUploadedFile', 'processFile'));
@@ -267,7 +284,8 @@ class Unit_fcPayOne_Application_Models_fcpopaypal extends OxidTestCase {
     /**
      * Testing _fcpoValidateFile for coverage
      */
-    public function test__fcpoValidateFile_Coverage() {
+    public function test__fcpoValidateFile_Coverage() 
+    {
         $oTestObject = oxNew('fcpopaypal');
         $aFiles = array(
             'logo_1' => array('error'=>0),

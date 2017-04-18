@@ -28,8 +28,8 @@ if (!function_exists('getShopBasePath')) {
     }
 }
 
-if ( file_exists( getShopBasePath() . "/bootstrap.php" ) ) {
-	require_once getShopBasePath() . "/bootstrap.php";
+if (file_exists(getShopBasePath() . "/bootstrap.php") ) {
+    include_once getShopBasePath() . "/bootstrap.php";
 }
 else {
     // global variables which are important for older OXID.
@@ -39,26 +39,28 @@ else {
     $_SERVER['HTTP_REFERER'] = '';
     $_SERVER['QUERY_STRING'] = '';
     
-    require getShopBasePath() . 'modules/functions.php';
-    require_once getShopBasePath() . 'core/oxfunctions.php';
-    require_once getShopBasePath() . 'views/oxubase.php';
+    include getShopBasePath() . 'modules/functions.php';
+    include_once getShopBasePath() . 'core/oxfunctions.php';
+    include_once getShopBasePath() . 'views/oxubase.php';
 }
 
 
 // receive params
-$sPaymentId = filter_input( INPUT_POST, 'paymentid' );
-$sAction = filter_input( INPUT_POST, 'action' );
-$sParamsJson = filter_input( INPUT_POST, 'params' );
+$sPaymentId = filter_input(INPUT_POST, 'paymentid');
+$sAction = filter_input(INPUT_POST, 'action');
+$sParamsJson = filter_input(INPUT_POST, 'params');
 
 /**
  * Class for receiving ajax calls and delivering needed data
  *
  * @author andre
  */
-class fcpayone_ajax extends oxBase {
+class fcpayone_ajax extends oxBase
+{
     
     /**
      * Helper object for dealing with different shop versions
+     *
      * @var object
      */
     protected $_oFcpoHelper = null;
@@ -68,7 +70,8 @@ class fcpayone_ajax extends oxBase {
      * 
      * @return null
      */
-    public function __construct() {
+    public function __construct() 
+    {
         parent::__construct();
         $this->_oFcpoHelper = oxNew('fcpohelper');
     }
@@ -77,10 +80,11 @@ class fcpayone_ajax extends oxBase {
     /**
      * Performs a precheck for payolution installment
      * 
-     * @param type $sPaymentId
+     * @param  type $sPaymentId
      * @return bool
      */
-    public function fcpoTriggerPrecheck($sPaymentId, $sParamsJson) {
+    public function fcpoTriggerPrecheck($sPaymentId, $sParamsJson) 
+    {
         $oPaymentController = $this->_oFcpoHelper->getFactoryObject('payment');
         $oPaymentController->setPayolutionAjaxParams(json_decode($sParamsJson, true));
         $mPreCheckResult =  $oPaymentController->fcpoPayolutionPreCheck($sPaymentId);
@@ -92,10 +96,11 @@ class fcpayone_ajax extends oxBase {
     /**
      * Performs a precheck for payolution installment
      * 
-     * @param type $sPaymentId
+     * @param  type $sPaymentId
      * @return mixed
      */
-    public function fcpoTriggerInstallmentCalculation() {
+    public function fcpoTriggerInstallmentCalculation() 
+    {
         $oPaymentController = $this->_oFcpoHelper->getFactoryObject('payment');
 
         $oPaymentController->fcpoPerformInstallmentCalculation($sPaymentId);
@@ -109,10 +114,11 @@ class fcpayone_ajax extends oxBase {
     /**
      * Parse result of calculation to html for returning html code
      * 
-     * @param array $aCalculation
+     * @param  array $aCalculation
      * @return string
      */
-    public function fcpoParseCalculation2Html($aCalculation) {
+    public function fcpoParseCalculation2Html($aCalculation) 
+    {
         $oLang = $this->_oFcpoHelper->fcpoGetLang();
         
         $sTranslateInstallmentSelection = utf8_encode($oLang->translateString('FCPO_PAYOLUTION_INSTALLMENT_SELECTION'));
@@ -154,10 +160,11 @@ class fcpayone_ajax extends oxBase {
     /**
      * Returns lightview part for download
      * 
-     * @param void
+     * @param  void
      * @return string
      */
-    protected function _fcpoGetLightView() {
+    protected function _fcpoGetLightView() 
+    {
         $sContent = 'class="lightview" data-lightview-type="iframe" data-lightview-options="';
         $sContent .= "width: 800, height: 600, viewport: 'scale',background: { color: '#fff', opacity: 1 },skin: 'light'";
         $sContent .= '"';
@@ -169,10 +176,11 @@ class fcpayone_ajax extends oxBase {
     /**
      * Formats error message to be displayed in a error box
      * 
-     * @param string $sMessage
+     * @param  string $sMessage
      * @return string
      */
-    public function fcpoReturnErrorMessage($sMessage) {
+    public function fcpoReturnErrorMessage($sMessage) 
+    {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         if (!$oConfig->isUtf()) {
             $sMessage = utf8_encode($sMessage);
@@ -189,11 +197,12 @@ class fcpayone_ajax extends oxBase {
     /**
      * Set hidden fields for beeing able to set needed values
      * 
-     * @param string $sKey
-     * @param array $aCurrentInstallment
+     * @param  string $sKey
+     * @param  array  $aCurrentInstallment
      * @return string
      */
-    protected function _fcpoGetInsterestHiddenFields($sKey, $aCurrentInstallment) {
+    protected function _fcpoGetInsterestHiddenFields($sKey, $aCurrentInstallment) 
+    {
         $sHtml  = '<input type="hidden" id="payolution_installment_value_'.$sKey.'" value="'.str_replace('.', ',', $aCurrentInstallment['Amount']).'">';
         $sHtml .= '<input type="hidden" id="payolution_installment_duration_'.$sKey.'" value="'.$aCurrentInstallment['Duration'].'">';
         $sHtml .= '<input type="hidden" id="payolution_installment_eff_interest_rate_'.$sKey.'" value="'.str_replace('.', ',', $aCurrentInstallment['EffectiveInterestRate']).'">';
@@ -206,11 +215,12 @@ class fcpayone_ajax extends oxBase {
     /**
      * Returns a caption for a certain month
      * 
-     * @param string $sMonth
-     * @param array $aRatesDetails
+     * @param  string $sMonth
+     * @param  array  $aRatesDetails
      * @return string
      */
-    protected function _fcpoGetInsterestMonthDetail($sMonth, $aRatesDetails) {
+    protected function _fcpoGetInsterestMonthDetail($sMonth, $aRatesDetails) 
+    {
         $oLang = $this->_oFcpoHelper->fcpoGetLang();
         $sRateCaption = $oLang->translateString('FCPO_PAYOLUTION_INSTALLMENT_RATE');
         $sDueCaption = utf8_encode($oLang->translateString('FCPO_PAYOLUTION_INSTALLMENT_DUE_AT'));
@@ -225,11 +235,12 @@ class fcpayone_ajax extends oxBase {
     /**
      * Returns a html radio button for current installment offer
      * 
-     * @param string $sKey
-     * @param array $aCurrentInstallment
+     * @param  string $sKey
+     * @param  array  $aCurrentInstallment
      * @return string
      */
-    protected function _fcpoGetInsterestRadio($sKey, $aCurrentInstallment) {
+    protected function _fcpoGetInsterestRadio($sKey, $aCurrentInstallment) 
+    {
         $sHtml .= '<input type="radio" id="payolution_installment_offer_'.$sKey.'" name="payolution_installment_selection" value="'.$sKey.'">';
         
         return $sHtml;
@@ -238,11 +249,12 @@ class fcpayone_ajax extends oxBase {
     /**
      * Returns a html label for current installment offer radiobutton
      * 
-     * @param string $sKey
-     * @param array $aCurrentInstallment
+     * @param  string $sKey
+     * @param  array  $aCurrentInstallment
      * @return string
      */
-    protected function _fcpoGetInsterestLabel($sKey, $aCurrentInstallment) {
+    protected function _fcpoGetInsterestLabel($sKey, $aCurrentInstallment) 
+    {
         $sInterestCaption = $this->_fcpoGetInsterestCaption($aCurrentInstallment);
         $sHtml = '<label for="payolution_installment_offer_'.$sKey.'">'.$sInterestCaption.'</label>';
 
@@ -252,10 +264,11 @@ class fcpayone_ajax extends oxBase {
     /**
      * Returns translated caption for current installment offer
      * 
-     * @param array $aCurrentInstallment
+     * @param  array $aCurrentInstallment
      * @return string
      */
-    protected function _fcpoGetInsterestCaption($aCurrentInstallment) {
+    protected function _fcpoGetInsterestCaption($aCurrentInstallment) 
+    {
         $oLang = $this->_oFcpoHelper->fcpoGetLang();
         $sPerMonth = $oLang->translateString('FCPO_PAYOLUTION_INSTALLMENT_PER_MONTH');
         $sRates = $oLang->translateString('FCPO_PAYOLUTION_INSTALLMENT_RATES');

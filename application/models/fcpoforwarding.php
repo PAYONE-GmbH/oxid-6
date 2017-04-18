@@ -18,16 +18,19 @@
  * @version   OXID eShop CE
  */
  
-class fcpoforwarding extends oxBase {
+class fcpoforwarding extends oxBase
+{
 
     /**
      * Helper object for dealing with different shop versions
+     *
      * @var object
      */
     protected $_oFcpoHelper = null;
 
     /**
      * Centralized Database instance
+     *
      * @var object
      */
     protected $_oFcpoDb = null;
@@ -35,7 +38,8 @@ class fcpoforwarding extends oxBase {
     /**
      * Init needed data
      */
-    public function __construct() {
+    public function __construct() 
+    {
         parent::__construct();
         $this->_oFcpoHelper = oxNew('fcpohelper');
         $this->_oFcpoDb = oxDb::getDb();
@@ -44,10 +48,11 @@ class fcpoforwarding extends oxBase {
     /**
      * Returns an array of currently existing forwardings as an array with standard objects
      * 
-     * @param void
+     * @param  void
      * @return array
      */
-    public function fcpoGetExistingForwardings() {
+    public function fcpoGetExistingForwardings() 
+    {
         $aForwardings = array();
         $oDb = $this->_oFcpoHelper->fcpoGetDb(true);
 
@@ -79,7 +84,8 @@ class fcpoforwarding extends oxBase {
      * @param array $aForwardings
      * @return void
      */
-    public function fcpoUpdateForwardings($aForwardings) {
+    public function fcpoUpdateForwardings($aForwardings) 
+    {
         $oDb = $this->_oFcpoHelper->fcpoGetDb();
         // iterate through forwardings
         foreach ($aForwardings as $sForwardingId => $aData) {
@@ -91,11 +97,12 @@ class fcpoforwarding extends oxBase {
     /**
      * Returns the matching query for updating/adding data
      * 
-     * @param string $sForwardingId
-     * @param array $aData
+     * @param  string $sForwardingId
+     * @param  array  $aData
      * @return string
      */
-    protected function _fcpoGetQuery($sForwardingId, $aData) {
+    protected function _fcpoGetQuery($sForwardingId, $aData) 
+    {
         $oDb = oxDb::getDb();
         // quote values from outer space
         $sOxid = $oDb->quote($sForwardingId);
@@ -116,13 +123,14 @@ class fcpoforwarding extends oxBase {
     /**
      * Returns wether an insert or update query, depending on data
      * 
-     * @param string $sForwardingId
-     * @param string $sPayoneStatus
-     * @param string $sUrl
-     * @param string $iTimeout
+     * @param  string $sForwardingId
+     * @param  string $sPayoneStatus
+     * @param  string $sUrl
+     * @param  string $iTimeout
      * @return string
      */
-    protected function _fcpoGetUpdateQuery($sForwardingId, $sPayoneStatus, $sUrl, $iTimeout, $sOxid) {
+    protected function _fcpoGetUpdateQuery($sForwardingId, $sPayoneStatus, $sUrl, $iTimeout, $sOxid) 
+    {
         $blValidNewEntry = $this->_fcpoIsValidNewEntry($sForwardingId, $sPayoneStatus, $sUrl, $iTimeout);
         
         if ($blValidNewEntry) {
@@ -149,13 +157,14 @@ class fcpoforwarding extends oxBase {
     /**
      * Checks if current entry is new and complete
      * 
-     * @param type $sForwardingId
-     * @param type $sPayoneStatus
-     * @param type $sUrl
-     * @param type $iTimeout
+     * @param  type $sForwardingId
+     * @param  type $sPayoneStatus
+     * @param  type $sUrl
+     * @param  type $iTimeout
      * @return bool
      */
-    protected function _fcpoIsValidNewEntry($sForwardingId, $sPayoneStatus, $sUrl, $iTimeout) {
+    protected function _fcpoIsValidNewEntry($sForwardingId, $sPayoneStatus, $sUrl, $iTimeout) 
+    {
         $blComplete = (!empty($sPayoneStatus) || !empty($sUrl) || !empty($iTimeout));
         $blValid = ($sForwardingId == 'new' && $blComplete) ? true : false;
 

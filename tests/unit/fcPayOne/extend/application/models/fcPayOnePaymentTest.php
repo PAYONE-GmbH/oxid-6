@@ -18,16 +18,19 @@
  * @version   OXID eShop CE
  */
  
-class MockResult {
+class MockResult
+{
     public $EOF = false;
     
     public $fields = array('someValue','someValue','someValue','someValue', 'someValue');
     
-    public function recordCount() {
+    public function recordCount() 
+    {
         return 1;
     }
     
-    public function moveNext() {
+    public function moveNext() 
+    {
         $this->EOF = true;
     }
 }
@@ -38,9 +41,10 @@ class MockResult {
  *
  * @author Andre Gregor-Herrmann <andre.herrmann@fatchip.de>
  * @author Fatchip GmbH
- * @date 2016-05-10
+ * @date   2016-05-10
  */
-class Unit_fcPayOne_Extend_Application_Models_fcPayOnePaymentTest extends OxidTestCase {
+class Unit_fcPayOne_Extend_Application_Models_fcPayOnePaymentTest extends OxidTestCase
+{
     
     /**
      * Call protected/private method of a class.
@@ -51,7 +55,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOnePaymentTest extends OxidTe
      *
      * @return mixed Method return.
      */
-    public function invokeMethod(&$object, $methodName, array $parameters = array()) {
+    public function invokeMethod(&$object, $methodName, array $parameters = array()) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $method     = $reflection->getMethod($methodName);
         $method->setAccessible(true);
@@ -63,13 +68,14 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOnePaymentTest extends OxidTe
     /**
      * Set protected/private attribute value
      *
-     * @param object &$object    Instantiated object that we will run method on.
+     * @param object &$object      Instantiated object that we will run method on.
      * @param string $propertyName property that shall be set
-     * @param array  $value value to be set
+     * @param array  $value        value to be set
      *
      * @return mixed Method return.
      */
-    public function invokeSetAttribute(&$object, $propertyName, $value) {
+    public function invokeSetAttribute(&$object, $propertyName, $value) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $property   = $reflection->getProperty($propertyName);
         $property->setAccessible(true);
@@ -81,32 +87,36 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOnePaymentTest extends OxidTe
     /**
      * Testing fcIsPayOnePaymentType on having a payone payment
      */
-    public function test_fcIsPayOnePaymentType_IsPayone() {
-       $oTestObject = oxNew('fcPayOnePayment'); 
-       $this->assertEquals(true, $oTestObject->fcIsPayOnePaymentType('fcpoinvoice'));
+    public function test_fcIsPayOnePaymentType_IsPayone() 
+    {
+        $oTestObject = oxNew('fcPayOnePayment'); 
+        $this->assertEquals(true, $oTestObject->fcIsPayOnePaymentType('fcpoinvoice'));
     }
     
     /**
      * Testing fcIsPayOneIframePaymentType on having the right value expecting to get a positive response
      */
-    public function test_fcIsPayOneIframePaymentType_IsPayone() {
-       $oTestObject = oxNew('fcPayOnePayment'); 
-       $this->assertEquals(true, $oTestObject->fcIsPayOneIframePaymentType('fcpocreditcard_iframe'));
+    public function test_fcIsPayOneIframePaymentType_IsPayone() 
+    {
+        $oTestObject = oxNew('fcPayOnePayment'); 
+        $this->assertEquals(true, $oTestObject->fcIsPayOneIframePaymentType('fcpocreditcard_iframe'));
     }
     
     /**
      * Testing fcIsPayOneFrontendApiPaymentType on having the right value expecting to get a positive response
      */
-    public function test_fcIsPayOneFrontendApiPaymentType_IsPayone() {
-       $oTestObject = oxNew('fcPayOnePayment'); 
-       $this->assertEquals(true, $oTestObject->fcIsPayOneFrontendApiPaymentType('fcpocreditcard_iframe'));
+    public function test_fcIsPayOneFrontendApiPaymentType_IsPayone() 
+    {
+        $oTestObject = oxNew('fcPayOnePayment'); 
+        $this->assertEquals(true, $oTestObject->fcIsPayOneFrontendApiPaymentType('fcpocreditcard_iframe'));
     }
     
     
     /**
      * Testing fcpoGetOperationMode for coverage
      */
-    public function test_fcpoGetOperationMode_Coverage() {
+    public function test_fcpoGetOperationMode_Coverage() 
+    {
         $oTestObject = oxNew('fcPayOnePayment');
         $oTestObject->oxpayments__fcpolivemode = new oxField(true);
         
@@ -124,7 +134,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOnePaymentTest extends OxidTe
     /**
      * Testing getDynValues for coverage
      */
-    public function test_getDynValues_Coverage() {
+    public function test_getDynValues_Coverage() 
+    {
         $oDynValue          = new oxStdClass();
         $oDynValue->name    = 'fcpo_elv_blz';
         $oDynValue->value   = '';
@@ -140,7 +151,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOnePaymentTest extends OxidTe
     /**
      * Testing fcpoGetCountryIsoAlphaById for coverage
      */
-    public function test_fcpoGetCountryIsoAlphaById_Coverage() {
+    public function test_fcpoGetCountryIsoAlphaById_Coverage() 
+    {
         $oTestObject = oxNew('fcPayOnePayment');
 
         $oMockDatabase = $this->getMock('oxDb', array('GetOne'));
@@ -154,7 +166,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOnePaymentTest extends OxidTe
     /**
      * Testing fcpoGetCountryNameById for coverage
      */
-    public function test_fcpoGetCountryNameById_Coverage() {
+    public function test_fcpoGetCountryNameById_Coverage() 
+    {
         $oTestObject = oxNew('fcPayOnePayment');
 
         $oMockDatabase = $this->getMock('oxDb', array('GetOne'));
@@ -168,7 +181,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOnePaymentTest extends OxidTe
     /**
      * Testing fcpoAddMandateToDb
      */
-    public function test_fcpoAddMandateToDb_Coverage() {
+    public function test_fcpoAddMandateToDb_Coverage() 
+    {
         $oTestObject = oxNew('fcPayOnePayment');
 
         $oMockDatabase = $this->getMock('oxDb', array('GetOne'));
@@ -182,10 +196,11 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOnePaymentTest extends OxidTe
     /**
      * Testing _fcpoGetKlarnaStoreId for coverage
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcpoGetKlarnaStoreId_Coverage() {
+    public function test_fcpoGetKlarnaStoreId_Coverage() 
+    {
         $oTestObject = $this->getMock('fcPayOnePayment', array('getUserBillCountryId'));
         $oTestObject->expects($this->any())->method('getUserBillCountryId')->will($this->returnValue(true));
         
@@ -201,21 +216,23 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOnePaymentTest extends OxidTe
     /**
      * Testing fcpoGetUserPaymentId for coverage
      */
-    public function test_fcpoGetUserPaymentId_Coverage() {
+    public function test_fcpoGetUserPaymentId_Coverage() 
+    {
         $oTestObject = oxNew('fcPayOnePayment');
 
         $oMockDatabase = $this->getMock('oxDb', array('GetOne'));
         $oMockDatabase->expects($this->any())->method('GetOne')->will($this->returnValue('someValue'));
         $this->invokeSetAttribute($oTestObject, '_oFcpoDb', $oMockDatabase);
         
-        $this->assertEquals('someValue', $oTestObject->fcpoGetUserPaymentId('someUserId','somePaymentType'));
+        $this->assertEquals('someValue', $oTestObject->fcpoGetUserPaymentId('someUserId', 'somePaymentType'));
     }
     
     
     /**
      * Testing _fcGetDynValues for coverage
      */
-    public function test__fcGetDynValues_Coverage() { 
+    public function test__fcGetDynValues_Coverage() 
+    { 
         $oDynValue = new oxStdClass();
         $oDynValue->name    = 'fcpo_elv_blz';
         $oDynValue->value   = '';
@@ -250,16 +267,18 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOnePaymentTest extends OxidTe
     /**
      * Testing fcBoniCheckNeeded for coverage
      */
-    public function test_fcBoniCheckNeeded_Coverage() {
-       $oTestObject = oxNew('fcPayOnePayment'); 
-       $this->assertEquals(false, $oTestObject->fcBoniCheckNeeded());
+    public function test_fcBoniCheckNeeded_Coverage() 
+    {
+        $oTestObject = oxNew('fcPayOnePayment'); 
+        $this->assertEquals(false, $oTestObject->fcBoniCheckNeeded());
     }
     
     
     /**
      * Testing fcpoGetMandateText for coverage
      */
-    public function test_fcpoGetMandateText_Coverage() {
+    public function test_fcpoGetMandateText_Coverage() 
+    {
         $aMockMandate = array('mandate_status'=>'pending','mandate_text'=>'someText');
         
         $oTestObject = oxNew('fcPayOnePayment'); 
@@ -275,7 +294,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOnePaymentTest extends OxidTe
     /**
      * Testing _fcGetCountries for coverage
      */
-    public function test__fcGetCountries_Coverage() {
+    public function test__fcGetCountries_Coverage() 
+    {
         $aExpect = array('someValue');
         
         $oMockResult = new MockResult();
@@ -293,7 +313,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOnePaymentTest extends OxidTe
     /**
      * Testing fcpoGetKlarnaCampaigns for coverage
      */
-    public function test_fcpoGetKlarnaCampaigns_Coverage() {
+    public function test_fcpoGetKlarnaCampaigns_Coverage() 
+    {
         $oMockCurrency          = new stdClass();
         $oMockCurrency->name    = 'someName';
         
@@ -334,7 +355,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOnePaymentTest extends OxidTe
     /**
      * Testing fcpoGetKlarnaCampaigns with get all option
      */
-    public function test_fcpoGetKlarnaCampaigns_GetAll() {
+    public function test_fcpoGetKlarnaCampaigns_GetAll() 
+    {
         $oMockCurrency          = new stdClass();
         $oMockCurrency->name    = 'someName';
         
@@ -375,7 +397,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOnePaymentTest extends OxidTe
     /**
      * Testing fcpoGetMode coverage
      */
-    public function test_fcpoGetMode_Coverage() {
+    public function test_fcpoGetMode_Coverage() 
+    {
         $oTestObject = $this->getMock('fcPayOnePayment', array('getId', 'fcpoGetOperationMode'));
         $oTestObject->expects($this->any())->method('getId')->will($this->returnValue('fcpoonlineueberweisung'));
         $oTestObject->expects($this->any())->method('fcpoGetOperationMode')->will($this->returnValue('someValue'));

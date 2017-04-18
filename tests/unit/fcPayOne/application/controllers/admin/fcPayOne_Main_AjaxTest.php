@@ -18,7 +18,8 @@
  * @version   OXID eShop CE
  */
  
-class Unit_fcPayOne_Application_Controllers_Admin_fcPayOne_Main_Ajax extends OxidTestCase {
+class Unit_fcPayOne_Application_Controllers_Admin_fcPayOne_Main_Ajax extends OxidTestCase
+{
     
     /**
      * Call protected/private method of a class.
@@ -29,7 +30,8 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcPayOne_Main_Ajax extends Oxi
      *
      * @return mixed Method return.
      */
-    public function invokeMethod(&$object, $methodName, array $parameters = array()) {
+    public function invokeMethod(&$object, $methodName, array $parameters = array()) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $method     = $reflection->getMethod($methodName);
         $method->setAccessible(true);
@@ -40,13 +42,14 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcPayOne_Main_Ajax extends Oxi
     /**
      * Set protected/private attribute value
      *
-     * @param object &$object    Instantiated object that we will run method on.
+     * @param object &$object      Instantiated object that we will run method on.
      * @param string $propertyName property that shall be set
-     * @param array  $value value to be set
+     * @param array  $value        value to be set
      *
      * @return mixed Method return.
      */
-    public function invokeSetAttribute(&$object, $propertyName, $value) {
+    public function invokeSetAttribute(&$object, $propertyName, $value) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $property   = $reflection->getProperty($propertyName);
         $property->setAccessible(true);
@@ -58,14 +61,15 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcPayOne_Main_Ajax extends Oxi
     /**
      * Testing _getQuery for coverage
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test__getQuery_Coverage_1() {
+    public function test__getQuery_Coverage_1() 
+    {
         $oTestObject = oxNew('fcPayOne_Main_Ajax');
         
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
-        $oHelper->expects($this->any())->method('fcpoGetRequestParameter')->will($this->onConsecutiveCalls('1','2','3'));
+        $oHelper->expects($this->any())->method('fcpoGetRequestParameter')->will($this->onConsecutiveCalls('1', '2', '3'));
         
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
         
@@ -78,14 +82,15 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcPayOne_Main_Ajax extends Oxi
     /**
      * Testing _getQuery for coverage
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test__getQuery_Coverage_2() {
+    public function test__getQuery_Coverage_2() 
+    {
         $oTestObject = oxNew('fcPayOne_Main_Ajax');
         
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
-        $oHelper->expects($this->any())->method('fcpoGetRequestParameter')->will($this->onConsecutiveCalls(false,'2','3'));
+        $oHelper->expects($this->any())->method('fcpoGetRequestParameter')->will($this->onConsecutiveCalls(false, '2', '3'));
         
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
         
@@ -98,15 +103,16 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcPayOne_Main_Ajax extends Oxi
     /**
      * Testing addpaycountry for coverage
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_addpaycountry_Coverage() {
+    public function test_addpaycountry_Coverage() 
+    {
         $oTestObject = $this->getMock('fcPayOne_Main_Ajax', array('_getActionIds'));
         $oTestObject->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('1','2')));
         
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
-        $oHelper->expects($this->any())->method('fcpoGetRequestParameter')->will($this->onConsecutiveCalls('1','2','3'));
+        $oHelper->expects($this->any())->method('fcpoGetRequestParameter')->will($this->onConsecutiveCalls('1', '2', '3'));
         
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
         
@@ -119,10 +125,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcPayOne_Main_Ajax extends Oxi
     /**
      * Testing removepaycountry for coverage
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_removepaycountry_Coverage_1() {
+    public function test_removepaycountry_Coverage_1() 
+    {
         $oTestObject = $this->getMock('fcPayOne_Main_Ajax', array('_getActionIds'));
         $oTestObject->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('1','2')));
         
@@ -140,10 +147,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcPayOne_Main_Ajax extends Oxi
     /**
      * Testing removepaycountry for coverage
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_removepaycountry_Coverage_2() {
+    public function test_removepaycountry_Coverage_2() 
+    {
         $oTestObject = $this->getMock('fcPayOne_Main_Ajax', array('_getActionIds'));
         $oTestObject->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('1','2')));
         

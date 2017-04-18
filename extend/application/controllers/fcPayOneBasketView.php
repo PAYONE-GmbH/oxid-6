@@ -18,22 +18,26 @@
  * @copyright (C) Payone GmbH
  * @version   OXID eShop CE
  */
-class fcPayOneBasketView extends fcPayOneBasketView_parent {
+class fcPayOneBasketView extends fcPayOneBasketView_parent
+{
 
     /**
      * Helper object for dealing with different shop versions
+     *
      * @var object
      */
     protected $_oFcpoHelper = null;
 
     /**
      * Path where paypal logos can be found
+     *
      * @var string
      */
     protected $_sPayPalExpressLogoPath = 'modules/fcPayOne/out/img/';
 
     /**
      * Paypal Express picture
+     *
      * @var string
      */
     protected $_sPayPalExpressPic = null;
@@ -43,7 +47,8 @@ class fcPayOneBasketView extends fcPayOneBasketView_parent {
      * 
      * @return null
      */
-    public function __construct() {
+    public function __construct() 
+    {
         parent::__construct();
         $this->_oFcpoHelper = oxNew('fcpohelper');
     }
@@ -51,10 +56,11 @@ class fcPayOneBasketView extends fcPayOneBasketView_parent {
     /**
      * Returns wether paypal express is active or not
      * 
-     * @param void
+     * @param  void
      * @return boolean
      */
-    protected function _fcpoIsPayPalExpressActive() {
+    protected function _fcpoIsPayPalExpressActive() 
+    {
         $oBasket = $this->_oFcpoHelper->getFactoryObject('oxBasket');
         return $oBasket->fcpoIsPayPalExpressActive();
     }
@@ -62,10 +68,11 @@ class fcPayOneBasketView extends fcPayOneBasketView_parent {
     /**
      * Public getter for paypal express picture
      * 
-     * @param void
+     * @param  void
      * @return string
      */
-    public function fcpoGetPayPalExpressPic() {
+    public function fcpoGetPayPalExpressPic() 
+    {
         if ($this->_sPayPalExpressPic === null) {
             $this->_sPayPalExpressPic = false;
             if ($this->_fcpoIsPayPalExpressActive()) {
@@ -79,10 +86,11 @@ class fcPayOneBasketView extends fcPayOneBasketView_parent {
     /**
      * Finally fetches needed values and set attribute value
      * 
-     * @param void
+     * @param  void
      * @return mixed
      */
-    protected function _fcpoGetPayPalExpressPic() {
+    protected function _fcpoGetPayPalExpressPic() 
+    {
         $sPayPalExpressPic = false;
         $oBasket = $this->_oFcpoHelper->getFactoryObject('oxBasket');
         $sPic = $oBasket->fcpoGetPayPalExpressPic();
@@ -102,10 +110,11 @@ class fcPayOneBasketView extends fcPayOneBasketView_parent {
     /**
      * Method will return false or redirect to paypal express if used
      * 
-     * @param void
+     * @param  void
      * @return boolean
      */
-    public function fcpoUsePayPalExpress() {
+    public function fcpoUsePayPalExpress() 
+    {
         $oRequest = $this->_oFcpoHelper->getFactoryObject('fcporequest');
         $aOutput = $oRequest->sendRequestGenericPayment();
 

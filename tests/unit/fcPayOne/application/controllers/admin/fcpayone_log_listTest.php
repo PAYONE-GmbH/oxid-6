@@ -18,7 +18,8 @@
  * @version   OXID eShop CE
  */
  
-class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_log_list extends OxidTestCase {
+class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_log_list extends OxidTestCase
+{
     
     /**
      * Call protected/private method of a class.
@@ -29,7 +30,8 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_log_list extends Oxid
      *
      * @return mixed Method return.
      */
-    public function invokeMethod(&$object, $methodName, array $parameters = array()) {
+    public function invokeMethod(&$object, $methodName, array $parameters = array()) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $method     = $reflection->getMethod($methodName);
         $method->setAccessible(true);
@@ -40,13 +42,14 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_log_list extends Oxid
     /**
      * Set protected/private attribute value
      *
-     * @param object &$object    Instantiated object that we will run method on.
+     * @param object &$object      Instantiated object that we will run method on.
      * @param string $propertyName property that shall be set
-     * @param array  $value value to be set
+     * @param array  $value        value to be set
      *
      * @return mixed Method return.
      */
-    public function invokeSetAttribute(&$object, $propertyName, $value) {
+    public function invokeSetAttribute(&$object, $propertyName, $value) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $property   = $reflection->getProperty($propertyName);
         $property->setAccessible(true);
@@ -58,10 +61,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_log_list extends Oxid
     /**
      * Testing getPortalId for getting coverage
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_getPortalId_Coverage() {
+    public function test_getPortalId_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_log_list');
         
         $oMockConfig = $this->getMockBuilder('oxConfig')->disableOriginalConstructor()->getMock();
@@ -72,17 +76,18 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_log_list extends Oxid
         
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);        
 
-        $this->assertEquals( 'someValue', $oTestObject->getPortalId() );
+        $this->assertEquals('someValue', $oTestObject->getPortalId());
     }
 
     
     /**
      * Testing getSubAccountId for getting coverage
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_getSubAccountId_Coverage() {
+    public function test_getSubAccountId_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_log_list');
         
         $oMockConfig = $this->getMockBuilder('oxConfig')->disableOriginalConstructor()->getMock();
@@ -93,17 +98,18 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_log_list extends Oxid
         
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);        
 
-        $this->assertEquals( 'someValue', $oTestObject->getSubAccountId() );
+        $this->assertEquals('someValue', $oTestObject->getSubAccountId());
     }
 
     
     /**
      * Testing _prepareWhereQuery for coverage
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test__prepareWhereQuery_Coverage() {
+    public function test__prepareWhereQuery_Coverage() 
+    {
         $oTestObject = $this->getMockBuilder('fcpayone_log_list')->disableOriginalConstructor()->getMock();
         $oTestObject->expects($this->any())->method('getSubAccountId')->will($this->returnValue('mysubaccountid'));
         $oTestObject->expects($this->any())->method('getPortalId')->will($this->returnValue('myportalid'));
@@ -117,10 +123,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_log_list extends Oxid
     /**
      * Testing getListFilter for coverage
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_getListFilter_Coverage() {
+    public function test_getListFilter_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_log_list');
         
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
@@ -131,17 +138,18 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_log_list extends Oxid
         
         $aExpect = array('someValue');
         
-        $this->assertEquals( $aExpect , $oTestObject->getListFilter());
+        $this->assertEquals($aExpect, $oTestObject->getListFilter());
     }
     
     
     /**
      * Testing getListSorting for coverage
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_getListSorting_Coverage() {
+    public function test_getListSorting_Coverage() 
+    {
         $oMockListObject = $this->getMockBuilder('oxList')->disableOriginalConstructor()->getMock();
         $oMockListObject->expects($this->any())->method('getCoreTableName')->will($this->returnValue('myCoreTable'));
         
@@ -160,17 +168,18 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_log_list extends Oxid
         
         $aExpect[''] = array('sortValue'=>'asc');
         
-        $this->assertEquals( $aExpect, $oTestObject->getListSorting() );
+        $this->assertEquals($aExpect, $oTestObject->getListSorting());
     }
     
     
     /**
      * Testing fcGetInputName for coverage on newer shop
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcGetInputName_NewerShopVersion() {
+    public function test_fcGetInputName_NewerShopVersion() 
+    {
         $oTestObject = oxNew('fcpayone_log_list');
         
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
@@ -180,17 +189,18 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_log_list extends Oxid
 
         $sExpect = "where[Table][Field]";
         
-        $this->assertEquals($sExpect, $oTestObject->fcGetInputName('Table','Field'));
+        $this->assertEquals($sExpect, $oTestObject->fcGetInputName('Table', 'Field'));
     }
     
     
     /**
      * Testing fcGetInputName for coverage on newer shop
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcGetInputName_OlderShopVersion() {
+    public function test_fcGetInputName_OlderShopVersion() 
+    {
         $oTestObject = oxNew('fcpayone_log_list');
         
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
@@ -200,17 +210,18 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_log_list extends Oxid
 
         $sExpect = "where[Table.Field]";
         
-        $this->assertEquals($sExpect, $oTestObject->fcGetInputName('Table','Field'));
+        $this->assertEquals($sExpect, $oTestObject->fcGetInputName('Table', 'Field'));
     }
     
     
     /**
      * Testing fcGetWhereValue on newer shop version
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcGetWhereValue_NewerShopVersion() {
+    public function test_fcGetWhereValue_NewerShopVersion() 
+    {
         $aWhere = array();
         $aWhere['Table']['Field'] = 'someValue';
         $oTestObject = $this->getMock('fcpayone_log_list', array('getListFilter'));
@@ -223,17 +234,18 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_log_list extends Oxid
 
         $sExpect = "someValue";
         
-        $this->assertEquals($sExpect, $oTestObject->fcGetWhereValue('Table','Field'));
+        $this->assertEquals($sExpect, $oTestObject->fcGetWhereValue('Table', 'Field'));
     }
     
     
     /**
      * Testing fcGetWhereValue on older shop version
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcGetWhereValue_OlderShopVersion() {
+    public function test_fcGetWhereValue_OlderShopVersion() 
+    {
         $aWhere = array();
         $aWhere['Table.Field'] = 'someValue';
         $oTestObject = $this->getMock('fcpayone_log_list', array('getListFilter'));
@@ -246,17 +258,18 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_log_list extends Oxid
 
         $sExpect = "someValue";
         
-        $this->assertEquals($sExpect, $oTestObject->fcGetWhereValue('Table','Field'));
+        $this->assertEquals($sExpect, $oTestObject->fcGetWhereValue('Table', 'Field'));
     }
     
     
     /**
      * Testing fcGetSortingJavascript on newer shop version
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcGetSortingJavascript_NewerShopVersion() {
+    public function test_fcGetSortingJavascript_NewerShopVersion() 
+    {
         $oTestObject = oxNew('fcpayone_log_list');
 
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
@@ -266,17 +279,18 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_log_list extends Oxid
 
         $sExpect = "Javascript:top.oxid.admin.setSorting( document.search, 'Table', 'Field', 'asc');document.search.submit();";
         
-        $this->assertEquals($sExpect, $oTestObject->fcGetSortingJavascript('Table','Field'));
+        $this->assertEquals($sExpect, $oTestObject->fcGetSortingJavascript('Table', 'Field'));
     }
     
     
     /**
      * Testing fcGetSortingJavascript on older shop version
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcGetSortingJavascript_OlderShopVersion() {
+    public function test_fcGetSortingJavascript_OlderShopVersion() 
+    {
         $oTestObject = oxNew('fcpayone_log_list');
 
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
@@ -286,7 +300,7 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_log_list extends Oxid
 
         $sExpect = "Javascript:document.search.sort.value='Table.Field';document.search.submit();";
         
-        $this->assertEquals($sExpect, $oTestObject->fcGetSortingJavascript('Table','Field'));
+        $this->assertEquals($sExpect, $oTestObject->fcGetSortingJavascript('Table', 'Field'));
     }
     
     

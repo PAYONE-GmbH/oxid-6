@@ -18,7 +18,8 @@
  * @version   OXID eShop CE
  */
 
-class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTestCase {
+class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTestCase
+{
 
     /**
      * Call protected/private method of a class.
@@ -29,7 +30,8 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
      *
      * @return mixed Method return.
      */
-    public function invokeMethod(&$object, $methodName, array $parameters = array()) {
+    public function invokeMethod(&$object, $methodName, array $parameters = array()) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
@@ -40,13 +42,14 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Set protected/private attribute value
      *
-     * @param object &$object    Instantiated object that we will run method on.
+     * @param object &$object      Instantiated object that we will run method on.
      * @param string $propertyName property that shall be set
-     * @param array  $value value to be set
+     * @param array  $value        value to be set
      *
      * @return mixed Method return.
      */
-    public function invokeSetAttribute(&$object, $propertyName, $value) {
+    public function invokeSetAttribute(&$object, $propertyName, $value) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $property = $reflection->getProperty($propertyName);
         $property->setAccessible(true);
@@ -57,10 +60,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing render method on popup
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_Render_Popup() {
+    public function test_Render_Popup() 
+    {
         $oTestObject = $this->getMock('fcpayone_main', array('_fcpoLoadCountryList'));
         $oTestObject->method('_fcpoLoadCountryList')->will($this->returnValue(null));
 
@@ -79,10 +83,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing render method on popup
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_Render_Popup2() {
+    public function test_Render_Popup2() 
+    {
         $oTestObject = $this->getMock('fcpayone_main', array('_fcpoLoadCountryList'));
         $oTestObject->method('_fcpoLoadCountryList')->will($this->returnValue(null));
 
@@ -101,10 +106,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing render method on standard
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_Render_Standard() {
+    public function test_Render_Standard() 
+    {
         $oTestObject = $this->getMock('fcpayone_main', array('_fcpoLoadCountryList'));
         $oTestObject->method('_fcpoLoadCountryList')->will($this->returnValue(null));
 
@@ -123,10 +129,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing fcpoGetCurrencyIso for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcpoGetCurrencyIso_Coverage() {
+    public function test_fcpoGetCurrencyIso_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
         $oMockCurrency = new stdClass();
         $oMockCurrency->name = 'someCurrency';
@@ -146,10 +153,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing fcpoGetModuleVersion for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcpoGetModuleVersion_Coverage() {
+    public function test_fcpoGetModuleVersion_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
 
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
@@ -163,10 +171,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing fcpoGetConfBools for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcpoGetConfBools_Coverage() {
+    public function test_fcpoGetConfBools_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
 
         $this->invokeSetAttribute($oTestObject, '_aConfBools', 'someValue');
@@ -177,10 +186,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing fcpoGetConfStrs for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcpoGetConfStrs_Coverage() {
+    public function test_fcpoGetConfStrs_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
 
         $this->invokeSetAttribute($oTestObject, '_aConfStrs', 'someValue');
@@ -191,10 +201,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing fcpoGetConfArrs for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcpoGetConfArrs_Coverage() {
+    public function test_fcpoGetConfArrs_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
 
         $this->invokeSetAttribute($oTestObject, '_aConfArrs', 'someValue');
@@ -205,10 +216,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing fcpoGetCountryList for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcpoGetCountryList_Coverage() {
+    public function test_fcpoGetCountryList_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
 
         $this->invokeSetAttribute($oTestObject, '_aCountryList', 'someValue');
@@ -219,11 +231,13 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing render method for code coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_Save_Coverage() {
-        $oTestObject = $this->getMock('fcpayone_main', array(
+    public function test_Save_Coverage() 
+    {
+        $oTestObject = $this->getMock(
+            'fcpayone_main', array(
             '_fcpoCheckAndAddStoreId',
             '_fcpoCheckAndAddCampaign',
             '_fcpoCheckAndAddLogos',
@@ -233,7 +247,8 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
             '_fcpoInsertProfiles',
             '_fcpoCheckAndAddRatePayProfile',
             '_fcpoLoadConfigs',
-        ));
+            )
+        );
         $oTestObject->method('_fcpoCheckAndAddStoreId')->will($this->returnValue(null));
         $oTestObject->method('_fcpoCheckAndAddCampaign')->will($this->returnValue(null));
         $oTestObject->method('_fcpoCheckAndAddLogos')->will($this->returnValue(null));
@@ -263,10 +278,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing load country list for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test__fcpoLoadCountryList_Coverage() {
+    public function test__fcpoLoadCountryList_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
 
         $oMockLang = $this->getMock('oxLang', array('getTplLanguage'));
@@ -292,10 +308,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing load configs for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test__fcpoLoadConfigs_Coverage() {
+    public function test__fcpoLoadConfigs_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
         $this->assertEquals(null, $this->invokeMethod($oTestObject, '_fcpoLoadConfigs', array('oxbaseshop')));
     }
@@ -303,10 +320,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing insert campaigns for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test__fcpoInsertCampaigns_Coverage() {
+    public function test__fcpoInsertCampaigns_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
 
         $aCampaignData_1['delete'] = 'eenie';
@@ -338,10 +356,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing _fcpoInsertStoreIds for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test__fcpoInsertStoreIds_Coverage() {
+    public function test__fcpoInsertStoreIds_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
 
         $aStoreIdData_1['delete'] = 'eenie';
@@ -367,10 +386,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing _fcpoInsertProfiles coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test__fcpoInsertProfiles_Coverage() {
+    public function test__fcpoInsertProfiles_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
         $aMockData = array('some'=>'Data');
 
@@ -388,10 +408,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing _fcpoCheckAndAddStoreId for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test__fcpoCheckAndAddStoreId_Coverage() {
+    public function test__fcpoCheckAndAddStoreId_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
         $oHelper->expects($this->any())->method('fcpoGetRequestParameter')->will($this->returnValue(true));
@@ -403,10 +424,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing _fcpoCheckAndAddRatePayProfile for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test__fcpoCheckAndAddRatePayProfile_Coverage() {
+    public function test__fcpoCheckAndAddRatePayProfile_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
 
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
@@ -423,10 +445,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing _fcpoCheckAndAddCampaign for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test__fcpoCheckAndAddCampaign_Coverage() {
+    public function test__fcpoCheckAndAddCampaign_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
         $oHelper->expects($this->any())->method('fcpoGetRequestParameter')->will($this->returnValue(true));
@@ -438,10 +461,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing _fcpoCheckAndAddLogos for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test__fcpoCheckAndAddLogos_Coverage() {
+    public function test__fcpoCheckAndAddLogos_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
         $oHelper->expects($this->any())->method('fcpoGetRequestParameter')->will($this->returnValue(true));
@@ -453,10 +477,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing _handlePayPalExpressLogos for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test__handlePayPalExpressLogos_Coverage() {
+    public function test__handlePayPalExpressLogos_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
 
         $aLogo_1['active'] = 'eenie';
@@ -477,10 +502,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing fcpoIsLogoAdded for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcpoIsLogoAdded_Coverage() {
+    public function test_fcpoIsLogoAdded_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
         $this->assertFalse($oTestObject->fcpoIsLogoAdded());
     }
@@ -488,10 +514,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing fcpoIsCampaignAdded for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcpoIsCampaignAdded_Coverage() {
+    public function test_fcpoIsCampaignAdded_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
         $this->assertFalse($oTestObject->fcpoIsCampaignAdded());
     }
@@ -499,10 +526,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing fcpoIsStoreIdAdded for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcpoIsStoreIdAdded_Coverage() {
+    public function test_fcpoIsStoreIdAdded_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
         $this->assertFalse($oTestObject->fcpoIsStoreIdAdded());
     }
@@ -510,10 +538,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing fcpoKlarnaCampaigns for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcpoGetStoreIds_Coverage() {
+    public function test_fcpoGetStoreIds_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
         $this->_fcpoPrepareKlarnaStoreIdTable();
 
@@ -530,10 +559,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing fcpoGetRatePayProfiles for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcpoGetRatePayProfiles_Coverage() {
+    public function test_fcpoGetRatePayProfiles_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
         $aMockData = $aExpect = array('some'=>'Data');
 
@@ -547,10 +577,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing fcpoKlarnaCampaigns for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcpoKlarnaCampaigns_Coverage() {
+    public function test_fcpoKlarnaCampaigns_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
         $aResponse = $aExpect = $oTestObject->fcpoKlarnaCampaigns();
 
@@ -560,10 +591,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing fcGetAdminSeperator for older shop versions
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcGetAdminSeperator_OlderShopVersion() {
+    public function test_fcGetAdminSeperator_OlderShopVersion() 
+    {
         $oTestObject = oxNew('fcpayone_main');
 
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
@@ -577,10 +609,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing fcGetAdminSeperator for newer versions
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcGetAdminSeperator_NewerShopVersion() {
+    public function test_fcGetAdminSeperator_NewerShopVersion() 
+    {
         $oTestObject = oxNew('fcpayone_main');
 
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
@@ -594,10 +627,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing _getPaymentAbbreviation for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test__getPaymentAbbreviation_Coverage() {
+    public function test__getPaymentAbbreviation_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
         $sResponse = $this->invokeMethod($oTestObject, '_getPaymentAbbreviation', array('fcpobarzahlen'));
         $this->assertEquals('csh', $sResponse);
@@ -606,10 +640,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing _fcpoGetCheckSumResult for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test__fcpoGetCheckSumResult_Coverage() {
+    public function test__fcpoGetCheckSumResult_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
 
         $oMockScript = $this->getMock('fcCheckChecksum', array('checkChecksumXml'));
@@ -626,10 +661,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing export for getting the coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_Export_Coverage() {
+    public function test_Export_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
 
         $oMockConfigExport = $this->getMock('fcpoconfigexport', array('fcpoExportConfig'));
@@ -646,10 +682,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing fcGetLanguages for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcGetLanguages_Coverage() {
+    public function test_fcGetLanguages_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
 
         $oLang = new stdClass();
@@ -674,10 +711,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing fcGetCurrencies for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcGetCurrencies_Coverage() {
+    public function test_fcGetCurrencies_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
 
         $oCurrency = new stdClass();
@@ -700,10 +738,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing fcpoGetPayPalLogos for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcpoGetPayPalLogos_Coverage() {
+    public function test_fcpoGetPayPalLogos_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
         $this->_fcpoPreparePaypalExpressLogos();
         $aResponse = $aExpect = $this->invokeMethod($oTestObject, 'fcpoGetPayPalLogos');
@@ -714,10 +753,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing getCCFields on coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_getCCFields_Coverage() {
+    public function test_getCCFields_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
 
         $aExpect = array(
@@ -733,10 +773,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing getCCTypes for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_getCCTypes_Coverage() {
+    public function test_getCCTypes_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
         $aResponse = $aExpect = $this->invokeMethod($oTestObject, 'getCCTypes', array('Month'));
         $this->assertEquals($aExpect, $aResponse);
@@ -745,10 +786,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing getCCStyles for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_getCCStyles_Coverage() {
+    public function test_getCCStyles_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
         $aResponse = $aExpect = $this->invokeMethod($oTestObject, 'getCCStyles');
         $this->assertEquals($aExpect, $aResponse);
@@ -757,10 +799,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing getConfigParam for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_getConfigParam_Coverage() {
+    public function test_getConfigParam_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
 
         $oMockConfig = $this->getMockBuilder('oxConfig')->disableOriginalConstructor()->getMock();
@@ -780,10 +823,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing fcpoGetJsCardPreviewCode for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test_fcpoGetJsCardPreviewCode_Coverage() {
+    public function test_fcpoGetJsCardPreviewCode_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
         $aResponse = $aExpect = $this->invokeMethod($oTestObject, 'fcpoGetJsCardPreviewCode');
         $this->assertEquals($aExpect, $aResponse);
@@ -792,10 +836,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing _fcpoGetJsPreviewCodeErrorBlock for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test__fcpoGetJsPreviewCodeErrorBlock_Coverage() {
+    public function test__fcpoGetJsPreviewCodeErrorBlock_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
 
         $oMockConfig = $this->getMockBuilder('oxConfig')->disableOriginalConstructor()->getMock();
@@ -812,10 +857,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing _fcpoGetJsPreviewCodeDefaultStyle for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test__fcpoGetJsPreviewCodeDefaultStyle_Coverage() {
+    public function test__fcpoGetJsPreviewCodeDefaultStyle_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
 
         $oMockConfig = $this->getMockBuilder('oxConfig')->disableOriginalConstructor()->getMock();
@@ -832,10 +878,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing _fcpoGetJsPreviewCodeFields for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test__fcpoGetJsPreviewCodeFields_Coverage() {
+    public function test__fcpoGetJsPreviewCodeFields_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
 
         $oMockConfig = $this->getMockBuilder('oxConfig')->disableOriginalConstructor()->getMock();
@@ -852,10 +899,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing _fcGetJsPreviewCodeValue for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test__fcGetJsPreviewCodeValue_Coverage() {
+    public function test__fcGetJsPreviewCodeValue_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
 
         $oMockConfig = $this->getMockBuilder('oxConfig')->disableOriginalConstructor()->getMock();
@@ -882,10 +930,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Testing _fcpoSetDefault for coverage
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    public function test__fcpoSetDefault_Coverage() {
+    public function test__fcpoSetDefault_Coverage() 
+    {
         $oTestObject = oxNew('fcpayone_main');
 
         $oMockConfig = $this->getMockBuilder('oxConfig')->disableOriginalConstructor()->getMock();
@@ -903,10 +952,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Lil' paypalexpresslogo database helper
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    protected function _fcpoPreparePaypalExpressLogos() {
+    protected function _fcpoPreparePaypalExpressLogos() 
+    {
         $this->_fcpoTruncateTable('fcpopayoneexpresslogos');
         $sQuery = "
             INSERT INTO `fcpopayoneexpresslogos` (`OXID`, `FCPO_ACTIVE`, `FCPO_LANGID`, `FCPO_LOGO`, `FCPO_DEFAULT`) VALUES
@@ -920,10 +970,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Creates some entries in fcpoklarnastoreids table
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    protected function _fcpoPrepareKlarnaStoreIdTable() {
+    protected function _fcpoPrepareKlarnaStoreIdTable() 
+    {
         $this->_fcpoTruncateTable('fcpoklarnastoreids');
         $sQuery = "
             INSERT INTO `oxid`.`fcpoklarnastoreids` (`OXID`, `FCPO_STOREID`) VALUES ('1', 'samplestoreid')
@@ -935,10 +986,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Adds a payment to be used for unit testings
      *
-     * @param string $sOxFromBoni
+     * @param  string $sOxFromBoni
      * @return void
      */
-    protected function _fcpoAddSamplePayment($sOxFromBoni) {
+    protected function _fcpoAddSamplePayment($sOxFromBoni) 
+    {
         $this->_fcpoRemoveSamplePayment();
         $sQuery = "
             INSERT INTO `oxpayments` (`OXID`, `OXACTIVE`, `OXDESC`, `OXADDSUM`, `OXADDSUMTYPE`, `OXADDSUMRULES`, `OXFROMBONI`, `OXFROMAMOUNT`, `OXTOAMOUNT`, `OXVALDESC`, `OXCHECKED`, `OXDESC_1`, `OXVALDESC_1`, `OXDESC_2`, `OXVALDESC_2`, `OXDESC_3`, `OXVALDESC_3`, `OXLONGDESC`, `OXLONGDESC_1`, `OXLONGDESC_2`, `OXLONGDESC_3`, `OXSORT`, `OXTSPAYMENTID`, `OXTIMESTAMP`, `FCPOISPAYONE`, `FCPOAUTHMODE`, `FCPOLIVEMODE`) VALUES
@@ -951,10 +1003,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Adds a sample forwarding
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    protected function _fcpoAddSampleForwarding() {
+    protected function _fcpoAddSampleForwarding() 
+    {
         $this->_fcpoTruncateTable('fcpostatusforwarding');
         $sQuery = "
             INSERT INTO `fcpostatusforwarding` (`OXID`, `FCPO_PAYONESTATUS`, `FCPO_URL`, `FCPO_TIMEOUT`) VALUES
@@ -967,10 +1020,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Adds a sample statusmapping
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    protected function _fcpoAddSampleStatusmapping() {
+    protected function _fcpoAddSampleStatusmapping() 
+    {
         $this->_fcpoTruncateTable('fcpostatusmapping');
         $sQuery = "
             INSERT INTO `fcpostatusmapping` (`OXID`, `FCPO_PAYMENTID`, `FCPO_PAYONESTATUS`, `FCPO_FOLDER`) VALUES
@@ -983,10 +1037,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Removes the sample payment
      *
-     * @param string $sOxFromBoni
+     * @param  string $sOxFromBoni
      * @return void
      */
-    protected function _fcpoRemoveSamplePayment() {
+    protected function _fcpoRemoveSamplePayment() 
+    {
         $sQuery = "
             DELETE FROM oxpayments WHERE OXID = 'fcpounittest'
         ";
@@ -997,10 +1052,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Truncates table
      *
-     * @param void
+     * @param  void
      * @return void
      */
-    protected function _fcpoTruncateTable($sTableName) {
+    protected function _fcpoTruncateTable($sTableName) 
+    {
         $sQuery = "DELETE FROM `{$sTableName}` ";
 
         oxDb::getDb()->Execute($sQuery);

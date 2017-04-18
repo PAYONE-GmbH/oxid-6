@@ -18,7 +18,8 @@
  * @version   OXID eShop CE
  */
  
-class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrderarticleTest extends OxidTestCase {
+class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrderarticleTest extends OxidTestCase
+{
     
     /**
      * Call protected/private method of a class.
@@ -29,7 +30,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrderarticleTest extends O
      *
      * @return mixed Method return.
      */
-    public function invokeMethod(&$object, $methodName, array $parameters = array()) {
+    public function invokeMethod(&$object, $methodName, array $parameters = array()) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $method     = $reflection->getMethod($methodName);
         $method->setAccessible(true);
@@ -41,13 +43,14 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrderarticleTest extends O
     /**
      * Set protected/private attribute value
      *
-     * @param object &$object    Instantiated object that we will run method on.
+     * @param object &$object      Instantiated object that we will run method on.
      * @param string $propertyName property that shall be set
-     * @param array  $value value to be set
+     * @param array  $value        value to be set
      *
      * @return mixed Method return.
      */
-    public function invokeSetAttribute(&$object, $propertyName, $value) {
+    public function invokeSetAttribute(&$object, $propertyName, $value) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $property   = $reflection->getProperty($propertyName);
         $property->setAccessible(true);
@@ -59,11 +62,12 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrderarticleTest extends O
     /**
      * Testing save method for calling parent save
      */
-    public function test_save_Parent() {
+    public function test_save_Parent() 
+    {
         $oMockOrder = $this->getMock('oxOrder', array('isPayOnePaymentType'));
         $oMockOrder->expects($this->any())->method('isPayOnePaymentType')->will($this->returnValue(false));
 
-        $oMockBasket = $this->getMock('oxBasket',array('getPaymentId'));
+        $oMockBasket = $this->getMock('oxBasket', array('getPaymentId'));
         $oMockBasket->expects($this->any())->method('getPaymentId')->will($this->returnValue('somePaymentId'));
 
         $oMockSession = $this->getMock('oxSession', array('getBasket'));
@@ -91,11 +95,12 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrderarticleTest extends O
     /**
      * Testing save method for coverage
      */
-    public function test_save_Coverage_1() {
+    public function test_save_Coverage_1() 
+    {
         $oMockOrder = $this->getMock('oxOrder', array('isPayOnePaymentType'));
         $oMockOrder->expects($this->any())->method('isPayOnePaymentType')->will($this->returnValue(true));
 
-        $oMockBasket = $this->getMock('oxBasket',array('getPaymentId'));
+        $oMockBasket = $this->getMock('oxBasket', array('getPaymentId'));
         $oMockBasket->expects($this->any())->method('getPaymentId')->will($this->returnValue('somePaymentId'));
 
         $oMockSession = $this->getMock('oxSession', array('getBasket'));
@@ -125,11 +130,12 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrderarticleTest extends O
     /**
      * Testing save method for coverage
      */
-    public function test_save_Coverage_2() {
+    public function test_save_Coverage_2() 
+    {
         $oMockOrder = $this->getMock('oxOrder', array('isPayOnePaymentType'));
         $oMockOrder->expects($this->any())->method('isPayOnePaymentType')->will($this->returnValue(true));
 
-        $oMockBasket = $this->getMock('oxBasket',array('getPaymentId'));
+        $oMockBasket = $this->getMock('oxBasket', array('getPaymentId'));
         $oMockBasket->expects($this->any())->method('getPaymentId')->will($this->returnValue('somePaymentId'));
 
         $oMockSession = $this->getMock('oxSession', array('getBasket'));
@@ -142,7 +148,7 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrderarticleTest extends O
         $oTestObject->expects($this->any())->method('setIsNewOrderItem')->will($this->returnValue(true));
         
         $oMockConfig = $this->getMock('oxConfig', array('getConfigParam'));
-        $oMockConfig->expects($this->any())->method('getConfigParam')->will($this->onConsecutiveCalls(true,true,false,true,true));
+        $oMockConfig->expects($this->any())->method('getConfigParam')->will($this->onConsecutiveCalls(true, true, false, true, true));
         
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
         $oHelper->expects($this->any())->method('fcpoGetConfig')->will($this->returnValue($oMockConfig));
@@ -160,8 +166,9 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrderarticleTest extends O
     /**
      * Testing save method for calling parent delete
      */
-    public function test_delete_Parent() {
-        $oMockBasket = $this->getMock('oxBasket',array('getPaymentId'));
+    public function test_delete_Parent() 
+    {
+        $oMockBasket = $this->getMock('oxBasket', array('getPaymentId'));
         $oMockBasket->expects($this->any())->method('getPaymentId')->will($this->returnValue('somePaymentId'));
         
         $oMockSession = $this->getMock('oxSession', array('getBasket'));
@@ -187,8 +194,9 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrderarticleTest extends O
     /**
      * Testing save method for coverage
      */
-    public function test_delete_Coverage() {
-        $oMockBasket = $this->getMock('oxBasket',array('getPaymentId'));
+    public function test_delete_Coverage() 
+    {
+        $oMockBasket = $this->getMock('oxBasket', array('getPaymentId'));
         $oMockBasket->expects($this->any())->method('getPaymentId')->will($this->returnValue('somePaymentId'));
         
         $oMockSession = $this->getMock('oxSession', array('getBasket'));
@@ -216,7 +224,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrderarticleTest extends O
     /**
      * Testing _fcpoGetBefore for receiving a positive answer
      */
-    public function test__fcpoGetBefore_ExpectTrue() {
+    public function test__fcpoGetBefore_ExpectTrue() 
+    {
         $oMockConfig = $this->getMock('oxConfig', array('getConfigParam'));
         $oMockConfig->expects($this->any())->method('getConfigParam')->will($this->returnValue(true));
         
@@ -226,7 +235,7 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrderarticleTest extends O
         
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
         $oHelper->expects($this->any())->method('fcpoGetConfig')->will($this->returnValue($oMockConfig));
-        $oHelper->expects($this->any())->method('fcpoGetRequestParameter')->will($this->onConsecutiveCalls(true,false));
+        $oHelper->expects($this->any())->method('fcpoGetRequestParameter')->will($this->onConsecutiveCalls(true, false));
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
         
         $this->assertEquals(true, $oTestObject->_fcpoGetBefore(true));
@@ -236,7 +245,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrderarticleTest extends O
     /**
      * Testing _fcpoIsPayonePaymentType for case iframe
      */
-    public function test__fcpoIsPayonePaymentType_IFrame() {
+    public function test__fcpoIsPayonePaymentType_IFrame() 
+    {
         $oTestObject = oxNew('fcPayOneOrderarticle');
         $this->assertEquals(false, $oTestObject->_fcpoIsPayonePaymentType('someId', true));
     }
@@ -245,7 +255,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrderarticleTest extends O
     /**
      * Testing _fcpoIsPayonePaymentType for case no iframe
      */
-    public function test__fcpoIsPayonePaymentType_NoFrame() {
+    public function test__fcpoIsPayonePaymentType_NoFrame() 
+    {
         $oTestObject = oxNew('fcPayOneOrderarticle');
         $this->assertEquals(false, $oTestObject->_fcpoIsPayonePaymentType('someId', false));
     }
@@ -254,7 +265,8 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrderarticleTest extends O
     /**
      * Testing _fcpoProcessBaseDelete for coverage
      */
-    public function test__fcpoProcessBaseDelete_Coverage() {
+    public function test__fcpoProcessBaseDelete_Coverage() 
+    {
         $oTestObject = oxNew('fcPayOneOrderarticle');
         $this->assertEquals(false, $oTestObject->_fcpoProcessBaseDelete('someId'));
         

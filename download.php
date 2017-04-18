@@ -19,46 +19,46 @@
  */
  
 set_time_limit(0);
-ini_set ('memory_limit', '1024M');
-ini_set ('log_errors', 1);
-ini_set ('error_log', 'error.log');
+ini_set('memory_limit', '1024M');
+ini_set('log_errors', 1);
+ini_set('error_log', 'error.log');
 
 if(file_exists(dirname(__FILE__)."/../../bootstrap.php")) {
-    require_once dirname(__FILE__) . "/../../bootstrap.php";
+    include_once dirname(__FILE__) . "/../../bootstrap.php";
 } else {
-	if (!function_exists('getShopBasePath')) {
-		/**
-		 * Returns shop base path.
-		 *
-		 * @return string
-		 */
-		function getShopBasePath()
-		{
-			return dirname(__FILE__).'/../../';
-		}
-	}
+    if (!function_exists('getShopBasePath')) {
+        /**
+         * Returns shop base path.
+         *
+         * @return string
+         */
+        function getShopBasePath()
+        {
+            return dirname(__FILE__).'/../../';
+        }
+    }
 
-	set_include_path(get_include_path() . PATH_SEPARATOR . getShopBasePath());
+    set_include_path(get_include_path() . PATH_SEPARATOR . getShopBasePath());
 
-	/**
-	 * Returns true.
-	 *
-	 * @return bool
-	 */
-	if ( !function_exists( 'isAdmin' )) {
-		function isAdmin()
-		{
-			return false;
-		}
-	}
+    /**
+     * Returns true.
+     *
+     * @return bool
+     */
+    if (!function_exists('isAdmin')) {
+        function isAdmin()
+        {
+            return false;
+        }
+    }
 
-	error_reporting( E_ALL ^ E_NOTICE );
+    error_reporting(E_ALL ^ E_NOTICE);
 
-	// custom functions file
-	require getShopBasePath() . 'modules/functions.php';
+    // custom functions file
+    include getShopBasePath() . 'modules/functions.php';
 
-	// Generic utility method file
-	require_once getShopBasePath() . 'core/oxfunctions.php';
+    // Generic utility method file
+    include_once getShopBasePath() . 'core/oxfunctions.php';
 }
 
 /**
@@ -66,11 +66,13 @@ if(file_exists(dirname(__FILE__)."/../../bootstrap.php")) {
  *
  * @author Robert
  */
-class fcPayOneMandateDownload extends oxUBase {
+class fcPayOneMandateDownload extends oxUBase
+{
     
     
     /**
      * Helper object for dealing with different shop versions
+     *
      * @var object
      */
     protected $_oFcpoHelper = null;
@@ -80,20 +82,23 @@ class fcPayOneMandateDownload extends oxUBase {
      * 
      * @return null
      */
-    public function __construct() {
+    public function __construct() 
+    {
         parent::__construct();
         $this->_oFcpoHelper = oxNew('fcpohelper');
     }
     
 
-    protected function _redownloadMandate($sMandateFilename, $sOrderId, $sMode) {
+    protected function _redownloadMandate($sMandateFilename, $sOrderId, $sMode) 
+    {
         $sMandateIdentification = str_replace('.pdf', '', $sMandateFilename);
 
         $oPORequest = oxNew('fcporequest');
         $oPORequest->sendRequestGetFile($sOrderId, $sMandateIdentification, $sMode);
     }
     
-    public function render() {
+    public function render() 
+    {
         parent::render();
         $oDb = oxDb::getDb();
 

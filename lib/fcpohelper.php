@@ -18,10 +18,12 @@
  * @copyright (C) Payone GmbH
  * @version   OXID eShop CE
  */
-class fcpohelper extends oxBase {
+class fcpohelper extends oxBase
+{
 
     /**
      * Flags if shop uses registry
+     *
      * @var static boolean
      */
     protected static $_blUseRegistry = null;
@@ -29,61 +31,67 @@ class fcpohelper extends oxBase {
     /**
      * Building essential stuff
      */
-    public function __construct() {
+    public function __construct() 
+    {
         parent::__construct();
     }
 
     /**
      * Returns a factory instance of given object
      * 
-     * @param string $sName
+     * @param  string $sName
      * @return object 
      */
-    public function getFactoryObject($sName) {
+    public function getFactoryObject($sName) 
+    {
         return oxNew($sName);
     }
 
     /**
      * Wrapper for ini get calls
      * 
-     * @param string $sConfigVar
+     * @param  string $sConfigVar
      * @return mixed
      */
-    public function fcpoIniGet($sConfigVar) {
+    public function fcpoIniGet($sConfigVar) 
+    {
         return ini_get($sConfigVar);
     }
 
     /**
      * Wrapper for returning if function with given name exists
      * 
-     * @param string $sFunctionName
+     * @param  string $sFunctionName
      * @return bool
      */
-    public function fcpoFunctionExists($sFunctionName) {
+    public function fcpoFunctionExists($sFunctionName) 
+    {
         return function_exists($sFunctionName);
     }
 
     /**
      * Wrapper for returning if file in given path exists
      * 
-     * @param string $sFilePath
+     * @param  string $sFilePath
      * @return bool
      */
-    public function fcpoFileExists($sFilePath) {
+    public function fcpoFileExists($sFilePath) 
+    {
         return file_exists($sFilePath);
     }
 
     /**
      * Creates an instance of a class
      * 
-     * @param string $sClassName
-     * @param string $sIncludePath optional
+     * @param  string $sClassName
+     * @param  string $sIncludePath optional
      * @return object
      */
-    public function fcpoGetInstance($sClassName, $sIncludePath = "") {
+    public function fcpoGetInstance($sClassName, $sIncludePath = "") 
+    {
         try {
             if ($sIncludePath) {
-                include_once($sIncludePath);
+                include_once $sIncludePath;
             }
             $oObjInstance = new $sClassName();
         } catch (oxException $oEx) {
@@ -96,10 +104,11 @@ class fcpohelper extends oxBase {
     /**
      * Wrapper method for getting a session variable
      * 
-     * @param string $sVariable
+     * @param  string $sVariable
      * @return mixed
      */
-    public function fcpoGetSessionVariable($sVariable) {
+    public function fcpoGetSessionVariable($sVariable) 
+    {
         if ($this->_fcUseDeprecatedInstantiation()) {
             $mReturn = $this->getSession()->getVar($sVariable);
         } else {
@@ -112,11 +121,12 @@ class fcpohelper extends oxBase {
     /**
      * Wrapper method for setting a session variable
      * 
-     * @param string $sVariable
-     * @param string $sValue
+     * @param  string $sVariable
+     * @param  string $sValue
      * @return mixed
      */
-    public function fcpoSetSessionVariable($sVariable, $sValue) {
+    public function fcpoSetSessionVariable($sVariable, $sValue) 
+    {
         if ($this->_fcUseDeprecatedInstantiation()) {
             $mReturn = $this->getSession()->setVar($sVariable, $sValue);
         } else {
@@ -129,11 +139,12 @@ class fcpohelper extends oxBase {
     /**
      * Wrapper method for setting a session variable
      * 
-     * @param string $sVariable
-     * @param string $sValue
+     * @param  string $sVariable
+     * @param  string $sValue
      * @return mixed
      */
-    public function fcpoDeleteSessionVariable($sVariable) {
+    public function fcpoDeleteSessionVariable($sVariable) 
+    {
         if ($this->_fcUseDeprecatedInstantiation()) {
             $mReturn = $this->getSession()->deleteVar($sVariable);
         } else {
@@ -149,7 +160,8 @@ class fcpohelper extends oxBase {
      * @param void
      * @param mixed
      */
-    public static function fcpoGetStaticConfig() {
+    public static function fcpoGetStaticConfig() 
+    {
         if (self::_useRegistry() === true) {
             $oReturn = oxRegistry::getConfig();
         } else {
@@ -165,7 +177,8 @@ class fcpohelper extends oxBase {
      * @param void
      * @param mixed
      */
-    public function fcpoGetConfig() {
+    public function fcpoGetConfig() 
+    {
         return $this->getConfig();
     }
 
@@ -175,7 +188,8 @@ class fcpohelper extends oxBase {
      * @param void
      * @param mixed
      */
-    public function fcpoGetSession() {
+    public function fcpoGetSession() 
+    {
         return $this->getSession();
     }
 
@@ -185,7 +199,8 @@ class fcpohelper extends oxBase {
      * @param $blAssoc with assoc mode
      * @param mixed
      */
-    public function fcpoGetDb($blAssoc = false) {
+    public function fcpoGetDb($blAssoc = false) 
+    {
         if ($blAssoc) {
             return ( $this->_fcUseDeprecatedInstantiation ) ? oxDb::getDb(true) : oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
         } else {
@@ -196,10 +211,11 @@ class fcpohelper extends oxBase {
     /**
      * Wrapper method for getting a request parameter
      * 
-     * @param string $sParameter
+     * @param  string $sParameter
      * @return mixed
      */
-    public function fcpoGetRequestParameter($sParameter) {
+    public function fcpoGetRequestParameter($sParameter) 
+    {
         $oConfig = $this->getConfig();
 
         if ($this->_fcUseDeprecatedInstantiation()) {
@@ -214,10 +230,11 @@ class fcpohelper extends oxBase {
     /**
      * Returns a language Instance
      * 
-     * @param void
+     * @param  void
      * @return mixed
      */
-    public function fcpoGetLang() {
+    public function fcpoGetLang() 
+    {
         if ($this->_fcUseDeprecatedInstantiation()) {
             $mReturn = oxLang::getInstance();
         } else {
@@ -230,10 +247,11 @@ class fcpohelper extends oxBase {
     /**
      * Returns a utilsfile instance
      * 
-     * @param void
+     * @param  void
      * @return mixed
      */
-    public function fcpoGetUtilsFile() {
+    public function fcpoGetUtilsFile() 
+    {
         if ($this->_fcUseDeprecatedInstantiation()) {
             $mReturn = oxUtilsFile::getInstance();
         } else {
@@ -246,10 +264,11 @@ class fcpohelper extends oxBase {
     /**
      * Returns a utilsobject instance
      * 
-     * @param void
+     * @param  void
      * @return mixed
      */
-    public function fcpoGetUtilsObject() {
+    public function fcpoGetUtilsObject() 
+    {
         if ($this->_fcUseDeprecatedInstantiation()) {
             $mReturn = oxUtilsObject::getInstance();
         } else {
@@ -262,10 +281,11 @@ class fcpohelper extends oxBase {
     /**
      * Returns an instance of oxutils
      * 
-     * @param void
+     * @param  void
      * @return mixed
      */
-    public function fcpoGetUtils() {
+    public function fcpoGetUtils() 
+    {
         if ($this->_fcUseDeprecatedInstantiation()) {
             $mReturn = oxUtils::getInstance();
         } else {
@@ -278,10 +298,11 @@ class fcpohelper extends oxBase {
     /**
      * Returns an instance of oxutilsview
      * 
-     * @param void
+     * @param  void
      * @return mixed
      */
-    public function fcpoGetUtilsView() {
+    public function fcpoGetUtilsView() 
+    {
         if ($this->_fcUseDeprecatedInstantiation()) {
             $mReturn = oxUtilsView::getInstance();
         } else {
@@ -294,10 +315,11 @@ class fcpohelper extends oxBase {
     /**
      * Returns an instance of oxutilserver
      * 
-     * @param void
+     * @param  void
      * @return mixed
      */
-    public function fcpoGetUtilsServer() {
+    public function fcpoGetUtilsServer() 
+    {
         if ($this->_fcUseDeprecatedInstantiation()) {
             $mReturn = oxUtilsServer::getInstance();
         } else {
@@ -310,10 +332,11 @@ class fcpohelper extends oxBase {
     /**
      * Returns an instance of oxUtilsDate
      * 
-     * @param void
+     * @param  void
      * @return mixed
      */
-    public function fcpoGetUtilsDate() {
+    public function fcpoGetUtilsDate() 
+    {
         if ($this->_fcUseDeprecatedInstantiation()) {
             $mReturn = oxUtilsDate::getInstance();
         } else {
@@ -326,70 +349,77 @@ class fcpohelper extends oxBase {
     /**
      * Method returns current module version
      * 
-     * @param void
+     * @param  void
      * @return string
      */
-    public static function fcpoGetModuleVersion() {
+    public static function fcpoGetModuleVersion() 
+    {
         return '%%VERSION%%';
     }
 
     /**
      * Returns the superglobal $_FILES
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function fcpoGetFiles() {
+    public function fcpoGetFiles() 
+    {
         return $_FILES;
     }
 
     /**
      * Processing and returning result string
      * 
-     * @param string $sContent
+     * @param  string $sContent
      * @return string
      */
-    public function fcpoProcessResultString($sContent) {
+    public function fcpoProcessResultString($sContent) 
+    {
         return $sContent;
     }
 
     /**
      * Output content as header
      * 
-     * @param string $sContent
+     * @param  string $sContent
      * @return string
      */
-    public function fcpoHeader($sContent) {
+    public function fcpoHeader($sContent) 
+    {
         header($sContent);
     }
 
     /**
      * Wrapper for php exit on beeing able to be mocked
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function fcpoExit() {
+    public function fcpoExit() 
+    {
         exit;
     }
 
     /**
      * Retunrs if incoming class name exists or not
      * 
-     * @param string $sClassName
+     * @param  string $sClassName
      * @return bool
      */
-    public function fcpoCheckClassExists($sClassName) {
+    public function fcpoCheckClassExists($sClassName) 
+    {
         return class_exists($sClassName);
     }
 
     /**
      * Returns current integrator version
      * 
-     * @param void
+     * @param  void
      * @return string
      */
-    public function fcpoGetIntegratorVersion() {
+    public function fcpoGetIntegratorVersion() 
+    {
         $oConfig = $this->getConfig();
         $sEdition = $oConfig->getActiveShop()->oxshops__oxedition->value;
         $sVersion = $oConfig->getActiveShop()->oxshops__oxversion->value;
@@ -401,14 +431,15 @@ class fcpohelper extends oxBase {
     /**
      * Returns shopversion as integer
      * 
-     * @param void
+     * @param  void
      * @return int
      */
-    public function fcpoGetIntShopVersion() {
+    public function fcpoGetIntShopVersion() 
+    {
         $oConfig = $this->getConfig();
         $sVersion = $oConfig->getActiveShop()->oxshops__oxversion->value;
         $iVersion = (int) str_replace('.', '', $sVersion);
-        #fix for ce/pe 4.10.0+
+        // fix for ce/pe 4.10.0+
         if ($iVersion > 1000) {
             $iVersion *= 10;
         } else {
@@ -422,10 +453,11 @@ class fcpohelper extends oxBase {
     /**
      * Returns the current shop name
      * 
-     * @param void
+     * @param  void
      * @return string
      */
-    public function fcpoGetShopName() {
+    public function fcpoGetShopName() 
+    {
         $oConfig = $this->getConfig();
 
         return $oConfig->getActiveShop()->oxshops__oxname->value;
@@ -434,10 +466,11 @@ class fcpohelper extends oxBase {
     /**
      * Returns help url
      * 
-     * @param void
+     * @param  void
      * @return string
      */
-    public function fcpoGetHelpUrl() {
+    public function fcpoGetHelpUrl() 
+    {
         return "http://www.payone.de";
     }
 
@@ -447,7 +480,8 @@ class fcpohelper extends oxBase {
      * @param void
      * @return array
      */
-    public function fcpoGetPayoneStatusList() {
+    public function fcpoGetPayoneStatusList() 
+    {
         return array(
             'appointed',
             'capture',
@@ -467,10 +501,11 @@ class fcpohelper extends oxBase {
     /**
      * Loads shop version and formats it in a certain way
      *
-     * @param void
+     * @param  void
      * @return string
      */
-    public function fcpoGetIntegratorId() {
+    public function fcpoGetIntegratorId() 
+    {
         $oConfig = $this->getConfig();
 
         $sEdition = $oConfig->getActiveShop()->oxshops__oxedition->value;
@@ -487,15 +522,15 @@ class fcpohelper extends oxBase {
     /**
      * Returns if deprecated instation should be used
      * 
-     * @param void
+     * @param  void
      * @return bool
      */
-    protected function _fcUseDeprecatedInstantiation() {
+    protected function _fcUseDeprecatedInstantiation() 
+    {
         $oConfig = $this->getConfig();
-        if (
-                ( version_compare($oConfig->getVersion(), "4.8.0") < 1 && $oConfig->getEdition() == "CE" ) ||
-                ( version_compare($oConfig->getVersion(), "4.8.0") < 1 && $oConfig->getEdition() == "PE" ) ||
-                ( version_compare($oConfig->getVersion(), "5.1.0") < 1 && $oConfig->getEdition() == "EE" )
+        if (( version_compare($oConfig->getVersion(), "4.8.0") < 1 && $oConfig->getEdition() == "CE" ) 
+            || ( version_compare($oConfig->getVersion(), "4.8.0") < 1 && $oConfig->getEdition() == "PE" ) 
+            || ( version_compare($oConfig->getVersion(), "5.1.0") < 1 && $oConfig->getEdition() == "EE" )
         ) {
             return true;
         } else {
@@ -506,10 +541,11 @@ class fcpohelper extends oxBase {
     /**
      * Static getter for checking newer available methods and classes in shop
      * 
-     * @param void
+     * @param  void
      * @return bool
      */
-    protected static function _useRegistry() {
+    protected static function _useRegistry() 
+    {
         if (self::$_blUseRegistry === null) {
             self::$_blUseRegistry = false;
             if (class_exists('oxRegistry')) {

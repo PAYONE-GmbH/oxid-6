@@ -18,16 +18,19 @@
  * @version   OXID eShop CE
  */
  
-class MockResultErrorMapping {
+class MockResultErrorMapping
+{
 
     public $EOF = false;
     public $fields = array('someValue', 'someValue', 'someValue', 'someValue', 'someValue');
 
-    public function recordCount() {
+    public function recordCount() 
+    {
         return 1;
     }
 
-    public function moveNext() {
+    public function moveNext() 
+    {
         $this->EOF = true;
     }
 
@@ -38,9 +41,10 @@ class MockResultErrorMapping {
  *
  * @author Andre Gregor-Herrmann <andre.herrmann@fatchip.de>
  * @author Fatchip GmbH
- * @date 2017-02-01
+ * @date   2017-02-01
  */
-class Unit_fcPayOne_Application_Models_fcpoerrormapping extends OxidTestCase {
+class Unit_fcPayOne_Application_Models_fcpoerrormapping extends OxidTestCase
+{
 
     /**
      * Call protected/private method of a class.
@@ -51,7 +55,8 @@ class Unit_fcPayOne_Application_Models_fcpoerrormapping extends OxidTestCase {
      *
      * @return mixed Method return.
      */
-    public function invokeMethod(&$object, $methodName, array $parameters = array()) {
+    public function invokeMethod(&$object, $methodName, array $parameters = array()) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
@@ -62,13 +67,14 @@ class Unit_fcPayOne_Application_Models_fcpoerrormapping extends OxidTestCase {
     /**
      * Set protected/private attribute value
      *
-     * @param object &$object    Instantiated object that we will run method on.
+     * @param object &$object      Instantiated object that we will run method on.
      * @param string $propertyName property that shall be set
-     * @param array  $value value to be set
+     * @param array  $value        value to be set
      *
      * @return mixed Method return.
      */
-    public function invokeSetAttribute(&$object, $propertyName, $value) {
+    public function invokeSetAttribute(&$object, $propertyName, $value) 
+    {
         $reflection = new \ReflectionClass(get_class($object));
         $property = $reflection->getProperty($propertyName);
         $property->setAccessible(true);
@@ -80,7 +86,8 @@ class Unit_fcPayOne_Application_Models_fcpoerrormapping extends OxidTestCase {
     /**
      * Testing fcpoGetExistingMappings for coverage
      */
-    public function test_fcpoGetExistingMappings_Coverage() {
+    public function test_fcpoGetExistingMappings_Coverage() 
+    {
         $oTestObject = oxNew('fcpoerrormapping');
 
         $oMockResult = new MockResultErrorMapping();
@@ -99,7 +106,8 @@ class Unit_fcPayOne_Application_Models_fcpoerrormapping extends OxidTestCase {
     /**
      * Testing fcpoGetAvailableErrorCodes general
      */
-    public function test_fcpoGetAvailableErrorCodes_General() {
+    public function test_fcpoGetAvailableErrorCodes_General() 
+    {
         $aMockData = array('some'=>'Data');
         $oTestObject = $this->getMock('fcpoerrormapping', array('_fcpoParseXml'));
         $oTestObject->expects($this->any())->method('_fcpoParseXml')->will($this->returnValue($aMockData));
@@ -110,7 +118,8 @@ class Unit_fcPayOne_Application_Models_fcpoerrormapping extends OxidTestCase {
     /**
      * Testing fcpoGetAvailableErrorCodes iframe
      */
-    public function test_fcpoGetAvailableErrorCodes_Iframe() {
+    public function test_fcpoGetAvailableErrorCodes_Iframe() 
+    {
         $aMockData = array('some'=>'Data');
         $oTestObject = $this->getMock('fcpoerrormapping', array('_fcpoParseXml'));
         $oTestObject->expects($this->any())->method('_fcpoParseXml')->will($this->returnValue($aMockData));
@@ -121,7 +130,8 @@ class Unit_fcPayOne_Application_Models_fcpoerrormapping extends OxidTestCase {
     /**
      * Testing fcpoGetAvailableErrorCodes throwing exception
      */
-    public function test_fcpoGetAvailableErrorCodes_Exception() {
+    public function test_fcpoGetAvailableErrorCodes_Exception() 
+    {
         $oMockException = new oxException('someErrorMessage');
         $oTestObject = $this->getMock('fcpoerrormapping', array('_fcpoParseXml'));
         $oTestObject->expects($this->any())->method('_fcpoParseXml')->will($this->throwException($oMockException));
@@ -132,7 +142,8 @@ class Unit_fcPayOne_Application_Models_fcpoerrormapping extends OxidTestCase {
     /**
      * Testing fcpoUpdateMappings for coverage
      */
-    public function test_fcpoUpdateMappings_Coverage() {
+    public function test_fcpoUpdateMappings_Coverage() 
+    {
         $oTestObject = $this->getMock('fcpoerrormapping', array('_fcpoGetQuery'));
         $oTestObject->expects($this->any())->method('_fcpoGetQuery')->will($this->returnValue(true));
 
@@ -145,13 +156,14 @@ class Unit_fcPayOne_Application_Models_fcpoerrormapping extends OxidTestCase {
         $oHelper->expects($this->any())->method('fcpoGetDb')->will($this->returnValue($oMockDatabase));
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
 
-        $this->assertEquals(null, $oTestObject->fcpoUpdateMappings($aMockMappings,'someType'));
+        $this->assertEquals(null, $oTestObject->fcpoUpdateMappings($aMockMappings, 'someType'));
     }
 
     /**
      * Testing fcpoFetchMappedErrorMessage for coverage
      */
-    public function test_fcpoFetchMappedErrorMessage_Coverage() {
+    public function test_fcpoFetchMappedErrorMessage_Coverage() 
+    {
         $oTestObject = $this->getMock('fcpoerrormapping', array('_fcpoGetSearchQuery'));
         $oTestObject->expects($this->any())->method('_fcpoGetSearchQuery')->will($this->returnValue('someQuery'));
 
@@ -181,7 +193,8 @@ class Unit_fcPayOne_Application_Models_fcpoerrormapping extends OxidTestCase {
     /**
      * Testing _fcpoGetMappingWhere for coverage
      */
-    public function test__fcpoGetMappingWhere_Coverage() {
+    public function test__fcpoGetMappingWhere_Coverage() 
+    {
         $sExpect = "WHERE fcpo_error_type='general'";
         $oTestObject = oxNew('fcpoerrormapping');
 
@@ -191,7 +204,8 @@ class Unit_fcPayOne_Application_Models_fcpoerrormapping extends OxidTestCase {
     /**
      * Testing _fcpoParseXml for coverage
      */
-    public function test__fcpoParseXml_Coverage() {
+    public function test__fcpoParseXml_Coverage() 
+    {
         $oTestObject = oxNew('fcpoerrormapping');
 
         $oMockUBase = $this->getMock('oxubase', array('getActiveLangAbbr'));
@@ -221,7 +235,8 @@ class Unit_fcPayOne_Application_Models_fcpoerrormapping extends OxidTestCase {
     /**
      * Testing _fcpoXml2Array for coverage
      */
-    public function test__fcpoXml2Array_Coverage() {
+    public function test__fcpoXml2Array_Coverage() 
+    {
         $oTestObject = oxNew('fcpoerrormapping');
 
         $sMockXml = '<root><mocknode><mockvar>mockvalue</mockvar></mocknode></root>';
@@ -234,7 +249,8 @@ class Unit_fcPayOne_Application_Models_fcpoerrormapping extends OxidTestCase {
     /**
      * Testing _fcpoGetQuery for case of removing an entry
      */
-    public function test__fcpoGetQuery_Delete() {
+    public function test__fcpoGetQuery_Delete() 
+    {
         $oTestObject = $this->getMock('fcpoerrormapping', array('_fcpoGetUpdateQuery'));
         $oTestObject->expects($this->any())->method('_fcpoGetUpdateQuery')->will($this->returnValue(true));
 
@@ -250,7 +266,8 @@ class Unit_fcPayOne_Application_Models_fcpoerrormapping extends OxidTestCase {
     /**
      * Testing _fcpoGetQuery for case of adding/updating an entry
      */
-    public function test__fcpoGetQuery_Update() {
+    public function test__fcpoGetQuery_Update() 
+    {
         $oTestObject = $this->getMock('fcpoerrormapping', array('_fcpoGetUpdateQuery'));
         $oTestObject->expects($this->any())->method('_fcpoGetUpdateQuery')->will($this->returnValue('someValue'));
 
@@ -264,7 +281,8 @@ class Unit_fcPayOne_Application_Models_fcpoerrormapping extends OxidTestCase {
     /**
      * Testing _fcpoGetUpdateQuery inserting a new entry
      */
-    public function test__fcpoGetUpdateQuery_Insert() {
+    public function test__fcpoGetUpdateQuery_Insert() 
+    {
         $oTestObject = $this->getMock('fcpoerrormapping', array('_fcpoIsValidNewEntry'));
         $oTestObject->expects($this->any())->method('_fcpoIsValidNewEntry')->will($this->returnValue(true));
 
@@ -290,7 +308,8 @@ class Unit_fcPayOne_Application_Models_fcpoerrormapping extends OxidTestCase {
     /**
      * Testing _fcpoGetUpdateQuery inserting a new entry
      */
-    public function test__fcpoGetUpdateQuery_Update() {
+    public function test__fcpoGetUpdateQuery_Update() 
+    {
         $oTestObject = $this->getMock('fcpoerrormapping', array('_fcpoIsValidNewEntry'));
         $oTestObject->expects($this->any())->method('_fcpoIsValidNewEntry')->will($this->returnValue(false));
 
@@ -316,7 +335,8 @@ class Unit_fcPayOne_Application_Models_fcpoerrormapping extends OxidTestCase {
     /**
      * Testing _fcpoGetSearchQuery for coverage
      */
-    public function test__fcpoGetSearchQuery_Coverage() {
+    public function test__fcpoGetSearchQuery_Coverage() 
+    {
         $oTestObject = oxNew('fcpoerrormapping');
 
         $sExpect = "
@@ -333,7 +353,8 @@ class Unit_fcPayOne_Application_Models_fcpoerrormapping extends OxidTestCase {
     /**
      * Testing _fcpoIsValidNewEntry for coverage
      */
-    public function test__fcpoIsValidNewEntry_Coverage() {
+    public function test__fcpoIsValidNewEntry_Coverage() 
+    {
         $oTestObject = oxNew('fcpoerrormapping');
 
         $sMockMappingId = 'new';

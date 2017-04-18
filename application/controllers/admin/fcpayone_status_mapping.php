@@ -18,10 +18,12 @@
  * @version   OXID eShop CE
  */
  
-class fcpayone_status_mapping extends fcpayone_admindetails {
+class fcpayone_status_mapping extends fcpayone_admindetails
+{
 
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'fcpayone_status_mapping.tpl';
@@ -29,10 +31,11 @@ class fcpayone_status_mapping extends fcpayone_admindetails {
     /**
      * Returns list of former configured mappings
      * 
-     * @param void
+     * @param  void
      * @return array
      */
-    public function getMappings() {
+    public function getMappings() 
+    {
         $aMappings = $this->_fcpoGetExistingMappings();
         $aMappings = $this->_fcpoAddNewMapping($aMappings);
 
@@ -42,10 +45,11 @@ class fcpayone_status_mapping extends fcpayone_admindetails {
     /**
      * Adds a new entry if flag has been set
      * 
-     * @param array $aMappings
+     * @param  array $aMappings
      * @return array
      */
-    protected function _fcpoAddNewMapping($aMappings) {
+    protected function _fcpoAddNewMapping($aMappings) 
+    {
         if ($this->_oFcpoHelper->fcpoGetRequestParameter('add')) {
             $oMapping = new stdClass();
             $oMapping->sOxid = 'new';
@@ -61,10 +65,11 @@ class fcpayone_status_mapping extends fcpayone_admindetails {
     /**
      * Requests database for existing mappings and returns an array of mapping objects
      * 
-     * @param void
+     * @param  void
      * @return array
      */
-    protected function _fcpoGetExistingMappings() {
+    protected function _fcpoGetExistingMappings() 
+    {
         $aExistingStatusMappings = $this->_oFcpoMapping->fcpoGetExistingMappings();
 
         return $aExistingStatusMappings;
@@ -73,10 +78,11 @@ class fcpayone_status_mapping extends fcpayone_admindetails {
     /**
      * Returns a list of payment types
      * 
-     * @param void
+     * @param  void
      * @return array
      */
-    public function getPaymentTypeList() {
+    public function getPaymentTypeList() 
+    {
         $oPayment = oxNew('oxPayment');
         $aPaymentTypes = $oPayment->fcpoGetPayonePaymentTypes();
 
@@ -86,10 +92,11 @@ class fcpayone_status_mapping extends fcpayone_admindetails {
     /**
      * Returns a list of payone status list
      * 
-     * @param void
+     * @param  void
      * @return array
      */
-    public function getPayoneStatusList() {
+    public function getPayoneStatusList() 
+    {
         $aPayoneStatusList = $this->_oFcpoHelper->fcpoGetPayoneStatusList();
 
         $aNewList = array();
@@ -106,10 +113,11 @@ class fcpayone_status_mapping extends fcpayone_admindetails {
     /**
      * Returns a list of shop states
      * 
-     * @param void
+     * @param  void
      * @return array
      */
-    public function getShopStatusList() {
+    public function getShopStatusList() 
+    {
         $aFolders = $this->getConfig()->getConfigParam('aOrderfolder');
         return $aFolders;
     }
@@ -117,10 +125,11 @@ class fcpayone_status_mapping extends fcpayone_admindetails {
     /**
      * Updating settings into database
      * 
-     * @param void
+     * @param  void
      * @return void
      */
-    public function save() {
+    public function save() 
+    {
         $oMapping = $this->fcpoGetInstance('fcpomapping');
         $aMappings = $this->_oFcpoHelper->fcpoGetRequestParameter("editval");
         if (is_array($aMappings) && count($aMappings) > 0) {

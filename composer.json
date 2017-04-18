@@ -1,0 +1,15 @@
+{
+  "name": "payone-gmbh/oxid-6",
+  "description": "The PAYONE module for Oxid 6",
+  "type": "oxideshop-module",
+  "keywords": ["oxid", "modules", "eShop", "payment", "creditcard"],
+  "homepage": "https://www.payone.com/",
+  "license": [
+    "LGPL-3.0"
+  ],
+  "extra": {
+    "oxideshop": {
+      "target-directory": "fc/fcpayone"
+    }
+  }
+}

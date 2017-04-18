@@ -61,7 +61,7 @@ class fcpayone_ajax extends oxBase
     /**
      * Helper object for dealing with different shop versions
      *
-     * @var object
+     * @var fcpohelper
      */
     protected $_oFcpoHelper = null;
     
@@ -99,7 +99,7 @@ class fcpayone_ajax extends oxBase
      * @param  type $sPaymentId
      * @return mixed
      */
-    public function fcpoTriggerInstallmentCalculation() 
+    public function fcpoTriggerInstallmentCalculation()
     {
         $oPaymentController = $this->_oFcpoHelper->getFactoryObject('payment');
 

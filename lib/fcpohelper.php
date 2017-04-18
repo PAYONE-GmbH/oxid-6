@@ -85,6 +85,7 @@ class fcpohelper extends oxBase
      * 
      * @param  string $sClassName
      * @param  string $sIncludePath optional
+     * @throws oxexception
      * @return object
      */
     public function fcpoGetInstance($sClassName, $sIncludePath = "") 
@@ -159,6 +160,7 @@ class fcpohelper extends oxBase
      * 
      * @param void
      * @param mixed
+     * @return oxconfig
      */
     public static function fcpoGetStaticConfig() 
     {
@@ -175,7 +177,7 @@ class fcpohelper extends oxBase
      * Getter for config instance
      * 
      * @param void
-     * @param mixed
+     * @return \OxidEsales\Eshop\Core\Config
      */
     public function fcpoGetConfig() 
     {
@@ -185,8 +187,7 @@ class fcpohelper extends oxBase
     /**
      * Getter for session instance
      * 
-     * @param void
-     * @param mixed
+     * @return \OxidEsales\Eshop\Core\Session
      */
     public function fcpoGetSession() 
     {

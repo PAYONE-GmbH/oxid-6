@@ -45,15 +45,14 @@ class ajaxComponent extends ajaxListComponent
     /**
      * Helper object for dealing with different shop versions
      *
-     * @var object
+     * @var fcpohelper
      */
-    protected $_oFcpoHelper = null;
+    protected $_oFcPoHelper = null;
 
     /**
      * init object construction
      * 
      * @group  untestable
-     * @return null
      */
     public function __construct() 
     {
@@ -99,7 +98,6 @@ class ajaxComponent extends ajaxListComponent
      * Adds chosen country to payment
      *
      * @group  untestable
-     * @return null
      */
     public function addpaycountry() 
     {
@@ -126,7 +124,6 @@ class ajaxComponent extends ajaxListComponent
      * Removes chosen country from payment
      *
      * @group  untestable
-     * @return null
      */
     public function removepaycountry() 
     {

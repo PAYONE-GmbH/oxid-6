@@ -23,7 +23,7 @@ class fcporatepay extends oxBase
     /**
      * Helper object for dealing with different shop versions
      *
-     * @var object
+     * @var fcpohelper
      */
     protected $_oFcpoHelper = null;
 
@@ -43,12 +43,12 @@ class fcporatepay extends oxBase
         $this->_oFcpoHelper = oxNew('fcpohelper');
         $this->_oFcpoDb = oxDb::getDb();
     }
-    
+
     /**
      * Add/Update RatePay profile
-     * 
-     * @param  array $aRatepayData
-     * @return void
+     *
+     * @param string $sOxid
+     * @param array  $aRatePayData
      */
     public function fcpoInsertProfile($sOxid, $aRatePayData) 
     {
@@ -73,7 +73,7 @@ class fcporatepay extends oxBase
      * Returns an array with RatePay profiles
      * 
      * @param  string $sPaymentId (optional)
-     * @return void
+     * @return array
      */
     public function fcpoGetRatePayProfiles($sPaymentId = null) 
     {
@@ -186,7 +186,7 @@ class fcporatepay extends oxBase
     /**
      * Returns profiledata by id
      * 
-     * @param  type $sOxid
+     * @param  string $sOxid
      * @return array
      */
     public function fcpoGetProfileData($sOxid) 
@@ -210,7 +210,7 @@ class fcporatepay extends oxBase
     /**
      * Returns matching profiledata by giving paymentid
      *
-     * @param  $sPaymentId
+     * @param  string $sPaymentId
      * @return array
      */
     public function fcpoGetProfileDataByPaymentId($sPaymentId) 
@@ -248,7 +248,7 @@ class fcporatepay extends oxBase
     /**
      * Requests and updates payment information for given shop_id
      * 
-     * @param  $aRatePayData
+     * @param  string $sOxid
      * @return void
      */
     protected function _fcpoUpdateRatePayProfile($sOxid) 

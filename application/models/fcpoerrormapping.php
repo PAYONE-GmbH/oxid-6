@@ -30,7 +30,7 @@ class fcpoerrormapping extends oxBase
     /**
      * Helper object for dealing with different shop versions
      *
-     * @var object
+     * @var fcpohelper
      */
     protected $_oFcpoHelper = null;
 
@@ -54,10 +54,10 @@ class fcpoerrormapping extends oxBase
     /**
      * Requests database for existing mappings and returns an array of mapping objects
      * 
-     * @param  void
+     * @param  string $sType
      * @return array
      */
-    public function fcpoGetExistingMappings($sType='general') 
+    public function fcpoGetExistingMappings($sType = 'general')
     {
         $aMappings = array();
         
@@ -89,11 +89,11 @@ class fcpoerrormapping extends oxBase
     /**
      * Extracts all error codes from xml file adn returns them as array
      * 
-     * @param  void
+     * @param  string $sType
      * @return mixed
-     * @throws Exception
+     * @throws oxexception
      */
-    public function fcpoGetAvailableErrorCodes($sType='general') 
+    public function fcpoGetAvailableErrorCodes($sType = 'general')
     {
         $mReturn = $sErrorXmlPath = false;
         if ($sType == 'general') {
@@ -122,7 +122,8 @@ class fcpoerrormapping extends oxBase
     /**
      * Updates current set of mappings into database
      * 
-     * @param  array $aMappings
+     * @param  array  $aMappings
+     * @param  string $sType
      * @return void
      */
     public function fcpoUpdateMappings($aMappings, $sType) 
@@ -219,6 +220,7 @@ class fcpoerrormapping extends oxBase
      * 
      * @param object $oXml
      * @param array  $aOut
+     * @return array
      */
     protected function _fcpoXml2Array($oXml, $aOut = array()) 
     {
@@ -251,7 +253,7 @@ class fcpoerrormapping extends oxBase
     }
 
     /**
-     * Returns wether an insert or update query, depending on data
+     * Returns whether an insert or update query, depending on data
      * 
      * @param  string $sMappingId
      * @param  array  $aData
@@ -292,6 +294,7 @@ class fcpoerrormapping extends oxBase
      * 
      * @param string $sErrorCode
      * @param string $sLangId
+     * @return string
      */
     protected function _fcpoGetSearchQuery($sErrorCode, $sLangId) 
     {
@@ -312,10 +315,10 @@ class fcpoerrormapping extends oxBase
     /**
      * Checks if current entry is new and complete
      * 
-     * @param  type $sMappingId
-     * @param  type $sPaymentId
-     * @param  type $sPayoneStatus
-     * @param  type $sFolder
+     * @param  string $sMappingId
+     * @param  string $sErrorCode
+     * @param  string $sLangId
+     * @param  string $sMappedMessage
      * @return bool
      */
     protected function _fcpoIsValidNewEntry($sMappingId, $sErrorCode, $sLangId, $sMappedMessage) 

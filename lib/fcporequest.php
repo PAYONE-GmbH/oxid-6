@@ -24,7 +24,7 @@ class fcpoRequest extends oxSuperCfg
     /**
      * Helper object for dealing with different shop versions
      *
-     * @var object
+     * @var fcpohelper
      */
     protected $_oFcpoHelper = null;
 
@@ -132,8 +132,6 @@ class fcpoRequest extends oxSuperCfg
 
     /**
      * Class constructor, sets all required parameters for requests.
-     * 
-     * @return null
      */
     public function __construct() 
     {
@@ -170,8 +168,6 @@ class fcpoRequest extends oxSuperCfg
      * @param string $sKey               parameter key
      * @param string $sValue             parameter value
      * @param bool   $blAddAsNullIfEmpty add parameter with value NULL if empty. Default is false
-     *
-     * @return null
      */
     public function addParameter($sKey, $sValue, $blAddAsNullIfEmpty = false) 
     {
@@ -185,8 +181,6 @@ class fcpoRequest extends oxSuperCfg
      * Remove parameter from request
      * 
      * @param string $sKey parameter key
-     *
-     * @return null
      */
     public function removeParameter($sKey) 
     {
@@ -213,7 +207,7 @@ class fcpoRequest extends oxSuperCfg
     /**
      * Get get PAYONE operation mode ( live or test ) for given order
      * 
-     * @param object $sOrder order object
+     * @param string $sPaymentType
      * @param string $sType  subtype for the paymentmethod ( Visa, MC, etc. ) Default is ''
      *
      * @return string
@@ -225,6 +219,9 @@ class fcpoRequest extends oxSuperCfg
         return $oPayment->fcpoGetOperationMode($sType);
     }
 
+    /**
+     * @return mixed
+     */
     protected function _fcpoGetRemoteAddress() 
     {
         $oUtilsServer = $this->_oFcpoHelper->fcpoGetUtilsServer();
@@ -239,6 +236,7 @@ class fcpoRequest extends oxSuperCfg
      * @param object $oOrder    order object
      * @param object $oUser     user object
      * @param array  $aDynvalue form data
+     * @param bool   $blIsPreauthorization
      * @param string $sRefNr    payone reference number
      * 
      * @return bool
@@ -335,7 +333,7 @@ class fcpoRequest extends oxSuperCfg
     /**
      * Set payment params for debitnote
      * 
-     * @param  type $aDynvalue
+     * @param  array $aDynvalue
      * @return boolean
      */
     protected function _setPaymentParamsDebitNote($aDynvalue) 
@@ -396,7 +394,6 @@ class fcpoRequest extends oxSuperCfg
      * Set payment params for klarna
      * 
      * @param  void
-     * @return boolean
      */
     protected function _setPaymentParamsKlarna() 
     {
@@ -492,6 +489,11 @@ class fcpoRequest extends oxSuperCfg
         return true;
     }
 
+    /**
+     * @param string $sAbortClass
+     * @param bool|string $sRefNr
+     * @param bool $blIsPayPalExpress
+     */
     protected function _addRedirectUrls($sAbortClass, $sRefNr = false, $blIsPayPalExpress = false) 
     {
         $oConfig = $this->getConfig();
@@ -549,8 +551,6 @@ class fcpoRequest extends oxSuperCfg
      *
      * @param object $oOrder    order object
      * @param array  $aDynvalue form data
-     * 
-     * @return null
      */
     protected function addParametersOnlineTransaction($oOrder, $aDynvalue) 
     {
@@ -601,6 +601,8 @@ class fcpoRequest extends oxSuperCfg
      * Add product information for module invoicing
      *
      * @param object $oOrder order object
+     * @param array|bool $aPositions
+     * @param bool $blDebit
      * 
      * @return null
      */
@@ -608,9 +610,11 @@ class fcpoRequest extends oxSuperCfg
     {
         $dAmount = 0;
 
+        /** @var oxorderarticlelist $aOrderArticleListe */
         $aOrderArticleListe = $oOrder->getOrderArticles();
         $i = 1;
 
+        /** @var oxorderarticle $oOrderarticle */
         foreach ($aOrderArticleListe->getArray() as $oOrderarticle) {
             if ($aPositions === false || array_key_exists($oOrderarticle->getId(), $aPositions) !== false) {
                 if ($aPositions !== false && array_key_exists($oOrderarticle->getId(), $aPositions) !== false) {
@@ -719,7 +723,7 @@ class fcpoRequest extends oxSuperCfg
      * @param array  $aDynvalue form data
      * @param string $sRefNr    payone reference number
      * 
-     * @return array
+     * @return array|false
      */
     public function sendRequestAuthorization($sType, $oOrder, $oUser, $aDynvalue, $sRefNr) 
     {
@@ -740,6 +744,10 @@ class fcpoRequest extends oxSuperCfg
         }
     }
 
+    /**
+     * @param array $aHashParams
+     * @return string
+     */
     protected function _getFrontendHash($aHashParams) 
     {
         $oConfig = $this->getConfig();
@@ -754,6 +762,9 @@ class fcpoRequest extends oxSuperCfg
         return md5($sHashString);
     }
 
+    /**
+     * @return string
+     */
     protected function _getFrontendApiUrl() 
     {
         $this->_aParameters['targetwindow'] = 'parent';
@@ -780,6 +791,9 @@ class fcpoRequest extends oxSuperCfg
         return $sFrontendApiUrl;
     }
 
+    /**
+     * @return array
+     */
     protected function _handleFrontendApiCall() 
     {
         $sFrontendApiUrl = $this->_getFrontendApiUrl();
@@ -795,7 +809,7 @@ class fcpoRequest extends oxSuperCfg
     /**
      * Template getter for checking which kind of field should be shown
      * 
-     * @param  void
+     * @param  oxuser $oUser
      * @return bool
      */
     public function fcpoIsB2B($oUser) 
@@ -897,6 +911,7 @@ class fcpoRequest extends oxSuperCfg
         // basket handling
         $oBasket = $oSession->getBasket();
         $iIndex = 1;
+        /** @var oxbasketitem $oBasketItem */
         foreach ($oBasket->getContents() as $oBasketItem) {
             $oArticle = $oBasketItem->getArticle();
             $sArticleIdent = ($oArticle->oxarticles__oxean->value) ? $oArticle->oxarticles__oxean->value : $oArticle->oxarticles__oxartnum->value;

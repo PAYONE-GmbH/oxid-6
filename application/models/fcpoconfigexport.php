@@ -24,7 +24,7 @@ class fcpoconfigexport extends oxBase
     /**
      * Helper object for dealing with different shop versions
      *
-     * @var object
+     * @var fcpohelper
      */
     protected $_oFcpoHelper = null;
 
@@ -109,9 +109,10 @@ class fcpoconfigexport extends oxBase
      * Returns payone configuration
      *
      * @param  string $sShopId
-     * @return void
+     * @param  int    $iLang
+     * @return array
      */
-    public function fcpoGetConfig($sShopId, $iLang=0) 
+    public function fcpoGetConfig($sShopId, $iLang = 0)
     {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $oDb = $this->_oFcpoHelper->fcpoGetDb(true);
@@ -306,7 +307,7 @@ class fcpoconfigexport extends oxBase
     /**
      * Returns system block of shop specific xml
      *
-     * @param  type $aShopConfVars
+     * @param  array $aShopConfVars
      * @return string
      */
     protected function _fcpoGetShopXmlSystem($aShopConfVars) 
@@ -360,7 +361,7 @@ class fcpoconfigexport extends oxBase
     /**
      * Returns shop specific clearingtypes
      *
-     * @param  type $aShopConfVars
+     * @param  array $aShopConfVars
      * @return string
      */
     protected function _fcpoGetShopXmlClearingTypes($aShopConfVars) 
@@ -561,7 +562,7 @@ class fcpoconfigexport extends oxBase
      * Returns payment countries
      *
      * @param  object $oPayment
-     * @return array
+     * @return string
      */
     protected function _getPaymentCountries($oPayment) 
     {
@@ -644,7 +645,7 @@ class fcpoconfigexport extends oxBase
             }
         } else {
             $sModulesDir = $this->getConfig()->getModulesDir();
-
+            /** @var oxmodulelist $oModuleList */
             $oModuleList = $this->_oFcpoHelper->getFactoryObject("oxModuleList");
             $aOxidModules = $oModuleList->getModulesFromDir($sModulesDir);
             $aModules = array();

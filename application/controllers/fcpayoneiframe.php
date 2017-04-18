@@ -25,7 +25,7 @@ class fcpayoneiframe extends oxUBase
     /**
      * Helper object for dealing with different shop versions
      *
-     * @var object
+     * @var fcpohelper
      */
     protected $_oFcpoHelper = null;
 
@@ -46,8 +46,6 @@ class fcpayoneiframe extends oxUBase
     
     /**
      * Class constructor, sets all required parameters for requests.
-     * 
-     * @return null
      */
     public function __construct() 
     {

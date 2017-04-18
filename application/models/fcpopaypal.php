@@ -31,7 +31,7 @@ class fcpopaypal extends oxBase
     /**
      * Helper object for dealing with different shop versions
      *
-     * @var object
+     * @var fcpohelper
      */
     protected $_oFcpoHelper = null;
 
@@ -52,7 +52,7 @@ class fcpopaypal extends oxBase
     /**
      * Init needed data
      */
-    public function __construct() 
+    public function __construct()
     {
         parent::__construct();
         $this->_oFcpoHelper = oxNew('fcpohelper');
@@ -61,22 +61,22 @@ class fcpopaypal extends oxBase
 
     /**
      * Method returns collected messages back to controller
-     * 
+     *
      * @param  void
-     * @return void
+     * @return array
      */
-    public function fcpoGetMessages() 
+    public function fcpoGetMessages()
     {
         return $this->_aAdminMessages;
     }
 
     /**
      * Method requests database for fetching paypal logos and return this data in an array
-     * 
+     *
      * @param  void
      * @return array
      */
-    public function fcpoGetPayPalLogos() 
+    public function fcpoGetPayPalLogos()
     {
         $sQuery = "SELECT oxid, fcpo_active, fcpo_langid, fcpo_logo, fcpo_default FROM fcpopayoneexpresslogos";
         $oDb = $this->_oFcpoHelper->fcpoGetDb();
@@ -106,12 +106,12 @@ class fcpopaypal extends oxBase
 
     /**
      * Add logo path if dependencies are fulfilled
-     * 
+     *
      * @param  string $sPoLogo
      * @param  array  $aLogo
      * @return array
      */
-    protected function _fcpoAddLogoPath($sPoLogo, $aLogo) 
+    protected function _fcpoAddLogoPath($sPoLogo, $aLogo)
     {
         $blLogoEnteredAndExisting = $this->_fcpoGetLogoEnteredAndExisting($sPoLogo);
         if ($blLogoEnteredAndExisting) {
@@ -125,11 +125,11 @@ class fcpopaypal extends oxBase
 
     /**
      * Updates a given set of logos into database
-     * 
+     *
      * @param  array $aLogos
      * @return void
      */
-    public function fcpoUpdatePayPalLogos($aLogos) 
+    public function fcpoUpdatePayPalLogos($aLogos)
     {
         foreach ($aLogos as $iId => $aLogo) {
             $oDb = $this->_oFcpoHelper->fcpoGetDb();
@@ -151,11 +151,11 @@ class fcpopaypal extends oxBase
 
     /**
      * Do the update on database
-     * 
+     *
      * @param  void
      * @return void
      */
-    protected function _fcpoTriggerUpdateLogos() 
+    protected function _fcpoTriggerUpdateLogos()
     {
         $iDefault = $this->_oFcpoHelper->fcpoGetRequestParameter('defaultlogo');
         if ($iDefault) {
@@ -169,11 +169,11 @@ class fcpopaypal extends oxBase
 
     /**
      * Add a new empty paypal-logo entry into database
-     * 
+     *
      * @param  void
      * @return void
      */
-    public function fcpoAddPaypalExpressLogo() 
+    public function fcpoAddPaypalExpressLogo()
     {
         $sQuery = "INSERT INTO fcpopayoneexpresslogos (FCPO_ACTIVE, FCPO_LANGID, FCPO_LOGO, FCPO_DEFAULT) VALUES (0, 0, '', 0)";
         $this->_oFcpoDb->Execute($sQuery);
@@ -181,11 +181,11 @@ class fcpopaypal extends oxBase
 
     /**
      * Validates the existance and availablility of paypalexpress logo
-     * 
-     * @param  striong $sPoLogo
+     *
+     * @param  string $sPoLogo
      * @return bool
      */
-    protected function _fcpoGetLogoEnteredAndExisting($sPoLogo) 
+    protected function _fcpoGetLogoEnteredAndExisting($sPoLogo)
     {
         $blValid = (
                 !empty($sPoLogo) &&
@@ -197,11 +197,11 @@ class fcpopaypal extends oxBase
 
     /**
      * Handle the uploading of paypal logos
-     * 
+     *
      * @param  int $iId
      * @return string
      */
-    protected function _handleUploadPaypalExpressLogo($iId) 
+    protected function _handleUploadPaypalExpressLogo($iId)
     {
         $sLogoQuery = '';
         $aFiles = $this->_oFcpoHelper->fcpoGetFiles();
@@ -217,12 +217,12 @@ class fcpopaypal extends oxBase
 
     /**
      * Handles the upload file
-     * 
-     * @param type $iId
-     * @param type $aFiles
-     * return string
+     *
+     * @param int   $iId
+     * @param array $aFiles
+     * @return string
      */
-    protected function _fcpoHandleFile($iId, $aFiles) 
+    protected function _fcpoHandleFile($iId, $aFiles)
     {
         $sLogoQuery = '';
 
@@ -238,11 +238,11 @@ class fcpopaypal extends oxBase
 
     /**
      * Grabs the media url form data and returns it
-     * 
+     *
      * @param int   $iId
      * @param array $aFiles
      */
-    protected function _fcpoFetchMediaUrl($iId, $aFiles) 
+    protected function _fcpoFetchMediaUrl($iId, $aFiles)
     {
         $oUtilsFile = $this->_oFcpoHelper->fcpoGetUtilsFile();
         if ($this->_oFcpoHelper->fcpoGetIntShopVersion() < 4530) {
@@ -256,7 +256,8 @@ class fcpopaypal extends oxBase
 
     /**
      * Method checks if all needed data of file is available
-     * 
+     *
+     * @param  int   $iId
      * @param  array $aFiles
      * @return bool
      */

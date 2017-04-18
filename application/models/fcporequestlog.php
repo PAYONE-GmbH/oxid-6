@@ -39,8 +39,6 @@ class fcporequestlog extends oxBase
 
     /**
      * Class constructor
-     *
-     * @return null
      */
     public function __construct() 
     {

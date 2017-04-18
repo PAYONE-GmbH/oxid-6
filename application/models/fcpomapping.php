@@ -24,7 +24,7 @@ class fcpomapping extends oxBase
     /**
      * Helper object for dealing with different shop versions
      *
-     * @var object
+     * @var fcpohelper
      */
     protected $_oFcpoHelper = null;
 
@@ -152,10 +152,10 @@ class fcpomapping extends oxBase
     /**
      * Checks if current entry is new and complete
      * 
-     * @param  type $sMappingId
-     * @param  type $sPaymentId
-     * @param  type $sPayoneStatus
-     * @param  type $sFolder
+     * @param  string $sMappingId
+     * @param  string $sPaymentId
+     * @param  string $sPayoneStatus
+     * @param  string $sFolder
      * @return bool
      */
     protected function _fcpoIsValidNewEntry($sMappingId, $sPaymentId, $sPayoneStatus, $sFolder) 

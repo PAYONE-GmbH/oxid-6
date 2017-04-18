@@ -24,7 +24,7 @@ class fcpoforwarding extends oxBase
     /**
      * Helper object for dealing with different shop versions
      *
-     * @var object
+     * @var fcpohelper
      */
     protected $_oFcpoHelper = null;
 
@@ -127,6 +127,7 @@ class fcpoforwarding extends oxBase
      * @param  string $sPayoneStatus
      * @param  string $sUrl
      * @param  string $iTimeout
+     * @param  string $sOxid
      * @return string
      */
     protected function _fcpoGetUpdateQuery($sForwardingId, $sPayoneStatus, $sUrl, $iTimeout, $sOxid) 
@@ -157,10 +158,10 @@ class fcpoforwarding extends oxBase
     /**
      * Checks if current entry is new and complete
      * 
-     * @param  type $sForwardingId
-     * @param  type $sPayoneStatus
-     * @param  type $sUrl
-     * @param  type $iTimeout
+     * @param  string $sForwardingId
+     * @param  string $sPayoneStatus
+     * @param  string $sUrl
+     * @param  string $iTimeout
      * @return bool
      */
     protected function _fcpoIsValidNewEntry($sForwardingId, $sPayoneStatus, $sUrl, $iTimeout) 

@@ -25,7 +25,7 @@ class fcpoTransactionStatus extends oxBase
     /**
      * Helper object for dealing with different shop versions
      *
-     * @var object
+     * @var fcpohelper
      */
     protected $_oFcpoHelper = null;
 
@@ -52,8 +52,6 @@ class fcpoTransactionStatus extends oxBase
 
     /**
      * Class constructor
-     *
-     * @return null
      */
     public function __construct() 
     {
@@ -220,6 +218,7 @@ class fcpoTransactionStatus extends oxBase
      * 
      * @param  string $sTxAction
      * @param  array  $aMatchMap
+     * @param  string $sDefault
      * @return string
      */
     protected function _fcpoGetMapAction($sTxAction, $aMatchMap, $sDefault) 

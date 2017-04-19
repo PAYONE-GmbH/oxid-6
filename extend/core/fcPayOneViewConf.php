@@ -26,7 +26,7 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent
      *
      * @var string
      */
-    protected $_sModuleFolder = "fcPayOne";
+    protected $_sModuleFolder = "fc/fcpayone";
 
     /**
      * Helper object for dealing with different shop versions

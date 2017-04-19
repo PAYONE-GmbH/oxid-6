@@ -625,9 +625,13 @@ class fcPayOneOrder extends fcPayOneOrder_parent
             $blAppointedError = true;
             $this->oxorder__oxfolder = new oxField('ORDERFOLDER_PROBLEMS', oxField::T_RAW);
             $oLang = $this->_oFcpoHelper->fcpoGetLang();
-            $this->oxorder__oxremark->value .= $oLang->translateString('FCPO_REMARK_APPOINTED_MISSING');
+            $sCurrentRemark = $this->oxorder__oxremark->value;
+            $sAddErrorRemark = $oLang->translateString('FCPO_REMARK_APPOINTED_MISSING');
+            $sNewRemark = $sCurrentRemark." ".$sAddErrorRemark;
+            $this->oxorder__oxremark = new oxField($sNewRemark, oxField::T_RAW);
         }
         $this->_fcpoSetAppointedError($blAppointedError);
+
         return $blAppointedError;
     }
 

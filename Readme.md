@@ -19,10 +19,15 @@ The Payone-FinanceGate-Module is already certified by OXID to guarantee faultles
 More information about OXID on https://www.payone.com/oxid or https://shop.fatchip.de/OXID-PAYONE-FinanceGate-Connector.html 
 
 ## Requirements
-Installed OXID eShop > v6.0.0
+Installed OXID eShop >= v6.0.0
 
 ## Installation
-tba
+Just go to the directory of your Oxid `composer.json` file and perform the following command:
+```
+composer require payone-gmbh/oxid-6
+```
+
+After that, just activate the module in the Oxid backend.
 
 ## About PAYONE
 PAYONE provides business solutions for comprehensive automated processing of all payments in e-commerce. The payment service provider is part of the Sparkassen-Finanzgruppe and authorised as a credit institution by the German Federal Financial Supervisory Authority. PAYONE's service portfolio includes acceptance and processing for national and international payment methods, plus all payment services. Standardised interfaces and extensions allow simple integration into existing e-commerce and IT-systems whilst maintaining strict security standards.

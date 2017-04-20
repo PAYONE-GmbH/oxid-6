@@ -30,7 +30,7 @@ if($blIsValidCall ) {
          */
         function getShopBasePath()
         {
-            return dirname(__FILE__).'/../../';
+            return dirname(__FILE__).'/../../../';
         }
     }
 

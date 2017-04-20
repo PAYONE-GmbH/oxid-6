@@ -22,25 +22,10 @@
  */
 function getShopBasePath()
 {
-    return dirname(__FILE__).'/../../../';
+    return dirname(__FILE__).'/../../../../';
 }
 
-if (file_exists(getShopBasePath() . "/bootstrap.php") ) {
-    include_once getShopBasePath() . "/bootstrap.php";
-}
-else {
-    // global variables which are important for older OXID.
-    $_SERVER['REQUEST_METHOD'] = 'POST';
-    $_SERVER['HTTP_USER_AGENT'] = 'article_exporter';
-    $_SERVER['HTTP_ACCEPT_LANGUAGE'] = '';
-    $_SERVER['HTTP_REFERER'] = '';
-    $_SERVER['QUERY_STRING'] = '';
-    
-    include getShopBasePath() . 'modules/functions.php';
-    include_once getShopBasePath() . 'core/oxfunctions.php';
-    include_once getShopBasePath() . 'views/oxubase.php';
-}
-
+include_once getShopBasePath() . "/bootstrap.php";
 
 // receive params
 $sLoadUrl = filter_input(INPUT_GET, 'loadurl');

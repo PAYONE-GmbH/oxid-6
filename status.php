@@ -21,7 +21,7 @@
 set_time_limit(0);
 ini_set('memory_limit', '1024M');
 ini_set('log_errors', 1);
-ini_set('error_log', '../../log/fcpoErrors.log');
+ini_set('error_log', '../../../log/fcpoErrors.log');
 
 if(file_exists(dirname(__FILE__)."/config.ipwhitelist.php")) {
     include_once dirname(__FILE__)."/config.ipwhitelist.php";
@@ -61,44 +61,7 @@ if(array_search($sRemoteIp, $aWhitelist) === false) {
     }
 }
 
-if(file_exists(dirname(__FILE__)."/../../bootstrap.php")) {
-    include_once dirname(__FILE__) . "/../../bootstrap.php";
-} else {
-    if (!function_exists('getShopBasePath')) {
-        /**
-         * Returns shop base path.
-         *
-         * @return string
-         */
-        function getShopBasePath()
-        {
-            return dirname(__FILE__).'/../../';
-        }
-    }
-
-    set_include_path(get_include_path() . PATH_SEPARATOR . getShopBasePath());
-
-    /**
-     * Returns true.
-     *
-     * @return bool
-     */
-    if (!function_exists('isAdmin')) {
-        function isAdmin()
-        {
-            return true;
-        }
-    }
-
-    error_reporting(E_ALL ^ E_NOTICE);
-
-    // custom functions file
-    include getShopBasePath() . 'modules/functions.php';
-
-    // Generic utility method file
-    include_once getShopBasePath() . 'core/oxfunctions.php';
-
-}
+include_once dirname(__FILE__) . "/../../../bootstrap.php";
 
 class fcPayOneTransactionStatusHandler extends oxBase
 {

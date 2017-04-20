@@ -18,7 +18,7 @@ class fcCheckChecksum
     protected function _getShopBasePath() 
     {
         if($this->_sShopSystem == 'oxid') {
-            return $this->_getBasePath().'../../';
+            return $this->_getBasePath().'/../../../';
         } elseif($this->_sShopSystem == 'magento2') {
             return $this->_getBasePath().'../../../../';
         } else {
@@ -49,14 +49,22 @@ class fcCheckChecksum
         $sFile = file_get_contents($sFilePath);
         if(!empty($sFile)) {
             $aFile = json_decode($sFile, true);
-            if(isset($aFile['name'])) {
-                $this->_sModuleId = preg_replace('#[^A-Za-z0-9]#', '_', $aFile['name']);
-                $this->_sModuleName = $aFile['name'];
+
+            // decide which shopsystem
+            $blIsOxid = (isset($aFile['type']) && $aFile['type'] == 'oxideshop-module');
+            if ($blIsOxid) {
+                $this->_sShopSystem = 'oxid';
+            } else {
+                $this->_sShopSystem = 'magento2';
+                if(isset($aFile['name'])) {
+                    $this->_sModuleId = preg_replace('#[^A-Za-z0-9]#', '_', $aFile['name']);
+                    $this->_sModuleName = $aFile['name'];
+                }
+                if(isset($aFile['version'])) {
+                    $this->_sModuleVersion = $aFile['version'];
+                }
             }
-            if(isset($aFile['version'])) {
-                $this->_sModuleVersion = $aFile['version'];
-            }
-            $this->_sShopSystem = 'magento2';
+
             $this->_blGotModuleInfo = true;
         }
     }

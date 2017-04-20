@@ -23,43 +23,7 @@ ini_set('memory_limit', '1024M');
 ini_set('log_errors', 1);
 ini_set('error_log', 'error.log');
 
-if(file_exists(dirname(__FILE__)."/../../bootstrap.php")) {
-    include_once dirname(__FILE__) . "/../../bootstrap.php";
-} else {
-    if (!function_exists('getShopBasePath')) {
-        /**
-         * Returns shop base path.
-         *
-         * @return string
-         */
-        function getShopBasePath()
-        {
-            return dirname(__FILE__).'/../../';
-        }
-    }
-
-    set_include_path(get_include_path() . PATH_SEPARATOR . getShopBasePath());
-
-    /**
-     * Returns true.
-     *
-     * @return bool
-     */
-    if (!function_exists('isAdmin')) {
-        function isAdmin()
-        {
-            return false;
-        }
-    }
-
-    error_reporting(E_ALL ^ E_NOTICE);
-
-    // custom functions file
-    include getShopBasePath() . 'modules/functions.php';
-
-    // Generic utility method file
-    include_once getShopBasePath() . 'core/oxfunctions.php';
-}
+include_once dirname(__FILE__) . "/../../../bootstrap.php";
 
 /**
  * Description of fcPayOneMandateDownload
@@ -68,8 +32,6 @@ if(file_exists(dirname(__FILE__)."/../../bootstrap.php")) {
  */
 class fcPayOneMandateDownload extends oxUBase
 {
-    
-    
     /**
      * Helper object for dealing with different shop versions
      *
@@ -79,8 +41,6 @@ class fcPayOneMandateDownload extends oxUBase
 
     /**
      * init object construction
-     * 
-     * @return null
      */
     public function __construct() 
     {
@@ -122,8 +82,8 @@ class fcPayOneMandateDownload extends oxUBase
                             INNER JOIN
                                 oxorder AS b ON a.oxorderid = b.oxid
                             WHERE
-                                b.oxid = '".mysql_real_escape_string($sOrderId)."' AND
-                                b.oxuserid = '{$sUserId}'
+                                b.oxid = ".oxDb::getDb()->quote($sOrderId)." AND
+                                b.oxuserid = ".oxDb::getDb()->quote($sUserId)."
                             LIMIT 1";
             } else {
                 $sQuery = " SELECT 
@@ -135,7 +95,7 @@ class fcPayOneMandateDownload extends oxUBase
                             INNER JOIN
                                 oxorder AS b ON a.oxorderid = b.oxid
                             WHERE
-                                b.oxuserid = '{$sUserId}'
+                                = ".oxDb::getDb()->quote($sUserId)."
                             ORDER BY
                                 b.oxorderdate DESC
                             LIMIT 1";
@@ -147,7 +107,7 @@ class fcPayOneMandateDownload extends oxUBase
                 $sMode = $aResult[2];
             }
             if($sFilename) {
-                $sPath = getShopBasePath().'modules/fcPayOne/mandates/'.$sFilename;
+                $sPath = getShopBasePath().'modules/fc/fcpayone/mandates/'.$sFilename;
             }
         }
         

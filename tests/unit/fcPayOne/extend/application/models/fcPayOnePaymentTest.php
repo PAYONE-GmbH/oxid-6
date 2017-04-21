@@ -136,7 +136,7 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOnePaymentTest extends OxidTe
      */
     public function test_getDynValues_Coverage() 
     {
-        $oDynValue          = new oxStdClass();
+        $oDynValue          = new stdClass();
         $oDynValue->name    = 'fcpo_elv_blz';
         $oDynValue->value   = '';
         $aMockDynValues[]   = $oDynValue;
@@ -233,19 +233,19 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOnePaymentTest extends OxidTe
      */
     public function test__fcGetDynValues_Coverage() 
     { 
-        $oDynValue = new oxStdClass();
+        $oDynValue = new stdClass();
         $oDynValue->name    = 'fcpo_elv_blz';
         $oDynValue->value   = '';
         $aExpectDynValues[] = $oDynValue;
-        $oDynValue          = new oxStdClass();
+        $oDynValue          = new stdClass();
         $oDynValue->name    = 'fcpo_elv_ktonr';
         $oDynValue->value   = '';
         $aExpectDynValues[] = $oDynValue;
-        $oDynValue          = new oxStdClass();
+        $oDynValue          = new stdClass();
         $oDynValue->name    = 'fcpo_elv_iban';
         $oDynValue->value   = '';
         $aExpectDynValues[] = $oDynValue;
-        $oDynValue          = new oxStdClass();
+        $oDynValue          = new stdClass();
         $oDynValue->name    = 'fcpo_elv_bic';
         $oDynValue->value   = '';
         $aExpectDynValues[] = $oDynValue;
@@ -298,9 +298,9 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOnePaymentTest extends OxidTe
     {
         $aExpect = array('someValue');
         
-        $oMockResult = new MockResult();
-        $oMockDatabase = $this->getMock('oxDb', array('Execute'));
-        $oMockDatabase->expects($this->any())->method('Execute')->will($this->returnValue($oMockResult));
+        $aMockResult = array(array('someValue','someValue','someValue','someValue', 'someValue'));
+        $oMockDatabase = $this->getMock('oxDb', array('getAll'));
+        $oMockDatabase->expects($this->any())->method('getAll')->will($this->returnValue($aMockResult));
         
         $oTestObject = oxNew('fcPayOnePayment');
         
@@ -332,9 +332,9 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOnePaymentTest extends OxidTe
         $oTestObject->expects($this->any())->method('_fcGetCountries')->will($this->returnValue($aMockCountries));
         $oTestObject->expects($this->any())->method('getUser')->will($this->returnValue($oMockUser));
 
-        $oMockResult    = new MockResult();
-        $oMockDatabase  = $this->getMock('oxDb', array('Execute'));
-        $oMockDatabase->expects($this->any())->method('Execute')->will($this->returnValue($oMockResult));
+        $aMockResult    = array(array('someValue','someValue','someValue','someValue', 'someValue'));
+        $oMockDatabase  = $this->getMock('oxDb', array('getAll'));
+        $oMockDatabase->expects($this->any())->method('getAll')->will($this->returnValue($aMockResult));
 
         $oMockConfig = $this->getMock('oxConfig', array('getActShopCurrencyObject'));
         $oMockConfig->expects($this->any())->method('getActShopCurrencyObject')->will($this->returnValue($oMockCurrency));
@@ -374,9 +374,9 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOnePaymentTest extends OxidTe
         $oTestObject->expects($this->any())->method('_fcGetCountries')->will($this->returnValue($aMockCountries));
         $oTestObject->expects($this->any())->method('getUser')->will($this->returnValue($oMockUser));
 
-        $oMockResult    = new MockResult();
-        $oMockDatabase  = $this->getMock('oxDb', array('Execute'));
-        $oMockDatabase->expects($this->any())->method('Execute')->will($this->returnValue($oMockResult));
+        $aMockResult    = array(array('someValue','someValue','someValue','someValue', 'someValue'));
+        $oMockDatabase  = $this->getMock('oxDb', array('getAll'));
+        $oMockDatabase->expects($this->any())->method('getAll')->will($this->returnValue($aMockResult));
 
         $oMockConfig = $this->getMock('oxConfig', array('getActShopCurrencyObject'));
         $oMockConfig->expects($this->any())->method('getActShopCurrencyObject')->will($this->returnValue($oMockCurrency));

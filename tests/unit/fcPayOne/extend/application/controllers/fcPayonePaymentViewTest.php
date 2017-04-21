@@ -2390,7 +2390,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
 
         $this->invokeSetAttribute($oTestObject, '_blIsPayolutionInstallmentAjax', false);
 
-        $this->assertEquals(null, $oTestObject->_fcpoValidateBankDataRelatedPayolutionPayment($sMockPaymentId));
+        $this->assertEquals(null, $oTestObject->_fcpoValidateBankDataRelatedPayolutionPayment($sMockPaymentId, null));
     }
 
     /**
@@ -2418,7 +2418,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
 
         $this->invokeSetAttribute($oTestObject, '_blIsPayolutionInstallmentAjax', false);
 
-        $this->assertEquals(null, $oTestObject->_fcpoValidateBankDataRelatedPayolutionPayment($sMockPaymentId));
+        $this->assertEquals(null, $oTestObject->_fcpoValidateBankDataRelatedPayolutionPayment($sMockPaymentId, null));
     }
 
     /**

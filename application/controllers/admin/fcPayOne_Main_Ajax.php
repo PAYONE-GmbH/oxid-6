@@ -132,14 +132,13 @@ class fcPayOne_Main_Ajax extends ajaxListComponent
      */
     public function removepaycountry() 
     {
-        $oDbInstance    = oxDb::getInstance();
-        $oDb            = oxDb::getDb();
+        $oDb  = $this->_oFcpoHelper->fcpoGetDb();
         $aChosenCntr = $this->_getActionIds('fcpopayment2country.oxid');
         if ($this->_oFcpoHelper->fcpoGetRequestParameter('all') ) {
             $sQ = $this->_addFilter("delete fcpopayment2country.* ".$this->_getQuery());
             $oDb->Execute($sQ);
         } elseif (is_array($aChosenCntr) ) {
-            $sQ = "delete from fcpopayment2country where fcpopayment2country.oxid in (" . implode(", ", $oDbInstance->quoteArray($aChosenCntr)) . ") ";
+            $sQ = "delete from fcpopayment2country where fcpopayment2country.oxid in (" . implode(", ", $oDb->quoteArray($aChosenCntr)) . ") ";
             $oDb->Execute($sQ);
         }
     }

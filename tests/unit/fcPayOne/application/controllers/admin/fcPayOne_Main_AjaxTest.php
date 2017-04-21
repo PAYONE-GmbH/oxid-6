@@ -132,10 +132,15 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcPayOne_Main_Ajax extends Oxi
     {
         $oTestObject = $this->getMock('fcPayOne_Main_Ajax', array('_getActionIds'));
         $oTestObject->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('1','2')));
-        
+
+        $oMockDatabase = $this->getMock('oxDb', array('quoteArray', 'Execute'));
+        $oMockDatabase->expects($this->any())->method('quoteArray')->will($this->returnValue(''));
+        $oMockDatabase->expects($this->any())->method('Execute')->will($this->returnValue(true));
+
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
         $oHelper->expects($this->any())->method('fcpoGetRequestParameter')->will($this->returnValue('someValue'));
-        
+        $oHelper->expects($this->any())->method('fcpoGetDb')->will($this->returnValue($oMockDatabase));
+
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
         
         $sResponse = $sExpect = $this->invokeMethod($oTestObject, 'removepaycountry');
@@ -154,10 +159,15 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcPayOne_Main_Ajax extends Oxi
     {
         $oTestObject = $this->getMock('fcPayOne_Main_Ajax', array('_getActionIds'));
         $oTestObject->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('1','2')));
-        
+
+        $oMockDatabase = $this->getMock('oxDb', array('quoteArray', 'Execute'));
+        $oMockDatabase->expects($this->any())->method('quoteArray')->will($this->returnValue(array('someResult')));
+        $oMockDatabase->expects($this->any())->method('Execute')->will($this->returnValue(true));
+
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
         $oHelper->expects($this->any())->method('fcpoGetRequestParameter')->will($this->returnValue(false));
-        
+        $oHelper->expects($this->any())->method('fcpoGetDb')->will($this->returnValue($oMockDatabase));
+
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
         
         $sResponse = $sExpect = $this->invokeMethod($oTestObject, 'removepaycountry');

@@ -286,19 +286,19 @@ class fcPayOnePayment extends fcPayOnePayment_parent
                 if (!is_array($aDynValues)) {
                     $aDynValues = array();
                 }
-                $oDynValue = new oxStdClass();
+                $oDynValue = new stdClass();
                 $oDynValue->name = 'fcpo_elv_blz';
                 $oDynValue->value = '';
                 $aDynValues[] = $oDynValue;
-                $oDynValue = new oxStdClass();
+                $oDynValue = new stdClass();
                 $oDynValue->name = 'fcpo_elv_ktonr';
                 $oDynValue->value = '';
                 $aDynValues[] = $oDynValue;
-                $oDynValue = new oxStdClass();
+                $oDynValue = new stdClass();
                 $oDynValue->name = 'fcpo_elv_iban';
                 $oDynValue->value = '';
                 $aDynValues[] = $oDynValue;
-                $oDynValue = new oxStdClass();
+                $oDynValue = new stdClass();
                 $oDynValue->name = 'fcpo_elv_bic';
                 $oDynValue->value = '';
                 $aDynValues[] = $oDynValue;

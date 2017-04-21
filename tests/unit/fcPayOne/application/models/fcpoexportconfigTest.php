@@ -92,9 +92,15 @@ class Unit_fcPayOne_Application_Models_fcpoexportconfig extends OxidTestCase
         $oMockConfig = $this->getMock('oxConfig', array('getConfigParam'));
         $oMockConfig->expects($this->any())->method('getConfigParam')->will($this->returnValue(true));
 
-        $oMockResult = new MockResultExportConfig();
-        $oMockDatabase = $this->getMock('oxDb', array('Execute', 'quote'));
-        $oMockDatabase->expects($this->any())->method('Execute')->will($this->returnValue($oMockResult));
+        $aMockResult = array(
+            array(
+                'oxvarname'=>'someName',
+                'oxvartype'=>'someType',
+                'oxvarvalue'=>'someValue',
+            ),
+        );
+        $oMockDatabase = $this->getMock('oxDb', array('getAll', 'quote'));
+        $oMockDatabase->expects($this->atLeastOnce())->method('getAll')->will($this->returnValue($aMockResult));
         $oMockDatabase->expects($this->any())->method('quote')->will($this->returnValue(''));
 
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
@@ -605,7 +611,7 @@ class Unit_fcPayOne_Application_Models_fcpoexportconfig extends OxidTestCase
     {
         $this->_fcpoRemoveSamplePayment();
         $sQuery = "
-            INSERT INTO `oxpayments` (`OXID`, `OXACTIVE`, `OXDESC`, `OXADDSUM`, `OXADDSUMTYPE`, `OXADDSUMRULES`, `OXFROMBONI`, `OXFROMAMOUNT`, `OXTOAMOUNT`, `OXVALDESC`, `OXCHECKED`, `OXDESC_1`, `OXVALDESC_1`, `OXDESC_2`, `OXVALDESC_2`, `OXDESC_3`, `OXVALDESC_3`, `OXLONGDESC`, `OXLONGDESC_1`, `OXLONGDESC_2`, `OXLONGDESC_3`, `OXSORT`, `OXTSPAYMENTID`, `OXTIMESTAMP`, `FCPOISPAYONE`, `FCPOAUTHMODE`, `FCPOLIVEMODE`) VALUES
+            INSERT INTO `oxpayments` (`OXID`, `OXACTIVE`, `OXDESC`, `OXADDSUM`, `OXADDSUMTYPE`, `OXADDSUMRULES`, `OXFROMBONI`, `OXFROMAMOUNT`, `OXTOAMOUNT`, `OXVALDESC`, `OXCHECKED`, `OXDESC_1`, `OXVALDESC_1`, `OXDESC_2`, `OXVALDESC_2`, `OXDESC_3`, `OXVALDESC_3`, `OXLONGDESC`, `OXLONGDESC_1`, `OXLONGDESC_2`, `OXLONGDESC_3`, `OXSORT`, `OXTIMESTAMP`, `FCPOISPAYONE`, `FCPOAUTHMODE`, `FCPOLIVEMODE`) VALUES
             ('fcpounittest', 1, 'Testzahlart', 0, 'abs', 0, '{$sOxFromBoni}', 0, 1000000, '', 0, 'Kreditkarte Channel Frontend', '', '', '', '', '', '', '', '', '', 0, '', '2016-04-27 15:37:25', 1, 'preauthorization', 0);
         ";
 

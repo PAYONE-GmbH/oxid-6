@@ -43,7 +43,7 @@ class MockResultMapping
  * @author Fatchip GmbH
  * @date   2016-06-01
  */
-class Unit_fcPayOne_Application_Models_fcpomapping extends OxidTestCase
+class Unit_fcPayOne_Application_Models_fcpomapping extends \OxidEsales\TestingLibrary\UnitTestCase
 {
 
     /**
@@ -89,10 +89,16 @@ class Unit_fcPayOne_Application_Models_fcpomapping extends OxidTestCase
     {
         $oTestObject = oxNew('fcpomapping');
 
-        $oMockResult = new MockResultMapping();
-        $oMockDatabase = $this->getMock('oxDb', array('Execute', 'quote'));
-        $oMockDatabase->expects($this->any())->method('Execute')->will($this->returnValue($oMockResult));
-        $oMockDatabase->expects($this->any())->method('quote')->will($this->returnValue(''));
+        $aMockResult = array(
+            array(
+                'oxid'=>'someOxid',
+                'fcpo_error_code'=>'someErrorCode',
+                'fcpo_lang_id'=>'someLangId',
+                'fcpo_mapped_message'=>'someMappedMessage'
+            ),
+        );
+        $oMockDatabase = $this->getMock('oxDb', array('getAll'));
+        $oMockDatabase->expects($this->atLeastOnce())->method('getAll')->will($this->returnValue($aMockResult));
 
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
         $oHelper->expects($this->any())->method('fcpoGetDb')->will($this->returnValue($oMockDatabase));

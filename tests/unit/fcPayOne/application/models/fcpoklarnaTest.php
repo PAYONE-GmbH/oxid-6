@@ -90,9 +90,9 @@ class Unit_fcPayOne_Application_Models_fcpoklarna extends OxidTestCase
     {
         $oTestObject = oxNew('fcpoklarna');
 
-        $oMockResult = new MockResultStoreIds();
-        $oMockDatabase = $this->getMock('oxDb', array('Execute'));
-        $oMockDatabase->expects($this->any())->method('Execute')->will($this->returnValue($oMockResult));
+        $aMockResult = array(array('oxid' => 'someId', 'fcpo_storeid' => 'someStore'));
+        $oMockDatabase = $this->getMock('oxDb', array('getAll'));
+        $oMockDatabase->expects($this->atLeastOnce())->method('getAll')->will($this->returnValue($aMockResult));
 
         $this->invokeSetAttribute($oTestObject, '_oFcpoDb', $oMockDatabase);
 

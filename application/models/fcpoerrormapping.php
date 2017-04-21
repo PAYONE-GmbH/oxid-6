@@ -91,17 +91,17 @@ class fcpoerrormapping extends oxBase
      * 
      * @param  string $sType
      * @return mixed
-     * @throws oxexception
+     * @throws Exception
      */
     public function fcpoGetAvailableErrorCodes($sType = 'general')
     {
         $mReturn = $sErrorXmlPath = false;
         if ($sType == 'general') {
-            $sErrorXmlPath = getShopBasePath() . "/modules/fcPayOne/payoneerrors.xml";
+            $sErrorXmlPath = getShopBasePath() . "/modules/fc/fcpayone/payoneerrors.xml";
             $sErrorXmlPath = str_replace('//', '/', $sErrorXmlPath);
         }
         elseif ($sType == 'iframe') {
-            $sErrorXmlPath = getShopBasePath() . "/modules/fcPayOne/iframeerrors.xml";
+            $sErrorXmlPath = getShopBasePath() . "/modules/fc/fcpayone/iframeerrors.xml";
             $sErrorXmlPath = str_replace('//', '/', $sErrorXmlPath);
         }
         

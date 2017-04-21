@@ -89,10 +89,16 @@ class Unit_fcPayOne_Application_Models_fcpoforwarding extends OxidTestCase
     {
         $oTestObject = oxNew('fcpoforwarding');
 
-        $oMockResult = new MockResultForwarding();
-        $oMockDatabase = $this->getMock('oxDb', array('Execute', 'quote'));
-        $oMockDatabase->expects($this->any())->method('Execute')->will($this->returnValue($oMockResult));
-        $oMockDatabase->expects($this->any())->method('quote')->will($this->returnValue(''));
+        $aMockResult = array(
+            array(
+                'oxid'=>'someOxid',
+                'fcpo_payonestatus'=>'someStatus',
+                'fcpo_url'=>'someUrl',
+                'fcpo_timeout'=>'someTimeout'
+            ),
+        );
+        $oMockDatabase = $this->getMock('oxDb', array('getAll'));
+        $oMockDatabase->expects($this->atLeastOnce())->method('getAll')->will($this->returnValue($aMockResult));
 
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
         $oHelper->expects($this->any())->method('fcpoGetDb')->will($this->returnValue($oMockDatabase));

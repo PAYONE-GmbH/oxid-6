@@ -115,11 +115,19 @@ class Unit_fcPayOne_Application_Models_fcporatepay extends OxidTestCase
         $oTestObject = $this->getMock('fcporatepay', array('fcpoGetFields'));
         $oTestObject->expects($this->any())->method('fcpoGetFields')->will($this->returnValue(null));
 
-        $oMockDbResult = new MockResultRatepay();
-        $oMockDb = $this->getMock('oxdb', array('Execute', 'quote'));
-        $oMockDb->expects($this->any())->method('Execute')->will($this->returnValue($oMockDbResult));
-        $oMockDb->expects($this->any())->method('quote')->will($this->returnValue(null));
-        $this->invokeSetAttribute($oTestObject, '_oFcpoDb', $oMockDb);
+        $aMockResult = array(
+            array(
+                'someValue',
+                'someValue',
+                'someValue',
+                'someValue',
+                'someValue'
+            )
+        );
+        $oMockDatabase = $this->getMock('oxDb', array('getAll', 'quote'));
+        $oMockDatabase->expects($this->atLeastOnce())->method('getAll')->will($this->returnValue($aMockResult));
+        $oMockDatabase->expects($this->any())->method('quote')->will($this->returnValue(null));
+        $this->invokeSetAttribute($oTestObject, '_oFcpoDb', $oMockDatabase);
 
         $aExpect = array(
             'someValue' => array(''=>'someValue'),
@@ -176,10 +184,11 @@ class Unit_fcPayOne_Application_Models_fcporatepay extends OxidTestCase
     {
         $oTestObject = oxNew('fcporatepay');
 
-        $oMockDbResult = new MockResultRatepay();
-        $oMockDb = $this->getMock('oxdb', array('Execute'));
-        $oMockDb->expects($this->any())->method('Execute')->will($this->returnValue($oMockDbResult));
-        $this->invokeSetAttribute($oTestObject, '_oFcpoDb', $oMockDb);
+        $aMockResult = array(array('someValue'));
+        $oMockDatabase = $this->getMock('oxDb', array('getAll'));
+        $oMockDatabase->expects($this->atLeastOnce())->method('getAll')->will($this->returnValue($aMockResult));
+
+        $this->invokeSetAttribute($oTestObject, '_oFcpoDb', $oMockDatabase);
 
         $aExpect = array('someValue');
 

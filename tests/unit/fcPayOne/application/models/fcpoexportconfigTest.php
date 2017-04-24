@@ -611,9 +611,39 @@ class Unit_fcPayOne_Application_Models_fcpoexportconfig extends OxidTestCase
     {
         $this->_fcpoRemoveSamplePayment();
         $sQuery = "
-            INSERT INTO `oxpayments` (`OXID`, `OXACTIVE`, `OXDESC`, `OXADDSUM`, `OXADDSUMTYPE`, `OXADDSUMRULES`, `OXFROMBONI`, `OXFROMAMOUNT`, `OXTOAMOUNT`, `OXVALDESC`, `OXCHECKED`, `OXDESC_1`, `OXVALDESC_1`, `OXDESC_2`, `OXVALDESC_2`, `OXDESC_3`, `OXVALDESC_3`, `OXLONGDESC`, `OXLONGDESC_1`, `OXLONGDESC_2`, `OXLONGDESC_3`, `OXSORT`, `OXTIMESTAMP`, `FCPOISPAYONE`, `FCPOAUTHMODE`, `FCPOLIVEMODE`) VALUES
-            ('fcpounittest', 1, 'Testzahlart', 0, 'abs', 0, '{$sOxFromBoni}', 0, 1000000, '', 0, 'Kreditkarte Channel Frontend', '', '', '', '', '', '', '', '', '', 0, '', '2016-04-27 15:37:25', 1, 'preauthorization', 0);
-        ";
+            INSERT INTO  `oxid`.`oxpayments` (
+                `OXID` ,
+                `OXACTIVE` ,
+                `OXDESC` ,
+                `OXADDSUM` ,
+                `OXADDSUMTYPE` ,
+                `OXADDSUMRULES` ,
+                `OXFROMBONI` ,
+                `OXFROMAMOUNT` ,
+                `OXTOAMOUNT` ,
+                `OXVALDESC` ,
+                `OXCHECKED` ,
+                `OXDESC_1` ,
+                `OXVALDESC_1` ,
+                `OXDESC_2` ,
+                `OXVALDESC_2` ,
+                `OXDESC_3` ,
+                `OXVALDESC_3` ,
+                `OXLONGDESC` ,
+                `OXLONGDESC_1` ,
+                `OXLONGDESC_2` ,
+                `OXLONGDESC_3` ,
+                `OXSORT` ,
+                `OXTIMESTAMP` ,
+                `FCPOISPAYONE` ,
+                `FCPOAUTHMODE` ,
+                `FCPOLIVEMODE`
+            )
+            VALUES (
+                'fcpounittest',  '1',  'Testzahlart',  '0',  'abs',  '0',  '{$sOxFromBoni}',  '0',  '1000000',  'Kreditkarte Channel Frontend',  '0',  '',  '',  '',  '',  '',  '', 'Kreditkarte Channel Frontend',  '',  '',  '',  '0', 
+                CURRENT_TIMESTAMP ,  '1',  'preauthorization',  '0'
+            )
+";
 
         oxDb::getDb()->Execute($sQuery);
     }

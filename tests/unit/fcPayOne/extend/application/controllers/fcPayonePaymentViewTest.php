@@ -764,7 +764,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
     {
         $oTestObject = oxNew('fcPayOnePaymentView');
 
-        $oMockConfig = $this->getMock('oxConfig', array('getConfigParam'));
+        $oMockConfig = $this->getMock('oxConfig', array('isUtf'));
         $oMockConfig->expects($this->any())->method('isUtf')->will($this->returnValue(false));
 
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
@@ -2299,11 +2299,11 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
             '_fcpoSetPayolutionErrorMessage'
             )
         );
-        $oTestObject->expects($this->any())->method('_fcpoRatePaySaveRequestedValues')->will($this->returnValue(true));
+        $oTestObject->expects($this->any())->method('_fcpoPayolutionSaveRequestedValues')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcpoCheckAgreedDataUsage')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcpoCheckPayolutionMandatoryUserData')->will($this->returnValue(true));
-        $oTestObject->expects($this->any())->method('_fcpoValidateBankDataRelatedPayolutionPayment')->will($this->returnValue(null));
-        $oTestObject->expects($this->any())->method('_fcpoFinalValidationPayolutionPreCheck')->will($this->returnValue(true));
+        $oTestObject->expects($this->any())->method('_fcpoValidateBankDataRelatedPayolutionPayment')->will($this->returnValue('order'));
+        $oTestObject->expects($this->any())->method('_fcpoFinalValidationPayolutionPreCheck')->will($this->returnValue('order'));
         $oTestObject->expects($this->any())->method('_fcpoGetPayolutionErrorMessage')->will($this->returnValue(null));
         $oTestObject->expects($this->any())->method('_fcpoSetPayolutionErrorMessage')->will($this->returnValue(null));
 

@@ -353,7 +353,18 @@ class fcpohelper extends oxBase
      * @param  void
      * @return string
      */
-    public static function fcpoGetModuleVersion() 
+    public static function fcpoGetStaticModuleVersion()
+    {
+        return '%%VERSION%%';
+    }
+
+    /**
+     * Method returns current module version
+     *
+     * @param  void
+     * @return string
+     */
+    public function fcpoGetModuleVersion()
     {
         return '%%VERSION%%';
     }

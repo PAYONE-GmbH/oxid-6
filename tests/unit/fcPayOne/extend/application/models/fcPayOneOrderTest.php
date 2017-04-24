@@ -607,37 +607,37 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrder extends OxidTestCase
 
         $oTestObject = $this->getMock(
             'fcPayOneOrder', array(
-            'isPayOnePaymentType',
-            '_checkOrderExist',
-            'validateOrder',
-            '_loadFromBasket',
-            '_setUser',
-            '_setPayment',
-            '_fcpoCheckRefNr',
-            '_executePayment',
-            'save',
-            '_fcGetCurrentVersion',
-            '_updateOrderDate',
-            '_setOrderStatus',
-            '_updateWishlist',
-            '_updateNoticeList',
-            '_markVouchers',
-            '_sendOrderByEmail',
-            'setId',
-            '_setFolder',
-            '_fcpoProcessOrder',
-            '_executeTsProtection',
-            'getTsProductId',
-            '_isRedirectAfterSave',
-            '_fcpoEarlyValidation',
-            '_fcpoHandleBasket',
-            '_fcpoExecutePayment',
-            '_fcpoSaveAfterRedirect',
-            '_fcpoHandleTsProtection',
-            '_fcpoSetOrderStatus',
-            '_fcpoMarkVouchers',
-            '_fcpoFinishOrder',
-                )
+                'isPayOnePaymentType',
+                '_checkOrderExist',
+                'validateOrder',
+                '_loadFromBasket',
+                '_setUser',
+                '_setPayment',
+                '_fcpoCheckRefNr',
+                '_executePayment',
+                'save',
+                '_fcGetCurrentVersion',
+                '_updateOrderDate',
+                '_setOrderStatus',
+                '_updateWishlist',
+                '_updateNoticeList',
+                '_markVouchers',
+                '_sendOrderByEmail',
+                'setId',
+                '_setFolder',
+                '_fcpoProcessOrder',
+                '_executeTsProtection',
+                'getTsProductId',
+                '_isRedirectAfterSave',
+                '_fcpoEarlyValidation',
+                '_fcpoHandleBasket',
+                '_fcpoExecutePayment',
+                '_fcpoSaveAfterRedirect',
+                '_fcpoHandleTsProtection',
+                '_fcpoSetOrderStatus',
+                '_fcpoMarkVouchers',
+                '_fcpoFinishOrder',
+            )
         );
         $oTestObject->expects($this->any())->method('isPayOnePaymentType')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_checkOrderExist')->will($this->returnValue(true));
@@ -668,7 +668,7 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrder extends OxidTestCase
         $oTestObject->expects($this->any())->method('_fcpoHandleTsProtection')->will($this->returnValue(false));
         $oTestObject->expects($this->any())->method('_fcpoSetOrderStatus')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcpoMarkVouchers')->will($this->returnValue(true));
-        $oTestObject->expects($this->any())->method('_fcpoFinishOrder')->will($this->returnValue(true));
+        $oTestObject->expects($this->any())->method('_fcpoFinishOrder')->will($this->returnValue(false));
 
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
         $oHelper->expects($this->any())->method('fcpoGetSessionVariable')->will($this->returnValue('someSessionValue'));
@@ -994,21 +994,6 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrder extends OxidTestCase
         $oMockUser = oxNew('oxUser');
 
         $this->assertEquals(null, $oTestObject->_fcpoEarlyValidation(true, $oMockBasket, $oMockUser, true));
-    }
-
-    /**
-     * Testing _fcpoHandleTsProtection Coverage
-     */
-    public function test__fcpoHandleTsProtection_Coverage() 
-    {
-        $oMockBasket = $this->getMock('oxBasket', array('getTsProductId'));
-        $oMockBasket->expects($this->any())->method('getTsProductId')->will($this->returnValue(true));
-
-        $oTestObject = $this->getMock('fcPayOneOrder', array('_fcGetCurrentVersion', '_executeTsProtection'));
-        $oTestObject->expects($this->any())->method('_fcGetCurrentVersion')->will($this->returnValue(4800));
-        $oTestObject->expects($this->any())->method('_executeTsProtection')->will($this->returnValue(true));
-
-        $this->assertEquals(true, $oTestObject->_fcpoHandleTsProtection(false, $oMockBasket));
     }
 
     /**

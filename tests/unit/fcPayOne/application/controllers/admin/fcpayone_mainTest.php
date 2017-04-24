@@ -160,7 +160,8 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     {
         $oTestObject = oxNew('fcpayone_main');
 
-        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
+        $oHelper = $this->getMock('fcpohelper', array('fcpoGetModuleVersion'));
+        // $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
         $oHelper->expects($this->any())->method('fcpoGetModuleVersion')->will($this->returnValue('someValue'));
 
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);

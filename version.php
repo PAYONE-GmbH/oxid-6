@@ -53,5 +53,5 @@ if($blIsValidCall ) {
     // Including main ADODB include
     include_once getShopBasePath() . 'bootstrap.php';
 
-    echo fcpohelper::fcpoGetModuleVersion();
+    echo fcpohelper::fcpoGetStaticModuleVersion();
 }

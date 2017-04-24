@@ -135,6 +135,7 @@ class Unit_fcPayOne_Application_Models_fcpoerrormapping extends OxidTestCase
 
     /**
      * Testing fcpoGetAvailableErrorCodes throwing exception
+     * @expectedException oxException
      */
     public function test_fcpoGetAvailableErrorCodes_Exception() 
     {

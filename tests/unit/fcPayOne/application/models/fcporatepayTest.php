@@ -162,17 +162,19 @@ class Unit_fcPayOne_Application_Models_fcporatepay extends OxidTestCase
      */
     public function test_fcpoGetProfileData_Coverage() 
     {
-        $aMockFields = array('one', 'two', 'three');
-        $aMockResult = array('value1', 'value2', 'value3');
+        $aMockResult = array('one'=>'value1', 'two'=>'value2', 'three'=>'value3');
         $aExpect = array('one'=>'value1', 'two'=>'value2', 'three'=>'value3');
         
-        $oTestObject = $this->getMock('fcporatepay', array('fcpoGetFields'));
-        $oTestObject->expects($this->any())->method('fcpoGetFields')->will($this->returnValue($aMockFields));
+        $oTestObject = oxNew('fcporatepay');
 
         $oMockDb = $this->getMock('oxdb', array('GetRow', 'quote'));
         $oMockDb->expects($this->any())->method('GetRow')->will($this->returnValue($aMockResult));
         $oMockDb->expects($this->any())->method('quote')->will($this->returnValue(null));
-        $this->invokeSetAttribute($oTestObject, '_oFcpoDb', $oMockDb);
+
+        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
+        $oHelper->expects($this->any())->method('fcpoGetDb')->will($this->returnValue($oMockDb));
+
+        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
 
         $this->assertEquals($aExpect, $oTestObject->fcpoGetProfileData('someId'));
     }
@@ -184,11 +186,13 @@ class Unit_fcPayOne_Application_Models_fcporatepay extends OxidTestCase
     {
         $oTestObject = oxNew('fcporatepay');
 
-        $aMockResult = array(array('someValue'));
-        $oMockDatabase = $this->getMock('oxDb', array('getAll'));
-        $oMockDatabase->expects($this->atLeastOnce())->method('getAll')->will($this->returnValue($aMockResult));
+        $aMockResult = array('someValue');
+        $oMockDatabase = $this->getMock('oxDb', array('getRow'));
+        $oMockDatabase->expects($this->any())->method('getRow')->will($this->returnValue($aMockResult));
 
-        $this->invokeSetAttribute($oTestObject, '_oFcpoDb', $oMockDatabase);
+        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
+        $oHelper->expects($this->any())->method('fcpoGetDb')->will($this->returnValue($oMockDatabase));
+        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
 
         $aExpect = array('someValue');
 

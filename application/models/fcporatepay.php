@@ -191,18 +191,9 @@ class fcporatepay extends oxBase
      */
     public function fcpoGetProfileData($sOxid) 
     {
+        $oDb = $this->_oFcpoHelper->fcpoGetDb(true);
         $sQuery = "SELECT * FROM fcporatepay WHERE OXID=".$this->_oFcpoDb->quote($sOxid);
-        $aResult = $this->_oFcpoDb->GetRow($sQuery);
-        $aFields = $this->fcpoGetFields();
-        $aReturn = array();
-
-        if (isset($aResult['OXID'])) {
-            $aReturn = $aResult;
-        } else {
-            foreach($aResult as $iIndex=>$sValue) {
-                $aReturn[$aFields[$iIndex][0]] = $sValue;
-            }
-        }
+        $aReturn = $oDb->GetRow($sQuery);
 
         return $aReturn;
     }
@@ -234,13 +225,12 @@ class fcporatepay extends oxBase
     public function fcpoGetFields() 
     {
         $sQuery = "SHOW FIELDS FROM fcporatepay";
-        $aRows = $this->_oFcpoDb->getAll($sQuery);
+        $oDb = $this->_oFcpoHelper->fcpoGetDb(true);
+        $aRow = $oDb->getRow($sQuery);
         $aReturn = array();
         
-        if (count($aRows)) {
-            foreach ($aRows as $aRow) {
-                $aReturn[] = $aRow;
-            }
+        if (count($aRow)) {
+            $aReturn = $aRow;
         }
         return $aReturn;
     }

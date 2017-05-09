@@ -887,7 +887,7 @@ class fcpoRequest extends oxSuperCfg
         $this->addParameter('add_paydata[shop_id]', $sRatePayShopId);
         $this->addParameter('add_paydata[device_token]', $sDeviceFingerprint);
         $this->addParameter('add_paydata[customer_allow_credit_inquiry]', 'yes');
-        $this->addParameter('add_paydata[vat_id]', 'DE265567757');
+        $this->addParameter('add_paydata[vat_id]', $oOrder->oxorder__oxbillustid->value);
         $this->addParameter('customer_is_present', 'yes');
         $this->addParameter('api_version', '3.10');
         $this->addParameter('param', 'session-1');
@@ -900,7 +900,6 @@ class fcpoRequest extends oxSuperCfg
         $this->addParameter('zip', $oUser->oxuser__oxzip->value);
         $this->addParameter('city', $oUser->oxuser__oxcity->value);
         $this->addParameter('company', $oUser->oxuser__oxcompany->value);
-        $this->addParameter('shipping_country', strtoupper($sCountry));
         $this->addParameter('shipping_firstname', $sShippingFirstName);
         $this->addParameter('shipping_lastname', $sShippingLastName);
         $this->addParameter('shipping_street', $sShippingStreet);

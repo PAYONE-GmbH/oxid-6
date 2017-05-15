@@ -943,7 +943,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
 
         $aDynData = $this->_oFcpoHelper->fcpoGetSessionVariable("dynvalue");
 
-        if ($aDynData) {
+        if ($aDynData && is_array($aDynData)) {
             $aDynData["fcpo_kktype"] = null;
             $aDynData["fcpo_kknumber"] = null;
             $aDynData["fcpo_kkname"] = null;

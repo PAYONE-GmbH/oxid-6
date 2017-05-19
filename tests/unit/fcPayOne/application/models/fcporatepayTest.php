@@ -127,7 +127,10 @@ class Unit_fcPayOne_Application_Models_fcporatepay extends OxidTestCase
         $oMockDatabase = $this->getMock('oxDb', array('getAll', 'quote'));
         $oMockDatabase->expects($this->atLeastOnce())->method('getAll')->will($this->returnValue($aMockResult));
         $oMockDatabase->expects($this->any())->method('quote')->will($this->returnValue(null));
-        $this->invokeSetAttribute($oTestObject, '_oFcpoDb', $oMockDatabase);
+
+        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
+        $oHelper->expects($this->any())->method('fcpoGetDb')->will($this->returnValue($oMockDatabase));
+        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
 
         $aExpect = array(
             'someValue' => array(''=>'someValue'),

@@ -203,9 +203,9 @@ class fcpohelper extends oxBase
     public function fcpoGetDb($blAssoc = false) 
     {
         if ($blAssoc) {
-            return ( $this->_fcUseDeprecatedInstantiation ) ? oxDb::getDb(true) : oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
+            return ($this->_fcUseDeprecatedInstantiation()) ? oxDb::getDb(true) : oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
         } else {
-            return ( $this->_fcUseDeprecatedInstantiation ) ? oxDb::getDb() : oxDb::getDb(oxDb::FETCH_MODE_NUM);
+            return ($this->_fcUseDeprecatedInstantiation()) ? oxDb::getDb() : oxDb::getDb(oxDb::FETCH_MODE_NUM);
         }
     }
 
@@ -355,7 +355,7 @@ class fcpohelper extends oxBase
      */
     public static function fcpoGetStaticModuleVersion()
     {
-       return '1.0.0';
+       return '1.0.1';
     }
 
     /**
@@ -366,7 +366,7 @@ class fcpohelper extends oxBase
      */
     public function fcpoGetModuleVersion()
     {
-        return '1.0.0';
+        return '1.0.1';
     }
 
     /**
@@ -507,7 +507,7 @@ class fcpohelper extends oxBase
             'vsettlement',
             'transfer',
             'invoice',
-        );
+       );
     }
 
     /**
@@ -540,10 +540,10 @@ class fcpohelper extends oxBase
     protected function _fcUseDeprecatedInstantiation() 
     {
         $oConfig = $this->getConfig();
-        if (( version_compare($oConfig->getVersion(), "4.8.0") < 1 && $oConfig->getEdition() == "CE" ) 
-            || ( version_compare($oConfig->getVersion(), "4.8.0") < 1 && $oConfig->getEdition() == "PE" ) 
-            || ( version_compare($oConfig->getVersion(), "5.1.0") < 1 && $oConfig->getEdition() == "EE" )
-        ) {
+        if ((version_compare($oConfig->getVersion(), "4.8.0") < 1 && $oConfig->getEdition() == "CE") 
+            || (version_compare($oConfig->getVersion(), "4.8.0") < 1 && $oConfig->getEdition() == "PE") 
+            || (version_compare($oConfig->getVersion(), "5.1.0") < 1 && $oConfig->getEdition() == "EE")
+       ) {
             return true;
         } else {
             return false;

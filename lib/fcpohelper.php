@@ -355,7 +355,7 @@ class fcpohelper extends oxBase
      */
     public static function fcpoGetStaticModuleVersion()
     {
-       return '1.0.0';
+       return '1.0.1';
     }
 
     /**
@@ -366,7 +366,7 @@ class fcpohelper extends oxBase
      */
     public function fcpoGetModuleVersion()
     {
-        return '1.0.0';
+        return '1.0.1';
     }
 
     /**

@@ -77,6 +77,7 @@ class fcporatepay extends oxBase
      */
     public function fcpoGetRatePayProfiles($sPaymentId = null) 
     {
+        $oDb = $this->_oFcpoHelper->fcpoGetDb(true);
         $aReturn = array();
         
         $sFilterPaymentId = "";
@@ -85,15 +86,11 @@ class fcporatepay extends oxBase
         }
         
         $sQuery = "SELECT * FROM fcporatepay {$sFilterPaymentId}";
-        $aRatePayProfiles = $this->_oFcpoDb->getAll($sQuery);
-        $aFields = $this->fcpoGetFields();
+        $aRatePayProfiles = $oDb->getAll($sQuery);
 
         foreach ($aRatePayProfiles as $aRatePayProfile) {
-            $sOxid = $aRatePayProfile[0];
-            foreach ($aRatePayProfile as $iIndex=>$sValue) {
-                $aRow[$aFields[$iIndex][0]] = $sValue;
-            }
-            $aReturn[$sOxid] = $aRow;
+            $sOxid = $aRatePayProfile['OXID'];
+            $aReturn[$sOxid] = $aRatePayProfile;
         }
         return $aReturn;
     }

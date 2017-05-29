@@ -67,7 +67,12 @@ function loadLang(obj) {
             <td class="edittext"><input type="radio" name="confstrs[sFCPOBonicheck]" value="IB" [{if $confstrs.sFCPOBonicheck == 'IB'}]checked[{/if}]> [{ oxmultilang ident="FCPO_ALL_SCORE_BONICHECK" }]</td>
             <td class="edittext">[{ oxinputhelp ident="FCPO_HELP_ALL_SCORE_BONICHECK" }]<br></td>
         </tr>
-        <tr><td colspan="3">&nbsp;</td></tr>        
+        <tr>
+            <td class="edittext"></td>
+            <td class="edittext"><input type="radio" name="confstrs[sFCPOBonicheck]" value="CE" [{if $confstrs.sFCPOBonicheck == 'CE'}]checked[{/if}]> [{oxmultilang ident="FCPO_BONIVERSUM_SCORE_BONICHECK"}]</td>
+            <td class="edittext">[{oxinputhelp ident="FCPO_HELP_BONIVERSUM_SCORE_BONICHECK"}]<br></td>
+        </tr>
+        <tr><td colspan="3">&nbsp;</td></tr>
         <tr valign="top">
             <td class="edittext" >
                 [{ oxmultilang ident="FCPO_CONSUMERSCORE_MOMENT"}]
@@ -110,6 +115,16 @@ function loadLang(obj) {
             <td class="edittext"></td>
             <td class="edittext"><input type="radio" name="confstrs[sFCPOAddresscheck]" value="PE" [{if $confstrs.sFCPOAddresscheck == 'PE'}]checked[{/if}]> [{oxmultilang ident="FCPO_PERSON_ADDRESSCHECK" }]</td>
             <td class="edittext">[{ oxinputhelp ident="FCPO_HELP_PERSON_ADDRESSCHECK" }]<br></td>
+        </tr>
+        <tr>
+            <td class="edittext"></td>
+            <td class="edittext"><input type="radio" name="confstrs[sFCPOAddresscheck]" value="BB" [{if $confstrs.sFCPOAddresscheck == 'BB'}]checked[{/if}]> [{oxmultilang ident="FCPO_BONIVERSUM_BASIC_ADDRESSCHECK"}]</td>
+            <td class="edittext">[{oxinputhelp ident="FCPO_HELP_BONIVERSUM_BASIC_ADDRESSCHECK"}]<br></td>
+        </tr>
+        <tr>
+            <td class="edittext"></td>
+            <td class="edittext"><input type="radio" name="confstrs[sFCPOAddresscheck]" value="PB" [{if $confstrs.sFCPOAddresscheck == 'PB'}]checked[{/if}]> [{oxmultilang ident="FCPO_BONIVERSUM_PERSON_ADDRESSCHECK"}]</td>
+            <td class="edittext">[{oxinputhelp ident="FCPO_BONIVERSUM_HELP_PERSON_ADDRESSCHECK"}]<br></td>
         </tr>
         <tr valign="top">
             <td class="edittext" >
@@ -217,7 +232,19 @@ function loadLang(obj) {
             </td>
             <td class="edittext">[{ oxinputhelp ident="FCPO_HELP_POSCHECK" }]</td>
         </tr>
-        
+
+        <tr valign="top">
+            <td class="edittext" >
+                [{oxmultilang ident="FCPO_CREDITRATING_BONIVERSUM_FALLBACK"}]
+            </td>
+            <td class="edittext">
+                <input type="radio" name="confstrs[sFCPOBoniversumFallback]" value="R" [{if $confstrs.sFCPOBoniversumFallback == 'R'}]checked[{/if}]> [{oxmultilang ident="FCPO_CREDITRATING_BONIVERSUM_RED"}]<br>
+                <input type="radio" name="confstrs[sFCPOBoniversumFallback]" value="Y" [{if $confstrs.sFCPOBoniversumFallback == 'Y'}]checked[{/if}]> [{oxmultilang ident="FCPO_CREDITRATING_BONIVERSUM_YELLOW"}]<br>
+                <input type="radio" name="confstrs[sFCPOBoniversumFallback]" value="G" [{if $confstrs.sFCPOBoniversumFallback == 'G' || !$confstrs.sFCPOBoniversumFallback}]checked[{/if}]> [{oxmultilang ident="FCPO_CREDITRATING_BONIVERSUM_GREEN"}]
+            </td>
+            <td class="edittext">[{oxinputhelp ident="FCPO_HELP_CREDITRATING_BONIVERSUM_FALLBACK"}]</td>
+        </tr>
+
         <tr><td colspan="3">&nbsp;</td></tr>
         <tr valign="top">
             <td class="edittext" >

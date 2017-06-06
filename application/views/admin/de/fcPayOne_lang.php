@@ -133,6 +133,8 @@ $aLang = array(
 'FCPO_NO_ADDRESSCHECK'                      => 'Keine Adressprüfung durchführen',
 'FCPO_BASIC_ADDRESSCHECK'                   => 'AdressCheck Basic',
 'FCPO_PERSON_ADDRESSCHECK'                  => 'AdressCheck Person',
+'FCPO_BONIVERSUM_BASIC_ADDRESSCHECK'        => 'Boniversum Adresscheck Basic',
+'FCPO_BONIVERSUM_PERSON_ADDRESSCHECK'       => 'Boniversum Adresscheck Person',
 'FCPO_HELP_NO_ADDRESSCHECK'                 => 'Deaktivierung der Adressprüfung',
 'FCPO_HELP_BASIC_ADDRESSCHECK'              => 'Prüfung der Adresse auf Existenz sowie Ergänzung und Korrektur der Adresse (Möglich für Adressen aus Deutschland, Österreich, Schweiz, Niederlande, Belgien, Luxemburg, Frankreich, Italien, Spanien, Portugal, Dänemark, Schweden, Finnland, NorwegenPolen, Slowakei, Tschechien, Ungarn, USA, Kanada)',
 'FCPO_HELP_PERSON_ADDRESSCHECK'             => 'Prüfung ob die Person unter der angegebenen der Adresse bekannt ist, Prüfung der Adresse auf Existenz sowie Ergänzung und Korrektur der Adresse (nur Deutschland)',
@@ -141,6 +143,7 @@ $aLang = array(
 'FCPO_HARD_BONICHECK'                       => 'Infoscore (Harte Merkmale)',
 'FCPO_ALL_BONICHECK'                        => 'Infoscore (Alle Merkmale)',
 'FCPO_ALL_SCORE_BONICHECK'                  => 'Infoscore (Alle Merkmale + Boniscore)',
+'FCPO_BONIVERSUM_SCORE_BONICHECK'           => 'Boniversum VERITA Score',
 'FCPO_HELP_NO_BONICHECK'                    => 'Deaktivierung der Bonitätsprüfung',
 'FCPO_HELP_HARD_BONICHECK'                  => 'Prüfung auf so genannte "harte" Negativmerkmale (z.B. Verbraucherinsolvenzverfahren, Haftbefehl zur Eidesstattliche Versicherung oder Erzwingung Abgabe der Eidesstattlichen Versicherung). Die Bonitätsprüfung unterstützt ausschließlich die Prüfung von Käufern aus Deutschland.',
 'FCPO_HELP_ALL_BONICHECK'                   => 'Prüfung auf so genannte "harte" Negativmerkmale (z.B. Verbraucherinsolvenzverfahren, Haftbefehl zur Eidesstattliche Versicherung oder Erzwingung Abgabe der Eidesstattlichen Versicherung), "mittlere" Negativmerkmale (z.B. Mahnbescheid, Vollstreckungsbescheid oder Zwangsvollstreckung) und "weiche" Negativmerkmale (z.B. Inkasso-Mahnverfahren eingeleitet, Fortlauf des außergerichtlichen Inkasso-Mahnverfahrens nach Teilzahlung, Einstellung des außergerichtlichen Inkasso-Mahnverfahrens wegen Aussichtslosigkeit). Die Bonitätsprüfung unterstützt ausschließlich die Prüfung von Käufern aus Deutschland.',
@@ -407,7 +410,11 @@ $aLang = array(
 'FCPO_MALUS_PPV'                            => 'Person verstorben',
 'FCPO_MALUS_PPF'                            => 'Details der postalischen Adresse sind inkorrekt',
 'FCPO_HELP_MALUS'                           => 'Die konfigurierten Abz&uuml;ge werden entsprechend dem R&uuml;ckgabewert der Adresspr&uuml;fung vom Bonit&auml;ts-Wert des Kunden abgezogen. Der Bonit&auml;ts-Wert kann 0 hierbei nicht unterschreiten.',
-
+'FCPO_CREDITRATING_BONIVERSUM_FALLBACK'     => 'Boniversum Rating bei Antwort: unbekannt',
+'FCPO_CREDITRATING_BONIVERSUM_RED'          => 'Rot',
+'FCPO_CREDITRATING_BONIVERSUM_YELLOW'       => 'Gelb',
+'FCPO_CREDITRATING_BONIVERSUM_GREEN'        => 'Grün',
+'FCPO_BONI_ERROR_SET_TO_BONIVERSUM_PERSON'  => '<b>Bitte beachten Sie:</b><br>Der Adresschecktyp wurde auf "Boniversum Adresscheck Person" gesetzt, da ihre Bonitätsprüfung auf "Boniversum VERITA Score" gestellt ist.',
 );
 
 /*

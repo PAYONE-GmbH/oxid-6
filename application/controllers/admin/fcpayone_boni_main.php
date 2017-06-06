@@ -49,6 +49,9 @@ class fcpayone_boni_main extends fcpayone_admindetails
         'sFCPOMalusPPF' => '400',
     );
 
+    protected $_aValidateCode2Message = array(
+        '1' => 'FCPO_BONI_ERROR_SET_TO_BONIVERSUM_PERSON',
+    );
 
     /**
      * Loads payment protection configuration and passes them to Smarty engine, returns
@@ -118,5 +121,66 @@ class fcpayone_boni_main extends fcpayone_admindetails
                 $oConfig->saveShopConfVar("str", $sVarName, $sVarVal);
             }
         }
+
+        $iValidateCode = $this->_fcpoValidateAddresscheckType();
+        $this->_fcpoDisplayMessage($iValidateCode);
     }
+
+    /**
+     * Validating addresstype. Fix setting if needed and respond with error code
+     *
+     * @param void
+     * @return int
+     */
+    protected function _fcpoValidateAddresscheckType() {
+        $iValidateCode = $this->_fcpoValidateAddresscheckBoniversum();
+
+        return $iValidateCode;
+    }
+
+    /**
+     * Validates addresscheck related to boniversion. Correct settings and return error
+     * code for notifying user
+     *
+     * @param void
+     * @return int
+     */
+    protected function _fcpoValidateAddresscheckBoniversum() {
+        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+        $aConfStrs = $this->_oFcpoHelper->fcpoGetRequestParameter("confstrs");
+        $iValidateCode = 0;
+
+        if (isset($aConfStrs['sFCPOBonicheck']) && isset($aConfStrs['sFCPOAddresscheck'])) {
+            $sBoniCheckType = $aConfStrs['sFCPOBonicheck'];
+            $sAddresscheckType = $aConfStrs['sFCPOAddresscheck'];
+
+            if ($sBoniCheckType == 'CE' && $sAddresscheckType != 'PB') {
+                // addresschecktype ALWAYS has to be PB if bonichecktype is CE => Set error code ...
+                $iValidateCode = 1;
+                // ... and fix setting
+                $oConfig->saveShopConfVar("str", 'sFCPOAddresscheck', 'PB');
+            }
+        }
+
+        return $iValidateCode;
+    }
+
+
+
+    /**
+     * Displays a message in admin frontend if there is an error code present
+     *
+     * @param $iValidateCode
+     * @return void
+     */
+    protected function _fcpoDisplayMessage($iValidateCode) {
+        if ($iValidateCode > 0 && isset($this->_aValidateCode2Message[$iValidateCode])) {
+            $oUtilsView = oxRegistry::get('oxUtilsView');
+            $sTranslateString = $this->_aValidateCode2Message[$iValidateCode];
+            $oLang = $this->_oFcpoHelper->fcpoGetLang();
+            $sTranslatedMessage = $oLang->translateString($sTranslateString);
+            $oUtilsView->addErrorToDisplay($sTranslatedMessage);
+        }
+    }
+
 }

@@ -134,6 +134,8 @@ $aLang = array(
 'FCPO_NO_ADDRESSCHECK'                      => 'Do not perform addresscheck',
 'FCPO_BASIC_ADDRESSCHECK'                   => 'AddressCheck Basic',
 'FCPO_PERSON_ADDRESSCHECK'                  => 'AddressCheck Person',
+'FCPO_BONIVERSUM_BASIC_ADDRESSCHECK'        => 'Boniversum Addresscheck Basic',
+'FCPO_BONIVERSUM_PERSON_ADDRESSCHECK'       => 'Boniversum Addresscheck Person',
 'FCPO_HELP_NO_ADDRESSCHECK'                 => 'Deactivation of address check',
 'FCPO_HELP_BASIC_ADDRESSCHECK'              => 'Check the address on existence and supplementing and correcting the address (Possible for addresses in Germany, Austria, Switzerland, Netherlands, Belgium, Luxembourg, France, Italy, Spain, Portugal, Denmark, Sweden, Finland, Norway, Poland, Slovakia, Czech Republic, Hungary, U.S., Canada)',
 'FCPO_HELP_PERSON_ADDRESSCHECK'             => 'Check whether the person is known by the specified address, check the address on existence and supplementing and correcting the address (only Germany)',
@@ -142,6 +144,7 @@ $aLang = array(
 'FCPO_HARD_BONICHECK'                       => 'Infoscore (Hard features)',
 'FCPO_ALL_BONICHECK'                        => 'Infoscore (All features)',
 'FCPO_ALL_SCORE_BONICHECK'                  => 'Infoscore (All features + Consumerscore)',
+'FCPO_BONIVERSUM_SCORE_BONICHECK'           => 'Boniversum VERITA Score',
 'FCPO_HELP_NO_BONICHECK'                    => 'Deactivation of the credit assessment',
 'FCPO_HELP_HARD_BONICHECK'                  => 'Testing for so-called "hard" negative features (eg consumer insolvency proceedings, the arrest warrant affidavit, or enforcement of the tax affidavits). The credit check only supports the testing of buyers from Germany.',
 'FCPO_HELP_ALL_BONICHECK'                   => 'Testing for so-called "hard" negative features (eg consumer insolvency proceedings, arrest warrant for the affidavit or enforce submission of the affidavit), "medium" negative features (eg court order, enforcement order or enforcement) and "soft" negative features (such as collection agency dunning initiated Continuing the extrajudicial debt collection payment procedure for partial payment, setting the order for payment out of court debt collection because of hopelessness). The credit check only supports the testing of buyers from Deutschland.Testing for so-called "hard" negative features (eg consumer insolvency proceedings, the arrest warrant affidavit, or enforcement of the tax affidavits). The credit check only supports the testing of buyers from Germany.',
@@ -352,6 +355,11 @@ $aLang = array(
 'FCPO_MALUS_PPV'                            => 'person deceased',
 'FCPO_MALUS_PPF'                            => 'postal address details are incorrect',
 'FCPO_HELP_MALUS'                           => 'The configured deductions will be subtracted from the boni-score according to the return value of the addresscheck. The boni-score cant fall below 0.',
+'FCPO_CREDITRATING_BONIVERSUM_FALLBACK'     => 'Boniversum rating on response unknown',
+'FCPO_CREDITRATING_BONIVERSUM_RED'          => 'Red',
+'FCPO_CREDITRATING_BONIVERSUM_YELLOW'       => 'Yellow',
+'FCPO_CREDITRATING_BONIVERSUM_GREEN'        => 'Green',
+'FCPO_BONI_ERROR_SET_TO_BONIVERSUM_PERSON'  => '<b>Please note:</b><br>Adresschecktype has been set to "Boniversum Addresscheck Person" , due to your  Bonicheck has been set to "Boniversum VERITA Score".',
 
 );
 

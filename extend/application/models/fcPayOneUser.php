@@ -52,6 +52,7 @@ class fcPayOneUser extends fcPayOneUser_parent
         if ($aResponse['scorevalue']) {
             $boni = $aResponse['scorevalue'];
         } else {
+            $aResponse = $this->_fcpoCheckUseFallbackBoniversum($aResponse);
             $aMap = array('G' => 500, 'Y' => 300, 'R' => 100);
             if (isset($aMap[$aResponse['score']])) {
                 $boni = $aMap[$aResponse['score']];
@@ -68,6 +69,49 @@ class fcPayOneUser extends fcPayOneUser_parent
 
         $this->save();
     }
+
+    /**
+     * Parses response and set fallback if conditions match
+     *
+     * @param $aResponse
+     * @return array
+     */
+    protected function _fcpoCheckUseFallbackBoniversum($aResponse) {
+        $oConfig = $this->getConfig();
+        $sScore = $aResponse['score'];
+        $sAddresscheckType = $this->_fcpoGetAddressCheckType();
+
+        $blUseFallBack = (
+            $sScore == 'U' &&
+            in_array($sAddresscheckType, array('BB', 'PB'))
+        );
+
+        if ($blUseFallBack) {
+            $sFCPOBoniversumFallback = $oConfig->getConfigParam('sFCPOBoniversumFallback');
+            $aResponse['score'] = $sFCPOBoniversumFallback;
+        }
+
+        return $aResponse;
+    }
+
+    /**
+     * Check, correct and return addresschecktype
+     *
+     * @param void
+     * @return string
+     */
+    protected function _fcpoGetAddressCheckType() {
+        $oConfig = $this->getConfig();
+        $sBoniCheckType = $oConfig->getConfigParam('sFCPOBonicheck');
+        $sAddressCheckType = $oConfig->getConfigParam('sFCPOAddresscheck');
+
+        if ($sBoniCheckType == 'CE') {
+            $sAddressCheckType = 'PB';
+        }
+
+        return $sAddressCheckType;
+    }
+
 
     /**
      * Check if the credit-worthiness of the user has to be checked again
@@ -118,69 +162,105 @@ class fcPayOneUser extends fcPayOneUser_parent
     protected function isBonicheckNeeded() 
     {
         $blBoniCheckNeeded = (
-                (
+            (
                 $this->oxuser__oxboni->value == $this->getBoni() ||
                 $this->isNewBonicheckNeeded()
-                ) &&
-                $this->isBonicheckNeededForBasket()
-                );
+            ) &&
+            $this->isBonicheckNeededForBasket()
+        );
 
         return $blBoniCheckNeeded;
     }
 
+    public function checkAddressAndScore($blCheckAddress = true, $blCheckBoni = true) {
+        // in general we assume that everything is fine with score and address
+        $blBoniChecked = $blAddressValid = true;
+
+        // let's see what should be checked
+        if ($blCheckBoni) {
+            $blBoniChecked = $this->_fcpoPerformBoniCheck();
+        }
+        if ($blCheckAddress) {
+            $blAddressValid = $this->_fcpoPerformAddressCheck();
+        }
+
+        // merge results
+        $blChecksValid = ($blBoniChecked && $blAddressValid);
+
+        return $blChecksValid;
+    }
+
     /**
-     * Check the credit-worthiness of the user with the consumerscore or addresscheck request to the PAYONE API
+     * Performing address check
      *
+     * @param void
      * @return bool
      */
-    public function checkAddressAndScore($blCheckAddress = true, $blCheckBoni = true) 
-    {
-        $blReturn = true;
+    protected function _fcpoPerformAddressCheck() {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
-        $aResponse = array();
-        $blCheckedBoni = false;
-        $sFCPOBonicheck = $oConfig->getConfigParam('sFCPOBonicheck');
-        
-        if ($sFCPOBonicheck == -1 || $sFCPOBonicheck == '-1' || !$sFCPOBonicheck) {
-            $blFCPOBonicheck = false;
-        } else {
-            $blFCPOBonicheck = true;
-        }
-        
-        $blBoniCheckNeeded = $this->isBonicheckNeeded();
-        $blBoniCheckValid = ($blCheckBoni && $blFCPOBonicheck && $blBoniCheckNeeded);
-        $sFCPOAddresscheck = $oConfig->getConfigParam('sFCPOAddresscheck');
-        $blAddressCheck = ($sFCPOAddresscheck == 'NO') ? false : true;
-        $blAddressCheckValid = ($blCheckAddress && $blAddressCheck);
+        $sFCPOAddresscheck = $this->_fcpoGetAddresscheckSetting();
+        // early return a success if addresscheck is inactive
+        if (!$sFCPOAddresscheck) return true;
+
+        // get more addresscheck related settings
         $blFCPOCorrectAddress = (bool) $oConfig->getConfigParam('blFCPOCorrectAddress');
         $blFCPOCheckDelAddress = (bool) $oConfig->getConfigParam('blFCPOCheckDelAddress');
 
+        // perform validations
+        $blIsValidAddress = $this->_fcpoValidateAddress($blFCPOCorrectAddress);
+        $blIsValidAddress = $this->_fcpoValidateDelAddress($blIsValidAddress, $blFCPOCheckDelAddress);
 
-        $blCheckedBoni = $this->_fcpoValidateBoni($blBoniCheckValid);
+        return $blIsValidAddress;
+    }
 
-        if ($blAddressCheckValid) {
-            //Addresscheck
-            $blIsValidAddress = $this->_fcpoValidateAddress($sFCPOBonicheck, $blCheckedBoni, $blFCPOCorrectAddress);
-            $blIsValidAddress = $this->_fcpoValidateDelAddress($blIsValidAddress, $blFCPOCheckDelAddress);
+    /**
+     * Returns addresscheck setting or false if inactive
+     *
+     * @param void
+     * @return mixed bool/string
+     */
+    protected function _fcpoGetAddresscheckSetting() {
+        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+        $sFCPOAddresscheck = $oConfig->getConfigParam('sFCPOAddresscheck');
+        $mFCPOAddresscheck = ($sFCPOAddresscheck == 'NO') ? false : $sFCPOAddresscheck;
 
-            if ($blIsValidAddress && $blFCPOCheckDelAddress === true) {
-                //Check Lieferadresse
-                $oPORequest = $this->_oFcpoHelper->getFactoryObject('fcporequest');
-                $aResponse = $oPORequest->sendRequestAddresscheck($this, true);
+        return $mFCPOAddresscheck;
+    }
 
-                if ($aResponse === false || $aResponse === true) {
-                    // false = No deliveryaddress given
-                    // true = Address-check has been skipped because the address has been checked before
-                    return true;
-                }
+    /**
+     * Performing boni check on user
+     *
+     * @param void
+     * @return void
+     */
+    protected function _fcpoPerformBoniCheck() {
+        $sFCPOBonicheck = $this->_fcpoGetBoniSetting();
+        $blBoniCheckNeeded = $this->isBonicheckNeeded();
 
-                $blIsValidAddress = $this->fcpoIsValidAddress($aResponse, false);
-            }
+        // early return as success if bonicheck is inactive or not needed
+        if (!$sFCPOBonicheck || !$blBoniCheckNeeded) return true;
 
-            $blReturn = $blIsValidAddress;
-        }
+        return $this->_fcpoValidateBoni();
+    }
 
-        return $blReturn;
+    /**
+     * Returns boni setting or false if inactive
+     *
+     * @param void
+     * @return mixed bool/string
+     */
+    protected function _fcpoGetBoniSetting() {
+        // get raw configured setting
+        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+        $sFCPOBonicheck = $oConfig->getConfigParam('sFCPOBonicheck');
+
+        // multiple inactivity checks due to php is a non type checking language
+        $blBoniInactive = ($sFCPOBonicheck == -1 || $sFCPOBonicheck == '-1' || !$sFCPOBonicheck);
+
+        // sum it up
+        $mFCPOBonicheck = ($blBoniInactive) ? false : $sFCPOBonicheck;
+
+        return $mFCPOBonicheck;
     }
 
     /**
@@ -193,7 +273,7 @@ class fcPayOneUser extends fcPayOneUser_parent
     protected function _fcpoValidateDelAddress($blIsValidAddress, $blFCPOCheckDelAddress) 
     {
         if ($blIsValidAddress && $blFCPOCheckDelAddress === true) {
-            //Check Lieferadresse
+            //check delivery address
             $oPORequest = $this->_oFcpoHelper->getFactoryObject('fcporequest');
             $aResponse = $oPORequest->sendRequestAddresscheck($this, true);
 
@@ -211,43 +291,41 @@ class fcPayOneUser extends fcPayOneUser_parent
 
     /**
      * Validates address by requesting payone
-     * 
-     * @param  string $sFCPOBonicheck
-     * @param  bool   $blCheckedBoni
-     * @param  bool   $blFCPOCorrectAddress
+     *
+     * @param string $sFCPOBonicheck
+     * @param bool $blCheckedBoni
+     * @param bool $blFCPOCorrectAddress
      * @return bool
      */
-    protected function _fcpoValidateAddress($sFCPOBonicheck, $blCheckedBoni, $blFCPOCorrectAddress) 
-    {
-        if ($sFCPOBonicheck == '-1' || $blCheckedBoni === false) {
-            //Check Rechnungsadresse
-            $oPORequest = $this->_oFcpoHelper->getFactoryObject('fcporequest');
-            $aResponse = $oPORequest->sendRequestAddresscheck($this);
-        }
+    protected function _fcpoValidateAddress($blFCPOCorrectAddress) {
+        //check billing address
+        $oPORequest = $this->_oFcpoHelper->getFactoryObject('fcporequest');
+        $aResponse = $oPORequest->sendRequestAddresscheck($this);
 
-        $blIsValidAddress = ($aResponse === true) ? true : $this->fcpoIsValidAddress($aResponse, $blFCPOCorrectAddress);
+        if ($aResponse === true) {
+            // check has been performed recently
+            $blIsValidAddress = true;
+        } else {
+            // address check has been triggered - validate the response
+            $blIsValidAddress = $this->fcpoIsValidAddress($aResponse, $blFCPOCorrectAddress);
+        }
 
         return $blIsValidAddress;
     }
 
     /**
      * Requesting for boni of user if conditions are alright
-     * 
-     * @param  bool $blBoniCheckValid
-     * @return boolean
+     *
+     * @param void
+     * @return void
      */
-    protected function _fcpoValidateBoni($blBoniCheckValid) 
-    {
-        $blCheckedBoni = false;
-        if ($blBoniCheckValid) {
-            //Consumerscore
-            $oPORequest = $this->_oFcpoHelper->getFactoryObject('fcporequest');
-            $aResponse = $oPORequest->sendRequestConsumerscore($this);
-            $this->fcpoSetBoni($aResponse);
-            $blCheckedBoni = true;
-        }
+    protected function _fcpoValidateBoni() {
+        // Consumerscore
+        $oPORequest = $this->_oFcpoHelper->getFactoryObject('fcporequest');
+        $aResponse = $oPORequest->sendRequestConsumerscore($this);
+        $this->fcpoSetBoni($aResponse);
 
-        return $blCheckedBoni;
+        return true;
     }
 
     /**
@@ -272,12 +350,18 @@ class fcPayOneUser extends fcPayOneUser_parent
      *
      * @return bool
      */
-    protected function fcpoIsValidAddress($aResponse, $blCorrectUserAddress) 
-    {
-        if ($aResponse && is_array($aResponse) && array_key_exists('fcWrongCountry', $aResponse) && $aResponse['fcWrongCountry'] === true) {
-            return true;
-        }
+    protected function fcpoIsValidAddress($aResponse, $blCorrectUserAddress) {
+        $blEarlyValidation = (
+            $aResponse &&
+            is_array($aResponse) &&
+            array_key_exists('fcWrongCountry', $aResponse) &&
+            $aResponse['fcWrongCountry'] === true
+        );
 
+        // early return on quick check
+        if ($blEarlyValidation) return true;
+
+        // dig deeper, do corrections if configured
         $blReturn = $this->_fcpoValidateResponse($aResponse, $blCorrectUserAddress);
 
         return $blReturn;

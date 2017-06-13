@@ -12,7 +12,7 @@
             <div class="form-group">
                 <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_PAYOLUTION_USTID"}]</label>
                 <div class="col-lg-9">
-                    <input class="form-control" type="text" size="20" maxlength="64" name="dynvalue[fcpo_payolution_bill_ustid]" value="[{$oView->fcpoGetUserValue('oxustid')}]">
+                    <input class="form-control" type="text" size="20" maxlength="64" name="dynvalue[fcpo_payolution_bill_oxustid]" value="[{$oView->fcpoGetUserValue('oxustid')}]">
                 </div>
             </div>
         [{elseif $oView->fcpoShowB2C()}]
@@ -39,10 +39,17 @@
                 </div>
             </div>
         [{/if}]
+        [{if $oView->fcpoPayolutionBillTelephoneRequired()}]
+            <div class="form-group">
+                <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_PAYOLUTION_PHONE"}]</label>
+                <div class="col-lg-9">
+                    <input class="form-control" type="text" size="20" maxlength="64" name="dynvalue[fcpo_payolution_bill_oxfon]" value="[{$oView->fcpoGetUserValue('oxfon')}]">
+                </div>
+            </div>
+        [{/if}]
         <div class="alert alert-info col-lg-offset-3 desc">
             <input name="dynvalue[fcpo_payolution_bill_agreed]" value="agreed" type="checkbox">&nbsp;[{oxmultilang ident="FCPO_PAYOLUTION_AGREEMENT_PART_1"}] <a href='[{$oView->fcpoGetPayolutionAgreementLink()}]' class="lightview fcpoPayolutionAgreeRed" data-lightview-type="iframe" data-lightview-options="width: 800, height: 600, viewport: 'scale',background: { color: '#fff', opacity: 1 },skin: 'light'">[{oxmultilang ident="FCPO_PAYOLUTION_AGREE"}]</a> [{oxmultilang ident="FCPO_PAYOLUTION_AGREEMENT_PART_2"}]
         </div>
-
         [{block name="checkout_payment_longdesc"}]
             [{if $paymentmethod->oxpayments__oxlongdesc->value}]
                 <div class="alert alert-info col-lg-offset-3 desc">

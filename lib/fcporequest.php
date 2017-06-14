@@ -2208,7 +2208,7 @@ class fcpoRequest extends oxSuperCfg
             $sPayOneUserId = $this->_getPayoneUserIdByCustNr($oUser->oxuser__oxcustnr->value);
             if ($sPayOneUserId) {
                 $oPORequest = oxNew('fcporequest');
-                $oResponse = $oPORequest->sendRequestUpdateuser($oOrder, $oUser, $sPayOneUserId);
+                $oResponse = $oPORequest->sendRequestUpdateuser($oOrder, $oUser);
             }
         }
     }
@@ -2288,15 +2288,13 @@ class fcpoRequest extends oxSuperCfg
      *
      * @param object $oOrder        order object
      * @param object $oUser         user object
-     * @param string $sPayOneUserId payone user-id for this user
-     * 
+     *
      * @return array
      */
-    public function sendRequestUpdateuser($oOrder, $oUser, $sPayOneUserId) 
+    public function sendRequestUpdateuser($oOrder, $oUser)
     {
         $this->addParameter('request', 'updateuser'); //Request method
         $this->addParameter('mode', $this->getOperationMode($oOrder->oxorder__oxpaymenttype->value)); //PayOne Portal Operation Mode (live or test)
-        $this->addParameter('customerid', $sPayOneUserId);
 
         $this->_addUserDataParameters($oOrder, $oUser, true);
         return $this->send();

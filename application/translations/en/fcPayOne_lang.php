@@ -139,6 +139,7 @@ $aLang = array(
 'FCPO_PAYOLUTION_EMAIL_CLEARING'                => 'Payolution Reference code:',
 'FCPO_PAYOLUTION_NOT_AGREED'                    => 'You did not agree to consent.',
 'FCPO_PAYOLUTION_SEPA_NOT_AGREED'               => 'You did not grant SEPA direct debit mandate.',
+'FCPO_PAYOLUTION_PHONE_MISSING' => 'Telephone number is required for this payment.',
 'FCPO_PAYOLUTION_SEPA_AGREEMENT_PART_1'         => 'Herewith I give ',
 'FCPO_PAYOLUTION_SEPA_AGREE'                    => 'SEPA direct debit mandate',
 'FCPO_PAYOLUTION_ACCOUNTHOLDER'                 => 'Account owner',

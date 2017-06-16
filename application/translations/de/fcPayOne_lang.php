@@ -140,6 +140,7 @@ $aLang = array(
 'FCPO_PAYOLUTION_EMAIL_CLEARING'                => 'Payolution Referenzcode:',
 'FCPO_PAYOLUTION_NOT_AGREED'                    => 'Sie haben die Einwilligung zur Übertragung der erforderlichen Daten an payolution nicht bestätigt.',
 'FCPO_PAYOLUTION_SEPA_NOT_AGREED'               => 'Sie haben das SEPA Lastschriftmandat noch nicht erteilt.',
+'FCPO_PAYOLUTION_PHONE_MISSING'                 => 'Die Angabe der Telefonnummer wird benötigt.',
 'FCPO_PAYOLUTION_SEPA_AGREEMENT_PART_1'         => 'Hiermit erteile ich das',
 'FCPO_PAYOLUTION_SEPA_AGREE'                    => 'SEPA-Lastschriftmandat',
 'FCPO_PAYOLUTION_ACCOUNTHOLDER'                 => 'Kontoinhaber',

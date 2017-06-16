@@ -12,7 +12,7 @@
             [{if $oView->fcpoShowB2B()}]
                 <li>
                     <label>[{oxmultilang ident="FCPO_PAYOLUTION_USTID"}]</label>
-                    <input type="text" size="20" maxlength="64" name="dynvalue[fcpo_payolution_bill_ustid]" value="[{$oView->fcpoGetUserValue('oxustid')}]">
+                    <input type="text" size="20" maxlength="64" name="dynvalue[fcpo_payolution_bill_oxustid]" value="[{$oView->fcpoGetUserValue('oxustid')}]">
                 </li>
             [{elseif $oView->fcpoShowB2C()}]
                 <li>
@@ -34,6 +34,12 @@
                             <option value="[{$sYear}]" [{if $sYear == $oView->fcpoGetBirthdayField('year')}]selected[{/if}]>[{$sYear}]</option>
                         [{/foreach}]
                     </select>
+                </li>
+            [{/if}]
+            [{if $oView->fcpoPayolutionBillTelephoneRequired()}]
+                <li>
+                    <label>[{oxmultilang ident="FCPO_PAYOLUTION_PHONE"}]</label>
+                    <input type="text" size="20" maxlength="64" name="dynvalue[fcpo_payolution_bill_oxfon]" value="[{$oView->fcpoGetUserValue('oxfon')}]">
                 </li>
             [{/if}]
             <li>

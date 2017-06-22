@@ -371,10 +371,10 @@ class fcpayone_events
         $sSmartyDir = $sTmpDir . "smarty/";
 
         foreach (glob($sTmpDir . "*.txt") as $sFileName) {
-            unlink($sFileName);
+            @unlink($sFileName);
         }
         foreach (glob($sSmartyDir . "*.php") as $sFileName) {
-            unlink($sFileName);
+            @unlink($sFileName);
         }
     }
 

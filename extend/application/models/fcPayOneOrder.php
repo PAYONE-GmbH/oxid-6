@@ -977,6 +977,8 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      */
     public function validateStock($oBasket) 
     {
+        parent::validateStock($oBasket);
+
         $oConfig = $this->getConfig();
         $blReduceStockBefore = !(bool) $oConfig->getConfigParam('blFCPOReduceStock');
         $blCheckProduct = ($blReduceStockBefore && $this->_isRedirectAfterSave()) ? false : true;

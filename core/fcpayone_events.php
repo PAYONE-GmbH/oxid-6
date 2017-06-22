@@ -49,6 +49,7 @@ class fcpayone_events
           FCPO_REFNR int(11) NOT NULL AUTO_INCREMENT,
           FCPO_TXID varchar(32) NOT NULL DEFAULT '',
           FCPO_REFPREFIX varchar(32) NOT NULL DEFAULT '',
+          OXTIMESTAMP CHAR(32) COLLATE latin1_general_ci NOT NULL DEFAULT '',
           PRIMARY KEY (FCPO_REFNR, FCPO_REFPREFIX)
         ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;";
     public static $sQueryTableFcporequestlog = "
@@ -62,6 +63,7 @@ class fcpayone_events
           FCPO_RESPONSE text NOT NULL,
           FCPO_PORTALID varchar(32) NOT NULL DEFAULT '',
           FCPO_AID varchar(32) NOT NULL DEFAULT '',
+          OXTIMESTAMP CHAR(32) COLLATE latin1_general_ci NOT NULL DEFAULT '',
           PRIMARY KEY (OXID)
         ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;";
     public static $sQueryTableFcpotransactionstatus = "
@@ -110,6 +112,7 @@ class fcpayone_events
           FCPO_CUSTOMERID int(11) NOT NULL DEFAULT '0',
           FCPO_BALANCE double NOT NULL DEFAULT '0',
           FCPO_RECEIVABLE double NOT NULL DEFAULT '0',
+          OXTIMESTAMP CHAR(32) COLLATE latin1_general_ci NOT NULL DEFAULT '',
           PRIMARY KEY (OXID)
         ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;";
     public static $sQueryTableFcpopayment2country = "
@@ -118,6 +121,7 @@ class fcpayone_events
           FCPO_PAYMENTID char(8) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL DEFAULT '',
           FCPO_COUNTRYID char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL DEFAULT '',
           FCPO_TYPE char(8) NOT NULL DEFAULT '',
+          OXTIMESTAMP CHAR(32) COLLATE latin1_general_ci NOT NULL DEFAULT '',
           PRIMARY KEY (`OXID`),
           KEY `FCPO_PAYMENTID` (`FCPO_PAYMENTID`),
           KEY `FCPO_COUNTRYID` (`FCPO_COUNTRYID`),
@@ -129,6 +133,7 @@ class fcpayone_events
                 FCPO_PAYONESTATUS VARCHAR(32) CHARSET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' ,
                 FCPO_URL VARCHAR(255) CHARSET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' ,
                 FCPO_TIMEOUT DOUBLE NOT NULL DEFAULT '0' ,
+                OXTIMESTAMP CHAR(32) COLLATE latin1_general_ci NOT NULL DEFAULT '',
                 PRIMARY KEY (`OXID`)
         );";
     public static $sQueryTableFcpoStatusMapping = "
@@ -137,6 +142,7 @@ class fcpayone_events
                 FCPO_PAYMENTID CHAR(32) CHARSET latin1 COLLATE latin1_general_ci NOT NULL DEFAULT '' ,
                 FCPO_PAYONESTATUS VARCHAR(32) CHARSET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' ,
                 FCPO_FOLDER VARCHAR(32) CHARSET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' ,
+                OXTIMESTAMP CHAR(32) COLLATE latin1_general_ci NOT NULL DEFAULT '',
                 PRIMARY KEY (`OXID`)
         );";
     public static $sQueryTableFcpoErrorMapping = "
@@ -146,6 +152,7 @@ class fcpayone_events
                 FCPO_LANG_ID VARCHAR(32) CHARSET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' ,
                 FCPO_MAPPED_MESSAGE TEXT CHARSET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' ,
                 FCPO_ERROR_TYPE VARCHAR(32) CHARSET latin1 COLLATE latin1_general_ci NOT NULL DEFAULT '' ,
+                OXTIMESTAMP CHAR(32) COLLATE latin1_general_ci NOT NULL DEFAULT '',
                 PRIMARY KEY (`OXID`),
                 KEY `FCPO_ERROR_TYPE` (`FCPO_ERROR_TYPE`)
         );";
@@ -153,12 +160,14 @@ class fcpayone_events
         CREATE TABLE fcpoklarnastoreids (
           OXID int(11) NOT NULL AUTO_INCREMENT,
           FCPO_STOREID varchar(32) NOT NULL DEFAULT '',
+          OXTIMESTAMP CHAR(32) COLLATE latin1_general_ci NOT NULL DEFAULT '',
           PRIMARY KEY (OXID)
         ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;";
     public static $sQueryTableFcpoPdfMandates = "
         CREATE TABLE fcpopdfmandates (
           OXORDERID char(32) COLLATE latin1_general_ci NOT NULL,
           FCPO_FILENAME varchar(32) NOT NULL DEFAULT '',
+          OXTIMESTAMP CHAR(32) COLLATE latin1_general_ci NOT NULL DEFAULT '',
           PRIMARY KEY (OXORDERID)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
     public static $sQueryTableFcpoklarnacampaigns = "
@@ -166,6 +175,7 @@ class fcpayone_events
           OXID int(11) NOT NULL AUTO_INCREMENT,
           FCPO_CAMPAIGN_CODE varchar(32) NOT NULL DEFAULT '',
           FCPO_CAMPAIGN_TITLE varchar(128) NOT NULL DEFAULT '',
+          OXTIMESTAMP CHAR(32) COLLATE latin1_general_ci NOT NULL DEFAULT '',
           PRIMARY KEY (OXID)
         ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;";
     public static $sQueryTableFcpopaypalexpresslogos = "
@@ -175,12 +185,14 @@ class fcpayone_events
             FCPO_LANGID INT( 11 ) NOT NULL ,
             FCPO_LOGO VARCHAR( 255 ) NOT NULL ,
             FCPO_DEFAULT TINYINT( 1 ) NOT NULL DEFAULT '0',
+            OXTIMESTAMP CHAR(32) COLLATE latin1_general_ci NOT NULL DEFAULT '',
             PRIMARY KEY (OXID)
         ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;";
     public static $sQueryTableFcpocheckedaddresses = "
         CREATE TABLE fcpocheckedaddresses (
           fcpo_address_hash CHAR(32) COLLATE latin1_general_ci NOT NULL DEFAULT '',
           fcpo_checkdate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          OXTIMESTAMP CHAR(32) COLLATE latin1_general_ci NOT NULL DEFAULT '',
           PRIMARY KEY (fcpo_address_hash)
         ) ENGINE=INNODB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;";
 
@@ -246,6 +258,7 @@ class fcpayone_events
           `tx_limit_prepayment_max` double DEFAULT NULL,
           `txLimitPrepaymentMin` double DEFAULT NULL,
           `valid_payment_firstdays` int(11) DEFAULT NULL,
+          OXTIMESTAMP CHAR(32) COLLATE latin1_general_ci NOT NULL DEFAULT '',
           PRIMARY KEY (OXID)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
     ";

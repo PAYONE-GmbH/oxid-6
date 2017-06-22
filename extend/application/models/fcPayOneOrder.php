@@ -1005,6 +1005,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
                     $oEx->setMessage('EXCEPTION_OUTOFSTOCK_OUTOFSTOCK');
                     $oEx->setArticleNr($oProd->oxarticles__oxartnum->value);
                     $oEx->setProductId($oProd->getId());
+                    $oEx->setBasketIndex($key);
 
                     if (!is_numeric($iOnStock)) {
                         $iOnStock = 0;

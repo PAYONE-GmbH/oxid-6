@@ -684,7 +684,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         if (( $blInsert = parent::_insert())) {
             // setting order number
             if (!$this->oxorder__oxordernr->value) {
-                $blInsert = $this->_setNumber();
+//                $blInsert = $this->_setNumber();
             } else {
                 $oCounter = $this->_oFcpoHelper->getFactoryObject('oxCounter');
                 $oCounter->update($this->_getCounterIdent(), $this->oxorder__oxordernr->value);

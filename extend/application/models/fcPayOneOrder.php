@@ -321,7 +321,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      * and sending order by email to shop owner and user
      * Mailing status (1 if OK, 0 on error) is returned.
      *
-     * @param OxidEsales\EshopCommunity\Application\Model\Basket $oBasket              Shopping basket object
+     * @param OxidEsales\Eshop\Application\Model\Basket $oBasket              Shopping basket object
      * @param object                                             $oUser                Current user object
      * @param bool                                               $blRecalculatingOrder Order recalculation
      *
@@ -329,7 +329,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      *
      * @return integer
      */
-    public function finalizeOrder(OxidEsales\EshopCommunity\Application\Model\Basket $oBasket, $oUser, $blRecalculatingOrder = false) 
+    public function finalizeOrder(OxidEsales\Eshop\Application\Model\Basket $oBasket, $oUser, $blRecalculatingOrder = false)
     {
         // Use standard method if payment type does not belong to PAYONE
         if ($this->isPayOnePaymentType($oBasket->getPaymentId()) === false) {

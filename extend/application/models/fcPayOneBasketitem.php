@@ -51,9 +51,9 @@ class fcPayOneBasketitem extends fcPayOneBasketitem_parent
      * @param string $sProductId           product id
      * @param bool   $blDisableLazyLoading disable lazy loading
      *
-     * @throws oxArticleException, oxNoArticleException exception
+     * @throws oxArticleException $exc
      *
-     * @return oxarticle
+     * @return mixed
      */
     public function getArticle( $blCheckProduct = true, $sProductId = null, $blDisableLazyLoading = false ) 
     {
@@ -61,15 +61,19 @@ class fcPayOneBasketitem extends fcPayOneBasketitem_parent
         $blReduceStockBefore    = !(bool)$oConfig->getConfigParam('blFCPOReduceStock');
         $blSuccess              = $this->_oFcpoHelper->fcpoGetRequestParameter('fcposuccess');
         $sRefNr                 = $this->_oFcpoHelper->fcpoGetRequestParameter('refnr');
-        $blCheckProduct         = !($blReduceStockBefore && $blSuccess && $sRefNr);
-        
+
+        if ($blSuccess && $sRefNr) {
+            $blCheckProduct = !($blReduceStockBefore && $blSuccess && $sRefNr);
+        }
+
         try {
-            $blReturn = $this->_fcpoParentGetArticle($blCheckProduct, $sProductId, $blDisableLazyLoading);//
+            $mReturn = $this->_fcpoParentGetArticle($blCheckProduct, $sProductId, $blDisableLazyLoading);//
         } 
         catch (oxArticleException $exc) {
             throw $exc;
         }
-        return $blReturn;
+
+        return $mReturn;
     }
     
     

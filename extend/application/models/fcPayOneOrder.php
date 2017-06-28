@@ -321,7 +321,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      * and sending order by email to shop owner and user
      * Mailing status (1 if OK, 0 on error) is returned.
      *
-     * @param OxidEsales\EshopCommunity\Application\Model\Basket $oBasket              Shopping basket object
+     * @param OxidEsales\Eshop\Application\Model\Basket $oBasket              Shopping basket object
      * @param object                                             $oUser                Current user object
      * @param bool                                               $blRecalculatingOrder Order recalculation
      *
@@ -329,7 +329,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      *
      * @return integer
      */
-    public function finalizeOrder(OxidEsales\EshopCommunity\Application\Model\Basket $oBasket, $oUser, $blRecalculatingOrder = false) 
+    public function finalizeOrder(OxidEsales\Eshop\Application\Model\Basket $oBasket, $oUser, $blRecalculatingOrder = false)
     {
         // Use standard method if payment type does not belong to PAYONE
         if ($this->isPayOnePaymentType($oBasket->getPaymentId()) === false) {
@@ -684,7 +684,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         if (( $blInsert = parent::_insert())) {
             // setting order number
             if (!$this->oxorder__oxordernr->value) {
-                $blInsert = $this->_setNumber();
+//                $blInsert = $this->_setNumber();
             } else {
                 $oCounter = $this->_oFcpoHelper->getFactoryObject('oxCounter');
                 $oCounter->update($this->_getCounterIdent(), $this->oxorder__oxordernr->value);
@@ -977,6 +977,8 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      */
     public function validateStock($oBasket) 
     {
+        parent::validateStock($oBasket);
+
         $oConfig = $this->getConfig();
         $blReduceStockBefore = !(bool) $oConfig->getConfigParam('blFCPOReduceStock');
         $blCheckProduct = ($blReduceStockBefore && $this->_isRedirectAfterSave()) ? false : true;
@@ -1005,6 +1007,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
                     $oEx->setMessage('EXCEPTION_OUTOFSTOCK_OUTOFSTOCK');
                     $oEx->setArticleNr($oProd->oxarticles__oxartnum->value);
                     $oEx->setProductId($oProd->getId());
+                    $oEx->setBasketIndex($key);
 
                     if (!is_numeric($iOnStock)) {
                         $iOnStock = 0;

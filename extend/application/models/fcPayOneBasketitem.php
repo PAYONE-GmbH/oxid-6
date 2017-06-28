@@ -55,15 +55,19 @@ class fcPayOneBasketitem extends fcPayOneBasketitem_parent
      *
      * @return mixed
      */
-    public function getArticle( $blCheckProduct = true, $sProductId = null, $blDisableLazyLoading = false ) 
+    public function getArticle( $blCheckProduct = null, $sProductId = null, $blDisableLazyLoading = false )
     {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $blReduceStockBefore    = !(bool)$oConfig->getConfigParam('blFCPOReduceStock');
         $blSuccess              = $this->_oFcpoHelper->fcpoGetRequestParameter('fcposuccess');
         $sRefNr                 = $this->_oFcpoHelper->fcpoGetRequestParameter('refnr');
 
-        if ($blSuccess && $sRefNr) {
+        // Leave value unchanged if it is explicitly forced from a usage.
+        if (is_null($blCheckProduct) && $blSuccess && $sRefNr) {
             $blCheckProduct = !($blReduceStockBefore && $blSuccess && $sRefNr);
+        } else {
+            // Set the default vaule as in a Shop.
+            $blCheckProduct = true;
         }
 
         try {

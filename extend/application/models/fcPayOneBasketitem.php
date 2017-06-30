@@ -65,7 +65,7 @@ class fcPayOneBasketitem extends fcPayOneBasketitem_parent
         // Leave value unchanged if it is explicitly forced from a usage.
         if (is_null($blCheckProduct) && $blSuccess && $sRefNr) {
             $blCheckProduct = !($blReduceStockBefore && $blSuccess && $sRefNr);
-        } else {
+        } elseif(is_null($blCheckProduct)) {
             // Set the default vaule as in a Shop.
             $blCheckProduct = true;
         }

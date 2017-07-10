@@ -30,7 +30,7 @@ class fcpayone_events
     /**
      * Database object
      *
-     * @var object
+     * @var fcpohelper
      */
     protected static $_oFcpoHelper = null;
 

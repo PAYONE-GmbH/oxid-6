@@ -30,7 +30,7 @@ class fcpayone_events
     /**
      * Database object
      *
-     * @var object
+     * @var fcpohelper
      */
     protected static $_oFcpoHelper = null;
 
@@ -399,6 +399,8 @@ class fcpayone_events
     public static function addPayonePayments()
     {
         $oDb = oxDb::getDb();
+
+        $sShopId = self::$_oFcpoHelper->fcpoGetConfig()->getShopId();
 
         foreach (self::$aPaymentMethods as $sPaymentOxid => $sPaymentName) {
             //INSERT PAYMENT METHOD

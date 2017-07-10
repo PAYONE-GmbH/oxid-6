@@ -400,7 +400,7 @@ class fcpayone_events
     {
         $oDb = oxDb::getDb();
 
-        $sShopId = $oDb->getOne("SELECT OXID FROM oxshops ORDER BY OXID ASC LIMIT 1");
+        $sShopId = self::$_oFcpoHelper->fcpoGetConfig()->getShopId();
 
         foreach (self::$aPaymentMethods as $sPaymentOxid => $sPaymentName) {
             //INSERT PAYMENT METHOD

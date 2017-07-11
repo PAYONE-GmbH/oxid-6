@@ -655,53 +655,6 @@ class fcPayOneOrder extends fcPayOneOrder_parent
     }
 
     /**
-     * Overrides standard oxid _insert method
-     * 
-     * Inserts order object information in DB. Returns true on success.
-     *
-     * @return bool
-     */
-    protected function _insert() 
-    {
-        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
-        $sShopVersion = $oConfig->getVersion();
-        if (version_compare($sShopVersion, '4.7.0', '<')) {
-            return parent::_insert();
-        }
-
-        $oUtilsDate = $this->_oFcpoHelper->fcpoGetUtilsDate();
-
-        //V #M525 orderdate must be the same as it was
-        if (!$this->oxorder__oxorderdate || !$this->oxorder__oxorderdate->value) {
-            $this->oxorder__oxorderdate = new oxField(date('Y-m-d H:i:s', $oUtilsDate->getTime()), oxField::T_RAW);
-        } else {
-            $this->oxorder__oxorderdate = new oxField(
-                $this->oxorder__oxorderdate ? $this->oxorder__oxorderdate->value : null,
-                true
-            );
-        }
-
-        $this->oxorder__oxshopid = new oxField($oConfig->getShopId(), oxField::T_RAW);
-        $this->oxorder__oxsenddate = new oxField(
-            $oUtilsDate->formatDBDate(
-                $this->oxorder__oxsenddate ? $this->oxorder__oxsenddate->value : null,
-                true
-            )
-        );
-
-        if (( $blInsert = parent::_insert())) {
-            // setting order number
-            if (!$this->oxorder__oxordernr->value) {
-//                $blInsert = $this->_setNumber();
-            } else {
-                $oCounter = $this->_oFcpoHelper->getFactoryObject('oxCounter');
-                $oCounter->update($this->_getCounterIdent(), $this->oxorder__oxordernr->value);
-            }
-        }
-        return $blInsert;
-    }
-
-    /**
      * Overrides standard oxid save method
      * 
      * Save orderarticles only when not already existing

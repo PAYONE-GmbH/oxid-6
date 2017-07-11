@@ -672,14 +672,22 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         $oUtilsDate = $this->_oFcpoHelper->fcpoGetUtilsDate();
 
         //V #M525 orderdate must be the same as it was
-        if (!$this->oxorder__oxorderdate->value) {
+        if (!$this->oxorder__oxorderdate || !$this->oxorder__oxorderdate->value) {
             $this->oxorder__oxorderdate = new oxField(date('Y-m-d H:i:s', $oUtilsDate->getTime()), oxField::T_RAW);
         } else {
-            $this->oxorder__oxorderdate = new oxField($oUtilsDate->formatDBDate($this->oxorder__oxorderdate->value, true));
+            $this->oxorder__oxorderdate = new oxField(
+                $this->oxorder__oxorderdate ? $this->oxorder__oxorderdate->value : null,
+                true
+            );
         }
 
         $this->oxorder__oxshopid = new oxField($oConfig->getShopId(), oxField::T_RAW);
-        $this->oxorder__oxsenddate = new oxField($oUtilsDate->formatDBDate($this->oxorder__oxsenddate->value, true));
+        $this->oxorder__oxsenddate = new oxField(
+            $oUtilsDate->formatDBDate(
+                $this->oxorder__oxsenddate ? $this->oxorder__oxsenddate->value : null,
+                true
+            )
+        );
 
         if (( $blInsert = parent::_insert())) {
             // setting order number

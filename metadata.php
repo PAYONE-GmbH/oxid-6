@@ -201,6 +201,21 @@ $aModule = array(
             'file' => 'fcpo_admin_payment_list_filter',
         ),
         array(
+            'template' => 'payment_list.tpl',
+            'block' => 'admin_payment_list_colgroup',
+            'file' => 'fcpo_admin_payment_list_colgroup',
+        ),
+        array(
+            'template' => 'payment_list.tpl',
+            'block' => 'admin_payment_list_sorting',
+            'file' => 'fcpo_admin_payment_list_sorting',
+        ),
+        array(
+            'template' => 'payment_list.tpl',
+            'block' => 'admin_payment_list_item',
+            'file' => 'fcpo_admin_payment_list_item',
+        ),
+        array(
             'template' => 'payment_main.tpl',
             'block' => 'admin_payment_main_form',
             'file' => 'fcpo_admin_payment_main_form',

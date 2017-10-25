@@ -114,7 +114,7 @@ class fcPayOneTransactionStatusHandler extends oxBase
     {
         $aParams = array();
         foreach ($this->_getShopList() as $sShop) {
-            $mValue = $this->getConfig()->getShopConfVar($sParam, $sShop);
+            $mValue = $this->getConfig()->getShopConfVar($sParam, $sShop, 'fcpayone');
             if($mValue) {
                 $aParams[$sShop] = $mValue;
             }

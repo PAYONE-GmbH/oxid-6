@@ -1197,6 +1197,8 @@ class fcPayOneOrder extends fcPayOneOrder_parent
             $this->_fcpoCheckReduceBefore();
         }
 
+        oxDb::getDb()->commitTransaction();
+
         if ($blReturnRedirectUrl === true) {
             return $aResponse['redirecturl'];
         } else {

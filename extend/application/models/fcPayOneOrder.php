@@ -365,6 +365,12 @@ class fcPayOneOrder extends fcPayOneOrder_parent
                 return $mRet;
             }
 
+            if (!$this->oxorder__oxordernr->value) {
+                $this->_setNumber();
+            } else {
+                oxNew(\OxidEsales\Eshop\Core\Counter::class)->update($this->_getCounterIdent(), $this->oxorder__oxordernr->value);
+            }
+
             //saving all order data to DB
             $this->save();
 

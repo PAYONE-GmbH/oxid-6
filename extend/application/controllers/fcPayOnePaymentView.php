@@ -1867,6 +1867,24 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     }
 
     /**
+     * Returns value depending on payment or false if this hasn't been set
+     *
+     * @param string $aRequestedValues
+     * @param string $sPaymentId
+     * @return mixed string/boolean
+     */
+    protected function _fcpoGetRequestedValue($aRequestedValues, $sPaymentId, $sDbFieldName) {
+        $sFieldNameAddition = str_replace("fcpopo_", "", $sPaymentId);
+
+        $mReturn = false;
+        if (isset($aRequestedValues['fcpo_payolution_' . $sFieldNameAddition . '_'.$sDbFieldName])) {
+            $mReturn = $aRequestedValues['fcpo_payolution_' . $sFieldNameAddition . '_'.$sDbFieldName];
+        }
+
+        return $mReturn;
+    }
+
+    /**
      * Method saves birthday data if needed and returns if it has saved data or not
      *
      * @param $aRequestedValues

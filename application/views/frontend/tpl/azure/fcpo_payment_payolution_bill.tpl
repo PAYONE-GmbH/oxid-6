@@ -23,11 +23,11 @@
         <link href="[{$oViewConf->fcpoGetModuleCssPath('lightview.css')}]" rel="stylesheet">
         <script src="[{$oViewConf->fcpoGetModuleJsPath('jquery-1.10.1.min.js')}]"></script>
         <script src="[{$oViewConf->fcpoGetModuleJsPath()}]lightview/lightview.js"></script>
-        <ul class="form">
+        <ul class="form fcpo_payolution_bill_form">
             [{if $oView->fcpoShowB2B()}]
                 <li>
                     <label>[{oxmultilang ident="FCPO_PAYOLUTION_USTID"}]</label>
-                    <input type="text" size="20" maxlength="64" name="dynvalue[fcpo_payolution_bill_oxustid]" value="[{$oView->fcpoGetUserValue('oxustid')}]">
+                    <input placeholder="[{oxmultilang ident="FCPO_PAYOLUTION_USTID"}]" type="text" size="20" maxlength="64" name="dynvalue[fcpo_payolution_bill_oxustid]" value="[{$oView->fcpoGetUserValue('oxustid')}]">
                 </li>
             [{elseif $oView->fcpoShowB2C()}]
                 <li>
@@ -54,7 +54,7 @@
             [{if $oView->fcpoPayolutionBillTelephoneRequired()}]
                 <li>
                     <label>[{oxmultilang ident="FCPO_PAYOLUTION_PHONE"}]</label>
-                    <input type="text" size="20" maxlength="64" name="dynvalue[fcpo_payolution_bill_oxfon]" value="[{$oView->fcpoGetUserValue('oxfon')}]">
+                    <input placeholder="[{oxmultilang ident="FCPO_PAYOLUTION_PHONE"}]" type="text" size="20" maxlength="64" name="dynvalue[fcpo_payolution_bill_oxfon]" value="[{$oView->fcpoGetUserValue('oxfon')}]">
                 </li>
             [{/if}]
             <li>

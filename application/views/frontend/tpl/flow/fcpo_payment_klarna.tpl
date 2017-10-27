@@ -37,10 +37,10 @@
                     [{assign var="blKlv" value=false}]
                 [{/if}]
                 [{if $oView->fcpoKlarnaIsTelephoneNumberNeeded()}]
-                    <div class="form-group">
+                    <div class="form-group fcpo_klv_fon">
                         <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_KLV_TELEPHONENUMBER"}]</label>
                         <div class="col-lg-9">
-                            <input class="form-control" autocomplete="off" type="text" size="20" maxlength="64" [{if $blKlv}]name="dynvalue[fcpo_klv_fon]" value="[{$dynvalue.fcpo_klv_fon}]"[{else}]name="dynvalue[fcpo_kls_fon]" value="[{$dynvalue.fcpo_kls_fon}]"[{/if}]>
+                            <input placeholder="[{oxmultilang ident="FCPO_KLV_TELEPHONENUMBER"}]" class="form-control" autocomplete="off" type="text" size="20" maxlength="64" [{if $blKlv}]name="dynvalue[fcpo_klv_fon]" value="[{$dynvalue.fcpo_klv_fon}]"[{else}]name="dynvalue[fcpo_kls_fon]" value="[{$dynvalue.fcpo_kls_fon}]"[{/if}]>
                             <div [{if $blKlv}]id="fcpo_klv_fon_invalid"[{else}]id="fcpo_kls_fon_invalid"[{/if}] class="fcpo_check_error">
                                 <span class="help-block">
                                     <ul role="alert" class="list-unstyled text-danger">
@@ -52,7 +52,7 @@
                     </div>
                 [{/if}]
                 [{if $oView->fcpoKlarnaIsBirthdayNeeded()}]
-                    <div class="form-group">
+                    <div class="form-group fcpo_klv_birthday">
                         <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_KLV_BIRTHDAY"}]</label>
                         <div class="col-lg-3">
                             <input class="form-control" placeholder="DD" autocomplete="off" type="text" size="3" maxlength="2"[{if $blKlv}]name="dynvalue[fcpo_klv_birthday][day]" value="[{$dynvalue.fcpo_klv_birthday.day}]"[{else}]name="dynvalue[fcpo_kls_birthday][day]" value="[{$dynvalue.fcpo_kls_birthday.day}]"[{/if}] >
@@ -75,10 +75,10 @@
                     </div>
                 [{/if}]
                 [{if $oView->fcpoKlarnaIsAddressAdditionNeeded()}]
-                    <div class="form-group">
+                    <div class="form-group fcpo_klv_addinfo">
                         <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_KLV_ADDINFO"}]</label>
                         <div class="col-lg-9">
-                            <input class="form-control" autocomplete="off" type="text" size="20" maxlength="64" [{if $blKlv}]name="dynvalue[fcpo_klv_addinfo]" value="[{$dynvalue.fcpo_klv_addinfo}]"[{else}]name="dynvalue[fcpo_kls_addinfo]" value="[{$dynvalue.fcpo_kls_addinfo}]"[{/if}]>
+                            <input placeholder="[{oxmultilang ident="FCPO_KLV_ADDINFO"}]" class="form-control" autocomplete="off" type="text" size="20" maxlength="64" [{if $blKlv}]name="dynvalue[fcpo_klv_addinfo]" value="[{$dynvalue.fcpo_klv_addinfo}]"[{else}]name="dynvalue[fcpo_kls_addinfo]" value="[{$dynvalue.fcpo_kls_addinfo}]"[{/if}]>
                             <div [{if $blKlv}]id="fcpo_klv_addinfo_invalid"[{else}]id="fcpo_kls_addinfo_invalid"[{/if}] class="fcpo_check_error">
                                 <span class="help-block">
                                     <ul role="alert" class="list-unstyled text-danger">
@@ -90,10 +90,10 @@
                     </div>
                 [{/if}]
                 [{if $oView->fcpoKlarnaIsDelAddressAdditionNeeded()}]
-                    <div class="form-group">
+                    <div class="form-group fcpo_klv_del_addinfo">
                         <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_KLV_ADDINFO_DEL"}]</label>
                         <div class="col-lg-9">
-                            <input class="form-control" autocomplete="off" type="text" size="20" maxlength="64" [{if $blKlv}]name="dynvalue[fcpo_klv_del_addinfo]" value="[{$dynvalue.fcpo_klv_del_addinfo}]"[{else}]name="dynvalue[fcpo_kls_del_addinfo]" value="[{$dynvalue.fcpo_kls_del_addinfo}]"[{/if}]>
+                            <input placeholder="[{oxmultilang ident="FCPO_KLV_ADDINFO_DEL"}]" class="form-control" autocomplete="off" type="text" size="20" maxlength="64" [{if $blKlv}]name="dynvalue[fcpo_klv_del_addinfo]" value="[{$dynvalue.fcpo_klv_del_addinfo}]"[{else}]name="dynvalue[fcpo_kls_del_addinfo]" value="[{$dynvalue.fcpo_kls_del_addinfo}]"[{/if}]>
                             <div [{if $blKlv}]id="fcpo_klv_del_addinfo_invalid"[{else}]id="fcpo_kls_del_addinfo_invalid"[{/if}] class="fcpo_check_error">
                                 <span class="help-block">
                                     <ul role="alert" class="list-unstyled text-danger">
@@ -117,10 +117,10 @@
                     </div>
                 [{/if}]
                 [{if $oView->fcpoKlarnaIsPersonalIdNeeded()}]
-                    <div class="form-group">
+                    <div class="form-group fcpo_klv_personalid">
                         <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_KLV_PERSONALID"}]</label>
                         <div class="col-lg-9">
-                            <input class="form-control" autocomplete="off" type="text" size="20" maxlength="64" [{if $blKlv}]name="dynvalue[fcpo_klv_personalid]" value="[{$dynvalue.fcpo_klv_personalid}]"[{else}]name="dynvalue[fcpo_kls_personalid]" value="[{$dynvalue.fcpo_kls_personalid}]"[{/if}]>
+                            <input placeholder="[{oxmultilang ident="FCPO_KLV_PERSONALID"}]" class="form-control" autocomplete="off" type="text" size="20" maxlength="64" [{if $blKlv}]name="dynvalue[fcpo_klv_personalid]" value="[{$dynvalue.fcpo_klv_personalid}]"[{else}]name="dynvalue[fcpo_kls_personalid]" value="[{$dynvalue.fcpo_kls_personalid}]"[{/if}]>
                             <div [{if $blKlv}]id="fcpo_klv_personalid_invalid"[{else}]id="fcpo_kls_personalid_invalid"[{/if}] class="fcpo_check_error">
                                 <span class="help-block">
                                     <ul role="alert" class="list-unstyled text-danger">
@@ -131,7 +131,7 @@
                         </div>
                     </div>
                 [{/if}]
-                <div class="form-group">
+                <div class="form-group fcpo_confirm">
                     <div class="col-lg-1 col-lg-offset-2">
                         [{if $blKlv}]
                             <input type="hidden" name="dynvalue[fcpo_klv_confirm]" value="false">
@@ -156,7 +156,7 @@
                     </div>
                 </div>
             [{else}]
-                <div class="form-group">
+                <div class="form-group fcpo_klarna_no_campaign">
                     <div class="col-lg-9">
                         [{oxmultilang ident="FCPO_KLS_NO_CAMPAIGN"}]
                         <input type="hidden" name="fcpo_klarna_no_campaign" value="true">

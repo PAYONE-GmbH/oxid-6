@@ -24,12 +24,12 @@
             <link href="[{$oViewConf->fcpoGetModuleCssPath('lightview.css')}]" rel="stylesheet">
             <script src="[{$oViewConf->fcpoGetModuleJsPath('jquery-1.10.1.min.js')}]"></script>
             <script src="[{$oViewConf->fcpoGetModuleJsPath()}]lightview/lightview.js"></script>
-            <ul class="form">
+            <ul class="form fcporp_bill_form">
                 <input type="hidden" name="dynvalue[fcporp_bill_profileid]" value="[{$oView->fcpoGetRatePayMatchedProfile('fcporp_bill')}]">
                 [{if $oView->fcpoRatePayShowUstid()}]
                     <li>
                         <label>[{oxmultilang ident="FCPO_RATEPAY_USTID"}]</label>
-                        <input type='text' name="dynvalue[fcporp_bill_ustid]" value="[{$oView->fcpoGetUserValue('oxustid')}]">
+                        <input placeholder="[{oxmultilang ident="FCPO_RATEPAY_USTID"}]" type='text' name="dynvalue[fcporp_bill_ustid]" value="[{$oView->fcpoGetUserValue('oxustid')}]">
                     </li>
                 [{/if}]
                 [{if $oView->fcpoRatePayShowBirthdate()}]
@@ -57,7 +57,7 @@
                 [{if $oView->fcpoRatePayShowFon()}]
                     <li>
                         <label>[{oxmultilang ident="FCPO_RATEPAY_FON"}]</label>
-                        <input type='text' name="dynvalue[fcporp_bill_fon]" value="[{$oView->fcpoGetUserValue('oxfon')}]">
+                        <input placeholder="[{oxmultilang ident="FCPO_RATEPAY_FON"}]" type='text' name="dynvalue[fcporp_bill_fon]" value="[{$oView->fcpoGetUserValue('oxfon')}]">
                     </li>
                 [{/if}]
             </ul>

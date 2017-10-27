@@ -20,7 +20,7 @@
     </dt>
     <dd class="[{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]activePayment[{/if}]">
         <input type="hidden" name="fcpo_mode_[{$sPaymentID}]" value="[{$paymentmethod->fcpoGetOperationMode()}]">
-        <ul class="form">
+        <ul class="form fcpo_elv_form">
             <li id="fcpo_elv_error">
                 <div class="oxValidateError" style="display: block;padding: 0;">
                     [{oxmultilang ident="FCPO_ERROR"}]<div id="fcpo_elv_error_content"></div>
@@ -43,7 +43,7 @@
             </li>
             <li>
                 <label>[{oxmultilang ident="FCPO_BANK_IBAN"}]</label>
-                <input autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_elv_iban]" value="[{$dynvalue.fcpo_elv_iban}]" onkeyup="fcHandleDebitInputs('[{$oView->fcpoGetBICMandatory()}]]');return false;">
+                <input placeholder="[{oxmultilang ident="FCPO_BANK_IBAN"}]" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_elv_iban]" value="[{$dynvalue.fcpo_elv_iban}]" onkeyup="fcHandleDebitInputs('[{$oView->fcpoGetBICMandatory()}]]');return false;">
                 <div id="fcpo_elv_iban_invalid" class="fcpo_check_error">
                     <p class="oxValidateError" style="display: block;">
                         [{oxmultilang ident="FCPO_IBAN_INVALID"}]
@@ -53,7 +53,7 @@
             [{if $oView->getConfigParam('blFCPODebitBICMandatory')}]
                 <li>
                     <label>[{oxmultilang ident="FCPO_BANK_BIC"}]</label>
-                    <input autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_elv_bic]" value="[{$dynvalue.fcpo_elv_bic}]" onkeyup="fcHandleDebitInputs('[{$oView->fcpoGetBICMandatory()}]]');return false;">
+                    <input placeholder="[{oxmultilang ident="FCPO_BANK_BIC"}]" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_elv_bic]" value="[{$dynvalue.fcpo_elv_bic}]" onkeyup="fcHandleDebitInputs('[{$oView->fcpoGetBICMandatory()}]]');return false;">
                     <div id="fcpo_elv_bic_invalid" class="fcpo_check_error">
                         <p class="oxValidateError" style="display: block;">
                             [{oxmultilang ident="FCPO_BIC_INVALID"}]
@@ -65,7 +65,7 @@
                 <li id="fcpo_elv_ktonr" style="display: none;">
                     <div style="margin-top: 20px;margin-bottom:10px;">[{oxmultilang ident="FCPO_BANK_GER_OLD"}]</div>
                     <label>[{oxmultilang ident="FCPO_BANK_ACCOUNT_NUMBER"}]</label>
-                    <input autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_elv_ktonr]" value="[{$dynvalue.fcpo_elv_ktonr}]" onkeyup="fcHandleDebitInputs('[{$oView->fcpoGetBICMandatory()}]]');return false;">
+                    <input placeholder="[{oxmultilang ident="FCPO_BANK_GER_OLD"}]" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_elv_ktonr]" value="[{$dynvalue.fcpo_elv_ktonr}]" onkeyup="fcHandleDebitInputs('[{$oView->fcpoGetBICMandatory()}]]');return false;">
                     <div id="fcpo_elv_ktonr_invalid" class="fcpo_check_error">
                         <p class="oxValidateError" style="display: block;">
                             [{oxmultilang ident="FCPO_KTONR_INVALID"}]
@@ -74,7 +74,7 @@
                 </li>
                 <li id="fcpo_elv_blz" style="display: none;">
                     <label>[{oxmultilang ident="FCPO_BANK_CODE"}]</label>
-                    <input autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_elv_blz]" value="[{$dynvalue.fcpo_elv_blz}]" onkeyup="fcHandleDebitInputs('[{$oView->fcpoGetBICMandatory()}]]');return false;">
+                    <input placeholder="[{oxmultilang ident="FCPO_BANK_CODE"}]" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_elv_blz]" value="[{$dynvalue.fcpo_elv_blz}]" onkeyup="fcHandleDebitInputs('[{$oView->fcpoGetBICMandatory()}]]');return false;">
                     <div id="fcpo_elv_blz_invalid" class="fcpo_check_error">
                         <p class="oxValidateError" style="display: block;">
                             [{oxmultilang ident="FCPO_BLZ_INVALID"}]

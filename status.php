@@ -37,7 +37,6 @@ if(isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
 }
 
 $sRemoteIp = isset($sClientIp) ? $sClientIp : $_SERVER['REMOTE_ADDR'];
-
 if(array_search($sRemoteIp, $aWhitelist) === false) {
     $blMatch = false;
     foreach ($aWhitelist as $sIP) {
@@ -81,13 +80,11 @@ class fcPayOneTransactionStatusHandler extends oxBase
         if (!$mValue) {
             $mValue = filter_input(INPUT_POST, $sKey);
         }
-    
         if ($mValue ) {
             if($this->getConfig()->isUtf() ) {
                 $mValue = utf8_encode($mValue);
             }
-            
-            $sReturn = mysql_real_escape_string($mValue);
+            $sReturn = $mValue;
         }
         
         return $sReturn;
@@ -112,13 +109,15 @@ class fcPayOneTransactionStatusHandler extends oxBase
     
     protected function _getConfigParams($sParam) 
     {
+        $aShops = $this->_getShopList();
         $aParams = array();
-        foreach ($this->_getShopList() as $sShop) {
-            $mValue = $this->getConfig()->getShopConfVar($sParam, $sShop, 'fcpayone');
+        foreach ($aShops as $sShop) {
+            $mValue = $this->getConfig()->getShopConfVar($sParam, $sShop);
             if($mValue) {
                 $aParams[$sShop] = $mValue;
             }
         }
+
         return $aParams;
     }
     
@@ -128,7 +127,8 @@ class fcPayOneTransactionStatusHandler extends oxBase
         if($sKey) {
             $aKeys = $this->_getConfigParams('sFCPOPortalKey');
             foreach ($aKeys as $i => $sConfigKey) {
-                if(md5($sConfigKey) == $sKey) {
+                $sConfigKey = md5($sConfigKey);
+                if($sConfigKey == $sKey) {
                     return true;
                 }
             }

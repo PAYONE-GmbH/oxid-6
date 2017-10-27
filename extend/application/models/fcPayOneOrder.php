@@ -336,7 +336,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
             return parent::finalizeOrder($oBasket, $oUser, $blRecalculatingOrder);
         }
 
-        oxDb::getDb()->startTransaction();
+        \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->startTransaction();
         try {
             $blSaveAfterRedirect = $this->_isRedirectAfterSave();
 
@@ -363,12 +363,6 @@ class fcPayOneOrder extends fcPayOneOrder_parent
             $mRet = $this->_fcpoExecutePayment($blSaveAfterRedirect, $oBasket, $oUserPayment, $blRecalculatingOrder);
             if ($mRet !== null) {
                 return $mRet;
-            }
-
-            if (!$this->oxorder__oxordernr->value) {
-                $this->_setNumber();
-            } else {
-                oxNew(\OxidEsales\Eshop\Core\Counter::class)->update($this->_getCounterIdent(), $this->oxorder__oxordernr->value);
             }
 
             //saving all order data to DB
@@ -400,6 +394,11 @@ class fcPayOneOrder extends fcPayOneOrder_parent
             // skipping this action in case of order recalculation
             $this->_fcpoMarkVouchers($blRecalculatingOrder, $oUser, $oBasket);
 
+            if (!$this->oxorder__oxordernr->value) {
+                $this->_setNumber();
+            } else {
+                oxNew(\OxidEsales\Eshop\Core\Counter::class)->update($this->_getCounterIdent(), $this->oxorder__oxordernr->value);
+            }
 
             $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoordernotchecked');
             $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoWorkorderId');
@@ -407,9 +406,9 @@ class fcPayOneOrder extends fcPayOneOrder_parent
             // send order by email to shop owner and current user
             // skipping this action in case of order recalculation
             $iRet = $this->_fcpoFinishOrder($blRecalculatingOrder, $oUser, $oBasket, $oUserPayment);
-            oxDb::getDb()->commitTransaction();
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->commitTransaction();
         } catch (Exception $exception) {
-            oxDb::getDb()->rollbackTransaction();
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->rollbackTransaction();
 
             throw $exception;
         }

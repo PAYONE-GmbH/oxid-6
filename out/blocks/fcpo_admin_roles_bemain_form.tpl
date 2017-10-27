@@ -185,41 +185,6 @@
     </tr>
   [{/if}]
   [{* service area *}]
-
-  [{* efire area *}]
-
-  [{if $oView->isEfire()}]
-      [{if isset( $aDynRights.dyn_efire ) && $aDynRights.dyn_efire || !isset( $aDynRights.dyn_efire )}]
-        [{if isset( $aRights.dyn_efire )}]
-          [{assign var="iParentIdx" value=$aRights.dyn_efire}]
-        [{else}]
-          [{assign var="iParentIdx" value=2}]
-        [{/if}]
-        [{if isset( $aDynRights.dyn_efire ) && $aDynRights.dyn_efire < $iParentIdx}]
-          [{assign var="iParentIdx" value=$aDynRights.dyn_efire}]
-        [{/if}]
-
-        <tr id="dyn_efire">
-          <td>
-          </td>
-          <td class="title">
-            [{oxmultilang ident='dyn_efire' noerror=true}]
-          </td>
-          <td>
-            <input [{$readonly}] type="radio" [{if isset( $aDynRights.dyn_efire ) && $aDynRights.dyn_efire < 2}]disabled[{/if}] name="aFields[dyn_efire]" value="2" [{if $iParentIdx == 2}]checked[{/if}]>
-          </td>
-          <td>
-            <input [{$readonly}] type="radio" [{if isset( $aDynRights.dyn_efire ) && $aDynRights.dyn_efire < 1}]disabled[{/if}] name="aFields[dyn_efire]" value="1" [{if $iParentIdx == 1}]checked[{/if}]>
-          </td>
-          <td>
-            <input [{$readonly}] type="radio" name="aFields[dyn_efire]" value="0" [{if !$iParentIdx}]checked[{/if}]>
-          </td>
-          <td>
-          </td>
-        </tr>
-      [{/if}]
-  [{/if}]
-  [{* efire area *}]
   <!-- FCPAYONE BEGIN -->
   [{* PAYONE area *}]
       [{if isset( $aDynRights.fcpo_admin_title ) && $aDynRights.fcpo_admin_title || !isset( $aDynRights.fcpo_admin_title )}]

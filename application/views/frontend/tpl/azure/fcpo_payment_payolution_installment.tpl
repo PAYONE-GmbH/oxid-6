@@ -96,7 +96,7 @@
                                 </tr>
                             </table>
                         </div>
-                        <ul class="form">
+                        <ul class="form fcpo_payolution_installment_form">
                             <li id="fcpo_elv_error">
                                 <div class="oxValidateError" style="display: block;padding: 0;">
                                     [{oxmultilang ident="FCPO_ERROR"}]<div id="fcpo_elv_error_content"></div>
@@ -104,11 +104,11 @@
                             </li>
                             <li>
                                 <label>[{oxmultilang ident="FCPO_PAYOLUTION_ACCOUNTHOLDER"}]</label>
-                                <input autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_payolution_installment_accountholder]" value="[{$dynvalue.fcpo_payolution_installment_accountholder}]" onkeyup="fcHandleDebitInputs();return false;">
+                                <input placeholder="[{oxmultilang ident="FCPO_PAYOLUTION_ACCOUNTHOLDER"}]" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_payolution_installment_accountholder]" value="[{$dynvalue.fcpo_payolution_installment_accountholder}]" onkeyup="fcHandleDebitInputs();return false;">
                             </li>
                             <li>
                                 <label>[{oxmultilang ident="FCPO_BANK_IBAN"}]</label>
-                                <input autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_payolution_installment_iban]" value="[{$dynvalue.fcpo_payolution_installment_iban}]" onkeyup="fcHandleDebitInputs();return false;">
+                                <input placeholder="[{oxmultilang ident="FCPO_BANK_IBAN"}]" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_payolution_installment_iban]" value="[{$dynvalue.fcpo_payolution_installment_iban}]" onkeyup="fcHandleDebitInputs();return false;">
                                 <div id="fcpo_payolution_iban_invalid" class="fcpo_check_error">
                                     <p class="oxValidateError" style="display: block;">
                                         [{oxmultilang ident="FCPO_IBAN_INVALID"}]
@@ -117,7 +117,7 @@
                             </li>
                             <li>
                                 <label>[{oxmultilang ident="FCPO_BANK_BIC"}]</label>
-                                <input autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_payolution_installment_bic]" value="[{$dynvalue.fcpo_payolution_installment_bic}]" onkeyup="fcHandleDebitInputs();return false;">
+                                <input placeholder="[{oxmultilang ident="FCPO_BANK_BIC"}]" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_payolution_installment_bic]" value="[{$dynvalue.fcpo_payolution_installment_bic}]" onkeyup="fcHandleDebitInputs();return false;">
                                 <div id="fcpo_payolution_bic_invalid" class="fcpo_check_error">
                                     <p class="oxValidateError" style="display: block;">
                                         [{oxmultilang ident="FCPO_BIC_INVALID"}]

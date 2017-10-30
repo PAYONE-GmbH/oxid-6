@@ -27,7 +27,7 @@
                     <input type="hidden" name="[{$oFcPoCCPaymentMetaData->sOperationModeName}]" value="[{$oFcPoCCPaymentMetaData->sOperationModeValue}]">
                 [{/foreach}]
                 <input type="hidden" name="fcpo_mode_[{$sPaymentID}]" value="[{$paymentmethod->fcpoGetOperationMode()}]">
-                <div class="form-group" id="fcpo_cc_error">
+                <div class="form-group fcpo_entry_error" id="fcpo_cc_error">
                     <div class="col-lg-9">
                         <span class="help-block">
                             <ul role="alert" class="list-unstyled text-danger">
@@ -36,7 +36,7 @@
                         </span>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group fcpo_kktype">
                     <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_CREDITCARD"}]</label>
                     <div class="col-lg-9">
                         <select name="dynvalue[fcpo_kktype]" [{if $oView->getMaestroUK()}]onchange="fcCheckType(this); return false;"[{/if}] class="form-control selectpicker" required="required">
@@ -47,10 +47,10 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group fcpo_kknumber">
                     <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_NUMBER"}]</label>
                     <div class="col-lg-9">
-                        <input autocomplete="off" type="text" class="form-control js-oxValidate js-oxValidate_notEmpty payment_text" size="20" maxlength="64" name="dynvalue[fcpo_kknumber]" value="[{$dynvalue.fcpo_kknumber}]" required="required">
+                        <input placeholder="[{oxmultilang ident="FCPO_NUMBER"}]" autocomplete="off" type="text" class="form-control js-oxValidate js-oxValidate_notEmpty payment_text" size="20" maxlength="64" name="dynvalue[fcpo_kknumber]" value="[{$dynvalue.fcpo_kknumber}]" required="required">
                         <div id="fcpo_cc_number_invalid" class="fcpo_check_error">
                             <span class="help-block">
                                 <ul role="alert" class="list-unstyled text-danger">
@@ -61,15 +61,15 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group fcpo_kkname">
                     <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_ACCOUNT_HOLDER_2"}]</label>
                     <div class="col-lg-9">
-                        <input autocomplete="off" type="text" class="form-control js-oxValidate js-oxValidate_notEmpty" size="20" maxlength="64" name="dynvalue[fcpo_kkname]" value="[{if $dynvalue.fcpo_kkname}][{$dynvalue.fcpo_kkname}][{else}][{$oxcmp_user->oxuser__oxfname->value}] [{$oxcmp_user->oxuser__oxlname->value}][{/if}]" required="required">
+                        <input placeholder="[{oxmultilang ident="FCPO_BANK_ACCOUNT_HOLDER_2"}]" autocomplete="off" type="text" class="form-control js-oxValidate js-oxValidate_notEmpty" size="20" maxlength="64" name="dynvalue[fcpo_kkname]" value="[{if $dynvalue.fcpo_kkname}][{$dynvalue.fcpo_kkname}][{else}][{$oxcmp_user->oxuser__oxfname->value}] [{$oxcmp_user->oxuser__oxlname->value}][{/if}]" required="required">
                         <span class="help-block">[{oxmultilang ident="FCPO_IF_DEFERENT_FROM_BILLING_ADDRESS"}]</span>
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group fcpo_kkexpire">
                     <label class="req control-label col-xs-12 col-lg-3">[{oxmultilang ident="FCPO_VALID_UNTIL"}]</label>
                     <div class="col-xs-6 col-lg-2">
                         <select name="dynvalue[fcpo_kkmonth]" class="form-control selectpicker" required="required">
@@ -105,10 +105,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group fcpo_kkpruef">
                     <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_CARD_SECURITY_CODE"}]</label>
                     <div class="col-lg-9">
-                        <input autocomplete="off" type="text" class="form-control js-oxValidate js-oxValidate_notEmpty payment_text" size="20" maxlength="64" name="dynvalue[fcpo_kkpruef]" value="[{$dynvalue.fcpo_kkpruef}]" required="required">
+                        <input placeholder="[{oxmultilang ident="FCPO_CARD_SECURITY_CODE"}]" autocomplete="off" type="text" class="form-control js-oxValidate js-oxValidate_notEmpty payment_text" size="20" maxlength="64" name="dynvalue[fcpo_kkpruef]" value="[{$dynvalue.fcpo_kkpruef}]" required="required">
                         <div id="fcpo_cc_cvc2_invalid" class="fcpo_check_error">
                             <span class="help-block">
                                 <ul role="alert" class="list-unstyled text-danger">
@@ -123,7 +123,7 @@
                     <div class="form-group" id="fcpo_kkcsn_row" style="display: none;">
                         <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_CARDSEQUENCENUMBER"}]</label>
                         <div class="col-lg-9">
-                            <input autocomplete="off" type="text" class="payment_text" size="20" maxlength="64" name="dynvalue[fcpo_kkcsn]" value="[{$dynvalue.fcpo_kkcsn}]">
+                            <input placeholder="[{oxmultilang ident="FCPO_CARDSEQUENCENUMBER"}]" autocomplete="off" type="text" class="payment_text" size="20" maxlength="64" name="dynvalue[fcpo_kkcsn]" value="[{$dynvalue.fcpo_kkcsn}]">
                         </div>
                     </div>
                 [{/if}]

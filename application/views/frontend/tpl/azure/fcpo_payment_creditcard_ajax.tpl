@@ -27,7 +27,7 @@
             [{/foreach}]
             <input type="hidden" name="fcpo_mode_[{$sPaymentID}]" value="[{$paymentmethod->fcpoGetOperationMode()}]">
 
-            <ul class="form">
+            <ul class="form fcpo_kk_form">
                 <li id="fcpo_cc_error">
                     <div class="oxValidateError" style="display: block;padding: 0;">
                         [{oxmultilang ident="FCPO_ERROR"}]<div id="fcpo_cc_error_content"></div>
@@ -43,7 +43,7 @@
                 </li>
                 <li>
                     <label>[{oxmultilang ident="FCPO_NUMBER"}]</label>
-                    <input autocomplete="off" type="text" class="payment_text" size="20" maxlength="64" name="dynvalue[fcpo_kknumber]" value="[{$dynvalue.fcpo_kknumber}]">
+                    <input placeholder="[{oxmultilang ident="FCPO_NUMBER"}]" autocomplete="off" type="text" class="payment_text" size="20" maxlength="64" name="dynvalue[fcpo_kknumber]" value="[{$dynvalue.fcpo_kknumber}]">
                     <div id="fcpo_cc_number_invalid" class="fcpo_check_error">
                         <p class="oxValidateError" style="display: block;">
                             [{oxmultilang ident="FCPO_CC_NUMBER_INVALID"}]
@@ -52,7 +52,7 @@
                 </li>
                 <li>
                     <label>[{oxmultilang ident="FCPO_BANK_ACCOUNT_HOLDER_2"}]</label>
-                    <input autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_kkname]" value="[{if $dynvalue.fcpo_kkname}][{$dynvalue.fcpo_kkname}][{else}][{$oxcmp_user->oxuser__oxfname->value}] [{$oxcmp_user->oxuser__oxlname->value}][{/if}]">
+                    <input placeholder="[{oxmultilang ident="FCPO_BANK_ACCOUNT_HOLDER_2"}]" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_kkname]" value="[{if $dynvalue.fcpo_kkname}][{$dynvalue.fcpo_kkname}][{else}][{$oxcmp_user->oxuser__oxfname->value}] [{$oxcmp_user->oxuser__oxlname->value}][{/if}]">
                     <br>
                     <div class="note">[{oxmultilang ident="FCPO_IF_DEFERENT_FROM_BILLING_ADDRESS"}]</div>
                 </li>
@@ -86,7 +86,7 @@
                 </li>
                 <li>
                     <label>[{oxmultilang ident="FCPO_CARD_SECURITY_CODE"}]</label>
-                    <input autocomplete="off" type="text" class="payment_text" size="20" maxlength="64" name="dynvalue[fcpo_kkpruef]" value="[{$dynvalue.fcpo_kkpruef}]">
+                    <input placeholder="[{oxmultilang ident="FCPO_CARD_SECURITY_CODE"}]" autocomplete="off" type="text" class="payment_text" size="20" maxlength="64" name="dynvalue[fcpo_kkpruef]" value="[{$dynvalue.fcpo_kkpruef}]">
                     <div id="fcpo_cc_cvc2_invalid" class="fcpo_check_error">
                         <p class="oxValidateError" style="display: block;">
                             [{oxmultilang ident="FCPO_CC_CVC2_INVALID"}]
@@ -98,7 +98,7 @@
                 [{if $oView->getMaestroUK()}]
                     <li id="fcpo_kkcsn_row" style="display: none;">
                         <label>[{oxmultilang ident="FCPO_CARDSEQUENCENUMBER"}]</label>
-                        <input autocomplete="off" type="text" class="payment_text" size="20" maxlength="64" name="dynvalue[fcpo_kkcsn]" value="[{$dynvalue.fcpo_kkcsn}]">
+                        <input placeholder="[{oxmultilang ident="FCPO_CARDSEQUENCENUMBER"}]" autocomplete="off" type="text" class="payment_text" size="20" maxlength="64" name="dynvalue[fcpo_kkcsn]" value="[{$dynvalue.fcpo_kkcsn}]">
                     </li>
                 [{/if}]
             </ul>

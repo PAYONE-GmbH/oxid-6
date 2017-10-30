@@ -57,11 +57,11 @@
                 </li>
                 <li>
                     <label for="firstname">[{oxmultilang ident="FCPO_FIRSTNAME"}]</label>
-                    <input autocomplete="off" id="firstname" type="text" name="firstname" value="">
+                    <input placeholder="[{oxmultilang ident="FCPO_FIRSTNAME"}]" autocomplete="off" id="firstname" type="text" name="firstname" value="">
                 </li>
                 <li>
                     <label for="lastname">[{oxmultilang ident="FCPO_LASTNAME"}]</label>
-                    <input autocomplete="off" id="lastname" type="text" name="lastname" value="">
+                    <input placeholder="[{oxmultilang ident="FCPO_LASTNAME"}]" autocomplete="off" id="lastname" type="text" name="lastname" value="">
                 </li>
                 <li>
                     <div id="errorOutput"></div>

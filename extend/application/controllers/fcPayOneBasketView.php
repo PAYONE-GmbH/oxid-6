@@ -33,7 +33,7 @@ class fcPayOneBasketView extends fcPayOneBasketView_parent
      *
      * @var string
      */
-    protected $_sPayPalExpressLogoPath = 'modules/fcPayOne/out/img/';
+    protected $_sPayPalExpressLogoPath = 'modules/fc/fcpayone/out/img/';
 
     /**
      * Paypal Express picture

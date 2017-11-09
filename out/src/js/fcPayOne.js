@@ -797,7 +797,7 @@ function fcSetPayoneInputFields(oForm) {
 $('#payolution_installment_check_availability').click(
     function(){
         // trigger loading animation and disable button
-        $('#payolution_installment_calculation_selection').html('<div id="payolution_center_animation"><img src="modules/fcPayOne/out/img/ajax-loader.gif"</div>');
+        $('#payolution_installment_calculation_selection').html('<div id="payolution_center_animation"><img src="modules/fc/fcpayone/out/img/ajax-loader.gif"</div>');
         $('#payolution_installment_check_availability').attr('disabled', true);
         // collect data from form to pass it through to controller
         var formParams = '{';
@@ -833,7 +833,7 @@ $('#payolution_installment_check_availability').click(
     
         $.ajax(
             {
-                url: 'modules/fcPayOne/application/models/fcpayone_ajax.php',
+                url: 'modules/fc/fcpayone/application/models/fcpayone_ajax.php',
                 method: 'POST',
                 type: 'POST',
                 dataType: 'text',

@@ -59,7 +59,7 @@
                     <div class="form-group" id="fcpo_ou_bic">
                         <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_BIC"}]</label>
                         <div class="col-lg-9">
-                            <input placeholder="[{oxmultilang ident="FCPO_BANK_BIC"}]<" class="form-control" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_ou_bic]" value="[{$dynvalue.fcpo_ou_bic}]">
+                            <input placeholder="[{oxmultilang ident="FCPO_BANK_BIC"}]" class="form-control" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_ou_bic]" value="[{$dynvalue.fcpo_ou_bic}]">
                             <div id="fcpo_ou_bic_invalid" class="fcpo_check_error">
                                 <span class="help-block ">
                                     <ul role="alert" class="list-unstyled text-danger">

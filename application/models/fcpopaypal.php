@@ -47,7 +47,7 @@ class fcpopaypal extends oxBase
      *
      * @var string
      */
-    protected $_sPayPalExpressLogoPath = 'modules/fcPayOne/out/img/';
+    protected $_sPayPalExpressLogoPath = 'modules/fc/fcpayone/out/img/';
 
     /**
      * Init needed data

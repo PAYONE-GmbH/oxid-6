@@ -18,13 +18,14 @@
  * @copyright (C) Payone GmbH
  * @version   OXID eShop CE
  */
+
 /*
  * load OXID Framework
  */
 if (!function_exists('getShopBasePath')) {
     function getShopBasePath()
     {
-        return dirname(__FILE__).'/../../../../';
+        return dirname(__FILE__).'/../../../../../';
     }
 }
 
@@ -43,7 +44,6 @@ else {
     include_once getShopBasePath() . 'core/oxfunctions.php';
     include_once getShopBasePath() . 'views/oxubase.php';
 }
-
 
 // receive params
 $sPaymentId = filter_input(INPUT_POST, 'paymentid');

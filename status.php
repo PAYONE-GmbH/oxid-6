@@ -169,10 +169,6 @@ class fcPayOneTransactionStatusHandler extends oxBase
                 '{$iOrderNr}',  '".$this->fcGetPostParam('key')."',   '".$this->fcGetPostParam('txaction')."',  '".$this->fcGetPostParam('portalid')."',  '".$this->fcGetPostParam('aid')."',   '".$this->fcGetPostParam('clearingtype')."',  FROM_UNIXTIME('".$this->fcGetPostParam('txtime')."'), '".$this->fcGetPostParam('currency')."',  '".$this->fcGetPostParam('userid')."',    '".$this->fcGetPostParam('accessname')."',    '".$this->fcGetPostParam('accesscode')."',    '".$this->fcGetPostParam('param')."', '".$this->fcGetPostParam('mode')."',  '".$this->fcGetPostParam('price')."', '".$this->fcGetPostParam('txid')."',  '".$this->fcGetPostParam('reference')."', '".$this->fcGetPostParam('sequencenumber')."',    '".$this->fcGetPostParam('company')."',   '".$this->fcGetPostParam('firstname')."', '".$this->fcGetPostParam('lastname')."',  '".$this->fcGetPostParam('street')."',    '".$this->fcGetPostParam('zip')."',   '".$this->fcGetPostParam('city')."',  '".$this->fcGetPostParam('email')."', '".$this->fcGetPostParam('country')."',   '".$this->fcGetPostParam('shipping_company')."',  '".$this->fcGetPostParam('shipping_firstname')."',    '".$this->fcGetPostParam('shipping_lastname')."', '".$this->fcGetPostParam('shipping_street')."',   '".$this->fcGetPostParam('shipping_zip')."',  '".$this->fcGetPostParam('shipping_city')."', '".$this->fcGetPostParam('shipping_country')."',  '".$this->fcGetPostParam('bankcountry')."',   '".$this->fcGetPostParam('bankaccount')."',   '".$this->fcGetPostParam('bankcode')."',  '".$this->fcGetPostParam('bankaccountholder')."', '".$this->fcGetPostParam('cardexpiredate')."',    '".$this->fcGetPostParam('cardtype')."',  '".$this->fcGetPostParam('cardpan')."',   '".$this->fcGetPostParam('customerid')."',    '".$this->fcGetPostParam('balance')."',   '".$this->fcGetPostParam('receivable')."','".$this->fcGetPostParam('clearing_bankaccountholder')."','".$this->fcGetPostParam('clearing_bankaccount')."',  '".$this->fcGetPostParam('clearing_bankcode')."', '".$this->fcGetPostParam('clearing_bankname')."', '".$this->fcGetPostParam('clearing_bankbic')."',  '".$this->fcGetPostParam('clearing_bankiban')."', '".$this->fcGetPostParam('clearing_legalnote')."','".$this->fcGetPostParam('clearing_duedate')."',  '".$this->fcGetPostParam('clearing_reference')."','".$this->fcGetPostParam('clearing_instructionnote')."'
             )";
         oxDb::getDb()->Execute($sQuery);
-        $error = mysql_error();
-        if($error != '') {
-            error_log($error."\n".$sQuery);
-        }
     }
     
     protected function _addParam($sKey, $mValue) 
@@ -230,9 +226,9 @@ class fcPayOneTransactionStatusHandler extends oxBase
     protected function _handleMapping($oOrder) 
     {
         $sPayoneStatus = $this->fcGetPostParam('txaction');
-        $sPaymentId = mysql_real_escape_string($oOrder->oxorder__oxpaymenttype->value);
+        $sPaymentId = oxDb::getDb()->quote($oOrder->oxorder__oxpaymenttype->value);
         
-        $sQuery = "SELECT fcpo_folder FROM fcpostatusmapping WHERE fcpo_payonestatus = '{$sPayoneStatus}' AND fcpo_paymentid = '{$sPaymentId}' ORDER BY oxid ASC LIMIT 1";
+        $sQuery = "SELECT fcpo_folder FROM fcpostatusmapping WHERE fcpo_payonestatus = '{$sPayoneStatus}' AND fcpo_paymentid = {$sPaymentId} ORDER BY oxid ASC LIMIT 1";
         $sFolder = oxDb::getDb()->GetOne($sQuery);
         if(!empty($sFolder)) {
             $sQuery = "UPDATE oxorder SET oxfolder = '{$sFolder}' WHERE oxid = '{$oOrder->getId()}'";
@@ -277,13 +273,14 @@ class fcPayOneTransactionStatusHandler extends oxBase
      */
     protected function _allowDebit($sTxid) 
     {
+        $blReturn = false;
         $sAuthMode = oxDb::getDb()->GetOne("SELECT fcpoauthmode FROM oxorder WHERE fcpotxid = '".$sTxid."'");
         if ($sAuthMode == 'authorization') {
             $blReturn = true;
         } else {
             $iCount = oxDb::getDb()->GetOne("SELECT COUNT(*) FROM fcpotransactionstatus WHERE fcpo_txid = '{$sTxid}' AND fcpo_txaction = 'capture'");
-            if ($iCount == 0) {
-                $blReturn = false;
+            if ($iCount > 0) {
+                $blReturn = true;
             }
         }
         return $blReturn;

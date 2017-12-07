@@ -1,3 +1,7 @@
+==1.0.5==
+
+* Removed transaction from finalizeOrder
+
 ==1.0.4==
 
 * Initial module release for Oxid 6

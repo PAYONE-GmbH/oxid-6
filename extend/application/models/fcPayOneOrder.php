@@ -336,82 +336,74 @@ class fcPayOneOrder extends fcPayOneOrder_parent
             return parent::finalizeOrder($oBasket, $oUser, $blRecalculatingOrder);
         }
 
-        \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->startTransaction();
-        try {
-            $blSaveAfterRedirect = $this->_isRedirectAfterSave();
+        $blSaveAfterRedirect = $this->_isRedirectAfterSave();
 
-            $mRet = $this->_fcpoEarlyValidation($blSaveAfterRedirect, $oBasket, $oUser, $blRecalculatingOrder);
-            if ($mRet !== null) {
-                return $mRet;
-            }
-
-            // copies user info
-            $this->_setUser($oUser);
-
-            // copies basket info if no basket injection or presave order is inactive
-            $this->_fcpoHandleBasket($blSaveAfterRedirect, $oBasket);
-
-            // payment information
-            $oUserPayment = $this->_setPayment($oBasket->getPaymentId());
-
-            // set folder information, if order is new
-            // #M575 in recalcualting order case folder must be the same as it was
-            if (!$blRecalculatingOrder) {
-                $this->_setFolder();
-            }
-
-            $mRet = $this->_fcpoExecutePayment($blSaveAfterRedirect, $oBasket, $oUserPayment, $blRecalculatingOrder);
-            if ($mRet !== null) {
-                return $mRet;
-            }
-
-            //saving all order data to DB
-            $this->save();
-
-            $this->_fcpoSaveAfterRedirect($blSaveAfterRedirect);
-
-            // deleting remark info only when order is finished
-            $this->_oFcpoHelper->fcpoDeleteSessionVariable('ordrem');
-            $this->_oFcpoHelper->fcpoDeleteSessionVariable('stsprotection');
-
-            //#4005: Order creation time is not updated when order processing is complete
-            if (method_exists($this, '_updateOrderDate') && !$blRecalculatingOrder) {
-                $this->_updateOrderDate();
-            }
-
-            $this->_fcpoSetOrderStatus();
-
-            // store orderid
-            $oBasket->setOrderId($this->getId());
-
-            // updating wish lists
-            $this->_updateWishlist($oBasket->getContents(), $oUser);
-
-            // updating users notice list
-            $this->_updateNoticeList($oBasket->getContents(), $oUser);
-
-            // marking vouchers as used and sets them to $this->_aVoucherList (will be used in order email)
-            // skipping this action in case of order recalculation
-            $this->_fcpoMarkVouchers($blRecalculatingOrder, $oUser, $oBasket);
-
-            if (!$this->oxorder__oxordernr->value) {
-                $this->_setNumber();
-            } else {
-                oxNew(\OxidEsales\Eshop\Core\Counter::class)->update($this->_getCounterIdent(), $this->oxorder__oxordernr->value);
-            }
-
-            $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoordernotchecked');
-            $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoWorkorderId');
-
-            // send order by email to shop owner and current user
-            // skipping this action in case of order recalculation
-            $iRet = $this->_fcpoFinishOrder($blRecalculatingOrder, $oUser, $oBasket, $oUserPayment);
-            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->commitTransaction();
-        } catch (Exception $exception) {
-            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->rollbackTransaction();
-
-            throw $exception;
+        $mRet = $this->_fcpoEarlyValidation($blSaveAfterRedirect, $oBasket, $oUser, $blRecalculatingOrder);
+        if ($mRet !== null) {
+            return $mRet;
         }
+
+        // copies user info
+        $this->_setUser($oUser);
+
+        // copies basket info if no basket injection or presave order is inactive
+        $this->_fcpoHandleBasket($blSaveAfterRedirect, $oBasket);
+
+        // payment information
+        $oUserPayment = $this->_setPayment($oBasket->getPaymentId());
+
+        // set folder information, if order is new
+        // #M575 in recalcualting order case folder must be the same as it was
+        if (!$blRecalculatingOrder) {
+            $this->_setFolder();
+        }
+
+        $mRet = $this->_fcpoExecutePayment($blSaveAfterRedirect, $oBasket, $oUserPayment, $blRecalculatingOrder);
+        if ($mRet !== null) {
+            return $mRet;
+        }
+
+        //saving all order data to DB
+        $this->save();
+
+        $this->_fcpoSaveAfterRedirect($blSaveAfterRedirect);
+
+        // deleting remark info only when order is finished
+        $this->_oFcpoHelper->fcpoDeleteSessionVariable('ordrem');
+        $this->_oFcpoHelper->fcpoDeleteSessionVariable('stsprotection');
+
+        //#4005: Order creation time is not updated when order processing is complete
+        if (method_exists($this, '_updateOrderDate') && !$blRecalculatingOrder) {
+            $this->_updateOrderDate();
+        }
+
+        $this->_fcpoSetOrderStatus();
+
+        // store orderid
+        $oBasket->setOrderId($this->getId());
+
+        // updating wish lists
+        $this->_updateWishlist($oBasket->getContents(), $oUser);
+
+        // updating users notice list
+        $this->_updateNoticeList($oBasket->getContents(), $oUser);
+
+        // marking vouchers as used and sets them to $this->_aVoucherList (will be used in order email)
+        // skipping this action in case of order recalculation
+        $this->_fcpoMarkVouchers($blRecalculatingOrder, $oUser, $oBasket);
+
+        if (!$this->oxorder__oxordernr->value) {
+            $this->_setNumber();
+        } else {
+            oxNew(\OxidEsales\Eshop\Core\Counter::class)->update($this->_getCounterIdent(), $this->oxorder__oxordernr->value);
+        }
+
+        $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoordernotchecked');
+        $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoWorkorderId');
+
+        // send order by email to shop owner and current user
+        // skipping this action in case of order recalculation
+        $iRet = $this->_fcpoFinishOrder($blRecalculatingOrder, $oUser, $oBasket, $oUserPayment);
 
         return $iRet;
     }
@@ -1201,8 +1193,6 @@ class fcPayOneOrder extends fcPayOneOrder_parent
             $this->_oFcpoHelper->fcpoSetSessionVariable('fcpoOrderNr', $this->oxorder__oxordernr->value);
             $this->_fcpoCheckReduceBefore();
         }
-
-        oxDb::getDb()->commitTransaction();
 
         if ($blReturnRedirectUrl === true) {
             return $aResponse['redirecturl'];

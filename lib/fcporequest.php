@@ -559,41 +559,47 @@ class fcpoRequest extends oxSuperCfg
         // Override mode for Sofort-?berweisung type
         $this->addParameter('mode', $this->getOperationMode($oOrder->oxorder__oxpaymenttype->value, $aDynvalue['fcpo_sotype']));
         switch ($aDynvalue['fcpo_sotype']) {
-        case 'PNT':
-            $oBillCountry = oxNew('oxcountry');
-            $oBillCountry->load($oOrder->oxorder__oxbillcountryid->value);
-            $this->addParameter('bankcountry', $oBillCountry->oxcountry__oxisoalpha2->value);
-            if (isset($aDynvalue['fcpo_ou_ktonr']) && $aDynvalue['fcpo_ou_ktonr'] != '' && isset($aDynvalue['fcpo_ou_blz']) && $aDynvalue['fcpo_ou_blz'] != '') {
-                $this->addParameter('bankaccount', $aDynvalue['fcpo_ou_ktonr']);
-                $this->addParameter('bankcode', $aDynvalue['fcpo_ou_blz']);
-            } elseif (isset($aDynvalue['fcpo_ou_iban']) && $aDynvalue['fcpo_ou_iban'] != '' && isset($aDynvalue['fcpo_ou_bic']) && $aDynvalue['fcpo_ou_bic'] != '') {
+            case 'PNT':
+                $oBillCountry = oxNew('oxcountry');
+                $oBillCountry->load($oOrder->oxorder__oxbillcountryid->value);
+                $this->addParameter('bankcountry', $oBillCountry->oxcountry__oxisoalpha2->value);
+                if (isset($aDynvalue['fcpo_ou_ktonr']) && $aDynvalue['fcpo_ou_ktonr'] != '' && isset($aDynvalue['fcpo_ou_blz']) && $aDynvalue['fcpo_ou_blz'] != '') {
+                    $this->addParameter('bankaccount', $aDynvalue['fcpo_ou_ktonr']);
+                    $this->addParameter('bankcode', $aDynvalue['fcpo_ou_blz']);
+                } elseif (isset($aDynvalue['fcpo_ou_iban']) && $aDynvalue['fcpo_ou_iban'] != '' && isset($aDynvalue['fcpo_ou_bic']) && $aDynvalue['fcpo_ou_bic'] != '') {
+                    $this->addParameter('iban', $aDynvalue['fcpo_ou_iban']);
+                    $this->addParameter('bic', $aDynvalue['fcpo_ou_bic']);
+                }
+                break;
+            case 'GPY':
+                $this->addParameter('bankcountry', 'DE');
                 $this->addParameter('iban', $aDynvalue['fcpo_ou_iban']);
                 $this->addParameter('bic', $aDynvalue['fcpo_ou_bic']);
-            }
-            break;
-        case 'GPY':
-            $this->addParameter('bankcountry', 'DE');
-            $this->addParameter('iban', $aDynvalue['fcpo_ou_iban']);
-            $this->addParameter('bic', $aDynvalue['fcpo_ou_bic']);
-            break;
-        case 'EPS':
-            $this->addParameter('bankcountry', 'AT');
-            $this->addParameter('bankgrouptype', $aDynvalue['fcpo_so_bankgrouptype_eps']);
-            break;
-        case 'PFF':
-            $this->addParameter('bankcountry', 'CH');
-            break;
-        case 'PFC':
-            $this->addParameter('bankcountry', 'CH');
-            break;
-        case 'IDL':
-            $this->addParameter('bankcountry', 'NL');
-            $this->addParameter('bankgrouptype', $aDynvalue['fcpo_so_bankgrouptype_idl']);
-            break;
-        case 'P24':
-            $this->addParameter('bankcountry', 'PL');
-        default:
-            break;
+                break;
+            case 'EPS':
+                $this->addParameter('bankcountry', 'AT');
+                $this->addParameter('bankgrouptype', $aDynvalue['fcpo_so_bankgrouptype_eps']);
+                break;
+            case 'PFF':
+                $this->addParameter('bankcountry', 'CH');
+                break;
+            case 'PFC':
+                $this->addParameter('bankcountry', 'CH');
+                break;
+            case 'IDL':
+                $this->addParameter('bankcountry', 'NL');
+                $this->addParameter('bankgrouptype', $aDynvalue['fcpo_so_bankgrouptype_idl']);
+                break;
+            case 'P24':
+                $this->addParameter('bankcountry', 'PL');
+                break;
+            case 'BCT':
+                $oBillCountry = oxNew('oxcountry');
+                $oBillCountry->load($oOrder->oxorder__oxbillcountryid->value);
+                $this->addParameter('bankcountry', $oBillCountry->oxcountry__oxisoalpha2->value);
+                break;
+            default:
+                break;
         }
     }
 

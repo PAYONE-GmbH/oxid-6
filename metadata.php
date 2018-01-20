@@ -38,7 +38,7 @@ $aModule = array(
     'version'       => '1.0.5',
     'author'        => 'FATCHIP GmbH',
     'email'         => 'kontakt@fatchip.de',
-    'url'           => 'http://wiki.fatchip.de/fc/mod_oxid_payone/start',
+    'url'           => 'https://wiki.fatchip.de/public/faqpayone',
     'extend'        => array(
         // controllers
         'basket'                            => 'fc/fcpayone/extend/application/controllers/fcPayOneBasketView',

@@ -130,6 +130,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      * 
      * @param  string $sEmail
      * @return mixed
+     * @todo Should be moved to oxUser
      */
     public function fcpoDoesUserAlreadyExist($sEmail) 
     {

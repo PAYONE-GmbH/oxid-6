@@ -18,10 +18,13 @@
  * @copyright (C) Payone GmbH
  * @version   OXID eShop CE
  */
- 
+
+$oViewConf = oxNew("oxViewConfig");
+$sImgUrl = $oViewConf->getModuleUrl('fcpayone', 'payone_icon.png');
+
 $aModule = array(
     'id'            => 'fcpayone',
-    'title'         => 'PAYONE Payment f&uuml;r OXID eShop',
+    'title'         => '<img src="' . $sImgUrl . '" alt="FC"> PAYONE Payment f&uuml;r OXID eShop',
     'description'   => 'Sie suchen nach der optimalen Payment-L&ouml;sung f&uuml;r Ihren Online-Shop?<br><br>
                         PAYONE bietet Unternehmensl&ouml;sungen zur automatisierten und ganzheitlichen Abwicklung aller Zahlungsprozesse im E-Commerce. 
                         Der Payment Service Provider ist ein Unternehmen der Sparkassen-Finanzgruppe und von der Bundesanstalt f&uuml;r Finanzdienstleistungsaufsicht als Zahlungsinstitut zugelassen. 
@@ -35,7 +38,7 @@ $aModule = array(
     'version'       => '1.0.5',
     'author'        => 'FATCHIP GmbH',
     'email'         => 'kontakt@fatchip.de',
-    'url'           => 'http://wiki.fatchip.de/fc/mod_oxid_payone/start',
+    'url'           => 'https://wiki.fatchip.de/public/faqpayone',
     'extend'        => array(
         // controllers
         'basket'                            => 'fc/fcpayone/extend/application/controllers/fcPayOneBasketView',

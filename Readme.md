@@ -2,8 +2,6 @@
 ![license LGPL](https://img.shields.io/badge/license-LGPL-blue.svg)
 [![GitHub issues](https://img.shields.io/github/issues/PAYONE-GmbH/oxid-6.svg)](https://github.com/PAYONE-GmbH/oxid-6/issues)
 
-:warning: Please note, that this extension is not yet released in production.
-
 # PAYMENT FOR YOUR OXID-SHOP 
 The Payone-FinanceGate-Module is already certified by OXID to guarantee faultless code quality and correct operation, but we are willing to do an even better job. The community here on Github is a great help for that and we are happy about your participation. Take a look at our released version and send us commits or other feedback to take care for the best possible solution.
 

@@ -14,7 +14,7 @@ The Payone-FinanceGate-Module is already certified by OXID to guarantee faultles
 *	Find all currently supported payment methods on www.payone.com/oxid
 
 ## More information
-More information about OXID on https://www.payone.com/oxid or https://shop.fatchip.de/OXID-PAYONE-FinanceGate-Connector.html 
+More information about OXID on https://www.payone.com/oxid or https://www.fatchip.de/Plugins/OXID-eShop/OXID-PAYONE-Connector.html 
 
 ## Requirements
 Installed OXID eShop >= v6.0.0

@@ -12,9 +12,6 @@
             <SUBMENU id="fcpo_admin_common" cl="fcpayone_common" list="fcpayone_common_list">
                 <TAB id="tbclcountry_main" cl="fcpayone_common_main" />
             </SUBMENU>
-            <SUBMENU id="fcpo_admin_support" cl="fcpayone_support" list="fcpayone_support_list">
-                <TAB id="tbclcountry_main" cl="fcpayone_support_main" />
-            </SUBMENU>
         </MAINMENU>
         <MAINMENU id="fcpo_admin_config">
             <SUBMENU id="mxpaymeth" cl="admin_payment" list="payment_list"></SUBMENU>

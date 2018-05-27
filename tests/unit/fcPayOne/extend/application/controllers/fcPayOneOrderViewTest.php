@@ -162,7 +162,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
     {
         $oTestObject = oxNew('fcPayOneOrderView');
         
-        $oMockOrder = $this->getMock('oxOrder', array('fcpoDoesPaypalUserAlreadyExist'));
+        $oMockOrder = $this->getMock('oxOrder', array('fcpoDoesUserAlreadyExist'));
         $oMockOrder->expects($this->any())->method('fcpoDoesUserAlreadyExist')->will($this->returnValue('someUserId'));
         
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
@@ -355,7 +355,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
         $oTestObject = $this->getMock(
             'fcPayOneOrderView', array(
                 'getUser', 
-                '_fcpoDoesUserAlreadyExist', 
+                '_fcpoDoesPaypalUserAlreadyExist',
                 '_fcpoIsSamePayPalUser', 
                 '_fcpoCreatePayPalDelAddress',
                 '_fcpoCreatePayPalUser',
@@ -364,7 +364,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
         );
         $oTestObject->expects($this->any())->method('getUser')
             ->will($this->returnValue($oMockUserObject));
-        $oTestObject->expects($this->any())->method('_fcpoDoesUserAlreadyExist')
+        $oTestObject->expects($this->any())->method('_fcpoDoesPaypalUserAlreadyExist')
             ->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcpoIsSamePayPalUser')
             ->will($this->onConsecutiveCalls(true, true));
@@ -416,7 +416,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
         $oTestObject = $this->getMock(
             'fcPayOneOrderView', array(
                 'getUser', 
-                '_fcpoDoesUserAlreadyExist', 
+                '_fcpoDoesPaypalUserAlreadyExist',
                 '_fcpoIsSamePayPalUser', 
                 '_fcpoCreatePayPalDelAddress',
                 '_fcpoCreatePayPalUser',
@@ -425,7 +425,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
         );
         $oTestObject->expects($this->any())->method('getUser')
             ->will($this->returnValue($oMockUserObject));
-        $oTestObject->expects($this->any())->method('_fcpoDoesUserAlreadyExist')
+        $oTestObject->expects($this->any())->method('_fcpoDoesPaypalUserAlreadyExist')
             ->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcpoIsSamePayPalUser')
             ->will($this->onConsecutiveCalls(false, false));
@@ -476,7 +476,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
         $oTestObject = $this->getMock(
             'fcPayOneOrderView', array(
                 'getUser', 
-                '_fcpoDoesUserAlreadyExist', 
+                '_fcpoDoesPaypalUserAlreadyExist',
                 '_fcpoIsSamePayPalUser', 
                 '_fcpoCreatePayPalDelAddress',
                 '_fcpoCreatePayPalUser',
@@ -485,7 +485,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
         );
         $oTestObject->expects($this->any())->method('getUser')
             ->will($this->returnValue(false));
-        $oTestObject->expects($this->any())->method('_fcpoDoesUserAlreadyExist')
+        $oTestObject->expects($this->any())->method('_fcpoDoesPaypalUserAlreadyExist')
             ->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcpoIsSamePayPalUser')
             ->will($this->onConsecutiveCalls(false, false));
@@ -536,7 +536,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
         $oTestObject = $this->getMock(
             'fcPayOneOrderView', array(
                 'getUser', 
-                '_fcpoDoesUserAlreadyExist', 
+                '_fcpoDoesPaypalUserAlreadyExist',
                 '_fcpoIsSamePayPalUser', 
                 '_fcpoCreatePayPalDelAddress',
                 '_fcpoCreatePayPalUser',
@@ -545,7 +545,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
         );
         $oTestObject->expects($this->any())->method('getUser')
             ->will($this->returnValue($oMockUserObject));
-        $oTestObject->expects($this->any())->method('_fcpoDoesUserAlreadyExist')
+        $oTestObject->expects($this->any())->method('_fcpoDoesPaypalUserAlreadyExist')
             ->will($this->returnValue(false));
         $oTestObject->expects($this->any())->method('_fcpoIsSamePayPalUser')
             ->will($this->onConsecutiveCalls(true, false));

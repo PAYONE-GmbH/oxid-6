@@ -112,18 +112,15 @@ class Unit_fcPayOne_Application_Models_fcporatepay extends OxidTestCase
      */
     public function test_fcpoGetRatePayProfiles_Coverage() 
     {
-        $this->markTestIncomplete("This test fails due to: Failed asserting that two arrays are equal");
-
-        $oTestObject = $this->getMock('fcporatepay', array('fcpoGetFields'));
-        $oTestObject->expects($this->any())->method('fcpoGetFields')->will($this->returnValue(null));
+        $oTestObject = oxNew('fcporatepay');
 
         $aMockResult = array(
             array(
-                'someValue',
-                'someValue',
-                'someValue',
-                'someValue',
-                'someValue'
+                'OXID'=>'someValue',
+                'Index1'=>'someValue',
+                'Index2'=>'someValue',
+                'Index3'=>'someValue',
+                'Index4'=>'someValue'
             )
         );
         $oMockDatabase = $this->getMock('oxDb', array('getAll', 'quote'));
@@ -135,7 +132,13 @@ class Unit_fcPayOne_Application_Models_fcporatepay extends OxidTestCase
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
 
         $aExpect = array(
-            'someValue' => array(''=>'someValue'),
+            'someValue' => array(
+                'OXID'=>'someValue',
+                'Index1'=>'someValue',
+                'Index2'=>'someValue',
+                'Index3'=>'someValue',
+                'Index4'=>'someValue'
+            ),
         );
 
         $this->assertEquals($aExpect, $oTestObject->fcpoGetRatePayProfiles('somePaymentId'));

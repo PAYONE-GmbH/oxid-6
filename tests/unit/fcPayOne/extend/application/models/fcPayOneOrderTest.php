@@ -1896,40 +1896,6 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrder extends OxidTestCase
     }
 
     /**
-     * Testing validateStock on newer shop version
-     * 
-     * @param  void
-     * @return void
-     */
-    public function test_validateStock_NoCheck() 
-    {
-        $this->markTestIncomplete("This test fails to assert out of stock error message");
-
-        $oMockConfig = $this->getMock('oxConfig', array('getConfigParam'));
-        $oMockConfig->expects($this->any())->method('getConfigParam')->will($this->returnValue(false));
-
-        $oMockProduct = $this->getMock('oxArticle', array('getId', 'checkForStock'));
-        $oMockProduct->expects($this->any())->method('getId')->will($this->returnValue('someId'));
-        $oMockProduct->expects($this->any())->method('checkForStock')->will($this->returnValue(false));
-        $oMockProduct->oxarticles__oxartnum = new oxField('someArtNum');
-
-        $oMockBasketItem = $this->getMock('oxBasketItem', array('getArticle'));
-        $oMockBasketItem->expects($this->any())->method('getArticle')->will($this->returnValue($oMockProduct));
-        $aContents[] = $oMockBasketItem;
-        $oMockBasket = $this->getMock('oxBasket', array('getContents', 'removeItem', 'getArtStockInBasket'));
-        $oMockBasket->expects($this->any())->method('getContents')->will($this->returnValue($aContents));
-        $oMockBasket->expects($this->any())->method('removeItem')->will($this->returnValue(true));
-        $oMockBasket->expects($this->any())->method('getArtStockInBasket')->will($this->returnValue(2));
-
-        $oTestObject = $this->getMock('fcPayOneOrder', array('_isRedirectAfterSave', '_fcGetCurrentVersion', 'fcGetArtStockInBasket'));
-        $oTestObject->expects($this->any())->method('_isRedirectAfterSave')->will($this->returnValue(true));
-        $oTestObject->expects($this->any())->method('_fcGetCurrentVersion')->will($this->returnValue(4800));
-        $oTestObject->expects($this->any())->method('fcGetArtStockInBasket')->will($this->returnValue(2));
-
-        $this->assertEquals(null, $oTestObject->validateStock($oMockBasket));
-    }
-
-    /**
      * Testing fcGetArtStockInBasket for coverage
      * 
      * @param  void

@@ -82,7 +82,7 @@ class fcporatepay extends oxBase
         
         $sFilterPaymentId = "";
         if (is_string($sPaymentId)) {
-            $sFilterPaymentId = "WHERE OXPAYMENTID=".$this->_oFcpoDb->quote($sPaymentId);
+            $sFilterPaymentId = "WHERE OXPAYMENTID=".$oDb->quote($sPaymentId);
         }
         
         $sQuery = "SELECT * FROM fcporatepay {$sFilterPaymentId}";
@@ -92,6 +92,7 @@ class fcporatepay extends oxBase
             $sOxid = $aRatePayProfile['OXID'];
             $aReturn[$sOxid] = $aRatePayProfile;
         }
+
         return $aReturn;
     }
     

@@ -3048,7 +3048,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      * @return string
      */
     public function fcpoGetPayolutionAgreementLink() {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $oLang = $this->_oFcpoHelper->fcpoGetLang();
         $sLangAbbr = $oLang->getLanguageAbbr();
         $sTargetCountry = strtoupper($this->fcpoGetTargetCountry());

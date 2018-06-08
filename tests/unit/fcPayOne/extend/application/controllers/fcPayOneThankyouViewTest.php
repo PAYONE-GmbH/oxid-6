@@ -67,11 +67,6 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneThankyouView extends 
      */
     public function test_fcpoGetMandatePdfUrl_Active() 
     {
-        $this->markTestIncomplete('This test produce PHP error: Column count doesn\'t match value count at row 1');
-
-        $oMockDatabase = $this->getMock('oxDb', array('Execute'));
-        $oMockDatabase->expects($this->any())->method('Execute')->will($this->returnValue(true));
-        
         $oMockConfig = $this->getMock('oxConfig', array('getConfigParam','getShopUrl'));
         $oMockConfig->expects($this->any())->method('getConfigParam')->will($this->returnValue('someConfigParam'));
         $oMockConfig->expects($this->any())->method('getShopUrl')->will($this->returnValue('http://www.someshopurl.org/'));
@@ -94,8 +89,8 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneThankyouView extends 
         $oTestObject->expects($this->any())->method('getOrder')->will($this->returnValue($oMockOrder));
         $oTestObject->expects($this->any())->method('getUser')->will($this->returnValue($oMockUser));
         
-        $oMockRequest = $this->getMock('fcporequest', array('sendRequestGetFile'));
-        $oMockRequest->expects($this->any())->method('sendRequestGetFile')->will($this->returnValue('http://www.someurl.org/somepdf.pdf'));
+        $oMockPayment = $this->getMock('oxpayment', array('fcpoAddMandateToDb'));
+        $oMockPayment->expects($this->any())->method('fcpoAddMandateToDb')->will($this->returnValue(null));
         
         $aMockMandate = array(
             'mandate_identification'=>'someValue',
@@ -105,12 +100,10 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneThankyouView extends 
         
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
         $oHelper->expects($this->any())->method('fcpoGetSessionVariable')->will($this->onConsecutiveCalls($aMockMandate, 'someUserId'));
-        $oHelper->expects($this->any())->method('getFactoryObject')->will($this->returnValue($oMockRequest));
-        
-        
+        $oHelper->expects($this->any())->method('getFactoryObject')->will($this->returnValue($oMockPayment));
+
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
-        $this->invokeSetAttribute($oTestObject, '_oFcpoDb', $oMockDatabase);
-        
+
         $sExpect = 'http://www.someshopurl.org/modules/fcPayOne/download.php?id=someId&uid=someUserId';
         
         $this->assertEquals($sExpect, $oTestObject->fcpoGetMandatePdfUrl());

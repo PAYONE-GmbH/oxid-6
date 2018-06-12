@@ -1,3 +1,7 @@
+==1.0.8==
+* Fixed unit tests
+* Removed Support Link from backend menu
+
 ==1.0.6==
 
 * Fixed PayPal Express with existing users

@@ -978,7 +978,7 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     {
         $this->_fcpoTruncateTable('fcpoklarnastoreids');
         $sQuery = "
-            INSERT INTO `oxid`.`fcpoklarnastoreids` (`OXID`, `FCPO_STOREID`) VALUES ('1', 'samplestoreid')
+            INSERT INTO `fcpoklarnastoreids` (`OXID`, `FCPO_STOREID`) VALUES ('1', 'samplestoreid')
         ";
 
         oxDb::getDb()->Execute($sQuery);

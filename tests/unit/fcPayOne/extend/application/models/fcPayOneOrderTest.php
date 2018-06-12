@@ -324,7 +324,7 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrder extends OxidTestCase
         $oMockBasket = $this->getMock('oxBasket', array('getPaymentId'));
         $oMockBasket->expects($this->any())->method('getPaymentId')->will($this->returnValue('somePaymentId'));
 
-        $oMockUser = $this->getMock('oxBasket', array('save'));
+        $oMockUser = $this->getMock('oxUser', array('save'));
         $oMockUser->expects($this->any())->method('save')->will($this->returnValue(true));
 
         $oMockUtils = $this->getMock('oxUtils', array('logger'));
@@ -416,7 +416,7 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrder extends OxidTestCase
         $oMockBasket = $this->getMock('oxBasket', array('getPaymentId'));
         $oMockBasket->expects($this->any())->method('getPaymentId')->will($this->returnValue('somePaymentId'));
 
-        $oMockUser = $this->getMock('oxBasket', array('save'));
+        $oMockUser = $this->getMock('oxUser', array('save'));
         $oMockUser->expects($this->any())->method('save')->will($this->returnValue(true));
 
         $oMockUtils = $this->getMock('oxUtils', array('logger'));
@@ -507,7 +507,7 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrder extends OxidTestCase
         $oMockBasket = $this->getMock('oxBasket', array('getPaymentId'));
         $oMockBasket->expects($this->any())->method('getPaymentId')->will($this->returnValue('somePaymentId'));
 
-        $oMockUser = $this->getMock('oxBasket', array('save'));
+        $oMockUser = $this->getMock('oxUser', array('save'));
         $oMockUser->expects($this->any())->method('save')->will($this->returnValue(true));
 
         $oMockUtils = $this->getMock('oxUtils', array('logger'));
@@ -599,7 +599,7 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrder extends OxidTestCase
         $oMockBasket = $this->getMock('oxBasket', array('getPaymentId'));
         $oMockBasket->expects($this->any())->method('getPaymentId')->will($this->returnValue('somePaymentId'));
 
-        $oMockUser = $this->getMock('oxBasket', array('save'));
+        $oMockUser = $this->getMock('oxUser', array('save'));
         $oMockUser->expects($this->any())->method('save')->will($this->returnValue(true));
 
         $oMockUtils = $this->getMock('oxUtils', array('logger'));
@@ -691,7 +691,7 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrder extends OxidTestCase
         $oMockBasket->expects($this->any())->method('getPaymentId')->will($this->returnValue('somePaymentId'));
         $oMockBasket->expects($this->any())->method('getTsProductId')->will($this->returnValue('someTsId'));
 
-        $oMockUser = $this->getMock('oxBasket', array('save'));
+        $oMockUser = $this->getMock('oxUser', array('save'));
         $oMockUser->expects($this->any())->method('save')->will($this->returnValue(true));
 
         $oMockUtils = $this->getMock('oxUtils', array('logger'));

@@ -3563,7 +3563,8 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
             ->method('getConfigParam')
             ->will($this->returnValue('someCompany'));
 
-        $sExpect = 'https://payment.payolution.com/payolution-payment/infoport/dataprivacydeclaration?mId=&lang=someAbbr&territory=DE';
+        $sMockCompany = base64_encode('someCompany');
+        $sExpect = 'https://payment.payolution.com/payolution-payment/infoport/dataprivacydeclaration?mId='.$sMockCompany.'&lang=someAbbr&territory=DE';
 
         $oTestObject = $this->getMock('fcPayOnePaymentView', array(
             'fcpoGetTargetCountry',
@@ -3587,7 +3588,9 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
             ->will($this->returnValue($oMockLang));
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
 
-        $this->assertEquals($sExpect, $oTestObject->fcpoGetPayolutionAgreementLink());
+        $sResult = $sExpect = $oTestObject->fcpoGetPayolutionAgreementLink();
+
+        $this->assertEquals($sExpect, $sResult);
     }
 
     /**

@@ -630,14 +630,28 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
         
         $oMockRequest = $this->getMock('fcporequest', array('sendRequestGenericPayment'));
         $oMockRequest->expects($this->any())->method('sendRequestGenericPayment')->will($this->returnValue($aMockOutput));
-        
-        $oHelper = $this->getMock('fcpohelper', array('fcpoGetSessionVariable', 'fcpoDeleteSessionVariable', 'getFactoryObject', 'fcpoGetSession'));
+
+        $oMockOrder = $this->getMock('oxOrder', array('load', 'fcpoGetIdByUserName'));
+        $oMockOrder->expects($this->any())->method('fcpoGetIdByUserName')->will($this->returnValue('someUserId'));
+        $oMockOrder->expects($this->any())->method('load')->will($this->returnValue(true));
+
+        $oHelper = $this->getMock('fcpohelper', array('fcpoGetSessionVariable', 'fcpoDeleteSessionVariable', 'fcpoGetSession'));
         $oHelper->expects($this->any())->method('fcpoGetSessionVariable')->will($this->returnValue('someValue'));
         $oHelper->expects($this->any())->method('fcpoDeleteSessionVariable')->will($this->returnValue(true));
-        $oHelper->expects($this->any())->method('getFactoryObject')->will($this->onConsecutiveCalls($oMockRequest, $oMockOxDeliverySet));
+        $oHelper->expects($this->any())->method('getFactoryObject')->will(
+            $this->onConsecutiveCalls(
+                $oMockRequest,
+                oxNew(oxubase::class),
+                $oMockOrder,
+                $oMockUserObject,
+                $oMockOrder,
+                $oMockOrder,
+                $oMockOrder,
+                $oMockOxDeliverySet
+            )
+        );
         $oHelper->expects($this->any())->method('fcpoGetSession')->will($this->returnValue($oMockSession));
-        
-        
+
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
         
         $mResponse = $mExpect = $this->invokeMethod($oTestObject, '_handlePayPalExpressCall');

@@ -486,6 +486,7 @@ class fcpoconfigexport extends oxBase
         $aPayments = array();
 
         $sQuery = "SELECT oxid FROM oxpayments WHERE fcpoispayone = 1";
+        $this->_oFcpoDb->setFetchMode(\OxidEsales\EshopCommunity\Core\Database\Adapter\DatabaseInterface::FETCH_MODE_NUM);
         $aRows = $this->_oFcpoDb->getAll($sQuery);
         foreach ($aRows as $aRow) {
             $oPayment = oxNew('oxpayment');

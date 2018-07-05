@@ -3547,6 +3547,8 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
      */
     public function test_fcpoGetPayolutionAgreementLink_Coverage()
     {
+        $sCompanyName = 'someCompany';
+
         $oMockLang = $this->getMock('oxLang', array(
             'getLanguageAbbr'
         ));
@@ -3561,9 +3563,9 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
         $oMockConfig
             ->expects($this->any())
             ->method('getConfigParam')
-            ->will($this->returnValue('someCompany'));
+            ->will($this->returnValue($sCompanyName));
 
-        $sExpect = 'https://payment.payolution.com/payolution-payment/infoport/dataprivacydeclaration?mId=&lang=someAbbr&territory=DE';
+        $sExpect = 'https://payment.payolution.com/payolution-payment/infoport/dataprivacydeclaration?mId=' . base64_encode($sCompanyName) . '&lang=someAbbr&territory=DE';
 
         $oTestObject = $this->getMock('fcPayOnePaymentView', array(
             'fcpoGetTargetCountry',

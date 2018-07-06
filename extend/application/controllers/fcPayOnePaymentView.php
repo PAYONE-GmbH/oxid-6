@@ -715,13 +715,12 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         if ($this->_oPaymentList === null) {
             $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
             $oUser = $this->getUser();
-            $blContinue = false;
             $sBoniCheckMoment = $oConfig->getConfigParam('sFCPOBonicheckMoment');
 
-            if ($sBoniCheckMoment != 'after') {
-                $blContinue = $oUser->checkAddressAndScore();
+            if ($oUser) {
+                $blContinue = $sBoniCheckMoment != 'after' ? $oUser->checkAddressAndScore() : $oUser->checkAddressAndScore(true, false);
             } else {
-                $blContinue = $oUser->checkAddressAndScore(true, false);
+                $blContinue = true;
             }
 
             if ($blContinue === true) {

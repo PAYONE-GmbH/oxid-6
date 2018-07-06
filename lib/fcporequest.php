@@ -1945,6 +1945,7 @@ class fcpoRequest extends oxSuperCfg
 
             $aResponse = $this->send();
             $aResponse = $this->_fcpoCheckUseFallbackBoniversum($aResponse);
+            return $aResponse;
         } else {
             // Ampel Gruen Response simulieren
             $aResponse = array('scorevalue' => 500, 'fcWrongCountry' => true);

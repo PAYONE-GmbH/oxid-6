@@ -725,6 +725,8 @@ function processPayoneResponseCCHosted(response) {
         oForm["dynvalue[fcpo_ccmode]"].value = getOperationMode(fcpoGetCreditcardType());
         oForm["dynvalue[fcpo_kknumber]"].value = response.truncatedcardpan;
         oForm.submit();
+    } else {
+        document.getElementById('errorOutput').innerHTML = response.errormessage;
     }
 }
 
@@ -735,24 +737,24 @@ function processPayoneResponseCCHosted(response) {
  * @returns bool
  */
 function validateCardExpireDate(response) {
-    // current year month string has to be set into format YYMM
-    var fullMonth = new Array("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12");
-    var currentDate = new Date();
-    var fullYear = currentDate.getFullYear(); // need to use full year because getYear() is broken due to Y2K-Bug
-    var month = currentDate.getMonth();
-    month = fullMonth[month];
-    var year = fullYear.toString();
-    year = year.substr(2,4);
-    
-    var currentYearMonth = year + month;
-    var responseYearMonth = response.cardexpiredate;
-    responseYearMonth = responseYearMonth.toString();
-    
     var expireDateValid = false;
-    if (responseYearMonth > currentYearMonth) {
-        expireDateValid = true;
+    if (response.status === "VALID") {
+        // current year month string has to be set into format YYMM
+        var fullMonth = new Array("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12");
+        var currentDate = new Date();
+        var fullYear = currentDate.getFullYear(); // need to use full year because getYear() is broken due to Y2K-Bug
+        var month = currentDate.getMonth();
+        month = fullMonth[month];
+        var year = fullYear.toString();
+        year = year.substr(2, 4);
+
+        var currentYearMonth = year + month;
+        var responseYearMonth = response.cardexpiredate;
+        responseYearMonth = responseYearMonth.toString();;
+        if (responseYearMonth > currentYearMonth) {
+            expireDateValid = true;
+        }
     }
-    
     return expireDateValid;
 }
 
@@ -875,15 +877,12 @@ $('#payolution_installment_check_availability').click(
  * @param  void
  * @return void
  */
-
-
-
 (function(d, t) {
     var g = d.createElement(t),
-        s = d.getElementsByTagName(t)[0];
+    s = d.getElementsByTagName(t)[0];
     g.src = 'https://secure.pay1.de/client-api/js/ajax.js';
     s.parentNode.insertBefore(g, s);
-    
+
     var oForm = getPaymentForm();
     if (oForm) {
         fcSetPayoneInputFields(oForm);
@@ -894,11 +893,11 @@ $('#payolution_installment_check_availability').click(
         if(oForm["dynvalue[fcpo_elv_country]"]) {
             fcCheckDebitCountry(oForm["dynvalue[fcpo_elv_country]"]);
         }
-        oForm.onsubmit = function(e){
+        $(oForm).on('submit', function(e){
             if (fcCheckPaymentSelection() == false ) {
                 e.preventDefault();
             }
-        };
+        });
     }
     setTimeout(
         function(){
@@ -907,5 +906,6 @@ $('#payolution_installment_check_availability').click(
             }
         }, 2000
     );
-    
+
 }(document, 'script'));
+

@@ -29,6 +29,7 @@ $aLang = array(
 'FCPO_BLZ_INVALID'                              => 'Please enter a valid bank identification number.',
 'FCPO_KTONR_INVALID'                            => 'Please enter a valid bank account number.',
 'FCPO_ERROR'                                    => 'An error occurred: <br>',
+'FCPO_PAY_ERROR_REDIRECT'                       => 'Your payment was rejected by your payment provider! Please choose another payment mean',
 'FCPO_ERROR_BLOCKED'                            => 'Bankdata invalid.',
 'FCPO_CC_NUMBER_INVALID'                        => 'Please enter a valid credit card number.',
 'FCPO_CC_DATE_INVALID'                          => 'Please enter a valid date of expiry.',

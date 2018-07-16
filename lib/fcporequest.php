@@ -536,8 +536,11 @@ class fcpoRequest extends oxSuperCfg
             $sAddParams .= '&fcspa=1'; // rewrite for oxserviceproductsagreement-param because of length-restriction
         }
 
+        $oLang = $this->_oFcpoHelper->fcpoGetLang();
+        $sPaymentErrorTextParam =  "&payerrortext=".$oLang->translateString('FCPO_PAY_ERROR_REDIRECT', null, false);
+        $sPaymentErrorParam = '&payerror=-20'; // see source/modules/fc/fcpayone/out/blocks/fcpo_payment_errors.tpl
         $sSuccessUrl = $sShopURL . 'index.php?cl=order&fcposuccess=1&ord_agb=1&stoken=' . $this->_oFcpoHelper->fcpoGetRequestParameter('stoken') . $sSid . $sAddParams . $sRToken;
-        $sErrorUrl = $sShopURL . 'index.php?type=error&cl=' . $sAbortClass . $sRToken;
+        $sErrorUrl = $sShopURL . 'index.php?type=error&cl=' . $sAbortClass . $sRToken . $sPaymentErrorParam . $sPaymentErrorTextParam;
         $sBackUrl = $sShopURL . 'index.php?type=cancel&cl=' . $sAbortClass . $sRToken;
 
         $this->addParameter('successurl', $sSuccessUrl);
@@ -602,6 +605,7 @@ class fcpoRequest extends oxSuperCfg
                 break;
         }
     }
+
 
     /**
      * Add product information for module invoicing

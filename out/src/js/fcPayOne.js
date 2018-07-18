@@ -751,7 +751,7 @@ function validateCardExpireDate(response) {
         var currentYearMonth = year + month;
         var responseYearMonth = response.cardexpiredate;
         responseYearMonth = responseYearMonth.toString();;
-        if (responseYearMonth > currentYearMonth) {
+        if (responseYearMonth >= currentYearMonth) {
             expireDateValid = true;
         }
     }

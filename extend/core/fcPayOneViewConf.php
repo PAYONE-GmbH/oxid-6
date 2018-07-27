@@ -20,6 +20,15 @@
  */
 class fcPayOneViewConf extends fcPayOneViewConf_parent
 {
+    /**
+     * List of handled themes and their belonging pathes
+     * @var array
+     */
+    protected $_aSupportedThemes = array(
+        'flow' => 'flow',
+        'azure' => 'azure',
+        'mobile' => 'mobile',
+    );
 
     /**
      * Name of the module folder
@@ -201,4 +210,33 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent
         $oLang = $this->_oFcpoHelper->fcpoGetLang();
         return $oLang->getLanguageAbbr($sLangId);
     }
+
+    /**
+     * Method returns active theme path by checking current theme and its parent
+     * If theme is not assignable, 'azure' will be the fallback
+     *
+     * @param void
+     * @return string
+     */
+    public function fcpoGetActiveThemePath() {
+        $sReturn = 'flow';
+        $oTheme = $this->_oFcpoHelper->getFactoryObject('oxTheme');
+
+        $sCurrentActiveId = $oTheme->getActiveThemeId();
+        $oTheme->load($sCurrentActiveId);
+        $aThemeIds = array_keys($this->_aSupportedThemes);
+        $sCurrentParentId = $oTheme->getInfo('parentTheme');
+
+        // we're more interested on the parent then on child theme
+        if ($sCurrentParentId) {
+            $sCurrentActiveId = $sCurrentParentId;
+        }
+
+        if (in_array($sCurrentActiveId, $aThemeIds)) {
+            $sReturn = $this->_aSupportedThemes[$sCurrentActiveId];
+        }
+
+        return $sReturn;
+    }
+
 }

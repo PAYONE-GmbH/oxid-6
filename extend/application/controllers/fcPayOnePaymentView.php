@@ -662,6 +662,18 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     }
 
     /**
+     * Wrapper method for receiving matching path
+     *
+     * @param void
+     * @return string
+     */
+    public function fcpoGetActiveThemePath() {
+        $oViewConfig = $this->_oFcpoHelper->getFactoryObject('oxViewConfig');
+
+        return $oViewConfig->fcpoGetActiveThemePath();
+    }
+
+    /**
      * Get verification safety hash for debitnote payment method with checktype parameter
      * 
      * @return string

@@ -123,6 +123,23 @@
                             <option value="HRAC_OOS" [{if $dynvalue.fcpo_so_bankgrouptype_eps == "HRAC_OOS"}]selected[{/if}]>Hypo Ober&ouml;sterreich</option>
                             <option value="HRAC_SLB" [{if $dynvalue.fcpo_so_bankgrouptype_eps == "HRAC_SLB"}]selected[{/if}]>Hypo Salzburg</option>
                             <option value="HRAC_STM" [{if $dynvalue.fcpo_so_bankgrouptype_eps == "HRAC_STM"}]selected[{/if}]>Hypo Steiermark</option>
+                            <option value="EPS_SCHEL" [{if $dynvalue.fcpo_so_bankgrouptype_eps == "EPS_SCHEL"}]selected[{/if}]>Bankhaus Schelhammer & Schattera AG</option>
+                            <option value="EPS_OBAG" [{if $dynvalue.fcpo_so_bankgrouptype_eps == "EPS_OBAG"}]selected[{/if}]>Oberbank AG</option>
+                            <option value="EPS_SCHOELLER" [{if $dynvalue.fcpo_so_bankgrouptype_eps == "EPS_SCHOELLER"}]selected[{/if}]>Schoellerbank AG</option>
+                            <option value="EPS_VRBB" [{if $dynvalue.fcpo_so_bankgrouptype_eps == "EPS_VRBB"}]selected[{/if}]>VR-Bank Braunau</option>
+                            <option value="EPS_AAB" [{if $dynvalue.fcpo_so_bankgrouptype_eps == "EPS_AAB"}]selected[{/if}]>Austrian Anadi Bank AG</option>
+                            <option value="EPS_BKS" [{if $dynvalue.fcpo_so_bankgrouptype_eps == "EPS_BKS"}]selected[{/if}]>BKS Bank AG</option>
+                            <option value="EPS_BKB" [{if $dynvalue.fcpo_so_bankgrouptype_eps == "EPS_BKB"}]selected[{/if}]>Brüll Kallmus Bank AG</option>
+                            <option value="EPS_VLB" [{if $dynvalue.fcpo_so_bankgrouptype_eps == "EPS_VLB"}]selected[{/if}]>BTV VIER LÄNDER BANK</option>
+                            <option value="EPS_CBGG" [{if $dynvalue.fcpo_so_bankgrouptype_eps == "EPS_CBGG"}]selected[{/if}]>Capital Bank Grawe Gruppe AG</option>
+                            <option value="EPS_DB" [{if $dynvalue.fcpo_so_bankgrouptype_eps == "EPS_DB"}]selected[{/if}]>Dolomitenbank</option>
+                            <option value="EPS_NOEGB" [{if $dynvalue.fcpo_so_bankgrouptype_eps == "EPS_NOEGB"}]selected[{/if}]>HYPO NOE Gruppe Bank AG</option>
+                            <option value="EPS_NOELB" [{if $dynvalue.fcpo_so_bankgrouptype_eps == "EPS_NOELB"}]selected[{/if}]>HYPO NOE Landesbank AG</option>
+                            <option value="EPS_HBL" [{if $dynvalue.fcpo_so_bankgrouptype_eps == "EPS_HBL"}]selected[{/if}]>HYPO-BANK BURGENLAND Aktiengesellschaft</option>
+                            <option value="EPS_MFB" [{if $dynvalue.fcpo_so_bankgrouptype_eps == "EPS_MFB"}]selected[{/if}]>Marchfelder Bank</option>
+                            <option value="EPS_SPDBW" [{if $dynvalue.fcpo_so_bankgrouptype_eps == "EPS_SPDBW"}]selected[{/if}]>Sparda Bank Wien</option>
+                            <option value="EPS_SPDBA" [{if $dynvalue.fcpo_so_bankgrouptype_eps == "EPS_SPDBA"}]selected[{/if}]>SPARDA-BANK AUSTRIA</option>
+                            <option value="EPS_VKB" [{if $dynvalue.fcpo_so_bankgrouptype_eps == "EPS_VKB"}]selected[{/if}]>Volkskreditbank AG</option>
                         </select>
                     </div>
                 </div>
@@ -140,6 +157,7 @@
                             <option value="TRIODOS_BANK" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "TRIODOS_BANK"}]selected[{/if}]>Triodos Bank</option>
                             <option value="KNAB_BANK" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "KNAB_BANK"}]selected[{/if}]>Knab</option>
                             <option value="VAN_LANSCHOT_BANKIERS" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "VAN_LANSCHOT_BANKIERS"}]selected[{/if}]>van Lanschot</option>
+                            <option value="MONEYOU" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "MONEYOU"}]selected[{/if}]>Moneyou</option>
                         </select>
                     </div>
                 </div>

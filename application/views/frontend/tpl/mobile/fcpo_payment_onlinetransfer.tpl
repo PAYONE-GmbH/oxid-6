@@ -93,6 +93,23 @@
                         <li class="dropdown-option"><a tabindex="-1" data-selection-id="HRAC_OOS">Hypo Ober&ouml;sterreich</a></li>
                         <li class="dropdown-option"><a tabindex="-1" data-selection-id="HRAC_SLB">Hypo Salzburg</a></li>
                         <li class="dropdown-option"><a tabindex="-1" data-selection-id="HRAC_STM">Hypo Steiermark</a></li>
+                        <li class="dropdown-option"><a tabindex="-1" data-selection-id="EPS_SCHEL">Bankhaus Schelhammer & Schattera AG</a></li>
+                        <li class="dropdown-option"><a tabindex="-1" data-selection-id="EPS_OBAG">Oberbank AG</a></li>
+                        <li class="dropdown-option"><a tabindex="-1" data-selection-id="EPS_SCHOELLER">Schoellerbank AG</a></li>
+                        <li class="dropdown-option"><a tabindex="-1" data-selection-id="EPS_VRBB">VR-Bank Braunau</a></li>
+                        <li class="dropdown-option"><a tabindex="-1" data-selection-id="EPS_AAB">Austrian Anadi Bank AG</a></li>
+                        <li class="dropdown-option"><a tabindex="-1" data-selection-id="EPS_BKS">BKS Bank AG</a></li>
+                        <li class="dropdown-option"><a tabindex="-1" data-selection-id="EPS_BKB">Brüll Kallmus Bank AG</a></li>
+                        <li class="dropdown-option"><a tabindex="-1" data-selection-id="EPS_VLB">BTV VIER LÄNDER BANK</a></li>
+                        <li class="dropdown-option"><a tabindex="-1" data-selection-id="EPS_CBGG">Capital Bank Grawe Gruppe AG</a></li>
+                        <li class="dropdown-option"><a tabindex="-1" data-selection-id="EPS_DB">Dolomitenbank</a></li>
+                        <li class="dropdown-option"><a tabindex="-1" data-selection-id="EPS_NOEGB">HYPO NOE Gruppe Bank AG</a></li>
+                        <li class="dropdown-option"><a tabindex="-1" data-selection-id="EPS_NOELB">HYPO NOE Landesbank AG</a></li>
+                        <li class="dropdown-option"><a tabindex="-1" data-selection-id="EPS_HBL">HYPO-BANK BURGENLAND Aktiengesellschaft</a></li>
+                        <li class="dropdown-option"><a tabindex="-1" data-selection-id="EPS_MFB">Marchfelder Bank</a></li>
+                        <li class="dropdown-option"><a tabindex="-1" data-selection-id="EPS_SPDBW">Sparda Bank Wien</a></li>
+                        <li class="dropdown-option"><a tabindex="-1" data-selection-id="EPS_SPDBA">SPARDA-BANK AUSTRIA</a></li>
+                        <li class="dropdown-option"><a tabindex="-1" data-selection-id="EPS_VKB">Volkskreditbank AG</a></li>
                     </ul>
                     [{if !empty($dynvalue.fcpo_so_bankgrouptype_eps)}]
                         [{oxscript add="$('#sFcpoSoBanktypeEpsSelected').val('"|cat:$dynvalue.fcpo_so_bankgrouptype_eps|cat:"');"}]
@@ -118,6 +135,7 @@
                         <li class="dropdown-option"><a tabindex="-1" data-selection-id="SNS_REGIO_BANK">Regio Bank</a></li>
                         <li class="dropdown-option"><a tabindex="-1" data-selection-id="TRIODOS_BANK">Triodos Bank</a></li>
                         <li class="dropdown-option"><a tabindex="-1" data-selection-id="KNAB_BANK">Knab</a></li>
+                        <li class="dropdown-option"><a tabindex="-1" data-selection-id="VAN_LANSCHOT_BANKIERS">van Lanschot</a></li>
                         <li class="dropdown-option"><a tabindex="-1" data-selection-id="VAN_LANSCHOT_BANKIERS">van Lanschot</a></li>
                     </ul>
                     [{if !empty($dynvalue.fcpo_so_bankgrouptype_idl)}]

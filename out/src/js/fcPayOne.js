@@ -716,7 +716,13 @@ function startCCHostedRequest() { // Function called by submitting PAY-button
     return false;
 }
 
+/**
+ * Process hosted iframe cc data
+ *
+ * @param response
+ */
 function processPayoneResponseCCHosted(response) {
+    response = validateCardExpireDate(response);
     console.log(response);
     if (response.status === "VALID") {
         var oForm = getPaymentForm();
@@ -727,6 +733,34 @@ function processPayoneResponseCCHosted(response) {
     } else {
         document.getElementById('errorOutput').innerHTML = response.errormessage;
     }
+}
+
+/**
+ * validates the expiredate given in response
+ *
+ * @param object response
+ * @returns bool
+ */
+function validateCardExpireDate(response) {
+    if (response.status === "VALID") {
+        // current year month string has to be set into format YYMM
+        var fullMonth = new Array("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12");
+        var currentDate = new Date();
+        var fullYear = currentDate.getFullYear(); // need to use full year because getYear() is broken due to Y2K-Bug
+        var month = currentDate.getMonth();
+        month = fullMonth[month];
+        var year = fullYear.toString();
+        year = year.substr(2, 4);
+        var currentYearMonth = year + month;
+        var responseYearMonth = response.cardexpiredate;
+        responseYearMonth = responseYearMonth.toString();
+        if (responseYearMonth <= currentYearMonth) {
+            response.status = 'INVALID';
+            response.errormessage = 'Verfallsdatum der Karte erreicht. Bitte nutzen Sie eine andere Karte.';
+        }
+    }
+
+    return response;
 }
 
 /**

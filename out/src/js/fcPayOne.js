@@ -71,7 +71,7 @@ function fcCheckDebitCountry() {
             oForm['dynvalue[fcpo_elv_blz]'].value = '';
         }
     }
-    fcHandleDebitInputs();    
+    fcHandleDebitInputs();
 }
 
 function fcCheckOUType(select, SofoShowIban) {
@@ -104,7 +104,7 @@ function fcCheckOUType(select, SofoShowIban) {
                 document.getElementById('fcpo_ou_ktonr').style.display = '';
             } else {
                 document.getElementById('fcpo_ou_iban').style.display = '';
-                document.getElementById('fcpo_ou_bic').style.display = '';            
+                document.getElementById('fcpo_ou_bic').style.display = '';
             }
         }
     }
@@ -170,7 +170,7 @@ function resetErrorContainers() {
     }
     if(document.getElementById('fcpo_ou_ktonr_invalid')) {
         document.getElementById('fcpo_ou_ktonr_invalid').style.display = '';
-    }    
+    }
     if(document.getElementById('fcpo_ou_error')) {
         document.getElementById('fcpo_ou_error').style.display = '';
     }
@@ -182,7 +182,7 @@ function resetErrorContainers() {
     }
     if(document.getElementById('fcpo_klv_birthday_invalid')) {
         document.getElementById('fcpo_klv_birthday_invalid').style.display = '';
-    }    
+    }
     if(document.getElementById('fcpo_klv_addinfo_invalid')) {
         document.getElementById('fcpo_klv_addinfo_invalid').style.display = '';
     }
@@ -203,7 +203,7 @@ function resetErrorContainers() {
     }
     if(document.getElementById('fcpo_kls_birthday_invalid')) {
         document.getElementById('fcpo_kls_birthday_invalid').style.display = '';
-    }    
+    }
     if(document.getElementById('fcpo_kls_addinfo_invalid')) {
         document.getElementById('fcpo_kls_addinfo_invalid').style.display = '';
     }
@@ -276,7 +276,7 @@ function startCCRequest() {
         integrator_version : oForm.fcpo_integratorver.value,
         solution_name : 'fatchip',
         solution_version : oForm.fcpo_integratorextver.value
-        
+
     };
     if(sKKType == 'U') {
         data.cardsequencenumber = oForm["dynvalue[fcpo_kkcsn]"].value;
@@ -332,7 +332,7 @@ function checkOnlineUeberweisung() {
             document.getElementById('fcpo_ou_error_content').innerHTML = 'Zahlart ist nur in Deutschland verf&uuml;gbar.';
             document.getElementById('fcpo_ou_error').style.display = 'block';
             return false;
-        }        
+        }
         if(oForm['dynvalue[fcpo_sotype]'].value == 'PNT' && oForm.fcpo_bill_country.value == 'CH' && oForm.fcpo_currency.value == 'CHF') {
             oForm['dynvalue[fcpo_ou_blz]'].value = getCleanedNumber(oForm['dynvalue[fcpo_ou_blz]'].value);
             if(oForm['dynvalue[fcpo_ou_blz]'].value == '' || oForm['dynvalue[fcpo_ou_blz]'].value.length != 8) {
@@ -364,7 +364,7 @@ function checkOnlineUeberweisung() {
 function checkKlarna() {
     resetErrorContainers();
     var oForm = getPaymentForm();
-    
+
     if(oForm['dynvalue[fcpo_klv_fon]']) {
         oForm['dynvalue[fcpo_klv_fon]'].value = oForm['dynvalue[fcpo_klv_fon]'].value.trim();
         if(oForm['dynvalue[fcpo_klv_fon]'].value == '') {
@@ -402,7 +402,7 @@ function checkKlarna() {
     if(oForm['dynvalue[fcpo_klv_confirm]']) {
         if(!oForm['dynvalue[fcpo_klv_confirm]'][1].checked) {
             document.getElementById('fcpo_klv_confirmation_missing').style.display = 'block';
-            return false;        
+            return false;
         }
     }
     return true;
@@ -464,11 +464,11 @@ function startELVRequest() {
         if(oForm['dynvalue[fcpo_elv_ktonr]'].value == '' || oForm['dynvalue[fcpo_elv_ktonr]'].value.length > 10) {
             document.getElementById('fcpo_elv_ktonr_invalid').style.display = 'block';
             return false;
-        }   
+        }
         if(oForm['dynvalue[fcpo_elv_blz]'].value == '' || oForm['dynvalue[fcpo_elv_blz]'].value.length != 8) {
             document.getElementById('fcpo_elv_blz_invalid').style.display = 'block';
             return false;
-        }     
+        }
     } else {
         if(oForm['dynvalue[fcpo_elv_iban]'].value == '' || oForm['dynvalue[fcpo_elv_iban]'].value.length > 34) {
             document.getElementById('fcpo_elv_iban_invalid').style.display = 'block';
@@ -479,11 +479,11 @@ function startELVRequest() {
             return false;
         }
     }
-    
+
     if(oForm.fcpo_checktype && oForm.fcpo_checktype.value == '-1') {
         oForm.submit();
         return false;
-    }        
+    }
 
     var sMode = getOperationMode('');
     var data = {
@@ -510,7 +510,7 @@ function startELVRequest() {
         data.bankaccount = oForm['dynvalue[fcpo_elv_ktonr]'].value;
         data.bankcode = oForm['dynvalue[fcpo_elv_blz]'].value;
     }
-    
+
     var options = {
         return_type : 'object',
         callback_function_name : 'processPayoneResponseELV'
@@ -536,7 +536,7 @@ function fcCheckPaymentSelection() {
             return checkOnlineUeberweisung();
         } else if(sCheckedValue == 'fcpoklarna') {
             return checkKlarna();
-        } 
+        }
     }
     return true;
 }
@@ -627,8 +627,8 @@ function fcDisableDebitInputsTypeBlz() {
 function fcHandleDebitInputsTypeIban() {
     var oForm = getPaymentForm();
     if((oForm['dynvalue[fcpo_elv_bic]'] && oForm['dynvalue[fcpo_elv_iban]'])) {
-        if(fcpoGetElvCountry() == 'DE' 
-            && (oForm['dynvalue[fcpo_elv_iban]'].value != '' || oForm['dynvalue[fcpo_elv_bic]'].value != '' )    
+        if(fcpoGetElvCountry() == 'DE'
+            && (oForm['dynvalue[fcpo_elv_iban]'].value != '' || oForm['dynvalue[fcpo_elv_bic]'].value != '' )
         ) {
             fcEnableDebitInputsTypeIban();
             fcDisableDebitInputsTypeBlz();
@@ -641,8 +641,8 @@ function fcHandleDebitInputsTypeIban() {
 function fcHandleDebitInputsTypeBlz() {
     var oForm = getPaymentForm();
     if((oForm['dynvalue[fcpo_elv_ktonr]'] && oForm['dynvalue[fcpo_elv_blz]'])) {
-        if(fcpoGetElvCountry() == 'DE' 
-            && (oForm['dynvalue[fcpo_elv_ktonr]'].value != '' || oForm['dynvalue[fcpo_elv_blz]'].value != '')    
+        if(fcpoGetElvCountry() == 'DE'
+            && (oForm['dynvalue[fcpo_elv_ktonr]'].value != '' || oForm['dynvalue[fcpo_elv_blz]'].value != '')
         ) {
             fcEnableDebitInputsTypeBlz();
             fcDisableDebitInputsTypeIban();
@@ -674,7 +674,7 @@ function fcpoHandleMandateCheckbox(oCheckbox) {
             oInput.setAttribute("name", "fcpoMandateCheckbox");
             oInput.setAttribute("id", "fcpoMandateCheckboxBottom");
             oInput.setAttribute("value", oCheckbox.checked);
-            document.getElementById("orderConfirmAgbBottom").appendChild(oInput);            
+            document.getElementById("orderConfirmAgbBottom").appendChild(oInput);
         }
     }
 }
@@ -716,50 +716,56 @@ function startCCHostedRequest() { // Function called by submitting PAY-button
     return false;
 }
 
+/**
+ * Process hosted iframe cc data
+ *
+ * @param response
+ */
 function processPayoneResponseCCHosted(response) {
-    console.debug(response);
-    var validExpiration = validateCardExpireDate(response);
-    if (response.status === "VALID" && validExpiration) {
+    response = validateCardExpireDate(response);
+    console.log(response);
+    if (response.status === "VALID") {
         var oForm = getPaymentForm();
         oForm["dynvalue[fcpo_pseudocardpan]"].value = response.pseudocardpan;
         oForm["dynvalue[fcpo_ccmode]"].value = getOperationMode(fcpoGetCreditcardType());
         oForm["dynvalue[fcpo_kknumber]"].value = response.truncatedcardpan;
         oForm.submit();
+    } else {
+        document.getElementById('errorOutput').innerHTML = response.errormessage;
     }
 }
 
 /**
  * validates the expiredate given in response
- * 
- * @param   object response
+ *
+ * @param object response
  * @returns bool
  */
 function validateCardExpireDate(response) {
-    // current year month string has to be set into format YYMM
-    var fullMonth = new Array("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12");
-    var currentDate = new Date();
-    var fullYear = currentDate.getFullYear(); // need to use full year because getYear() is broken due to Y2K-Bug
-    var month = currentDate.getMonth();
-    month = fullMonth[month];
-    var year = fullYear.toString();
-    year = year.substr(2,4);
-    
-    var currentYearMonth = year + month;
-    var responseYearMonth = response.cardexpiredate;
-    responseYearMonth = responseYearMonth.toString();
-    
-    var expireDateValid = false;
-    if (responseYearMonth > currentYearMonth) {
-        expireDateValid = true;
+    if (response.status === "VALID") {
+        // current year month string has to be set into format YYMM
+        var fullMonth = new Array("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12");
+        var currentDate = new Date();
+        var fullYear = currentDate.getFullYear(); // need to use full year because getYear() is broken due to Y2K-Bug
+        var month = currentDate.getMonth();
+        month = fullMonth[month];
+        var year = fullYear.toString();
+        year = year.substr(2, 4);
+        var currentYearMonth = year + month;
+        var responseYearMonth = response.cardexpiredate;
+        responseYearMonth = responseYearMonth.toString();
+        if (responseYearMonth <= currentYearMonth) {
+            response.status = 'INVALID';
+            response.errormessage = 'Verfallsdatum der Karte erreicht. Bitte nutzen Sie eine andere Karte.';
+        }
     }
-    
-    return expireDateValid;
-}
 
+    return response;
+}
 
 /**
  * Creates payone form input fields and appends it at the form end
- * 
+ *
  * @param   {type} oForm
  * @param   {type} sName
  * @param   {type} sValue
@@ -770,10 +776,9 @@ function fcSetPayoneInput(oForm, sName, sValue) {
     oForm.insertAdjacentHTML('beforeend', sInput);
 }
 
-
 /**
  * Sets payone form input fields
- * 
+ *
  * @param   {type} oForm
  * @returns {undefined}
  */
@@ -785,13 +790,13 @@ function fcSetPayoneInputFields(oForm) {
             sInputName = sInputName.replace('dynvalue_', '');
             sInputName = 'dynvalue['+sInputName+']';
         }
-         fcSetPayoneInput(oForm, sInputName, sInputValue);
+        fcSetPayoneInput(oForm, sInputName, sInputValue);
     }
 }
 
 /**
  * Triggers precheck for payolution installment via ajax
- * 
+ *
  * @param void
  */
 $('#payolution_installment_check_availability').click(
@@ -803,20 +808,20 @@ $('#payolution_installment_check_availability').click(
         var formParams = '{';
         $('[name^="dynvalue"]').each(
             function(key, value) {
-                var formType = $(this).attr('type'); 
+                var formType = $(this).attr('type');
                 var rawName = $(this).attr("name");
-        
+
                 var regExp = /\[([^)]+)\]/;
                 var matches = regExp.exec(rawName);
                 if (matches === null) {
                     return true;
                 }
-        
+
                 var nameInBrackets = matches[1];
                 if (key > 0 && formParams != '{') {
                     formParams += ', ';
                 }
-        
+
                 if (formType == 'checkbox') {
                     var inputValue = '';
                     if ($(this).is(':checked')) {
@@ -830,7 +835,7 @@ $('#payolution_installment_check_availability').click(
             }
         );
         formParams += '}';
-    
+
         $.ajax(
             {
                 url: 'modules/fc/fcpayone/application/models/fcpayone_ajax.php',
@@ -865,13 +870,13 @@ $('#payolution_installment_check_availability').click(
                     );
                 }
             }
-        );    
+        );
     }
 );
 
 /**
  * Reaction on changes on radio interest selection
- * 
+ *
  * @param  void
  * @return void
  */
@@ -883,7 +888,7 @@ $('#payolution_installment_check_availability').click(
         s = d.getElementsByTagName(t)[0];
     g.src = 'https://secure.pay1.de/client-api/js/ajax.js';
     s.parentNode.insertBefore(g, s);
-    
+
     var oForm = getPaymentForm();
     if (oForm) {
         fcSetPayoneInputFields(oForm);
@@ -894,11 +899,11 @@ $('#payolution_installment_check_availability').click(
         if(oForm["dynvalue[fcpo_elv_country]"]) {
             fcCheckDebitCountry(oForm["dynvalue[fcpo_elv_country]"]);
         }
-        oForm.onsubmit = function(e){
-            if (fcCheckPaymentSelection() == false ) {
+        $(oForm).on('submit', function(e){
+            if ( fcCheckPaymentSelection() == false ) {
                 e.preventDefault();
             }
-        };
+        });
     }
     setTimeout(
         function(){
@@ -907,5 +912,5 @@ $('#payolution_installment_check_availability').click(
             }
         }, 2000
     );
-    
+
 }(document, 'script'));

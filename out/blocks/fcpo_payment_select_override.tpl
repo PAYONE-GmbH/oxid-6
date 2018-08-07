@@ -1,11 +1,7 @@
 [{assign var="aFcPoCCPaymentMetaData" value=$oView->fcpoGetCCPaymentMetaData()}]
 [{assign var="aFcPoOnlinePaymentMetaData" value=$oView->fcpoGetOnlinePaymentMetaData()}]
 [{assign var="dynvalue" value=$oView->getDynValue()}]
-[{if method_exists($oViewConf, 'getActiveTheme') && $oViewConf->getActiveTheme() == 'flow'}]
-    [{assign var="sFcPoTemplatePath" value='flow'}]
-[{else}]
-    [{assign var="sFcPoTemplatePath" value='azure'}]
-[{/if}]
+[{assign var="sFcPoTemplatePath" value=$oView->fcpoGetActiveThemePath()}]
 
 [{if $sPaymentID == "fcpocreditcard" && $oView->fcpoGetCreditcardType() == "ajax"}]
     [{assign var="sFcPoTemplatePath" value=$sFcPoTemplatePath|cat:'/fcpo_payment_creditcard_ajax.tpl'}]

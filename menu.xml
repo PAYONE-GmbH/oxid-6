@@ -8,11 +8,6 @@
         </MAINMENU>
     </OXMENU>
     <OXMENU id="fcpo_admin_title">
-        <MAINMENU id="fcpo_admin_information">
-            <SUBMENU id="fcpo_admin_common" cl="fcpayone_common" list="fcpayone_common_list">
-                <TAB id="tbclcountry_main" cl="fcpayone_common_main" />
-            </SUBMENU>
-        </MAINMENU>
         <MAINMENU id="fcpo_admin_config">
             <SUBMENU id="mxpaymeth" cl="admin_payment" list="payment_list"></SUBMENU>
             <SUBMENU id="fcpo_admin_config_payment" cl="fcpayone_admin" list="fcpayone_list">

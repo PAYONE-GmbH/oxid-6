@@ -225,9 +225,10 @@ $aModule = array(
     ),
 );
 
-if(class_exists('fcpohelper')) {
-    $sShopEdition = fcpohelper::fcpoGetStaticConfig()->getActiveShop()->oxshops__oxedition->value;
-    if($sShopEdition == 'EE') {
+if(class_exists('\OxidEsales\Facts\Facts')) {
+    $oFacts = new \OxidEsales\Facts\Facts();
+    $sShopEdition = $oFacts->getEdition();
+    if($sShopEdition == \OxidEsales\Facts\Edition\EditionSelector::ENTERPRISE) {
         $aModule['blocks'][] = array(
                 'template' => 'roles_bemain.tpl',
                 'block' => 'admin_roles_bemain_form',

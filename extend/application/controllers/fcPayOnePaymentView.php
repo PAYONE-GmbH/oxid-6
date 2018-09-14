@@ -2553,9 +2553,8 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     public function fcpoKlarnaIsBirthdayNeeded() 
     {
         $oUser = $this->getUser();
-        $oCountry = $oUser->getUserCountry();
         $sBirthdate = $oUser->oxuser__oxbirthdate->value;
-        $sUserCountryIso2 = $oCountry->oxcountry__oxisoalpha2->value;
+        $sUserCountryIso2 = strtoupper($this->fcGetBillCountry());
         $blNoBirthdaySet = (!$sBirthdate || $sBirthdate == '0000-00-00');
         $blInCountryList = in_array($sUserCountryIso2, $this->_aKlarnaBirthdayNeededCountries);
         $blBirthdayNeeded = (bool) ($blInCountryList && $blNoBirthdaySet);

@@ -1,3 +1,19 @@
+==1.0.9.==
+New Features
+
+* added generic error for failed redirect payments
+* made cc request error response visible to customer
+
+Bugfixes
+
+* various test fixes (thx @robertblank)
+
+Maintenance
+
+* Renamed Payolution to Paysafe Pay Later
+* updated bankgroups
+* removed deprecated support page
+
 ==1.0.8==
 * Fixed unit tests
 * Removed Support Link from backend menu

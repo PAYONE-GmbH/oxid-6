@@ -1654,12 +1654,12 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
         $oMockCountry = new stdClass();
         $oMockCountry->oxcountry__oxisoalpha2 = new oxField('DE');
 
-        $oMockUser = $this->getMock('oxUser', array('getUserCountry'));
-        $oMockUser->expects($this->any())->method('getUserCountry')->will($this->returnValue($oMockCountry));
+        $oMockUser = oxNew('oxUser');
         $oMockUser->oxuser__oxbirthdate = new oxField('0000-00-00');
 
-        $oTestObject = $this->getMock('fcPayOnePaymentView', array('getUser'));
+        $oTestObject = $this->getMock('fcPayOnePaymentView', array('getUser', 'fcGetBillCountry'));
         $oTestObject->expects($this->any())->method('getUser')->will($this->returnValue($oMockUser));
+        $oTestObject->expects($this->any())->method('fcGetBillCountry')->will($this->returnValue('DE'));
 
         $this->assertEquals(true, $oTestObject->fcpoKlarnaIsBirthdayNeeded());
     }

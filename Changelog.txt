@@ -1,3 +1,8 @@
+==1.0.10==
+Bugfixes
+
+* fixed unit tests
+
 ==1.0.9.==
 New Features
 

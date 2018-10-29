@@ -23,14 +23,14 @@
         <link href="[{$oViewConf->fcpoGetModuleCssPath('lightview.css')}]" rel="stylesheet">
         <script src="[{$oViewConf->fcpoGetModuleJsPath('jquery-1.10.1.min.js')}]"></script>
         <script src="[{$oViewConf->fcpoGetModuleJsPath()}]lightview/lightview.js"></script>
-        [{if $oView->fcpoShowB2B()}]        
+        [{if $oView->fcpoShowPayolutionB2B()}]
             <div class="form-group fcpo_payolution_bill_oxustid">
                 <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_PAYOLUTION_USTID"}]</label>
                 <div class="col-lg-9">
                     <input class="form-control" type="text" size="20" maxlength="64" name="dynvalue[fcpo_payolution_bill_oxustid]" value="[{$oView->fcpoGetUserValue('oxustid')}]">
                 </div>
             </div>
-        [{elseif $oView->fcpoShowB2C()}]
+        [{elseif $oView->fcpoShowPayolutionB2C()}]
             <div class="form-group fcpo_payolution_bill_birthdate">
                 <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_PAYOLUTION_BIRTHDATE"}]</label>
                 <div class="col-lg-9">

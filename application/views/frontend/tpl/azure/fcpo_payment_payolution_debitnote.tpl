@@ -29,7 +29,7 @@
                     [{oxmultilang ident="FCPO_ERROR"}]<div id="fcpo_elv_error_content"></div>
                 </div>
             </li>
-            [{if $oView->fcpoShowB2C()}]
+            [{if $oView->fcpoShowPayolutionB2C()}]
                 <li>
                     <label>[{oxmultilang ident="FCPO_PAYOLUTION_BIRTHDATE"}]</label>
                     <select name="dynvalue[fcpo_payolution_debitnote_birthdate_day]">

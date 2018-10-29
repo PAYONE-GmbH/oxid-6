@@ -23,7 +23,7 @@
         <script src="[{$oViewConf->fcpoGetModuleJsPath()}]lightview/lightview.js"></script>
         <input type="hidden" name="fcpo_mode_[{$sPaymentID}]" value="[{$paymentmethod->fcpoGetOperationMode()}]">
         
-        [{if $oView->fcpoShowB2C()}]
+        [{if $oView->fcpoShowPayolutionB2C()}]
             <div class="form-group cpo_payolution_debitnote_birthdate">
                 <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_PAYOLUTION_BIRTHDATE"}]</label>
                 <div class="col-lg-9">

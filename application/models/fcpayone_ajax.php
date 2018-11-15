@@ -75,8 +75,79 @@ class fcpayone_ajax extends oxBase
         parent::__construct();
         $this->_oFcpoHelper = oxNew('fcpohelper');
     }
-    
-    
+
+    /**
+     * Triggers a call on payoneapi for handling ajax calls for referencedetails
+     *
+     * @param $sParamsJson
+     * @return void
+     */
+    public function fcpoGetAmazonReferenceId($sParamsJson)
+    {
+        $oSession = $this->_oFcpoHelper->fcpoGetSession();
+        $aParams = json_decode($sParamsJson, true);
+        $sAmazonReferenceId = $aParams['fcpoAmazonReferenceId'];
+        $oSession->deleteVariable('fcpoAmazonReferenceId');
+        $oSession->setVariable('fcpoAmazonReferenceId', $sAmazonReferenceId);
+        $sAmazonLoginAccessToken = $oSession->getVariable('sAmazonLoginAccessToken');
+
+        // do the call cascade
+        $this->_fcpoHandleGetOrderReferenceDetails($sAmazonReferenceId, $sAmazonLoginAccessToken);
+        $this->_fcpoHandleSetOrderReferenceDetails($sAmazonReferenceId, $sAmazonLoginAccessToken);
+    }
+
+    /**
+     * Triggers call setorderreferencedetails
+     *
+     * @param $sAmazonReferenceId
+     * @param $sAmazonLoginAccessToken
+     * @return void
+     */
+    protected function _fcpoHandleSetOrderReferenceDetails($sAmazonReferenceId, $sAmazonLoginAccessToken)
+    {
+        $oUtils = $this->_oFcpoHelper->fcpoGetUtils();
+        $oRequest = $this->_oFcpoHelper->getFactoryObject('fcporequest');
+        $sWorkorderId = $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoAmazonWorkorderId');
+
+        $aResponse = $oRequest->sendRequestSetAmazonOrderReferenceDetails($sAmazonReferenceId, $sAmazonLoginAccessToken, $sWorkorderId);
+
+        if ($aResponse['status'] == 'OK') {
+            $oUser = $this->_oFcpoHelper->getFactoryObject('oxuser');
+            $oUser->fcpoSetAmazonOrderReferenceDetailsResponse($aResponse);
+        } else {
+            $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+            $sShopUrl = $oConfig->getShopUrl();
+            $oUtils->redirect($sShopUrl . "index.php?cl=basket");
+        }
+    }
+
+    /**
+     * Triggers call getorderreferencedetails
+     *
+     * @param $sAmazonReferenceId
+     * @param $sAmazonLoginAccessToken
+     * @return void
+     */
+    protected function _fcpoHandleGetOrderReferenceDetails($sAmazonReferenceId, $sAmazonLoginAccessToken)
+    {
+        $oUtils = $this->_oFcpoHelper->fcpoGetUtils();
+        $oRequest = $this->_oFcpoHelper->getFactoryObject('fcporequest');
+
+        $aResponse = $oRequest->sendRequestGetAmazonOrderReferenceDetails($sAmazonReferenceId, $sAmazonLoginAccessToken);
+
+        if ($aResponse['status'] == 'OK') {
+            $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoAmazonWorkorderId');
+            $this->_oFcpoHelper->fcpoSetSessionVariable('fcpoAmazonWorkorderId', $aResponse['workorderid']);
+            $this->_oFcpoHelper->fcpoDeleteSessionVariable('paymentid');
+            $this->_oFcpoHelper->fcpoSetSessionVariable('paymentid', 'fcpoamazonpay');
+        } else {
+            $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+            $sShopUrl = $oConfig->getShopUrl();
+            $oUtils->redirect($sShopUrl . "index.php?cl=basket");
+        }
+    }
+
+
     /**
      * Performs a precheck for payolution installment
      * 
@@ -303,4 +374,9 @@ if ($sPaymentId) {
             echo $oPayoneAjax->fcpoParseCalculation2Html($mResult);
         }
     }
+
+    if ($sAction == 'get_amazon_reference_details' && $sPaymentId == 'fcpoamazonpay') {
+        $oPayoneAjax->fcpoGetAmazonReferenceId($sParamsJson);
+    }
+
 }

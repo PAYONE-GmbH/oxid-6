@@ -882,7 +882,90 @@
             </dl>      
         </div>
     </div>
-                
+
+    <div class="groupExp">
+        <div>
+            <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="FCPO_CONFIG_GROUP_AMAZONPAY"}]</b></a>
+            <dl>
+                <dt>
+                    <input type="text" class="txt" name="confstrs[sFCPOAmazonPaySellerId]" value="[{$confstrs.sFCPOAmazonPaySellerId}]" disabled>
+                    [{oxinputhelp ident="FCPO_HELP_AMAZONPAY_SELLERID"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_AMAZONPAY_SELLERID"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+            <dl>
+                <dt>
+                    <input type="text" class="txt" name="confstrs[sFCPOAmazonPayClientId]" value="[{$confstrs.sFCPOAmazonPayClientId}]" disabled>
+                    [{oxinputhelp ident="FCPO_HELP_AMAZONPAY_CLIENTID"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_AMAZONPAY_CLIENTID"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+            <dl>
+                <dt><input type="submit" class="edittext" name="getAmazonPayConfiguration" value="[{oxmultilang ident="FCPO_AMAZONPAY_GET_CONFIG"}]" onClick="Javascript:document.myedit.fnc.value='save'" [{$readonly}]></dt>
+                <dd></dd>
+                <div class="spacer"></div>
+            </dl>
+            <dl>
+                <dt>
+                    <select name="confstrs[sFCPOAmazonButtonType]">
+                        <option value="PwA" [{if $confstrs.sFCPOAmazonButtonType == "PwA"}]selected[{/if}]>[{oxmultilang ident="FCPO_AMAZONPAY_BUTTON_TYPE_PwA"}]</option>
+                        <option value="Pay" [{if $confstrs.sFCPOAmazonButtonType == "Pay"}]selected[{/if}]>[{oxmultilang ident="FCPO_AMAZONPAY_BUTTON_TYPE_Pay"}]</option>
+                        <option value="A" [{if $confstrs.sFCPOAmazonButtonType == "A"}]selected[{/if}]>[{oxmultilang ident="FCPO_AMAZONPAY_BUTTON_TYPE_A"}]</option>
+                    </select>
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_AMAZONPAY_BUTTON_TYPE"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+            <dl>
+                <dt>
+                    <select name="confstrs[sFCPOAmazonButtonColor]">
+                        <option value="Gold" [{if $confstrs.sFCPOAmazonButtonColor == "Gold"}]selected[{/if}]>[{oxmultilang ident="FCPO_AMAZONPAY_BUTTON_COLOR_GOLD"}]</option>
+                        <option value="LightGray" [{if $confstrs.sFCPOAmazonButtonColor == "LightGray"}]selected[{/if}]>[{oxmultilang ident="FCPO_AMAZONPAY_BUTTON_TYPE_LIGHT_GRAY"}]</option>
+                        <option value="DarkGray" [{if $confstrs.sFCPOAmazonButtonColor == "DarkGray"}]selected[{/if}]>[{oxmultilang ident="FCPO_AMAZONPAY_BUTTON_TYPE_DARKGRAY"}]</option>
+                    </select>
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_AMAZONPAY_BUTTON_COLOR"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+            <dl>
+                <dt>
+                    <select name="confstrs[sFCPOAmazonMode]">
+                        <option value="alwayssync" [{if $confstrs.sFCPOAmazonMode == "alwayssync"}]selected[{/if}]>[{oxmultilang ident="FCPO_AMAZONPAY_MODE_ALWAYSSYNC"}]</option>
+                        <option value="alwaysasync" [{if $confstrs.sFCPOAmazonMode == "alwaysasync"}]selected[{/if}]>[{oxmultilang ident="FCPO_AMAZONPAY_MODE_ALWAYSASYNC"}]</option>
+                        <option value="firstsyncthenasync" [{if $confstrs.sFCPOAmazonMode == "firstsyncthenasync"}]selected[{/if}]>[{oxmultilang ident="FCPO_AMAZONPAY_MODE_FIRSTSYNCTHENSYNC"}]</option>
+                    </select>
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_AMAZONPAY_MODE"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+            <dl>
+                <dt>
+                    <select name="confstrs[sFCPOAmazonLoginMode]">
+                        <option value="auto" [{if $confstrs.sFCPOAmazonLoginMode == "auto"}]selected[{/if}]>[{oxmultilang ident="FCPO_AMAZONPAY_LOGINMODE_AUTO"}]</option>
+                        <option value="popup" [{if $confstrs.sFCPOAmazonLoginMode == "popup"}]selected[{/if}]>[{oxmultilang ident="FCPO_AMAZONPAY_LOGINMODE_POPUP"}]</option>
+                        <option value="redirect" [{if $confstrs.sFCPOAmazonLoginMode == "redirect"}]selected[{/if}]>[{oxmultilang ident="FCPO_AMAZONPAY_LOGINMODE_REDIRECT"}]</option>
+                    </select>
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_AMAZONPAY_LOGINMODE"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+        </div>
+    </div>
+
     <br>
     <input type="submit" class="edittext" name="save" value="[{oxmultilang ident="GENERAL_SAVE"}]" onClick="Javascript:document.myedit.fnc.value='save'" [{$readonly}]>
     <input type="submit" class="edittext" name="export" value="[{oxmultilang ident="FCPO_EXPORT_CONFIG"}]" target="_blank" onClick="Javascript:document.myedit.fnc.value='export'" [{$readonly}]>

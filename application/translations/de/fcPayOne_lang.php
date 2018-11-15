@@ -172,6 +172,22 @@ $aLang = array(
 'FCPO_RATEPAY_USTID'                            => 'Umsatzsteueridentifiationsnummer (USt-IdNr.)',
 'FCPO_RATEPAY_NO_USTID'                         => 'Bei Firmenbestellungen ist die Angabe der Umsatzsteueridentifiationsnummer (USt-IdNr.) notwendig',
 'FCPO_RATEPAY_NO_SUFFICIENT_DATA'               => 'Es fehlen einige persönliche Angaben zu Ihrer Person. Bitte füllen Sie die eingeblendeten Felder aus.',
+'FCPO_AMAZON_SELECT_ADDRESS'                    => 'Adresse aus dem Amazon-Adressbuch auswählen',
+'FCPO_AMAZON_SELECT_PAYMENT'                    => 'Zahlungsart aus der Amazon-Brieftasche auswählen',
+'FCPO_AMAZON_LOGOFF'                            => 'Den Amazon Pay Bestellprozess beenden und zurück zum Standard-Checkout',
+'FCPO_AMAZON_PROBLEM'                           => 'Es gibt ein Problem',
+'FCPO_AMAZON_NO_SHIPPING_TO_COUNTRY'            => 'Für das Land Ihrer angegebene Adresse existiert keine Versandmöglichkeit. Bitte klicken Sie <a href="index.php?cl=user" style="color:green;">hier</a> um zur Adressauswahl zurückzukehren.',
+'FCPO_AMAZON_THANKYOU_MESSAGE'                  => 'Ihre Zahlung mit Amazon Pay ist derzeit noch in Prüfung.Bitte beachten Sie, dass wir uns mit Ihnen in Kürze per Email in Verbindung setzen werden, falls noch Unklarheiten bestehen sollten.',
+'FCPO_AMAZON_ERROR_TRANSACTION_TIMED_OUT'       => 'Entschuldigung, die Transaktion mit Amazon Pay war nicht erfolgreich. Bitte wählen Sie eine andere Zahlart.',
+'FCPO_AMAZON_ERROR_INVALID_PAYMENT_METHOD'      => 'Entschuldigung, die Transaktion mit Amazon Pay war nicht erfolgreich. Bitte Überprüfen Sie Ihre Daten und wählen Sie eine anderen Zahlungsart.',
+'FCPO_AMAZON_ERROR_REJECTED'                    => 'Entschuldigung, die Transaktion mit Amazon Pay war nicht erfolgreich. Bitte wählen Sie eine andere Zahlart.',
+'FCPO_AMAZON_ERROR_PROCESSING_FAILURE'          => 'Entschuldigung, die Transaktion mit Amazon Pay war nicht erfolgreich. Bitte wählen Sie eine andere Zahlart.',
+'FCPO_AMAZON_ERROR_BUYER_EQUALS_SELLER'         => 'Entschuldigung, die Transaktion mit Amazon Pay war nicht erfolgreich. Bitte wählen Sie eine andere Zahlart.',
+'FCPO_AMAZON_ERROR_PAYMENT_NOT_ALLOWED'         => 'Entschuldigung, die Transaktion mit Amazon Pay war nicht erfolgreich. Bitte wählen Sie eine andere Zahlart.',
+'FCPO_AMAZON_ERROR_PAYMENT_PLAN_NOT_SET'        => 'Entschuldigung, die Transaktion mit Amazon Pay war nicht erfolgreich. Bitte wählen Sie eine andere Zahlart.',
+'FCPO_AMAZON_ERROR_SHIPPING_ADDRESS_NOT_SET'    => 'Bitte wählen Sie eine Adresse.',
+'FCPO_AMAZON_ERROR_900'                         => 'Entschuldigung, die Transaktion mit Amazon Pay war nicht erfolgreich. Bitte wählen Sie eine andere Zahlart.',
+'FCPO_AMAZON_LOGIN'                             => 'Mit Amazon einloggen.',
 );
 
 /*

@@ -165,6 +165,21 @@ $aLang = array(
 'FCPO_PAYOLUTION_INSTALLMENT_FINANCING_SUM'     => 'Total',
 'FCPO_PAYOLUTION_INSTALLMENT_NOT_YET_SELECTED'  => 'Please choose',
 'FCPO_PAYOLUTION_NO_INSTALLMENT_SELECTED'       => 'You did not choose an installment.',
+'FCPO_AMAZON_SELECT_ADDRESS'                    => 'Choose Shipping-Address from Amazon-Addressbook',
+'FCPO_AMAZON_SELECT_PAYMENT'                    => 'Choose Payment from Amazon-Wallet',
+'FCPO_AMAZON_LOGOFF'                            => 'Stop AmazonPay and go back to standard checkout',
+'FCPO_AMAZON_PROBLEM'                           => 'There is a problem',
+'FCPO_AMAZON_NO_SHIPPING_TO_COUNTRY'            => 'There is no shipping possibility for your selected delivery country. Please click <a href="index.php?cl=user" style="color:green;">here</a> for returning to address selection.',
+'FCPO_AMAZON_THANKYOU_MESSAGE'                  => 'Your transaction with Amazon Pay is currently beeing validated. Please be aware that we wil inform you shortly as needed.',
+'FCPO_AMAZON_ERROR_TRANSACTION_TIMED_OUT'       => 'Sorry, your transaction with Amazon Pay was not successful. Please choose another payment method.',
+'FCPO_AMAZON_ERROR_INVALID_PAYMENT_METHOD'      => 'Please choose another payment method.',
+'FCPO_AMAZON_ERROR_REJECTED'                    => 'Sorry, your transaction with Amazon Pay was not successful. Please choose another payment method.',
+'FCPO_AMAZON_ERROR_PROCESSING_FAILURE'          => 'Please choose another payment method.',
+'FCPO_AMAZON_ERROR_BUYER_EQUALS_SELLER'         => 'Please choose another payment method.',
+'FCPO_AMAZON_ERROR_PAYMENT_NOT_ALLOWED'         => 'Please choose another payment method.',
+'FCPO_AMAZON_ERROR_PAYMENT_PLAN_NOT_SET'        => 'Please choose payment method.',
+'FCPO_AMAZON_ERROR_SHIPPING_ADDRESS_NOT_SET'    => 'Please choose an address',
+'FCPO_AMAZON_ERROR_900'                         => 'Please choose another payment method.',
 );
 
 /*

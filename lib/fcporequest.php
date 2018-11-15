@@ -105,6 +105,7 @@ class fcpoRequest extends oxSuperCfg
         'backurl',
         'clearingtype',
         'currency',
+        'customerid',
         'de',
         'encoding',
         'id',
@@ -119,7 +120,13 @@ class fcpoRequest extends oxSuperCfg
         'va',
         'key'
     );
-    
+
+    /**
+     * Used api version
+     * @var string
+     */
+    protected $_sApiVersion = '3.10';
+
     /**
      * List of RatePay related payment Ids
      *
@@ -478,6 +485,21 @@ class fcpoRequest extends oxSuperCfg
         case 'fcporp_bill':
             $blAddRedirectUrls = $this->_fcpoAddRatePayParameters($oOrder);
             break;
+        case 'fcpoamazonpay':
+            $blAddRedirectUrls = $this->_fcpoAddAmazonPayParameters($oOrder);
+            $this->addParameter('api_version', $this->_sApiVersion);
+            // TODO STEF check why unsetting is neccessary
+            /* unset($this->_aParameters['company']);
+            unset($this->_aParameters['shipping_company']);
+            unset($this->_aParameters['addressaddition']);
+            unset($this->_aParameters['shipping_addressaddition']);
+            unset($this->_aParameters['vatid']);
+            unset($this->_aParameters['telephonenumber']);
+            unset($this->_aParameters['customerid']);
+            */
+            // sending customerid leads to error  1339 state faulty or missing
+            unset($this->_aParameters['customerid']);
+            break;
         default:
             return false;
         }
@@ -744,13 +766,111 @@ class fcpoRequest extends oxSuperCfg
 
         $blPayMethodIsKnown = $this->setAuthorizationParameters($oOrder, $oUser, $aDynvalue, $sRefNr, $blIsPreAuth);
         if ($blPayMethodIsKnown === true) {
-            if (fcPayOnePayment::fcIsPayOneFrontendApiPaymentType($oOrder->oxorder__oxpaymenttype->value)) {
-                return $this->_handleFrontendApiCall();
+            $mOutput = $this->send();
+            if ($oOrder->oxorder__oxpaymenttype->value == 'fcpoamazonpay') {
+                $mOutput = $this->_fcpoHandleAmazonAuthorizationResponse($mOutput);
             }
-            return $this->send();
+            return $mOutput;
         } else {
             return false;
         }
+    }
+
+    /**
+     * Analyze response of amazon pay authorization call and try recalling with async
+     * depending on configuration
+     *
+     * @param $mOutput
+     * @return mixed array|bool
+     */
+    protected function _fcpoHandleAmazonAuthorizationResponse($mOutput) {
+        $blPassThrough = (is_bool($mOutput) || (is_array($mOutput) && $mOutput['status'] == 'APPROVED'));
+        if ($blPassThrough) {
+            return $mOutput;
+        }
+
+        $mOutput = $this->_fcpoAmazonPayCheckPending($mOutput);
+        $mOutput = $this->_fcpoAmazonPayCheckTransactionTimedOut($mOutput);
+        $mOutput = $this->_fcpoAmazonPayCheckInvalidPaymentMethod($mOutput);
+
+        return $mOutput;
+    }
+
+    /**
+     * Check if order has state pending. If this is the case set a session variable for later actions
+     *
+     * @param $mOutput
+     * @return mixed
+     */
+    protected function _fcpoAmazonPayCheckPending($mOutput) {
+        $blIsPending = (
+            $mOutput['status'] == 'PENDING'
+        );
+
+        if ($blIsPending) {
+            $this->_oFcpoHelper->fcpoSetSessionVariable('fcpoAmazonPayOrderIsPending', true);
+        }
+
+        return $mOutput;
+    }
+
+    /**
+     * Check if invalid payment method has been selected
+     *
+     * @param $mOutput
+     * @return mixed
+     */
+    protected function _fcpoAmazonPayCheckInvalidPaymentMethod($mOutput) {
+        $blRetryWithAddressLocked = (
+            $mOutput['status'] == 'ERROR' &&
+            $mOutput['errorcode'] == '981'
+        );
+
+        if ($blRetryWithAddressLocked) {
+            $this->_oFcpoHelper->fcpoSetSessionVariable('fcpoAmazonPayAddressWidgetLocked', true);
+        }
+
+        return $mOutput;
+    }
+
+    /**
+     * Check if there is a timeout. If true, method will handle this case
+     *
+     * @param $mOutput
+     * @return mixed
+     */
+    protected function _fcpoAmazonPayCheckTransactionTimedOut($mOutput) {
+        $oConfig = $this->getConfig();
+        $sAmazonMode = $oConfig->getConfigParam('sFCPOAmazonMode');
+
+        $blRetryWithAsync = (
+            $mOutput['status'] == 'ERROR' &&
+            $mOutput['errorcode'] == '980' &&
+            $sAmazonMode == 'firstsyncthenasync'
+        );
+
+        if ($blRetryWithAsync) {
+            $iAmazonTimeOut = $this->_fcpoGetAmazonTimeout('alwaysasync');
+            $this->addParameter('add_paydata[amazon_timeout]', $iAmazonTimeOut);
+            $mOutput = $this->send();
+        }
+
+        return $mOutput;
+    }
+
+    /**
+     * Returns to basket with optional custom message
+     *
+     * @param null $sCustomMessage
+     * @return void
+     */
+    protected function _fcpoReturnToBasket($blLogout=true) {
+        $oConfig = $this->getConfig();
+
+        // @todo: Redirect to basket with message, currently redirect without comment
+        $oUtils = $this->_oFcpoHelper->fcpoGetUtils();
+        $sShopUrl = $oConfig->getShopUrl();
+        $oUtils->redirect($sShopUrl."index.php?cl=basket?");
     }
 
     /**
@@ -970,6 +1090,60 @@ class fcpoRequest extends oxSuperCfg
         }
 
         return $dReturnPrice;
+    }
+
+    protected function _fcpoAddAmazonPayParameters($oOrder) {
+        $oUser = $oOrder->getOrderUser();
+        $oViewConf = $this->_oFcpoHelper->getFactoryObject('oxViewConfig');
+        $oConfig = $this->getConfig();
+
+        $sAmazonWorkorderId = $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoAmazonWorkorderId');
+        $sAmazonAddressToken = $this->_oFcpoHelper->fcpoGetSessionVariable('sAmazonLoginAccessToken');
+        $sAmazonReferenceId = $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoAmazonReferenceId');
+        $iAmazonTimeout = $this->_fcpoGetAmazonTimeout();
+
+        $this->addParameter('clearingtype', 'wlt');
+        $this->addParameter('wallettype', 'AMZ');
+        $this->addParameter('workorderid', $sAmazonWorkorderId);
+        $this->addParameter('add_paydata[amazon_reference_id]', $sAmazonReferenceId);
+        $this->addParameter('add_paydata[amazon_address_token]', $sAmazonAddressToken);
+        $this->addParameter('add_paydata[amazon_timeout]', $iAmazonTimeout);
+        $this->addParameter('email', $oViewConf->fcpoAmazonEmailDecode($oUser->oxuser__oxusername->value));
+
+        $sAmazonMode = $oConfig->getConfigParam('sFCPOAmazonMode');
+        if ($sAmazonMode == 'alwayssync') {
+            $this->addParameter('add_paydata[cancel_on_timeout]', 'yes');
+        }
+
+        return true;
+    }
+
+    /**
+     * Handles the timeout that should be used wether amazon will be used
+     * in sync, async or compined mode
+     *
+     * @param $sAmazonMode
+     * @return int
+     */
+    protected function _fcpoGetAmazonTimeout($sAmazonMode = null) {
+        $oConfig = $this->getConfig();
+        if ($sAmazonMode === null) {
+            $sAmazonMode = $oConfig->getConfigParam('sFCPOAmazonMode');
+        }
+
+        switch($sAmazonMode) {
+            case 'alwayssync':
+            case 'firstsyncthenasync':
+                $iAmazonTimeout = 0;
+                break;
+            case 'alwaysasync':
+                $iAmazonTimeout = 1440;
+                break;
+            default:
+                $iAmazonTimeout = 1440;
+        }
+
+        return $iAmazonTimeout;
     }
 
     /**
@@ -1338,6 +1512,104 @@ class fcpoRequest extends oxSuperCfg
     }
 
     /**
+     * Requests amazon configuration
+     *
+     * @param void
+     * @return array
+     */
+    public function sendRequestGetAmazonPayConfiguration()
+    {
+        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+
+        $this->addParameter('request', 'genericpayment'); //Request method
+        $this->addParameter('mode', $this->getOperationMode('fcpoamazonpay')); //PayOne Portal Operation Mode (live or test)
+        $this->addParameter('aid', $oConfig->getConfigParam('sFCPOSubAccountID')); //ID of PayOne Sub-Account
+
+        $this->addParameter('clearingtype', 'wlt');
+        $this->addParameter('wallettype', 'AMZ');
+
+        $this->addParameter('add_paydata[action]', 'getconfiguration');
+
+        $oCurr = $oConfig->getActShopCurrencyObject();
+        $this->addParameter('currency', $oCurr->name);
+
+        return $this->send();
+    }
+
+    /**
+     * Sends request for receiving amazon addressdata
+     *
+     * @param string $sAmazonReferenceId
+     * @param string $sAmazonAddressToken
+     * @return array
+     */
+    public function sendRequestGetAmazonOrderReferenceDetails($sAmazonReferenceId, $sAmazonAddressToken) {
+        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+        $oSession = $this->getSession();
+        $oBasket = $oSession->getBasket();
+        $oPrice = $oBasket->getPrice();
+
+        $this->addParameter('request', 'genericpayment'); //Request method
+        $this->addParameter('mode', $this->getOperationMode('fcpoamazonpay')); //PayOne Portal Operation Mode (live or test)
+        $this->addParameter('aid', $oConfig->getConfigParam('sFCPOSubAccountID')); //ID of PayOne Sub-Account
+
+        $this->addParameter('clearingtype', 'wlt');
+        $this->addParameter('amount', number_format($oPrice->getBruttoPrice(), 2, '.', '') * 100);
+        $this->addParameter('wallettype', 'AMZ');
+
+        $this->addParameter('add_paydata[action]', 'getorderreferencedetails');
+        $this->addParameter('add_paydata[amazon_reference_id]', $sAmazonReferenceId);
+        $this->addParameter('add_paydata[amazon_address_token]', $sAmazonAddressToken);
+
+        // check for existing workorderid due to situation could be a re-round-trip with another payment
+        $sWorkorderId = $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoAmazonWorkorderId');
+        if ($sWorkorderId) {
+            $this->addParameter('workorderid', $sWorkorderId);
+        }
+
+        $oCurr = $oConfig->getActShopCurrencyObject();
+        $this->addParameter('currency', $oCurr->name);
+
+        return $this->send();
+    }
+
+    /**
+     * Sends request for receiving amazon referenceid
+     *
+     * @param string $sAmazonReferenceId
+     * @param string $sAmazonAddressToken
+     * @return array
+     */
+    public function sendRequestSetAmazonOrderReferenceDetails($sAmazonReferenceId, $sAmazonAddressToken) {
+        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+        $sAmazonWorkorderId = $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoAmazonWorkorderId');
+        $oSession = $this->getSession();
+        $oBasket = $oSession->getBasket();
+        $oPrice = $oBasket->getPrice();
+
+
+        $this->addParameter('request', 'genericpayment'); //Request method
+        $this->addParameter('mode', $this->getOperationMode('fcpoamazonpay')); //PayOne Portal Operation Mode (live or test)
+        $this->addParameter('aid', $oConfig->getConfigParam('sFCPOSubAccountID')); //ID of PayOne Sub-Account
+
+        $this->addParameter('clearingtype', 'wlt');
+        $this->addParameter('wallettype', 'AMZ');
+
+        $this->addParameter('add_paydata[action]', 'setorderreferencedetails');
+        $this->addParameter('add_paydata[amazon_reference_id]', $sAmazonReferenceId);
+        $this->addParameter('add_paydata[amazon_address_token]', $sAmazonAddressToken);
+        $this->addParameter('amount', number_format($oPrice->getBruttoPrice(), 2, '.', '') * 100);
+        $this->addParameter('add_paydata[storename]', $this->_oFcpoHelper->fcpoGetShopName());
+
+        $oCurr = $oConfig->getActShopCurrencyObject();
+        $this->addParameter('currency', $oCurr->name);
+
+        $this->addParameter('workorderid', $sAmazonWorkorderId);
+
+        return $this->send();
+    }
+
+    /**
      * Send request to PAYONE Server-API with request-type "genericpayment"
      * 
      * @return array
@@ -1496,8 +1768,6 @@ class fcpoRequest extends oxSuperCfg
                 $this->addParameter('amount', number_format($dAmount, 2, '.', '') * 100); //Total order sum in smallest currency unit
             }
         }
-
-
 
         $aResponse = $this->send();
 
@@ -2272,6 +2542,9 @@ class fcpoRequest extends oxSuperCfg
         $oCountry = oxNew('oxcountry');
         $oCountry->load($oOrder->oxorder__oxbillcountryid->value);
 
+        if ($blIsUpdateUser === false) {
+            $this->addParameter('customerid', $oUser->oxuser__oxcustnr->value);
+        }
         $this->addParameter('salutation', ($oOrder->oxorder__oxbillsal->value == 'MR' ? 'Herr' : 'Frau'), $blIsUpdateUser);
         $this->addParameter('gender', ($oOrder->oxorder__oxbillsal->value == 'MR' ? 'm' : 'f'), $blIsUpdateUser);
         $this->addParameter('firstname', $oOrder->oxorder__oxbillfname->value, $blIsUpdateUser);
@@ -2294,8 +2567,8 @@ class fcpoRequest extends oxSuperCfg
             $this->addParameter('telephonenumber', $oOrder->oxorder__oxbillfon->value, $blIsUpdateUser); 
         }
 
-        if ((            in_array($oOrder->oxorder__oxpaymenttype->value, array('fcpoklarna')) 
-            && in_array($oCountry->oxcountry__oxisoalpha2->value, array('DE', 'NL', 'AT'))            ) || ($blIsUpdateUser || ($oUser->oxuser__oxbirthdate != '0000-00-00' && $oUser->oxuser__oxbirthdate != ''))
+        if ((in_array($oOrder->oxorder__oxpaymenttype->value, array('fcpoklarna'))
+                && in_array($oCountry->oxcountry__oxisoalpha2->value, array('DE', 'NL', 'AT'))) || ($blIsUpdateUser || ($oUser->oxuser__oxbirthdate != '0000-00-00' && $oUser->oxuser__oxbirthdate != ''))
         ) {
             $this->addParameter('birthday', str_ireplace('-', '', $oUser->oxuser__oxbirthdate->value), $blIsUpdateUser);
         }
@@ -2345,6 +2618,7 @@ class fcpoRequest extends oxSuperCfg
         $this->addParameter('aid', $oConfig->getConfigParam('sFCPOSubAccountID')); //ID of PayOne Sub-Account
         $this->addParameter('clearingtype', 'elv');
 
+        $this->addParameter('customerid', $oUser->oxuser__oxcustnr->value);
         $sPayOneUserId = $this->_getPayoneUserIdByCustNr($oUser->oxuser__oxcustnr->value);
         if ($sPayOneUserId) {
             $this->addParameter('userid', $sPayOneUserId);

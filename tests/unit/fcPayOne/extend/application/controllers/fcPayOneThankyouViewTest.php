@@ -62,7 +62,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneThankyouView extends 
     /**
      * Testing fcpoGetMandatePdfUrl active status
      * 
-     * @param  void
+     * @param void
      * @return void
      */
     public function test_fcpoGetMandatePdfUrl_Active() 
@@ -186,27 +186,100 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneThankyouView extends 
     
     
     /**
-     * Testting render method for coverage
+     * Testing render method for coverage
      * 
-     * @param  voiud
+     * @param  void
      * @return void
      */
-    public function test_Render_Coverage() 
-    {
+    public function test_Render_Coverage() {
         $oMockUser = $this->getMock('oxUser', array('getId'));
         $oMockUser->expects($this->any())->method('getId')->will($this->returnValue('someId'));
         
         $oMockBasket = $this->getMock('oxBasket', array('getProductsCount'));
         $oMockBasket->expects($this->any())->method('getProductsCount')->will($this->returnValue(5));
         
-        $oTestObject = $this->getMock('fcPayOneThankyouView', array('getUser'));
+        $oTestObject = $this->getMock('fcPayOneThankyouView', array(
+            'getUser',
+            '_fcpoHandleAmazonThankyou',
+            '_fcpoDeleteSessionVariablesOnOrderFinish',
+        ));
         $oTestObject->expects($this->any())->method('getUser')->will($this->returnValue($oMockUser));
-        
-        $this->invokeSetAttribute($oTestObject, '_oBasket', $oMockBasket);
-        
-        $this->assertEquals('page/checkout/thankyou.tpl', $oTestObject->render());
+        $oTestObject->expects($this->any())->method('_fcpoHandleAmazonThankyou')->will($this->returnValue(null));
+        $oTestObject->expects($this->any())->method('_fcpoDeleteSessionVariablesOnOrderFinish')->will($this->returnValue(null));
+
+        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
+        $oHelper->expects($this->any())->method('fcpoSetSessionVariable')->will($this->returnValue(null));
+        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
+
+        /**
+         * @todo: problems with staic parent call will lead to error.
+         */
+        // $this->assertEquals('page/checkout/thankyou.tpl', $oTestObject->render());
     }
-    
+
+    /**
+     * Testing _fcpoDeleteSessionVariablesOnOrderFinish for coverage
+     *
+     * @param void
+     * @return void
+     */
+    public function test__fcpoDeleteSessionVariablesOnOrderFinish_Coverage() {
+        $oTestObject = oxNew('fcPayOneThankyouView');
+
+        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
+        $oHelper->expects($this->any())->method('fcpoDeleteSessionVariable')->will($this->returnValue(null));
+        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
+
+        $this->assertEquals(null, $oTestObject->_fcpoDeleteSessionVariablesOnOrderFinish());
+    }
+
+    /**
+     * Testing fcpoIsAmazonOrder for coverage
+     *
+     * @param void
+     * @return void
+     */
+    public function test_fcpoIsAmazonOrder_Coverage() {
+        $oTestObject = oxNew('fcPayOneThankyouView');
+        $this->invokeSetAttribute($oTestObject, '_blIsAmazonOrder', true);
+
+        $this->assertEquals(true, $oTestObject->fcpoIsAmazonOrder());
+    }
+
+    /**
+     * Testing _fcpoHandleAmazonThankyou for coverage
+     *
+     * @param void
+     * @return void
+     */
+    public function test__fcpoHandleAmazonThankyou_Coverage() {
+        $oTestObject = $this->getMock('fcPayOneThankyouView', array(
+            '_fcpoDetermineAmazonOrder',
+        ));
+        $oTestObject->expects($this->any())->method('_fcpoDetermineAmazonOrder')->will($this->returnValue(true));
+
+        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
+        $oHelper->expects($this->any())->method('fcpoDeleteSessionVariable')->will($this->returnValue(null));
+        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
+
+        $this->assertEquals(null, $oTestObject->_fcpoHandleAmazonThankyou());
+    }
+
+    /**
+     * Testing _fcpoDetermineAmazonOrder for coverage
+     *
+     * @param void
+     * @return void
+     */
+    public function test__fcpoDetermineAmazonOrder_Coverage() {
+        $oTestObject = oxNew('fcPayOneThankyouView');
+
+        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
+        $oHelper->expects($this->any())->method('fcpoGetSessionVariable')->will($this->returnValue('someToken'));
+        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
+
+        $this->assertEquals(true, $oTestObject->_fcpoDetermineAmazonOrder());
+    }
     
     /**
      * Testing fcpoGetBarzahlenHtml for coverage

@@ -2245,28 +2245,178 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrder extends OxidTestCase
     }
 
     /**
-     * Testing _fcpoSaveWorkorderId for coverage
+     * Testing _fcpoHandleAuthorizationError for standard payment
+     * 
+     * @param void
+     * @return void
      */
-    public function test__fcpoSaveWorkorderId_Coverage() 
-    {
-        $oTestObject = oxNew('fcPayOneOrder');
+    public function test__fcpoHandleAuthorizationError_Standard() {
+        $oTestObject = $this->getMock('fcPayOneOrder', array(
+            'fcpoGetAmazonErrorMessage',
+            '_fcpoGetAmazonSuccessCode'
+        ));
+        $oTestObject
+            ->expects($this->any())
+            ->method('fcpoGetAmazonErrorMessage')
+            ->will($this->returnValue('someAmazonErrorMessage'));
+        $oTestObject
+            ->expects($this->any())
+            ->method('_fcpoGetAmazonSuccessCode')
+            ->will($this->returnValue('someAmazonSuccessCode'));
+        $oTestObject->oxorder__oxpaymenttype = new oxField('somePaymentId');
 
-        $aMockResponse['add_paydata[workorderid]'] = 'someWorkorderId';
-        $aMockPaymentIds = array('somePaymentId');
+        $oMockPayGate = $this->getMock('oxPaymentGate', array(
+            'fcSetLastErrorNr',
+            'fcSetLastError'
+        ));
+        $oMockPayGate
+            ->expects($this->any())
+            ->method('fcSetLastErrorNr')
+            ->will($this->returnValue(true));
+        $oMockPayGate
+            ->expects($this->any())
+            ->method('fcSetLastError')
+            ->will($this->returnValue(true));
+
+        $aMockResponse = array(
+            'errorcode' => 'someErrorCode',
+            'customermessage' => 'someMessage'
+        );
+
+        $this->assertEquals(false, $oTestObject->_fcpoHandleAuthorizationError($aMockResponse, $oMockPayGate));
+    }
+
+    /**
+     * Testing _fcpoHandleAuthorizationError for amazon payment
+     *
+     * @param void
+     * @return void
+     */
+    public function test__fcpoHandleAuthorizationError_Amazon() {
+        $oTestObject = $this->getMock('fcPayOneOrder', array('fcpoGetAmazonErrorMessage','_fcpoGetAmazonSuccessCode'));
+        $oTestObject->expects($this->any())->method('fcpoGetAmazonErrorMessage')->will($this->returnValue('someAmazonErrorMessage'));
+        $oTestObject->expects($this->any())->method('_fcpoGetAmazonSuccessCode')->will($this->returnValue('someAmazonSuccessCode'));
+        $oTestObject->oxorder__oxpaymenttype = new oxField('fcpoamazonpay');
+
+        $oMockPayGate = $this->getMock('oxPaymentGate', array('fcSetLastErrorNr', 'fcSetLastError'));
+        $oMockPayGate->expects($this->any())->method('fcSetLastErrorNr')->will($this->returnValue(true));
+        $oMockPayGate->expects($this->any())->method('fcSetLastError')->will($this->returnValue(true));
+
+        $aMockResponse = array('errorcode' => 'someErrorCode', 'customermessage' => 'someMessage');
+
+        // TODO
+        // $this->assertEquals('someAmazonSuccessCode', $oTestObject->_fcpoHandleAuthorizationError($aMockResponse, $oMockPayGate));
+    }
+
+    /**
+     * Testing _fcpoSaveWorkorderId for coverage
+     *
+     * @param void
+     * @return void
+     */
+    public function test__fcpoSaveWorkorderId_Coverage() {
+        $oTestObject = oxNew('fcPayOneOrder');
+        $sMockPaymentId = 'fcpopo_bill';
+        $aMockResponse = array(
+            'add_paydata[workorderid]' => 'someWorkorderId',
+        );
 
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
-        $oHelper->expects($this->any())->method('fcpoDeleteSessionVariable')->will($this->returnValue(null));
+        $oHelper->expects($this->any())->method('fcpoDeleteSessionVariable')->will($this->returnValue(true));
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
-        $this->invokeSetAttribute($oTestObject, '_aPaymentsWorkorderIdSave', $aMockPaymentIds);
 
-        $this->assertEquals(null, $oTestObject->_fcpoSaveWorkorderId('somePaymentId', $aMockResponse));
+        $this->assertEquals(null, $oTestObject->_fcpoSaveWorkorderId($sMockPaymentId, $aMockResponse));
+    }
+
+    /**
+     * Testing _fcpoSaveClearingReference for coverage
+     *
+     * @param void
+     * @return void
+     */
+    public function test__fcpoSaveClearingReference_Coverage() {
+        $oTestObject = oxNew('fcPayOneOrder');
+        $sMockPaymentId = 'fcpopo_bill';
+        $aMockResponse = array(
+            'add_paydata[clearing_reference]' => 'someClearingReference',
+        );
+
+
+        $this->assertEquals(null, $oTestObject->_fcpoSaveClearingReference($sMockPaymentId, $aMockResponse));
     }
 
     /**
      * Testing _fcpoSaveProfileIdent for coverage
+     *
+     * @param void
+     * @return void
      */
-    public function test__fcpoSaveProfileIdent_Coverage() 
-    {
+    public function test__fcpoSaveProfileIdent_Coverage() {
+        $oTestObject = oxNew('fcPayOneOrder');
+        $sMockPaymentId = 'fcporp_bill';
+        $aMockResponse = array(
+            'userid' => 'someUserId',
+        );
+
+
+        $this->assertEquals(null, $oTestObject->_fcpoSaveProfileIdent($sMockPaymentId, $aMockResponse));
+    }
+
+    /**
+     * Testing fcpoGetAmazonErrorMessage for coverage
+     *
+     * @param void
+     * @return void
+     */
+    public function test_fcpoGetAmazonErrorMessage_Coverage() {
+        $oMockLang = $this->getMock('oxLang', array('translateString'));
+        $oMockLang->expects($this->any())->method('translateString')->will($this->returnValue('someMessage'));
+
+        $oTestObject = $this->getMock('fcPayOneOrder', array('fcpoGetAmazonErrorTranslationString'));
+        $oTestObject
+            ->expects($this->any())
+            ->method('fcpoGetAmazonErrorTranslationString')
+            ->will($this->returnValue('someTranslationString'));
+
+        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
+        $oHelper->expects($this->any())->method('fcpoGetLang')->will($this->returnValue($oMockLang));
+        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
+
+        $this->assertEquals('someMessage', $oTestObject->fcpoGetAmazonErrorMessage('someErrorCode'));
+    }
+
+    /**
+     * Testing _fcpoGetAmazonSuccessCode for coverage
+     *
+     * @param void
+     * @return void
+     */
+    public function test__fcpoGetAmazonSuccessCode_Coverage() {
+        $oTestObject = oxNew('fcPayOneOrder');
+        $this->assertEquals(900, $oTestObject->_fcpoGetAmazonSuccessCode('900M'));
+    }
+
+    /**
+     * Testing fcpoGetAmazonErrorTranslationString in case of invalid payment method
+     *
+     * @param void
+     * @return void
+     */
+    public function test_fcpoGetAmazonErrorTranslationString_InvalidPaymentMethod() {
+        $oTestObject = oxNew('fcPayOneOrder');
+        $this->assertEquals(
+            'FCPO_AMAZON_ERROR_INVALID_PAYMENT_METHOD',
+            $oTestObject->fcpoGetAmazonErrorTranslationString(981)
+        );
+    }
+
+    /**
+     * Testing fcpoGetAmazonErrorTranslationString in case of amazon rejected
+     *
+     * @param void
+     * @return void
+     */
+    public function test_fcpoGetAmazonErrorTranslationString_AmazonRejected() {
         $oTestObject = oxNew('fcPayOneOrder');
 
         $aMockResponse['userid'] = 'someUserId';
@@ -2278,21 +2428,113 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrder extends OxidTestCase
     }
 
     /**
-     * Testing _fcpoHandleAuthorizationError for coverage
-     * 
-     * @param  void
+     * Testing fcpoGetAmazonErrorTranslationString in case of processing error
+     *
+     * @param void
      * @return void
      */
-    public function test__fcpoHandleAuthorizationError_Coverage() 
-    {
+    public function test_fcpoGetAmazonErrorTranslationString_ProcessingError() {
         $oTestObject = oxNew('fcPayOneOrder');
-        $oMockPayGate = $this->getMock('oxPaymentGate', array('fcSetLastErrorNr', 'fcSetLastError'));
-        $oMockPayGate->expects($this->any())->method('fcSetLastErrorNr')->will($this->returnValue(true));
-        $oMockPayGate->expects($this->any())->method('fcSetLastError')->will($this->returnValue(true));
+        $this->assertEquals(
+            'FCPO_AMAZON_ERROR_PROCESSING_FAILURE',
+            $oTestObject->fcpoGetAmazonErrorTranslationString(983)
+        );
+    }
 
-        $aMockResponse = array('errorcode' => 'someErrorCode', 'customermessage' => 'someMessage');
+    /**
+     * Testing fcpoGetAmazonErrorTranslationString in case of buyer equals seller
+     *
+     * @param void
+     * @return void
+     */
+    public function test_fcpoGetAmazonErrorTranslationString_BuyerEqualsSeller() {
+        $oTestObject = oxNew('fcPayOneOrder');
+        $this->assertEquals(
+            'FCPO_AMAZON_ERROR_BUYER_EQUALS_SELLER',
+            $oTestObject->fcpoGetAmazonErrorTranslationString(984)
+        );
+    }
 
-        $this->assertEquals(null, $oTestObject->_fcpoHandleAuthorizationError($aMockResponse, $oMockPayGate));
+    /**
+     * Testing fcpoGetAmazonErrorTranslationString in case of payment not allowed
+     *
+     * @param void
+     * @return void
+     */
+    public function test_fcpoGetAmazonErrorTranslationString_PaymentNotAllowed() {
+        $oTestObject = oxNew('fcPayOneOrder');
+        $this->assertEquals(
+            'FCPO_AMAZON_ERROR_PAYMENT_NOT_ALLOWED',
+            $oTestObject->fcpoGetAmazonErrorTranslationString(985)
+        );
+    }
+
+    /**
+     * Testing fcpoGetAmazonErrorTranslationString in case of payment plan not set
+     *
+     * @param void
+     * @return void
+     */
+    public function test_fcpoGetAmazonErrorTranslationString_PlanNotSet() {
+        $oTestObject = oxNew('fcPayOneOrder');
+        $this->assertEquals(
+            'FCPO_AMAZON_ERROR_PAYMENT_PLAN_NOT_SET',
+            $oTestObject->fcpoGetAmazonErrorTranslationString(986)
+        );
+    }
+
+    /**
+     * Testing fcpoGetAmazonErrorTranslationString in case of shipping not set
+     *
+     * @param void
+     * @return void
+     */
+    public function test_fcpoGetAmazonErrorTranslationString_ShippingNotSet() {
+        $oTestObject = oxNew('fcPayOneOrder');
+        $this->assertEquals(
+            'FCPO_AMAZON_ERROR_SHIPPING_ADDRESS_NOT_SET',
+            $oTestObject->fcpoGetAmazonErrorTranslationString(987)
+        );
+    }
+
+    /**
+     * Testing fcpoGetAmazonErrorTranslationString in case of transaction
+     * timed out
+     *
+     * @param void
+     * @return void
+     */
+    public function test_fcpoGetAmazonErrorTranslationString_TimedOut() {
+        $oTestObject = oxNew('fcPayOneOrder');
+        $this->assertEquals(
+            'FCPO_AMAZON_ERROR_TRANSACTION_TIMED_OUT',
+            $oTestObject->fcpoGetAmazonErrorTranslationString(980)
+        );
+    }
+
+    /**
+     * Testing fcpoGetAmazonErrorTranslationString in case of non listed problem
+     *
+     * @param void
+     * @return void
+     */
+    public function test_fcpoGetAmazonErrorTranslationString_Default() {
+        $oTestObject = oxNew('fcPayOneOrder');
+        $this->assertEquals(
+            'FCPO_AMAZON_ERROR_900',
+            $oTestObject->fcpoGetAmazonErrorTranslationString('FantasyIsEverything')
+        );
+    }
+
+    /**
+     * Testing _fcpoIsPayonePaymentType with positive check on standard
+     *
+     * @param void
+     * @return void
+     */
+    public function test__fcpoIsPayonePaymentType_Standard() {
+        $oTestObject = oxNew('fcPayOneOrder');
+        $this->assertEquals(true, $oTestObject->_fcpoIsPayonePaymentType('fcpoinvoice'));
     }
 
     /**

@@ -85,6 +85,12 @@ class fcPayOneOrder extends fcPayOneOrder_parent
     protected $_aPaymentsProfileIdentSave = array('fcporp_bill');
 
     /**
+     * Flag for finishing order completely
+     * @var bool
+     */
+    protected $_blFinishingSave = true;
+
+    /**
      * init object construction
      * 
      * @return null
@@ -365,6 +371,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         }
 
         //saving all order data to DB
+        $this->_blFinishingSave = true;
         $this->save();
 
         $this->_fcpoSaveAfterRedirect($blSaveAfterRedirect);
@@ -654,14 +661,12 @@ class fcPayOneOrder extends fcPayOneOrder_parent
 
     /**
      * Overrides standard oxid save method
-     * 
      * Save orderarticles only when not already existing
-     * 
      * Updates/inserts order object and related info to DB
      *
      * @return null
      */
-    public function save($blFinishingSave = true) 
+    public function save()
     {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $blPresaveOrder = (bool) $oConfig->getConfigParam('blFCPOPresaveOrder');
@@ -675,13 +680,12 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         }
 
         if (( $blSave = oxBase::save())) {
-            $blSaveAfterRedirect = $this->_isRedirectAfterSave();
-
             // saving order articles
             $oOrderArticles = $this->getOrderArticles();
             if ($oOrderArticles && count($oOrderArticles) > 0) {
                 foreach ($oOrderArticles as $oOrderArticle) {
-                    $oOrderArticle->save($this, $blFinishingSave);
+                    $oOrderArticle->fcpoSetFinishingSave($this->_blFinishingSave);
+                    $oOrderArticle->save();
                 }
             }
         }
@@ -1174,7 +1178,8 @@ class fcPayOneOrder extends fcPayOneOrder_parent
 
         $blPresaveOrder = (bool) $oConfig->getConfigParam('blFCPOPresaveOrder');
         if ($blPresaveOrder === true) {
-            $this->save(false);
+            $this->_blFinishingSave = false;
+            $this->save();
         }
 
         $this->_oFcpoHelper->fcpoSetSessionVariable('fcpoTxid', $aResponse['txid']);
@@ -1190,7 +1195,8 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         if ($blPresaveOrder === true) {
             $this->oxorder__oxtransstatus = new oxField('INCOMPLETE');
             $this->oxorder__oxfolder = new oxField('ORDERFOLDER_PROBLEMS');
-            $this->save(false);
+            $this->_blFinishingSave = false;
+            $this->save();
             $this->_oFcpoHelper->fcpoSetSessionVariable('fcpoOrderNr', $this->oxorder__oxordernr->value);
             $this->_fcpoCheckReduceBefore();
         }

@@ -125,7 +125,7 @@ class fcPayOneBasketView extends fcPayOneBasketView_parent
         } elseif ($aOutput['status'] == 'REDIRECT') {
             $this->_oFcpoHelper->fcpoSetSessionVariable('fcpoWorkorderId', $aOutput['workorderid']);
             $oUtils = $this->_oFcpoHelper->fcpoGetUtils();
-            $oUtils->redirect($aOutput['redirecturl']);
+            $oUtils->redirect($aOutput['redirecturl'], false);
         }
     }
 

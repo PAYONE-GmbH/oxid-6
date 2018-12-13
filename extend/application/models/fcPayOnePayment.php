@@ -50,7 +50,6 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         'fcpoonlineueberweisung',
         'fcpopaypal',
         'fcpopaypal_express',
-        'fcpobillsafe',
         'fcpoklarna',
         'fcpobarzahlen',
         'fcpopaydirekt',

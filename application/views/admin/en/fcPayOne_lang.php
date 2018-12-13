@@ -62,7 +62,6 @@ $aLang = array(
 'fcpo_clearingtype_wlt'                     => 'e-Wallet',
 'fcpo_clearingtype_fnc'                     => 'Financing',
 'fcpo_clearingtype_csh'                     => 'Barzahlen',
-'fcpo_clearingtype_fcpobillsafe'            => 'BillSAFE',
 'fcpo_clearingtype_fcpoklarna'              => 'Klarna Invoice',
 'FCPO_CAPTURE_APPROVED'                     => 'Booking was successfull',
 'FCPO_CAPTURE_ERROR'                        => 'Error occured during booking: ',

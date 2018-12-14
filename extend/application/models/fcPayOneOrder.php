@@ -292,18 +292,12 @@ class fcPayOneOrder extends fcPayOneOrder_parent
     {
         if ($this->_blIsRedirectAfterSave === null) {
             $this->_blIsRedirectAfterSave = false;
-            $oSession = $this->_oFcpoHelper->fcpoGetSession();
-            $oBasket = $oSession->getBasket();
-            $sPaymentId = $oBasket->getPaymentId();
 
             $blUseRedirectAfterSave = (
-                    $this->_oFcpoHelper->fcpoGetRequestParameter('fcposuccess') &&
-                    $this->_oFcpoHelper->fcpoGetRequestParameter('refnr') &&
-                    (
-                    $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoTxid') ||
-                    $sPaymentId == 'fcpocreditcard_iframe'
-                    )
-                    );
+                $this->_oFcpoHelper->fcpoGetRequestParameter('fcposuccess') &&
+                $this->_oFcpoHelper->fcpoGetRequestParameter('refnr') &&
+                $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoTxid')
+            );
 
             if ($blUseRedirectAfterSave) {
                 $this->_blIsRedirectAfterSave = true;
@@ -433,7 +427,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
             if ($sRefNrCheckResult != '') {
                 return $sRefNrCheckResult;
             }
-            $this->_fcpoProcessOrder($oBasket, $sTxid);
+            $this->_fcpoProcessOrder($sTxid);
         } else {
             if (!$blRecalculatingOrder) {
                 $blRet = $this->_executePayment($oBasket, $oUserPayment);
@@ -561,14 +555,13 @@ class fcPayOneOrder extends fcPayOneOrder_parent
 
     /**
      * Summed steps to process a payone order
-     * 
-     * @param  object $oBasket
+     *
      * @param  string $sTxid
      * @return void
      */
-    protected function _fcpoProcessOrder($oBasket, $sTxid) 
+    protected function _fcpoProcessOrder($sTxid)
     {
-        $this->_fcpoCheckTxid($oBasket);
+        $this->_fcpoCheckTxid();
         $iOrderNotChecked = $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoordernotchecked');
         if (!$iOrderNotChecked || $iOrderNotChecked != 1) {
             $iOrderNotChecked = 0;
@@ -611,21 +604,19 @@ class fcPayOneOrder extends fcPayOneOrder_parent
     /**
      * Check Txid against transactionstatus table and set resulting order values
      * 
-     * @param  object $oBasket
      * @return boolean
      */
-    protected function _fcpoCheckTxid($oBasket) 
+    protected function _fcpoCheckTxid()
     {
         $blAppointedError = false;
         $sTxid = $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoTxid');
 
+        $sTestOxid = '';
         if ($sTxid) {
             $sQuery = "SELECT oxid FROM fcpotransactionstatus WHERE FCPO_TXACTION = 'appointed' AND fcpo_txid = '" . $sTxid . "'";
             $sTestOxid = $this->_oFcpoDb->getOne($sQuery);
-        } elseif ($oBasket->getPaymentId() == 'fcpocreditcard_iframe') {
-            $sQuery = "SELECT fcpo_txid FROM fcpotransactionstatus WHERE FCPO_TXACTION = 'appointed' AND fcpo_reference = " . oxDb::getDb()->quote($this->_oFcpoHelper->fcpoGetRequestParameter('refnr')) . " LIMIT 1";
-            $sTestOxid = $sTxid = $this->_oFcpoDb->getOne($sQuery);
         }
+
         if (!$sTestOxid) {
             $blAppointedError = true;
             $this->oxorder__oxfolder = new oxField('ORDERFOLDER_PROBLEMS', oxField::T_RAW);
@@ -777,10 +768,9 @@ class fcPayOneOrder extends fcPayOneOrder_parent
     public function isDetailedProductInfoNeeded() 
     {
         $blReturn = (
-                $this->oxorder__oxpaymenttype->value == 'fcpobillsafe' ||
-                $this->oxorder__oxpaymenttype->value == 'fcpoklarna' ||
-                $this->oxorder__oxpaymenttype->value == 'fcpocreditcard_iframe'
-                );
+            $this->oxorder__oxpaymenttype->value == 'fcpobillsafe' ||
+            $this->oxorder__oxpaymenttype->value == 'fcpoklarna'
+        );
 
         return $blReturn;
     }

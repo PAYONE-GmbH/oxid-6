@@ -138,23 +138,20 @@ class fcPayOneTransactionStatusHandler extends oxBase
     
     protected function _getOrderNr() 
     {
-        $sQuery = "SELECT oxordernr FROM oxorder WHERE fcpotxid = '".$this->fcGetPostParam('txid')."' LIMIT 1";
-        $iOrderNr = oxDb::getDb()->GetOne($sQuery);
-        
-        if(!$iOrderNr && $this->fcGetPostParam('clearingtype') == 'cc') {// for fcpocreditcard_iframe
-            $sQuery = "SELECT oxid, oxordernr FROM oxorder WHERE fcporefnr = '".$this->fcGetPostParam('reference')."' AND oxpaymenttype = 'fcpocreditcard_iframe' LIMIT 1";
-            $aRows = oxDb::getDb()->getAll($sQuery);
+        $oDb = oxDb::getDb();
+        $sTxid = $this->fcGetPostParam('txid');
 
-            foreach ($aRows AS $aRow) {
-                $iOrderNr = $aRow[1];
-                $sOxid = $aRow[0];
-                $sQuery = "UPDATE oxorder SET fcpotxid = '".$this->fcGetPostParam('txid')."' WHERE oxid = '{$sOxid}'";
-                oxDb::getDb()->Execute($sQuery);
-            }
-        }
-        if(!$iOrderNr) {
-            $iOrderNr = 0;
-        }
+        $sQuery = "
+            SELECT 
+                oxordernr 
+            FROM 
+                oxorder 
+            WHERE 
+                fcpotxid = '". $oDb->quote($sTxid) ."'
+            LIMIT 1
+        ";
+        $iOrderNr = (int) $oDb->GetOne($sQuery);
+
         return $iOrderNr;
     }
     

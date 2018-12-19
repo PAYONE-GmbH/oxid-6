@@ -434,7 +434,7 @@ class fcpohelper extends oxBase
     {
         $oConfig = $this->getConfig();
         $sEdition = $oConfig->getActiveShop()->oxshops__oxedition->value;
-        $sVersion = $oConfig->getActiveShop()->oxshops__oxversion->value;
+        $sVersion = $oConfig->getActiveView()->getShopVersion();
         $sIntegratorVersion = $sEdition . $sVersion;
 
         return $sIntegratorVersion;

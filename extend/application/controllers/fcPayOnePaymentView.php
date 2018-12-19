@@ -2300,6 +2300,11 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
                 $sSelectedIndex = $this->_fcpoGetPayolutionSelectedInstallmentIndex();
                 $sDuration = $this->_fcpoPayolutionFetchDuration($sSelectedIndex);
                 $this->_oFcpoHelper->fcpoSetSessionVariable('payolution_installment_duration', $sDuration);
+
+                // OXID-225 add bank details as they are added in form after precheck is performed
+                $aBankData = $this->_fcpoGetPayolutionBankData($sPaymentId);
+                $this->_oFcpoHelper->fcpoSetSessionVariable('payolution_bankdata', $aBankData);
+
                 $blReturn = true;
             }
         }

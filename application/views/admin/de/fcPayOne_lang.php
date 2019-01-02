@@ -438,7 +438,6 @@ $aLang = array(
 'FCPO_AMAZONPAY_BUTTON_LANG_SPANISH_SPAIN'  => 'Spanisch (Spanien)',
 'FCPO_AMAZONPAY_MODE'                       => 'Amazon-Modus',
 'FCPO_AMAZONPAY_MODE_ALWAYSSYNC'            => 'Immer Synchron',
-'FCPO_AMAZONPAY_MODE_ALWAYSASYNC'           => 'Immer Asynchron',
 'FCPO_AMAZONPAY_MODE_FIRSTSYNCTHENSYNC'     => 'Erst Synchron, dann Asynchron versuchen',
 'FCPO_AMAZONPAY_LOGINMODE'                  => 'Loginmethode',
 'FCPO_AMAZONPAY_LOGINMODE_AUTO'             => 'Automatisch (Bei SSL "Popup" und ohne "Redirect")',

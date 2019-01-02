@@ -360,6 +360,8 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      */
     public function finalizeOrder(OxidEsales\Eshop\Application\Model\Basket $oBasket, $oUser, $blRecalculatingOrder = false)
     {
+        $this->_sFcpoPaymentId = $oBasket->getPaymentId();
+
         // Use standard method if payment type does not belong to PAYONE
         if ($this->isPayOnePaymentType($oBasket->getPaymentId()) === false) {
             return parent::finalizeOrder($oBasket, $oUser, $blRecalculatingOrder);

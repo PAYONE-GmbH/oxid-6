@@ -104,6 +104,20 @@ class fcPayOnePayment extends fcPayOnePayment_parent
     public static function fcIsPayOneRedirectType($sPaymentId) 
     {
         $blReturn = (in_array($sPaymentId, self::$_aRedirectPayments) !== false) ? true : false;
+        $oHelper = oxNew('fcpohelper');
+
+        $blDynFlaggedAsRedirectPayment =
+            (bool)$oHelper->fcpoGetSessionVariable('blDynFlaggedAsRedirectPayment');
+        $blUseDynamicFlag = (
+            !$blReturn &&
+            $blDynFlaggedAsRedirectPayment === true
+        );
+
+        if ($blUseDynamicFlag) {
+            // overwrite static value
+            $blReturn = $blDynFlaggedAsRedirectPayment;
+        }
+
         return $blReturn;
     }
 

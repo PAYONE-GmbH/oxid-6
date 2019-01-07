@@ -1161,6 +1161,16 @@ class fcPayOneOrder extends fcPayOneOrder_parent
     }
 
     /**
+     * Set flag for dynamic set as redirect payment into session
+     *
+     * @param bool $blFlaggedAsRedirect
+     * @return void
+     */
+    protected function _fcpoFlagOrderPaymentAsRedirect($blFlaggedAsRedirect = true) {
+        $this->_oFcpoHelper->fcpoSetSessionVariable('blDynFlaggedAsRedirectPayment', $blFlaggedAsRedirect);
+    }
+
+    /**
      * Handles case of redirect type authorization
      * 
      * @param  array  $aResponse
@@ -1172,6 +1182,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      */
     protected function _fcpoHandleAuthorizationRedirect($aResponse, $sRefNr, $sAuthorizationType, $sMode, $blReturnRedirectUrl) 
     {
+        $this->_fcpoFlagOrderPaymentAsRedirect();
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $oUtils = $this->_oFcpoHelper->fcpoGetUtils();
         $iOrderNotChecked = $this->_fcpoGetOrderNotChecked();
@@ -1246,6 +1257,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      */
     protected function _fcpoHandleAuthorizationApproved($aResponse, $sRefNr, $sAuthorizationType, $sMode) 
     {
+        $this->_fcpoFlagOrderPaymentAsRedirect(null);
         $iOrderNotChecked = $this->_fcpoGetOrderNotChecked();
         $sPaymentId = $this->oxorder__oxpaymenttype->value;
 
@@ -1326,6 +1338,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      */
     protected function _fcpoHandleAuthorizationError($aResponse, $oPayGateway) 
     {
+        $this->_fcpoFlagOrderPaymentAsRedirect(null);
         if ($oPayGateway) {
             $oPayGateway->fcSetLastErrorNr($aResponse['errorcode']);
             $oPayGateway->fcSetLastError($aResponse['customermessage']);

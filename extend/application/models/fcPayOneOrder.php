@@ -777,7 +777,6 @@ class fcPayOneOrder extends fcPayOneOrder_parent
     public function isDetailedProductInfoNeeded() 
     {
         $blReturn = (
-                $this->oxorder__oxpaymenttype->value == 'fcpobillsafe' ||
                 $this->oxorder__oxpaymenttype->value == 'fcpoklarna' ||
                 $this->oxorder__oxpaymenttype->value == 'fcpocreditcard_iframe'
                 );

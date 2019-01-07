@@ -43,6 +43,7 @@ class fcpayone_events
         'fcpoyapital',
         'fcpocommerzfinanz',
         'fcpoklarna_installment',
+        'fcpobillsafe'
     );
     public static $sQueryTableFcporefnr = "
         CREATE TABLE fcporefnr (

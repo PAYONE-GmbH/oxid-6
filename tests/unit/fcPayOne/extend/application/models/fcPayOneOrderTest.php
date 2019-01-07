@@ -1568,7 +1568,7 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrder extends OxidTestCase
     public function test_isDetailedProductInfoNeeded_Coverage() 
     {
         $oTestObject = oxNew('fcPayOneOrder');
-        $oTestObject->oxorder__oxpaymenttype = new oxField('fcpocreditcard_iframe');
+        $oTestObject->oxorder__oxpaymenttype = new oxField('fcpoklarna');
 
         $this->assertEquals(true, $oTestObject->isDetailedProductInfoNeeded());
     }

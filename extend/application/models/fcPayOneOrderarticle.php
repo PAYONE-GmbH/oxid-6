@@ -224,7 +224,7 @@ class fcPayOneOrderarticle extends fcPayOneOrderarticle_parent
      * Returns wether payone order should be pre-saved
      * 
      * @param void
-     * @retur bool
+     * @return bool
      */
     protected function _fcpoGetBefore()
     {
@@ -235,10 +235,14 @@ class fcPayOneOrderarticle extends fcPayOneOrderarticle_parent
 
         // evaluate answer
         $blBefore = (
-                $this->_oFcpoHelper->fcpoGetRequestParameter('fcposuccess') &&
-                $this->_oFcpoHelper->fcpoGetRequestParameter('refnr') ||
-                ($blFinishingSave === true && $blPresaveOrder === true && $blReduceStockBefore === false)
-                );
+            $this->_oFcpoHelper->fcpoGetRequestParameter('fcposuccess') &&
+            $this->_oFcpoHelper->fcpoGetRequestParameter('refnr') ||
+            (
+                $blFinishingSave === true &&
+                $blPresaveOrder === true &&
+                $blReduceStockBefore === false
+            )
+        );
 
         return $blBefore;
     }

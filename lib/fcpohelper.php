@@ -366,7 +366,8 @@ class fcpohelper extends oxBase
      */
     public function fcpoGetModuleVersion()
     {
-        return '1.0.1';
+        include_once __DIR__."/../metadata.php";
+        return $aModule['version'];
     }
 
     /**

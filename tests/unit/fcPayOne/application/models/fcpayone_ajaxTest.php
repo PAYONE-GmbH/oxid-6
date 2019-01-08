@@ -75,6 +75,274 @@ class Unit_fcPayOne_Application_Models_fcpayone_ajax extends OxidTestCase
     }
 
     /**
+     * Testing fcpoGetAmazonReferenceId for coverage
+     */
+    public function test_fcpoGetAmazonReferenceId_Coverage() {
+        $oTestObject = $this->getMock('fcpayone_ajax', array(
+            '_fcpoHandleGetOrderReferenceDetails',
+            '_fcpoHandleSetOrderReferenceDetails',
+        ));
+        $oTestObject
+            ->expects($this->any())
+            ->method('_fcpoHandleGetOrderReferenceDetails')
+            ->will($this->returnValue(null));
+        $oTestObject
+            ->expects($this->any())
+            ->method('_fcpoHandleSetOrderReferenceDetails')
+            ->will($this->returnValue(null));
+
+        $oMockSession = $this->getMock('oxSession', array(
+            'deleteVariable',
+            'setVariable',
+            'getVariable',
+        ));
+        $oMockSession
+            ->expects($this->any())
+            ->method('deleteVariable')
+            ->will($this->returnValue(true));
+        $oMockSession
+            ->expects($this->any())
+            ->method('setVariable')
+            ->will($this->returnValue(true));
+        $oMockSession
+            ->expects($this->any())
+            ->method('getVariable')
+            ->will($this->returnValue('someSessionValue'));
+
+        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
+        $oHelper->expects($this->any())->method('fcpoGetSession')->will($this->returnValue($oMockSession));
+        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
+
+        $sMockJson = '{"some":"jsonparam"}';
+
+        $this->assertEquals(null, $oTestObject->fcpoGetAmazonReferenceId($sMockJson));
+    }
+
+    /**
+     * Testing _fcpoHandleSetOrderReferenceDetails for status ok
+     */
+    public function test__fcpoHandleSetOrderReferenceDetails_StatusOK() {
+        $oTestObject = oxNew('fcpayone_ajax');
+
+        $aMockResponse = array('status'=>'OK');
+
+        $oMockRequest = $this->getMock('fcporequest', array(
+            'sendRequestSetAmazonOrderReferenceDetails',
+        ));
+        $oMockRequest
+            ->expects($this->any())
+            ->method('sendRequestSetAmazonOrderReferenceDetails')
+            ->will($this->returnValue($aMockResponse));
+
+        $oMockUser = $this->getMock('oxUser', array('fcpoSetAmazonOrderReferenceDetailsResponse'));
+        $oMockUser
+            ->expects($this->any())
+            ->method('fcpoSetAmazonOrderReferenceDetailsResponse')
+            ->will($this->returnValue(null));
+
+        $oMockUtils = $this->getMock('oxUtils', array('redirect'));
+        $oMockUtils
+            ->expects($this->any())
+            ->method('redirect')
+            ->will($this->returnValue(null));
+
+        $oMockConfig = $this->getMock('oxConfig', array('getShopUrl'));
+        $oMockConfig
+            ->expects($this->any())
+            ->method('getShopUrl')
+            ->will($this->returnValue('https://www.someshop.com/'));
+
+        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
+        $oHelper
+            ->expects($this->any())
+            ->method('fcpoGetUtils')
+            ->will($this->returnValue($oMockUtils));
+        $oHelper
+            ->expects($this->any())
+            ->method('getFactoryObject')
+            ->will($this->onConsecutiveCalls($oMockRequest,$oMockUser));
+        $oHelper
+            ->expects($this->any())
+            ->method('fcpoGetConfig')
+            ->will($this->returnValue($oMockConfig));
+        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
+
+        $this->assertEquals(
+            null,
+            $oTestObject->_fcpoHandleSetOrderReferenceDetails('someReferenceId','someAccessToken')
+        );
+    }
+
+    /**
+     * Testing _fcpoHandleSetOrderReferenceDetails for status error
+     */
+    public function test__fcpoHandleSetOrderReferenceDetails_StatusError() {
+        $oTestObject = oxNew('fcpayone_ajax');
+
+        $aMockResponse = array('status'=>'ERROR');
+
+        $oMockRequest = $this->getMock('fcporequest', array(
+            'sendRequestSetAmazonOrderReferenceDetails',
+        ));
+        $oMockRequest
+            ->expects($this->any())
+            ->method('sendRequestSetAmazonOrderReferenceDetails')
+            ->will($this->returnValue($aMockResponse));
+
+        $oMockUser = $this->getMock('oxUser', array('fcpoSetAmazonOrderReferenceDetailsResponse'));
+        $oMockUser
+            ->expects($this->any())
+            ->method('fcpoSetAmazonOrderReferenceDetailsResponse')
+            ->will($this->returnValue(null));
+
+        $oMockUtils = $this->getMock('oxUtils', array('redirect'));
+        $oMockUtils
+            ->expects($this->any())
+            ->method('redirect')
+            ->will($this->returnValue(null));
+
+        $oMockConfig = $this->getMock('oxConfig', array('getShopUrl'));
+        $oMockConfig
+            ->expects($this->any())
+            ->method('getShopUrl')
+            ->will($this->returnValue('https://www.someshop.com/'));
+
+        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
+        $oHelper
+            ->expects($this->any())
+            ->method('fcpoGetUtils')
+            ->will($this->returnValue($oMockUtils));
+        $oHelper
+            ->expects($this->any())
+            ->method('getFactoryObject')
+            ->will($this->onConsecutiveCalls($oMockRequest,$oMockUser));
+        $oHelper
+            ->expects($this->any())
+            ->method('fcpoGetConfig')
+            ->will($this->returnValue($oMockConfig));
+        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
+
+        $this->assertEquals(
+            null,
+            $oTestObject->_fcpoHandleSetOrderReferenceDetails('someReferenceId','someAccessToken')
+        );
+    }
+
+    /**
+     * Testing _fcpoHandleGetOrderReferenceDetails for status OK
+     */
+    public function test__fcpoHandleGetOrderReferenceDetails_StatusOK() {
+        $oTestObject = oxNew('fcpayone_ajax');
+
+        $aMockResponse = array('status'=>'OK');
+
+        $oMockRequest = $this->getMock('fcporequest', array(
+            'sendRequestGetAmazonOrderReferenceDetails',
+        ));
+        $oMockRequest
+            ->expects($this->any())
+            ->method('sendRequestGetAmazonOrderReferenceDetails')
+            ->will($this->returnValue($aMockResponse));
+
+        $oMockUtils = $this->getMock('oxUtils', array('redirect'));
+        $oMockUtils
+            ->expects($this->any())
+            ->method('redirect')
+            ->will($this->returnValue(null));
+
+        $oMockConfig = $this->getMock('oxConfig', array('getShopUrl'));
+        $oMockConfig
+            ->expects($this->any())
+            ->method('getShopUrl')
+            ->will($this->returnValue('https://www.someshop.com/'));
+
+        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
+        $oHelper
+            ->expects($this->any())
+            ->method('fcpoGetUtils')
+            ->will($this->returnValue($oMockUtils));
+        $oHelper
+            ->expects($this->any())
+            ->method('getFactoryObject')
+            ->will($this->returnValue($oMockRequest));
+        $oHelper
+            ->expects($this->any())
+            ->method('fcpoGetConfig')
+            ->will($this->returnValue($oMockConfig));
+        $oHelper
+            ->expects($this->any())
+            ->method('fcpoDeleteSessionVariable')
+            ->will($this->returnValue(null));
+        $oHelper
+            ->expects($this->any())
+            ->method('fcpoSetSessionVariable')
+            ->will($this->returnValue(null));
+        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
+
+        $this->assertEquals(
+            null,
+            $oTestObject->_fcpoHandleGetOrderReferenceDetails('someReferenceId','someAccessToken')
+        );
+    }
+
+    /**
+     * Testing _fcpoHandleGetOrderReferenceDetails for status error
+     */
+    public function test__fcpoHandleGetOrderReferenceDetails_StatusError() {
+        $oTestObject = oxNew('fcpayone_ajax');
+
+        $aMockResponse = array('status'=>'ERROR');
+
+        $oMockRequest = $this->getMock('fcporequest', array(
+            'sendRequestSetAmazonOrderReferenceDetails',
+        ));
+        $oMockRequest
+            ->expects($this->any())
+            ->method('sendRequestGetAmazonOrderReferenceDetails')
+            ->will($this->returnValue($aMockResponse));
+
+        $oMockUtils = $this->getMock('oxUtils', array('redirect'));
+        $oMockUtils
+            ->expects($this->any())
+            ->method('redirect')
+            ->will($this->returnValue(null));
+
+        $oMockConfig = $this->getMock('oxConfig', array('getShopUrl'));
+        $oMockConfig
+            ->expects($this->any())
+            ->method('getShopUrl')
+            ->will($this->returnValue('https://www.someshop.com/'));
+
+        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
+        $oHelper
+            ->expects($this->any())
+            ->method('fcpoGetUtils')
+            ->will($this->returnValue($oMockUtils));
+        $oHelper
+            ->expects($this->any())
+            ->method('getFactoryObject')
+            ->will($this->returnValue($oMockRequest));
+        $oHelper
+            ->expects($this->any())
+            ->method('fcpoGetConfig')
+            ->will($this->returnValue($oMockConfig));
+        $oHelper
+            ->expects($this->any())
+            ->method('fcpoDeleteSessionVariable')
+            ->will($this->returnValue(null));
+        $oHelper
+            ->expects($this->any())
+            ->method('fcpoSetSessionVariable')
+            ->will($this->returnValue(null));
+        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
+
+        $this->assertEquals(
+            null,
+            $oTestObject->_fcpoHandleGetOrderReferenceDetails('someReferenceId','someAccessToken')
+        );
+    }
+
+    /**
      * Testing fcpoTriggerPrecheck for coverage
      */
     public function test_fcpoTriggerPrecheck_Coverage() 

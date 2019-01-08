@@ -130,7 +130,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      *
      * @var array
      */
-    protected $_aFcRequestedValues = null;
+    public $_aFcRequestedValues = null;
 
 
     /**
@@ -174,6 +174,22 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         $this->_oFcpoHelper->fcpoDeleteSessionVariable('sess_challenge');
 
         parent::init();
+    }
+
+    /**
+     * Method checks if user should log into shop for merging
+     *
+     * @param void
+     * @return void
+     */
+    public function fcpoAmazonUserLogin() {
+        $blAmazonMergeUserMandatory = (bool) $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoAmazonMergeUserMandatory');
+        if ($blAmazonMergeUserMandatory) {
+            $oUtils = $this->_oFcpoHelper->fcpoGetUtils();
+            $oUtils->redirect('index.php?cl=user');
+        }
+
+        $this->render();
     }
 
     /**
@@ -670,7 +686,8 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     }
 
     /**
-     * Wrapper method for receiving matching path
+     * Method returns active theme path by checking current theme and its parent
+     * If theme is not assignable, 'azure' will be the fallback
      *
      * @param void
      * @return string
@@ -794,6 +811,24 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         return $oConfig->getConfigParam('sFCPOCCType');
+    }
+
+    /**
+     * Method will be triggered by amazon checkout. Will make sure that paymentid is set to
+     * amazon payment
+     *
+     * @param void
+     * @return void
+     */
+    public function validateAmazonPayment() {
+        $oSession = $this->getSession();
+        $oBasket = $oSession->getBasket();
+
+        $this->_oFcpoHelper->fcpoDeleteSessionVariable('paymentid');
+        $this->_oFcpoHelper->fcpoSetSessionVariable('paymentid', 'fcpoamazonpay');
+        $oBasket->setPayment('fcpoamazonpay');
+
+        return 'order';
     }
 
     /**
@@ -1266,6 +1301,10 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      */
     protected function _fcpoProcessValidation($mReturn, $sPaymentId) 
     {
+        if ($sPaymentId == 'fcpoamazonpay') {
+            $mReturn = 'order';
+        }
+
         if ($mReturn == 'order') { // success
             $this->_fcpoSetKlarnaCampaigns();
 
@@ -1876,6 +1915,26 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     }
 
     /**
+     * Returning requested form data values wether via ajax or
+     * direct
+     *
+     * @param void
+     * @return array
+     */
+    protected function _fcpoGetRequestedValues() {
+        if ($this->_aFcRequestedValues === null) {
+            $aRequestedValues = $this->_oFcpoHelper->fcpoGetRequestParameter('dynvalue');
+            if ($this->_blIsPayolutionInstallmentAjax) {
+                $aRequestedValues = $this->_aAjaxPayolutionParams;
+            }
+
+            $this->_aFcRequestedValues = $aRequestedValues;
+        }
+
+        return $this->_aFcRequestedValues;
+    }
+
+    /**
      * Method checks if ustid should be saved and returns if it has saved this data or not
      *
      * @param $sPaymentId
@@ -1895,23 +1954,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         }
 
         return $blSavedData;
-    }
-
-    /**
-     * Returns value depending on payment or false if this hasn't been set
-     * @param string $sPaymentId
-     * @return mixed string/boolean
-     */
-    protected function _fcpoGetRequestedValue($sPaymentId, $sDbFieldName) {
-        $aRequestedValues = $this->_fcpoGetRequestedValues();
-        $sFieldNameAddition = str_replace("fcpopo_", "", $sPaymentId);
-
-        $mReturn = false;
-        if (isset($aRequestedValues['fcpo_payolution_' . $sFieldNameAddition . '_'.$sDbFieldName])) {
-            $mReturn = $aRequestedValues['fcpo_payolution_' . $sFieldNameAddition . '_'.$sDbFieldName];
-        }
-
-        return $mReturn;
     }
 
     /**
@@ -2045,7 +2087,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      * @param $sPaymentId
      * @return string
      */
-    protected function _fcpoExtractBirthdateFromRequest($sPaymentId) {
+    public function _fcpoExtractBirthdateFromRequest($sPaymentId) {
         $aRequestedValues = $this->_fcpoGetRequestedValues();
         $sRequestBirthdate = '--';
         switch($sPaymentId) {
@@ -2068,23 +2110,20 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     }
 
     /**
-     * Returning requested form data values wether via ajax or
-     * direct
-     *
-     * @param void
-     * @return array
+     * Returns value depending on payment or false if this hasn't been set
+     * @param string $sPaymentId
+     * @return mixed string/boolean
      */
-    protected function _fcpoGetRequestedValues() {
-        if ($this->_aFcRequestedValues === null) {
-            $aRequestedValues = $this->_oFcpoHelper->fcpoGetRequestParameter('dynvalue');
-            if ($this->_blIsPayolutionInstallmentAjax) {
-                $aRequestedValues = $this->_aAjaxPayolutionParams;
-            }
+    protected function _fcpoGetRequestedValue($sPaymentId, $sDbFieldName) {
+        $aRequestedValues = $this->_fcpoGetRequestedValues();
+        $sFieldNameAddition = str_replace("fcpopo_", "", $sPaymentId);
 
-            $this->_aFcRequestedValues = $aRequestedValues;
+        $mReturn = false;
+        if (isset($aRequestedValues['fcpo_payolution_' . $sFieldNameAddition . '_'.$sDbFieldName])) {
+            $mReturn = $aRequestedValues['fcpo_payolution_' . $sFieldNameAddition . '_'.$sDbFieldName];
         }
 
-        return $this->_aFcRequestedValues;
+        return $mReturn;
     }
 
     /**
@@ -3090,7 +3129,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      * @return bool
      */
     public function fcpoShowPayolutionB2B() {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $blB2BModeActive = $oConfig->getConfigParam('blFCPOPayolutionB2BMode');
 
         if ($blB2BModeActive) {

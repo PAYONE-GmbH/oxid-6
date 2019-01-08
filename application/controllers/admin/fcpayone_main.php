@@ -349,6 +349,8 @@ class fcpayone_main extends fcpayone_admindetails
         $this->_fcpoCheckAndAddRatePayProfile();
         $this->_fcpoInsertProfiles();
 
+        // request and add amazonpay configuration if triggered
+        $this->_fcpoCheckRequestAmazonPayConfiguration();
 
         $this->_handlePayPalExpressLogos();
         
@@ -468,6 +470,64 @@ class fcpayone_main extends fcpayone_admindetails
             $this->_oFcpoRatePay->fcpoAddRatePayProfile();
             $this->_aAdminMessages["blRatePayProfileAdded"] = true;
         }
+    }
+
+    /**
+     * Checks if button for fetching configuration settings for amazon from payone api has been triggered
+     * Initiates requesting api if true
+     *
+     * @param void
+     * @return void
+     */
+    protected function _fcpoCheckRequestAmazonPayConfiguration() {
+        if ($this->_oFcpoHelper->fcpoGetRequestParameter('getAmazonPayConfiguration')) {
+            $oLang = $this->_oFcpoHelper->fcpoGetLang();
+            $blSuccess = $this->_fcpoRequestAndAddAmazonConfig();
+            $sMessage = 'FCPO_AMAZONPAY_ERROR_GETTING_CONFIG';
+            if ($blSuccess) {
+                $this->_aAdminMessages["blAmazonPayConfigFetched"] = true;
+                $sMessage = 'FCPO_AMAZONPAY_SUCCESS_GETTING_CONFIG';
+            }
+            $sTranslatedMessage = $oLang->translateString($sMessage);
+            $oUtilsView = $this->_oFcpoHelper->fcpoGetUtilsView();
+            $oUtilsView->addErrorToDisplay($sTranslatedMessage, false, true);
+        }
+    }
+
+    /**
+     * Triggers requesting payone api for amazon configuration and returns
+     * if succeeded
+     *
+     * @param void
+     * @return bool
+     */
+    protected function _fcpoRequestAndAddAmazonConfig() {
+        $oFcpoRequest = $this->_oFcpoHelper->getFactoryObject('fcporequest');
+        $aResponse = $oFcpoRequest->sendRequestGetAmazonPayConfiguration();
+        $blSuccess = $this->_fcpoSaveAmazonConfigFromResponse($aResponse);
+
+        return $blSuccess;
+    }
+
+    /**
+     * Analyzes response tries to save config and returns if everything succeeded
+     *
+     * @param $aResponse
+     * @return bool
+     */
+    protected function _fcpoSaveAmazonConfigFromResponse($aResponse) {
+        $sStatus = $aResponse['status'];
+        $blReturn = false;
+        if ($sStatus == 'OK') {
+            $sSellerId = $aResponse['add_paydata[seller_id]'];
+            $sClientId = $aResponse['add_paydata[client_id]'];
+            $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+            $oConfig->saveShopConfVar('str', 'sFCPOAmazonPaySellerId', $sSellerId);
+            $oConfig->saveShopConfVar('str', 'sFCPOAmazonPayClientId', $sClientId);
+            $blReturn = true;
+        }
+
+        return $blReturn;
     }
 
     /**

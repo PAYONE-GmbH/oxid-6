@@ -687,7 +687,6 @@ class fcpayone_main extends fcpayone_admindetails
             'fcpoonlineueberweisung' => 'sb',
             'fcpopaypal' => 'wlt',
             'fcpopaypal_express' => 'wlt',
-            'fcpobillsafe' => 'fnc',
             'fcpoklarna' => 'fnc',
             'fcpobarzahlen' => 'csh',
             'fcpopaydirekt' => 'wlt',

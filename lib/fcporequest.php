@@ -453,11 +453,6 @@ class fcpoRequest extends oxSuperCfg
         case 'fcpopaypal_express':
             $blAddRedirectUrls = $this->_setPaymentParamsPayPal($oOrder, $sRefNr);
             break;
-        case 'fcpobillsafe':
-            $this->addParameter('clearingtype', 'fnc'); //Payment method
-            $this->addParameter('financingtype', 'BSV');
-            $blAddRedirectUrls = true;
-            break;
         case 'fcpoklarna':
             $this->addParameter('clearingtype', 'fnc'); //Payment method
             $this->addParameter('financingtype', 'KLV');

@@ -158,6 +158,7 @@
                             <option value="KNAB_BANK" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "KNAB_BANK"}]selected[{/if}]>Knab</option>
                             <option value="VAN_LANSCHOT_BANKIERS" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "VAN_LANSCHOT_BANKIERS"}]selected[{/if}]>van Lanschot</option>
                             <option value="MONEYOU" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "MONEYOU"}]selected[{/if}]>Moneyou</option>
+                            <option value="HANDELSBANKEN" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "HANDELSBANKEN"}]selected[{/if}]>Handelsbanken</option>
                         </select>
                     </div>
                 </div>

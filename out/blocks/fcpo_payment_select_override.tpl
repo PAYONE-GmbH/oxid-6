@@ -30,6 +30,8 @@
 [{elseif $sPaymentID == "fcporp_bill"}]
     [{assign var="sFcPoTemplatePath" value=$sFcPoTemplatePath|cat:'/fcpo_payment_ratepay_bill.tpl'}]
     [{include file=$oViewConf->fcpoGetAbsModuleTemplateFrontendPath($sFcPoTemplatePath)}]
+[{elseif $sPaymentID == "fcpoamazonpay"}]
+    [{*Don't show AmazonPay in standard checkout*}]
 [{else}]
     [{$smarty.block.parent}]
 [{/if}]

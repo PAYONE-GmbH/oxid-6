@@ -1,0 +1,7 @@
+[{if $oViewConf->fcpoUserHasSalutation()}]
+    [{$smarty.block.parent}]
+[{else}]
+    [{assign var="sFcPoTemplatePath" value=$oViewConf->fcpoGetActiveThemePath()}]
+    [{assign var="sFcPoTemplatePath" value=$sFcPoTemplatePath|cat:'/fcpo_nosalutation_order.tpl'}]
+    [{include file=$oViewConf->fcpoGetAbsModuleTemplateFrontendPath($sFcPoTemplatePath)}]
+[{/if}]

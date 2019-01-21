@@ -49,7 +49,6 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         'fcpoonlineueberweisung',
         'fcpopaypal',
         'fcpopaypal_express',
-        'fcpobillsafe',
         'fcpoklarna',
         'fcpobarzahlen',
         'fcpopaydirekt',
@@ -57,6 +56,7 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         'fcpopo_debitnote',
         'fcpopo_installment',
         'fcporp_bill',
+        'fcpoamazonpay',
     );
     
     protected static $_aRedirectPayments = array(
@@ -100,6 +100,20 @@ class fcPayOnePayment extends fcPayOnePayment_parent
     public static function fcIsPayOneRedirectType($sPaymentId) 
     {
         $blReturn = (in_array($sPaymentId, self::$_aRedirectPayments) !== false) ? true : false;
+        $oHelper = oxNew('fcpohelper');
+
+        $blDynFlaggedAsRedirectPayment =
+            (bool)$oHelper->fcpoGetSessionVariable('blDynFlaggedAsRedirectPayment');
+        $blUseDynamicFlag = (
+            !$blReturn &&
+            $blDynFlaggedAsRedirectPayment === true
+        );
+
+        if ($blUseDynamicFlag) {
+            // overwrite static value
+            $blReturn = $blDynFlaggedAsRedirectPayment;
+        }
+
         return $blReturn;
     }
 

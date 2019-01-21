@@ -150,8 +150,134 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
         
         $this->assertEquals($sExpect, $oTestObject->fcpoHandlePayPalExpress());
     }
-    
-    
+
+    /**
+     * Testing _getNextStep for coverage
+     */
+    public function test__getNextStep_Coverage() {
+        $iMockSuccess = 1;
+        $sMockRedirectAction = 'someRedirectAction';
+
+        $oTestObject = $this->getMock('fcPayOneOrderView', array(
+            '_fcpoGetRedirectAction'
+        ));
+        $oTestObject
+            ->expects($this->any())
+            ->method('_fcpoGetRedirectAction')
+            ->will($this->returnValue($sMockRedirectAction));
+
+        $this->assertEquals($sMockRedirectAction, $oTestObject->_getNextStep($iMockSuccess));
+    }
+
+    /**
+     * Testing _fcpoAmazonLogout for coverage
+     */
+    public function test__fcpoAmazonLogout_Coverage() {
+        $oTestObject = $this->getMock('fcPayOneOrderView', array(
+            '_fcpoDeleteCurrentUser'
+        ));
+        $oTestObject
+            ->expects($this->any())
+            ->method('_fcpoDeleteCurrentUser')
+            ->will($this->returnValue(null));
+
+        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
+        $oHelper->expects($this->any())->method('fcpoDeleteSessionVariable')->will($this->returnValue(null));
+
+        $this->assertEquals(null, $oTestObject->_fcpoAmazonLogout());
+    }
+
+    /**
+     * Testing _fcpoDeleteCurrentUser for coverage
+     */
+    public function test__fcpoDeleteCurrentUser_Coverage() {
+        $oTestObject = oxNew('fcPayOneOrderView');
+        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
+        $oHelper->expects($this->any())->method('fcpoGetSessionVariable')->will($this->returnValue('someUserId'));
+        $oHelper->expects($this->any())->method('fcpoDeleteSessionVariable')->will($this->returnValue(null));
+
+        $this->assertEquals(null, $oTestObject->_fcpoDeleteCurrentUser());
+    }
+
+    /**
+     * Testing _fcpoGetRedirectAction for case plan not set
+     */
+    public function test__fcpoGetRedirectAction_PlanNotSet() {
+        $oMockOrder = $this->getMock('oxOrder', array(
+            'fcpoGetAmazonErrorMessage'
+        ));
+        $oMockOrder
+            ->expects($this->any())
+            ->method('fcpoGetAmazonErrorMessage')
+            ->will($this->returnValue('someErrorMessage'));
+
+        $oTestObject = $this->getMock('fcPayOneOrderView', array('_fcpoAmazonLogout'));
+        $oTestObject
+            ->expects($this->any())
+            ->method('_fcpoAmazonLogout')
+            ->will($this->returnValue(null));
+        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
+        $oHelper->expects($this->any())->method('getFactoryObject')->will($this->returnValue($oMockOrder));
+        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
+
+        $this->assertEquals('payment', $oTestObject->_fcpoGetRedirectAction(986));
+    }
+
+    /**
+     * Testing _fcpoGetRedirectAction for case 900 error
+     */
+    public function test__fcpoGetRedirectAction_900() {
+        $oMockOrder = $this->getMock('oxOrder', array(
+            'fcpoGetAmazonErrorMessage'
+        ));
+        $oMockOrder
+            ->expects($this->any())
+            ->method('fcpoGetAmazonErrorMessage')
+            ->will($this->returnValue('someErrorMessage'));
+
+        $oTestObject = $this->getMock('fcPayOneOrderView', array('_fcpoAmazonLogout'));
+        $oTestObject
+            ->expects($this->any())
+            ->method('_fcpoAmazonLogout')
+            ->will($this->returnValue(null));
+        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
+        $oHelper
+            ->expects($this->any())
+            ->method('getFactoryObject')
+            ->will($this->returnValue($oMockOrder));
+        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
+
+        $sExpect = 'basket?fcpoerror=someErrorMessage';
+
+        $this->assertEquals($sExpect, $oTestObject->_fcpoGetRedirectAction(900));
+    }
+
+    /**
+     * Testing _fcpoGetRedirectAction for case no shipping address given
+     */
+    public function test__fcpoGetRedirectAction_NoShippingAddress() {
+        $oMockOrder = $this->getMock('oxOrder', array(
+            'fcpoGetAmazonErrorMessage'
+        ));
+        $oMockOrder
+            ->expects($this->any())
+            ->method('fcpoGetAmazonErrorMessage')
+            ->will($this->returnValue('someErrorMessage'));
+
+        $oTestObject = $this->getMock('fcPayOneOrderView', array('_fcpoAmazonLogout'));
+        $oTestObject
+            ->expects($this->any())
+            ->method('_fcpoAmazonLogout')
+            ->will($this->returnValue(null));
+        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
+        $oHelper->expects($this->any())->method('getFactoryObject')->will($this->returnValue($oMockOrder));
+        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
+
+        $sExpect = 'user?fcpoerror=someErrorMessage';
+
+        $this->assertEquals($sExpect, $oTestObject->_fcpoGetRedirectAction(987));
+    }
+
     /**
      * Testing _fcpoDoesUserAlreadyExist for Coverage
      * 

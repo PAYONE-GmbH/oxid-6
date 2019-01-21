@@ -517,7 +517,6 @@ class fcpoconfigexport extends oxBase
             'fcpoonlineueberweisung' => 'sb',
             'fcpopaypal' => 'wlt',
             'fcpopaypal_express' => 'wlt',
-            'fcpobillsafe' => 'fnc',
             'fcpoklarna' => 'fnc',
             'fcpobarzahlen' => 'csh',
             'fcpopaydirekt' => 'wlt',

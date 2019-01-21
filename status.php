@@ -147,7 +147,7 @@ class fcPayOneTransactionStatusHandler extends oxBase
             FROM 
                 oxorder 
             WHERE 
-                fcpotxid = '". $oDb->quote($sTxid) ."'
+                fcpotxid = ". $oDb->quote($sTxid) ."
             LIMIT 1
         ";
         $iOrderNr = (int) $oDb->GetOne($sQuery);

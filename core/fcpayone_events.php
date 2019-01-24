@@ -43,7 +43,7 @@ class fcpayone_events
         'fcpoyapital',
         'fcpocommerzfinanz',
         'fcpoklarna_installment',
-        'fcpocreditcard_iframe'
+        'fcpocreditcard_iframe',
         'fcpobillsafe'
     );
     public static $sQueryTableFcporefnr = "

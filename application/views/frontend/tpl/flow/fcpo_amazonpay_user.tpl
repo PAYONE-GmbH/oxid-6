@@ -39,17 +39,36 @@
             </div>
         </div>
         <script>
+            function getCookie(cname) {
+                var name = cname + "=";
+                var decodedCookie = decodeURIComponent(document.cookie);
+                var ca = decodedCookie.split(';');
+                for(var i = 0; i <ca.length; i++) {
+                    var c = ca[i];
+                    while (c.charAt(0) == ' ') {
+                        c = c.substring(1);
+                    }
+                    if (c.indexOf(name) == 0) {
+                        return c.substring(name.length, c.length);
+                    }
+                }
+                return "";
+            }
+
             function getURLParameter(name, source) {
                 return decodeURIComponent((new RegExp('[?|&|#]' + name + '=' +
                     '([^&]+?)(&|#|;|$)').exec(source) || [,""])[1].replace(/\+/g,
                     '%20')) || null;
             }
 
-            var accessToken = getURLParameter("access_token", location.hash);
+            var accessToken = getCookie('amazon_Login_accessToken');
 
-            if (typeof accessToken === 'string' && accessToken.match(/^Atza/)) {
-                document.cookie = "amazon_Login_accessToken=" + accessToken +
-                    ";secure";
+            if (typeof accessToken === 'string' && accessToken === '') {
+                var accessToken = getURLParameter("access_token", location.hash);
+                if (typeof accessToken === 'string' && accessToken.match(/^Atza/)) {
+                    document.cookie = "amazon_Login_accessToken=" + accessToken +
+                        ";secure";
+                }
             }
 
             window.onAmazonLoginReady = function() {

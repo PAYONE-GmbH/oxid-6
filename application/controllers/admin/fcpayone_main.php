@@ -679,7 +679,6 @@ class fcpayone_main extends fcpayone_admindetails
 
         $aAbbreviations = array(
             'fcpocreditcard' => 'cc',
-            'fcpocreditcard_iframe' => 'cc',
             'fcpocashondel' => 'cod',
             'fcpodebitnote' => 'elv',
             'fcpopayadvance' => 'vor',

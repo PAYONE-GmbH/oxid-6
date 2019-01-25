@@ -428,10 +428,6 @@ class fcpoRequest extends oxSuperCfg
         case 'fcpocreditcard':
             $blAddRedirectUrls = $this->_setPaymentParamsCC($aDynvalue);
             break;
-        case 'fcpocreditcard_iframe':
-            $this->addParameter('clearingtype', 'cc'); //Payment method
-            $blAddRedirectUrls = true;
-            break;
         case 'fcpocashondel':
             $this->addParameter('clearingtype', 'cod'); //Payment method
             $this->addParameter('shippingprovider', 'DHL');

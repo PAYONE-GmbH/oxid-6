@@ -838,7 +838,7 @@ $('#payolution_installment_check_availability').click(
 
         $.ajax(
             {
-                url: '[{$oViewConf->getBaseDir()}]modules/fc/fcpayone/application/models/fcpayone_ajax.php',
+                url: payoneAjaxControllerUrl,
                 method: 'POST',
                 type: 'POST',
                 dataType: 'text',

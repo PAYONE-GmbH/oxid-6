@@ -50,6 +50,7 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent
         'flow' => 'flow',
         'azure' => 'azure',
         'mobile' => 'mobile',
+        'wave' => 'wave',
     );
 
     /**

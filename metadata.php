@@ -19,6 +19,8 @@
  * @version   OXID eShop CE
  */
 
+$sMetadataVersion = '1.1';
+
 $aModule = array(
     'id'            => 'fcpayone',
     'title'         => 'PAYONE Payment f&uuml;r OXID eShop',

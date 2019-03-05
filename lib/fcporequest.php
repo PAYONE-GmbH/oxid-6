@@ -2532,9 +2532,6 @@ class fcpoRequest extends oxSuperCfg
         $oCountry = oxNew('oxcountry');
         $oCountry->load($oOrder->oxorder__oxbillcountryid->value);
 
-        if ($blIsUpdateUser === false) {
-            $this->addParameter('customerid', $oUser->oxuser__oxcustnr->value);
-        }
         $this->addParameter('salutation', ($oOrder->oxorder__oxbillsal->value == 'MR' ? 'Herr' : 'Frau'), $blIsUpdateUser);
         $this->addParameter('gender', ($oOrder->oxorder__oxbillsal->value == 'MR' ? 'm' : 'f'), $blIsUpdateUser);
         $this->addParameter('firstname', $oOrder->oxorder__oxbillfname->value, $blIsUpdateUser);
@@ -2608,7 +2605,6 @@ class fcpoRequest extends oxSuperCfg
         $this->addParameter('aid', $oConfig->getConfigParam('sFCPOSubAccountID')); //ID of PayOne Sub-Account
         $this->addParameter('clearingtype', 'elv');
 
-        $this->addParameter('customerid', $oUser->oxuser__oxcustnr->value);
         $sPayOneUserId = $this->_getPayoneUserIdByCustNr($oUser->oxuser__oxcustnr->value);
         if ($sPayOneUserId) {
             $this->addParameter('userid', $sPayOneUserId);

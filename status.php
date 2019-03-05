@@ -181,20 +181,18 @@ class fcPayOneTransactionStatusHandler extends oxBase
         return $sParams;
     }
 
-    protected function _forwardRequest($sUrl, $iTimeout) 
-    {
-        if($iTimeout == 0) {
-            $iTimeout = 45;
-        }
-        
+    protected function _handleForwarding() {
+
         $sParams = '';
         foreach($_POST as $sKey => $mValue) {
             $sParams .= $this->_addParam($sKey, $mValue);
         }
 
-        $sParams = substr($sParams, 1);
+        $sParams = substr($sParams,1);
+        $sBaseUrl = (empty($this->getConfig()->getShopUrl())) ? $this->getConfig()->getSslShopUrl() : $this->getConfig()->getShopUrl();
+        $sForwarderUrl = $sBaseUrl . 'modules/fcPayOne/statusforward.php';
 
-        $oCurl = curl_init($sUrl);
+        $oCurl = curl_init($sForwarderUrl);
         curl_setopt($oCurl, CURLOPT_POST, 1);
         curl_setopt($oCurl, CURLOPT_POSTFIELDS, $sParams);
 
@@ -202,22 +200,12 @@ class fcPayOneTransactionStatusHandler extends oxBase
         curl_setopt($oCurl, CURLOPT_SSL_VERIFYHOST, false);
 
         curl_setopt($oCurl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($oCurl, CURLOPT_TIMEOUT, $iTimeout);
+        curl_setopt($oCurl, CURLOPT_TIMEOUT_MS, 100);
 
         $oResult = curl_exec($oCurl);
 
         curl_close($oCurl);
-    }
 
-    protected function _handleForwarding() 
-    {
-        $sPayoneStatus = $this->fcGetPostParam('txaction');
-        
-        $sQuery = "SELECT fcpo_url, fcpo_timeout FROM fcpostatusforwarding WHERE fcpo_payonestatus = '{$sPayoneStatus}'";
-        $aRows = oxDb::getDb()->getAll($sQuery);
-        foreach ($aRows as $aRow) {
-            $this->_forwardRequest($aRow[0], $aRow[1]);
-        }
     }
     
     protected function _handleMapping($oOrder) 

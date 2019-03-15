@@ -314,6 +314,22 @@ class fcpohelper extends oxBase
     }
 
     /**
+     * Returns an instance of oxviewvonfig
+     *
+     * @param void
+     * @return mixed
+     */
+    public function fcpoGetViewConfig() {
+        if ($this->_fcUseDeprecatedInstantiation()) {
+            $mReturn = oxViewConfig::getInstance();
+        } else {
+            $mReturn = oxRegistry::get('oxViewConfig');
+        }
+
+        return $mReturn;
+    }
+
+    /**
      * Returns an instance of oxutilserver
      * 
      * @param  void

@@ -3422,4 +3422,20 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         return $oUser;
     }
 
+    /**
+     * Fetch the agreement string based on locale
+     * then insert the payment method particle in the placeholder
+     *
+     * @param string $sPaymentId
+     * @return string
+     */
+    public function fcpoGetPoAgreementInit($sPaymentId)
+    {
+        $oTranslator = $this->_oFcpoHelper->fcpoGetLang();
+        $sBaseString = $oTranslator->translateString('FCPO_PAYOLUTION_AGREEMENT_PART_1');
+        $sPaymentMethodSuffix = $oTranslator->translateString('FCPO_PAYOLUTION_AGREEMENT_PART_1_' . strtoupper($sPaymentId));
+
+        return sprintf($sBaseString, $sPaymentMethodSuffix);
+    }
+
 }

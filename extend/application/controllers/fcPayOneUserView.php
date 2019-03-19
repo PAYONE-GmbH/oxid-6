@@ -46,6 +46,14 @@ class fcPayOneUserView extends fcPayOneUserView_parent
         $oUtilsServer = oxRegistry::get('oxUtilsServer');
         $sPaymentId = 'fcpoamazonpay';
 
+        // OXID-233 : if the user is logged in, we save the id in session for later
+        // AmazonPay process uses a new user, created on the fly
+        // Then we need the original Id to link back the order to the initial user
+        $user = oxRegistry::getSession()->getUser();
+        if ($user) {
+            oxRegistry::getSession()->setVariable('sOxidPreAmzUser', $user->getId());
+        }
+
         // delete possible old data
         $this->_oFcpoHelper->fcpoDeleteSessionVariable('sAmazonLoginAccessToken');
 

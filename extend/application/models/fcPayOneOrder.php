@@ -463,6 +463,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
             $oUserPayment->oxuserpayments__oxuserid = new \OxidEsales\Eshop\Core\Field($sUserId);
             $oUserPayment->save();
 
+            $session->setVariable('usr', $sUserId);
             $session->deleteVariable('sOxidPreAmzUser');
         }
     }

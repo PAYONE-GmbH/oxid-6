@@ -347,6 +347,7 @@ class fcpayone_events
         'fcpopo_installment' => 'Paysafe Pay Later™ Ratenkauf',
         'fcporp_bill' => 'Ratepay Rechnungskauf',
 	    'fcpoamazonpay' => 'AmazonPay',
+        'fcpo_secinvoice' => 'Gesicherter Rechnungskauf',
     );
 
     /**

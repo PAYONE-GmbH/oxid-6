@@ -168,7 +168,7 @@ class fcpoRequest extends oxSuperCfg
     }
 
     /**
-     * Add parameter to request
+     * Add/Overwrites parameter to request
      * 
      * @param string $sKey               parameter key
      * @param string $sValue             parameter value
@@ -176,9 +176,14 @@ class fcpoRequest extends oxSuperCfg
      */
     public function addParameter($sKey, $sValue, $blAddAsNullIfEmpty = false) 
     {
-        if ($blAddAsNullIfEmpty === true && empty($sValue)) {
+        $blSetNullForEmpty = (
+            $blAddAsNullIfEmpty === true &&
+            empty($sValue)
+        );
+        if ($blSetNullForEmpty) {
             $sValue = 'NULL';
         }
+
         $this->_aParameters[$sKey] = $sValue;
     }
 
@@ -312,7 +317,15 @@ class fcpoRequest extends oxSuperCfg
 
         $blPaymentTypeKnown = $this->setPaymentParameters($oOrder, $aDynvalue, $sRefNr);
 
-        if ($oOrder->isDetailedProductInfoNeeded() || ($blIsPreauthorization === false && $this->getConfig()->getConfigParam('blFCPOSendArticlelist') === true)) {
+        $blAddProductInfo = (
+            $oOrder->isDetailedProductInfoNeeded() ||
+            (
+                $blIsPreauthorization === false &&
+                $this->getConfig()->getConfigParam('blFCPOSendArticlelist') === true
+            )
+        );
+
+        if ($blAddProductInfo) {
             $this->addProductInfo($oOrder);
         }
 
@@ -490,6 +503,9 @@ class fcpoRequest extends oxSuperCfg
             // sending customerid leads to error  1339 state faulty or missing
             unset($this->_aParameters['customerid']);
             break;
+        case 'fcpo_secinvoice':
+            $blAddRedirectUrls = $this->_fcpoAddSecInvoiceParameters($oOrder);
+            break;
         default:
             return false;
         }
@@ -501,9 +517,36 @@ class fcpoRequest extends oxSuperCfg
     }
 
     /**
+     * Adds additional parameters for secure invoice payment rec/POV
+     *
+     * @param $oOrder
+     * @return  boolean
+     */
+    protected function _fcpoAddSecInvoiceParameters($oOrder) {
+        $oConfig = $this->getConfig();
+
+        $sSecinvoicePortalId = $oConfig->getConfigParam('sFCPOSecinvoicePortalId');
+        $sSecinvoicePortalKeyHash = md5($oConfig->getConfigParam('sFCPOSecinvoicePortalKey'));
+        $this->addParameter('portalid', $sSecinvoicePortalId);
+        $this->addParameter('key', $sSecinvoicePortalKeyHash);
+
+        $this->addParameter('clearingtype', 'rec');
+        $this->addParameter('clearingsubtype', 'POV');
+
+        $blIsB2B = $this->fcpoIsB2B($oOrder->getUser());
+        $sBusinessRelation = ($blIsB2B) ? 'b2b' : 'b2c';
+        $this->addParameter('businessrelation', $sBusinessRelation);
+
+        return true;
+    }
+
+    /**
+     * Adding redirect urls
+     *
      * @param string $sAbortClass
-     * @param bool|string $sRefNr
+     * @param string $sRefNr
      * @param bool $blIsPayPalExpress
+     * @return void
      */
     protected function _addRedirectUrls($sAbortClass, $sRefNr = false, $blIsPayPalExpress = false) 
     {
@@ -1673,7 +1716,14 @@ class fcpoRequest extends oxSuperCfg
         }
 
         // Bedingung $amount == $oOrder->oxorder__oxorder__oxtotalordersum->value nur solange wie Artikelliste nicht f?r Multi-Capture m?glich
-        if ($oOrder->isDetailedProductInfoNeeded() || ($this->getConfig()->getConfigParam('blFCPOSendArticlelist') === true && $dAmount == $oOrder->oxorder__oxtotalordersum->value)) {
+        $blAddProductInfo = (
+            $oOrder->isDetailedProductInfoNeeded() ||
+            (
+                $this->getConfig()->getConfigParam('blFCPOSendArticlelist') === true &&
+                $dAmount == $oOrder->oxorder__oxtotalordersum->value
+            )
+        );
+        if ($blAddProductInfo) {
             $dAmount = $this->addProductInfo($oOrder, $aPositions);
             if ($aPositions !== false) {
                 //partial-amount

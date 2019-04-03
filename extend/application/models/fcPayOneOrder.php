@@ -438,7 +438,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         $iRet = $this->_fcpoFinishOrder($blRecalculatingOrder, $oUser, $oBasket, $oUserPayment);
 
         // OXID-233 : handle amazon different login
-        $this->adjustAmazonPayUserDetails($oUserPayment);
+        $this->_fcpoAdjustAmazonPayUserDetails($oUserPayment);
 
         return $iRet;
     }
@@ -452,19 +452,18 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      *
      * @param \OxidEsales\Eshop\Application\Model\UserPayment $oUserPayment
      */
-    private function adjustAmazonPayUserDetails($oUserPayment)
+    protected function _fcpoAdjustAmazonPayUserDetails($oUserPayment)
     {
-        $session = oxRegistry::getSession();
-        if (!empty($session->getVariable('sOxidPreAmzUser'))) {
-            $sUserId = $session->getVariable('sOxidPreAmzUser');
+        $sUserId = $this->_oFcpoHelper->fcpoGetSessionVariable('sOxidPreAmzUser');
+        if (!empty($sUserId)) {
             $this->oxorder__oxuserid = new \OxidEsales\Eshop\Core\Field($sUserId);
             $this->save();
 
             $oUserPayment->oxuserpayments__oxuserid = new \OxidEsales\Eshop\Core\Field($sUserId);
             $oUserPayment->save();
 
-            $session->setVariable('usr', $sUserId);
-            $session->deleteVariable('sOxidPreAmzUser');
+            $this->_oFcpoHelper->fcpoSetSessionVariable('usr', $sUserId);
+            $this->_oFcpoHelper->fcpoDeleteSessionVariable('sOxidPreAmzUser');
         }
     }
 

@@ -92,26 +92,7 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOnePaymentTest extends OxidTe
         $oTestObject = oxNew('fcPayOnePayment'); 
         $this->assertEquals(true, $oTestObject->fcIsPayOnePaymentType('fcpoinvoice'));
     }
-    
-    /**
-     * Testing fcIsPayOneIframePaymentType on having the right value expecting to get a positive response
-     */
-    public function test_fcIsPayOneIframePaymentType_IsPayone() 
-    {
-        $oTestObject = oxNew('fcPayOnePayment'); 
-        $this->assertEquals(true, $oTestObject->fcIsPayOneIframePaymentType('fcpocreditcard_iframe'));
-    }
-    
-    /**
-     * Testing fcIsPayOneFrontendApiPaymentType on having the right value expecting to get a positive response
-     */
-    public function test_fcIsPayOneFrontendApiPaymentType_IsPayone() 
-    {
-        $oTestObject = oxNew('fcPayOnePayment'); 
-        $this->assertEquals(true, $oTestObject->fcIsPayOneFrontendApiPaymentType('fcpocreditcard_iframe'));
-    }
-    
-    
+
     /**
      * Testing fcpoGetOperationMode for coverage
      */

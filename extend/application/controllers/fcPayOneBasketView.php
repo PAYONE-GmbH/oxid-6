@@ -45,12 +45,61 @@ class fcPayOneBasketView extends fcPayOneBasketView_parent
     /**
      * init object construction
      * 
-     * @return null
+     * @return void
      */
     public function __construct() 
     {
         parent::__construct();
         $this->_oFcpoHelper = oxNew('fcpohelper');
+    }
+
+    /**
+     * Overloading render method for checking on amazon logoff
+     *
+     * @param void
+     * @return string
+     */
+    public function render() {
+        $this->_fcpoCheckForAmazonLogoff();
+        return parent::render();
+    }
+
+    /**
+     * Returns basket error message if there is some. false if none
+     *
+     * @param void
+     * @return mixed string|bool
+     */
+    public function fcpoGetBasketErrorMessage() {
+        $mReturn = false;
+        $sMessage = $this->_oFcpoHelper->fcpoGetRequestParameter('fcpoerror');
+        if ($sMessage) {
+            $oLang = $this->_oFcpoHelper->fcpoGetLang();
+            $sMessage = urldecode($sMessage);
+            $sMessage = $oLang->translateString($sMessage);
+            $mReturn = $sMessage;
+            $this->_oFcpoHelper->fcpoDeleteSessionVariable('payerrortext');
+            $this->_oFcpoHelper->fcpoDeleteSessionVariable('payerror');
+        }
+
+        return $mReturn;
+    }
+
+    /**
+     * Method checks for param fcpoamzaction and logoff from Amazon Session if
+     * value is set to logoff
+     *
+     * @param void
+     * @return void
+     */
+    protected function _fcpoCheckForAmazonLogoff()  {
+        $sAmzAction = $this->_oFcpoHelper->fcpoGetRequestParameter('fcpoamzaction');
+        if ($sAmzAction == 'logoff') {
+            $this->_oFcpoHelper->fcpoDeleteSessionVariable('sAmazonLoginAccessToken');
+            $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoAmazonWorkorderId');
+            $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoAmazonReferenceId');
+            $this->_oFcpoHelper->fcpoDeleteSessionVariable('usr');
+        }
     }
 
     /**
@@ -125,7 +174,7 @@ class fcPayOneBasketView extends fcPayOneBasketView_parent
         } elseif ($aOutput['status'] == 'REDIRECT') {
             $this->_oFcpoHelper->fcpoSetSessionVariable('fcpoWorkorderId', $aOutput['workorderid']);
             $oUtils = $this->_oFcpoHelper->fcpoGetUtils();
-            $oUtils->redirect($aOutput['redirecturl']);
+            $oUtils->redirect($aOutput['redirecturl'], false);
         }
     }
 

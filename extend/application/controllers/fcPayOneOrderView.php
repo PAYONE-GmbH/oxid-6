@@ -19,8 +19,18 @@
  * @version   OXID eShop CE
  */
  
-class fcPayOneOrderView extends fcPayOneOrderView_parent
-{
+class fcPayOneOrderView extends fcPayOneOrderView_parent {
+
+    const FCPO_AMAZON_ERROR_TRANSACTION_TIMED_OUT = 980;
+    const FCPO_AMAZON_ERROR_INVALID_PAYMENT_METHOD = 981;
+    const FCPO_AMAZON_ERROR_REJECTED = 982;
+    const FCPO_AMAZON_ERROR_PROCESSING_FAILURE = 983;
+    const FCPO_AMAZON_ERROR_BUYER_EQUALS_SELLER = 984;
+    const FCPO_AMAZON_ERROR_PAYMENT_NOT_ALLOWED = 985;
+    const FCPO_AMAZON_ERROR_PAYMENT_PLAN_NOT_SET = 986;
+    const FCPO_AMAZON_ERROR_SHIPPING_ADDRESS_NOT_SET = 987;
+    const FCPO_AMAZON_ERROR_900 = 900;
+
     
     /**
      * Helper object for dealing with different shop versions
@@ -335,7 +345,83 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent
             }
         }
     }
-    
+
+    /**
+     * Overwriting next step action if there is some special redirect needed
+     *
+     * @param $iSuccess
+     * @return string
+     */
+    protected function _getNextStep($iSuccess) {
+        $sNextStep = parent::_getNextStep($iSuccess);
+
+        $sCustomStep =$this->_fcpoGetRedirectAction($iSuccess);
+        if ($sCustomStep) {
+            $sNextStep = $sCustomStep;
+        }
+
+        return $sNextStep;
+    }
+
+    /**
+     * Logs out amazon user
+     *
+     * @param void
+     * @return void
+     */
+    protected function _fcpoAmazonLogout() {
+        $this->_oFcpoHelper->fcpoDeleteSessionVariable('sAmazonLoginAccessToken');
+        $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoAmazonWorkorderId');
+        $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoAmazonReferenceId');
+        $this->_fcpoDeleteCurrentUser();
+    }
+
+
+    protected function _fcpoDeleteCurrentUser(){
+        $sUserId = $this->_oFcpoHelper->fcpoGetSessionVariable('usr');
+        $this->_oFcpoHelper->fcpoDeleteSessionVariable('usr');
+
+        // $oUser = $this->_oFcpoHelper->getFactoryObject("oxUser");
+        // $oUser->load($sUserId);
+        // $oUser->delete();
+    }
+
+
+    /**
+     * Returns action that shall be performed on order::_getNextStep
+     *
+     * @param $iSuccess
+     * @return mixed int|bool
+     */
+    protected function _fcpoGetRedirectAction($iSuccess) {
+        $iSuccess = (int) $iSuccess;
+        $mReturn = false;
+        $oOrder = $this->_oFcpoHelper->getFactoryObject('oxorder');
+
+        switch($iSuccess) {
+            case self::FCPO_AMAZON_ERROR_INVALID_PAYMENT_METHOD:
+            case self::FCPO_AMAZON_ERROR_PAYMENT_NOT_ALLOWED:
+            case self::FCPO_AMAZON_ERROR_PAYMENT_PLAN_NOT_SET:
+                $mReturn = 'payment';
+                break;
+            case self::FCPO_AMAZON_ERROR_TRANSACTION_TIMED_OUT:
+            case self::FCPO_AMAZON_ERROR_REJECTED:
+            case self::FCPO_AMAZON_ERROR_PROCESSING_FAILURE:
+            case self::FCPO_AMAZON_ERROR_BUYER_EQUALS_SELLER:
+            case self::FCPO_AMAZON_ERROR_900:
+                $this->_fcpoAmazonLogout();
+                $sMessage = $oOrder->fcpoGetAmazonErrorMessage($iSuccess);
+                $mReturn = 'basket?fcpoerror='.urlencode($sMessage);
+                break;
+            case self::FCPO_AMAZON_ERROR_SHIPPING_ADDRESS_NOT_SET:
+                $sMessage = $oOrder->fcpoGetAmazonErrorMessage($iSuccess);
+                $mReturn = 'user?fcpoerror='.urlencode($sMessage);
+                break;
+        }
+
+        return $mReturn;
+    }
+
     
     /**
      * Check if mandate acceptance is needed

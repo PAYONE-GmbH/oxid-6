@@ -510,7 +510,6 @@ class fcpoconfigexport extends oxBase
 
         $aAbbreviations = array(
             'fcpocreditcard' => 'cc',
-            'fcpocreditcard_iframe' => 'cc',
             'fcpocashondel' => 'cod',
             'fcpodebitnote' => 'elv',
             'fcpopayadvance' => 'vor',
@@ -518,7 +517,6 @@ class fcpoconfigexport extends oxBase
             'fcpoonlineueberweisung' => 'sb',
             'fcpopaypal' => 'wlt',
             'fcpopaypal_express' => 'wlt',
-            'fcpobillsafe' => 'fnc',
             'fcpoklarna' => 'fnc',
             'fcpobarzahlen' => 'csh',
             'fcpopaydirekt' => 'wlt',

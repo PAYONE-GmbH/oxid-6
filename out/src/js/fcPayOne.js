@@ -838,7 +838,7 @@ $('#payolution_installment_check_availability').click(
 
         $.ajax(
             {
-                url: 'modules/fc/fcpayone/application/models/fcpayone_ajax.php',
+                url: payoneAjaxControllerUrl,
                 method: 'POST',
                 type: 'POST',
                 dataType: 'text',
@@ -865,6 +865,7 @@ $('#payolution_installment_check_availability').click(
                             $('#payolution_sum_interest_rate').html($('#payolution_installment_interest_rate_' + selectedInstallmentIndex).val());
                             $('#payolution_sum_eff_interest_rate').html($('#payolution_installment_eff_interest_rate_' + selectedInstallmentIndex).val());
                             $('#payolution_sum_monthly_rate').html($('#payolution_installment_value_' + selectedInstallmentIndex).val());
+                            $('#payolution_sum_number_installments').html($('#payolution_installment_duration_' + selectedInstallmentIndex).val());
                             $('#payolution_selected_installment_index').val(selectedInstallmentIndex);
                         }
                     );

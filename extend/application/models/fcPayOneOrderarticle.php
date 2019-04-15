@@ -154,24 +154,22 @@ class fcPayOneOrderarticle extends fcPayOneOrderarticle_parent
     {
         if ($this->_blIsRedirectAfterSave === null) {
             $this->_blIsRedirectAfterSave = false;
-            $oSession = $this->_oFcpoHelper->fcpoGetSession();
-            $oBasket = $oSession->getBasket();
-            $sPaymentId = $oBasket->getPaymentId();
             $sSuccess = $this->_oFcpoHelper->fcpoGetRequestParameter('fcposuccess');
             $sRefNr = $this->_oFcpoHelper->fcpoGetRequestParameter('refnr');
-            $sTxid = ($oOrder->oxorder__fcpotxid->value) ? $oOrder->oxorder__fcpotxid->value : $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoTxid');
+            $sTxid =
+                ($oOrder->oxorder__fcpotxid->value) ?
+                    $oOrder->oxorder__fcpotxid->value :
+                    $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoTxid');
 
             $blUseRedirectAfterSave = (
-                    $sSuccess && $sRefNr &&
-                    (
-                    $sTxid || $sPaymentId == 'fcpocreditcard_iframe'
-                    )
-                    );
+                $sSuccess && $sRefNr && $sTxid
+            );
 
             if ($blUseRedirectAfterSave) {
                 $this->_blIsRedirectAfterSave = true;
             }
         }
+
         return $this->_blIsRedirectAfterSave;
     }
 
@@ -224,7 +222,7 @@ class fcPayOneOrderarticle extends fcPayOneOrderarticle_parent
      * Returns wether payone order should be pre-saved
      * 
      * @param void
-     * @retur bool
+     * @return bool
      */
     protected function _fcpoGetBefore()
     {
@@ -235,10 +233,14 @@ class fcPayOneOrderarticle extends fcPayOneOrderarticle_parent
 
         // evaluate answer
         $blBefore = (
-                $this->_oFcpoHelper->fcpoGetRequestParameter('fcposuccess') &&
-                $this->_oFcpoHelper->fcpoGetRequestParameter('refnr') ||
-                ($blFinishingSave === true && $blPresaveOrder === true && $blReduceStockBefore === false)
-                );
+            $this->_oFcpoHelper->fcpoGetRequestParameter('fcposuccess') &&
+            $this->_oFcpoHelper->fcpoGetRequestParameter('refnr') ||
+            (
+                $blFinishingSave === true &&
+                $blPresaveOrder === true &&
+                $blReduceStockBefore === false
+            )
+        );
 
         return $blBefore;
     }

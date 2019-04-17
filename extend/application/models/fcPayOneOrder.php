@@ -360,17 +360,18 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      */
     public function finalizeOrder(OxidEsales\Eshop\Application\Model\Basket $oBasket, $oUser, $blRecalculatingOrder = false)
     {
-        $this->_sFcpoPaymentId = $oBasket->getPaymentId();
-        $iRet = parent::finalizeOrder($oBasket, $oUser, $blRecalculatingOrder);
-
         $sPaymentId = $oBasket->getPaymentId();
+        $this->_sFcpoPaymentId = $sPaymentId;
         $blPayonePayment = $this->isPayOnePaymentType($sPaymentId);
 
+        // OXID-219 If payone method, the order will be completed by this method
+        // If overloading is needed, the _fcpoFinalizeOrder have to be overloaded
+        // Otherwise, the execution goes over, to the normal flow from parent class
         if ($blPayonePayment) {
-            $iRet = $this->_fcpoFinalizeOrder($oBasket, $oUser, $blRecalculatingOrder);
+            return $this->_fcpoFinalizeOrder($oBasket, $oUser, $blRecalculatingOrder);
         }
 
-        return $iRet;
+        return parent::finalizeOrder($oBasket, $oUser, $blRecalculatingOrder);
     }
 
     /**

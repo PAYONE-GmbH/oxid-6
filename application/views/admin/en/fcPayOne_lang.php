@@ -362,6 +362,9 @@ $aLang = array(
 'FCPO_CREDITRATING_BONIVERSUM_YELLOW'       => 'Yellow',
 'FCPO_CREDITRATING_BONIVERSUM_GREEN'        => 'Green',
 'FCPO_BONI_ERROR_SET_TO_BONIVERSUM_PERSON'  => '<b>Please note:</b><br>Adresschecktype has been set to "Boniversum Addresscheck Person" , due to your  Bonicheck has been set to "Boniversum VERITA Score".',
+'FCPO_CONFIG_GROUP_SECINVOICE'              => 'Secure Invoice (rec/POV)',
+'FCPO_SECINVOICE_PORTAL_ID'                 => 'PAYONE Portal ID (for payment Secure Invoice)',
+'FCPO_SECINVOICE_PORTAL_KEY'                => 'PAYONE Portal Key (for payment Secure Invoice)',
 
 );
 

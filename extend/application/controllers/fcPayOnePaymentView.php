@@ -2155,8 +2155,9 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
                 $blValidBirthdateData = $this->_fcpoValidatePayolutionBirthdayData($sPaymentId, $aRequestedValues);
                 break;
             case 'fcpo_secinvoice':
+                $blB2CMode = ! $this->fcpoIsB2BPov();
+                $blBirthdayRequired = $blB2CMode;
                 $blValidBirthdateData = $this->_fcpoValidateSecInvoiceBirthdayData($sPaymentId, $aRequestedValues);
-                $blBirthdayRequired = true;
                 break;
         }
 
@@ -3216,6 +3217,17 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
             ($blStrict) ? $blStrictConditions : $blNormalConditions;
 
         return $blConditionsFulfilled;
+    }
+
+    /**
+     * Generic method for determine if order is b2b
+     * Used by pov / rec
+     *
+     * @return bool
+     */
+    public function fcpoIsB2BPov() {
+        $oUser = $this->getUser();
+        return !empty($oUser->oxuser__oxcompany->value);
     }
 
     /**

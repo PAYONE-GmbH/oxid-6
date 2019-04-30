@@ -531,7 +531,7 @@ class fcpoRequest extends oxSuperCfg
         $this->addParameter('clearingtype', 'rec');
         $this->addParameter('clearingsubtype', 'POV');
 
-        $blIsB2B = $this->fcpoIsB2B($oOrder->getUser());
+        $blIsB2B = $this->_fcpoIsOrderB2B($oOrder);
         $sBusinessRelation = ($blIsB2B) ? 'b2b' : 'b2c';
         $this->addParameter('businessrelation', $sBusinessRelation);
 
@@ -989,6 +989,16 @@ class fcpoRequest extends oxSuperCfg
         }
 
         return $blReturn;
+    }
+
+    /**
+     * Method that determines if order is B2B
+     *
+     * @param void
+     * @return bool
+     */
+    protected function _fcpoIsOrderB2B($oOrder) {
+        return ($oOrder->oxorder__oxbillcompany->value) ? true : false;
     }
 
     /**

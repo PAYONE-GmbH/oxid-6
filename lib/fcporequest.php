@@ -253,8 +253,6 @@ class fcpoRequest extends oxSuperCfg
      */
     protected function setAuthorizationParameters($oOrder, $oUser, $aDynvalue, $sRefNr, $blIsPreauthorization = false) 
     {
-        $this->_checkAddress($oOrder, $oUser);
-
         $oConfig = $this->getConfig();
 
         $this->addParameter('aid', $oConfig->getConfigParam('sFCPOSubAccountID')); //ID of PayOne Sub-Account
@@ -2525,44 +2523,6 @@ class fcpoRequest extends oxSuperCfg
         $oDb->Execute($sQuery);
     }
 
-    /**
-     * Check if the user has ordered with this address before
-     * If yes, send the updateuser request to payone
-     *
-     * @param object $oOrder order object
-     * @param object $oUser  user object
-     * 
-     * @return null
-     */
-    protected function _checkAddress($oOrder, $oUser) 
-    {
-        $oDb = oxDb::getDb();
-
-        $sQuery = " SELECT 
-                        oxid 
-                    FROM 
-                        oxorder 
-                    WHERE 
-                        oxuserid = " . $oDb->quote($oOrder->oxorder__oxuserid->value) . " AND 
-                        oxbillstreet = " . $oDb->quote($oOrder->oxorder__oxbillstreet->value) . " AND 
-                        oxbillstreetnr = " . $oDb->quote($oOrder->oxorder__oxbillstreetnr->value) . " AND  
-                        oxbillzip = " . $oDb->quote($oOrder->oxorder__oxbillzip->value) . " AND
-                        oxbillcity = " . $oDb->quote($oOrder->oxorder__oxbillcity->value) . " AND 
-                        oxbillcountryid = " . $oDb->quote($oOrder->oxorder__oxbillcountryid->value) . "
-                    ORDER BY 
-                        oxorderdate DESC 
-                    LIMIT 1";
-        $sOrderId = $oDb->GetOne($sQuery);
-
-        if (!$sOrderId) {
-            $sPayOneUserId = $this->_getPayoneUserIdByCustNr($oUser->oxuser__oxcustnr->value);
-            if ($sPayOneUserId) {
-                $oPORequest = oxNew('fcporequest');
-                $oResponse = $oPORequest->sendRequestUpdateuser($oOrder, $oUser);
-            }
-        }
-    }
-
     protected function _getPayoneUserIdByCustNr($sCustNr) 
     {
         $sQuery = " SELECT 
@@ -2628,23 +2588,6 @@ class fcpoRequest extends oxSuperCfg
         if ($blIsUpdateUser || $oOrder->oxorder__oxbillustid->value != '') {
             $this->addParameter('vatid', $oOrder->oxorder__oxbillustid->value, $blIsUpdateUser); 
         }
-    }
-
-    /**
-     * Send request to PAYONE Server-API with request-type "updateuser"
-     *
-     * @param object $oOrder        order object
-     * @param object $oUser         user object
-     *
-     * @return array
-     */
-    public function sendRequestUpdateuser($oOrder, $oUser)
-    {
-        $this->addParameter('request', 'updateuser'); //Request method
-        $this->addParameter('mode', $this->getOperationMode($oOrder->oxorder__oxpaymenttype->value)); //PayOne Portal Operation Mode (live or test)
-
-        $this->_addUserDataParameters($oOrder, $oUser, true);
-        return $this->send();
     }
 
     /**

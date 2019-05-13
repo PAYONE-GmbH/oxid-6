@@ -6,7 +6,7 @@
                 <input id="payment_[{$sPaymentID}]" type="radio" name="paymentid" value="[{$sPaymentID}]" [{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]checked[{/if}]>
                 <label for="payment_[{$sPaymentID}]"><b>[{$paymentmethod->oxpayments__oxdesc->value}] [{$oView->fcpoGetFormattedPaymentCosts($paymentmethod)}]</b></label>
             </dt>
-            <dd class="[{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]activePayment[{/if}]">
+            <dd class="[{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}] activePayment[{else}]payment-option[{/if}]">
                 <input type="hidden" name="fcpo_mode_[{$sPaymentID}]" value="[{$paymentmethod->fcpoGetOperationMode()}]">
                 <div class="form-group" id="fcpo_ou_error">
                     <div class="col-lg-9">
@@ -20,7 +20,7 @@
                 <div class="form-group fcpo_sotype">
                     <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_ONLINE_UEBERWEISUNG_TYPE"}]</label>
                     <div class="col-lg-9">
-                        <select name="dynvalue[fcpo_sotype]" onchange="fcCheckOUType(this, '[{$oView->fcpoGetSofoShowIban()}]');return false;" class="form-control selectpicker">
+                        <select name="dynvalue[fcpo_sotype]" onchange="fcCheckOUType(this, '[{$oView->fcpoGetSofoShowIban()}]');return false;" class="form-control">
                             [{foreach from=$aFcPoOnlinePaymentMetaData item="oPaymentMetaData"}]
                                 <option value="[{$oPaymentMetaData->sShortcut}]" [{if $oPaymentMetaData->blSelected}]selected[{/if}]>[{$oPaymentMetaData->sCaption}]</option>
                             [{/foreach}]
@@ -84,7 +84,7 @@
                 <div class="form-group" id="fcpo_ou_eps" style="display: none;">
                     <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANKGROUPTYPE"}]</label>
                     <div class="col-lg-9">
-                        <select name="dynvalue[fcpo_so_bankgrouptype_eps]" class="form-control selectpicker">
+                        <select name="dynvalue[fcpo_so_bankgrouptype_eps]" class="form-control">
                             <option value="ARZ_OVB" [{if $dynvalue.fcpo_so_bankgrouptype_eps == "ARZ_OVB"}]selected[{/if}]>Volksbanken</option>
                             <option value="ARZ_BAF" [{if $dynvalue.fcpo_so_bankgrouptype_eps == "ARZ_BAF"}]selected[{/if}]>Bank f&uuml;r &Auml;rzte und Freie Berufe</option>
                             <option value="ARZ_NLH" [{if $dynvalue.fcpo_so_bankgrouptype_eps == "ARZ_NLH"}]selected[{/if}]>Nieder&ouml;sterreichische Landes-Hypo</option>
@@ -131,7 +131,7 @@
                 <div class="form-group" id="fcpo_ou_idl" style="display: none;">
                     <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANKGROUPTYPE"}]</label>
                     <div class="col-lg-9">
-                        <select name="dynvalue[fcpo_so_bankgrouptype_idl]" class="form-control selectpicker">
+                        <select name="dynvalue[fcpo_so_bankgrouptype_idl]" class="form-control">
                             <option value="ABN_AMRO_BANK" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "ABN_AMRO_BANK"}]selected[{/if}]>ABN Amro</option>
                             <option value="BUNQ_BANK" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "BUNQ_BANK"}]selected[{/if}]>Bunq</option>
                             <option value="ING_BANK" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "ING_BANK"}]selected[{/if}]>ING Bank</option>

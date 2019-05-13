@@ -4,7 +4,7 @@
             <input id="payment_[{$sPaymentID}]" type="radio" name="paymentid" value="[{$sPaymentID}]" [{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]checked[{/if}]>
             <label for="payment_[{$sPaymentID}]"><b>[{$paymentmethod->oxpayments__oxdesc->value}] [{$oView->fcpoGetFormattedPaymentCosts($paymentmethod)}]</b></label>
         </dt>
-        <dd class="[{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]activePayment[{/if}]">
+        <dd class="[{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}] activePayment[{else}]payment-option[{/if}]">
             <input type="hidden" name="fcpo_mode_[{$sPaymentID}]" value="[{$paymentmethod->fcpoGetOperationMode()}]">
             <div class="form-group" id="fcpo_elv_error">
                 <div class="col-lg-9">
@@ -30,7 +30,7 @@
             <div class="form-group fcpo_elv_country">
                 <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_COUNTRY"}]</label>
                 <div class="col-lg-9">
-                    <select name="dynvalue[fcpo_elv_country]" onchange="fcCheckDebitCountry(this);return false;" class="form-control selectpicker" required="required">
+                    <select name="dynvalue[fcpo_elv_country]" onchange="fcCheckDebitCountry(this);return false;" class="form-control" required="required">
                         [{foreach from=$oView->fcpoGetDebitCountries() key=sCountryId item=sCountry}]
                             <option value="[{$sCountryId}]" [{if $dynvalue.fcpo_elv_country == $sCountryId}]selected[{/if}]>[{$sCountry}]</option>
                         [{/foreach}]

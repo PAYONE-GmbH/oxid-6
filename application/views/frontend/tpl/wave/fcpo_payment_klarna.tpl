@@ -4,7 +4,7 @@
             <input id="payment_[{$sPaymentID}]" type="radio" name="paymentid" value="[{$sPaymentID}]" [{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]checked[{/if}]>
             <label for="payment_[{$sPaymentID}]"><b>[{$paymentmethod->oxpayments__oxdesc->value}] [{$oView->fcpoGetFormattedPaymentCosts($paymentmethod)}]</b></label>
         </dt>
-        <dd class="[{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]activePayment[{/if}]">
+        <dd class="[{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}] activePayment[{else}]payment-option[{/if}]">
             <input type="hidden" name="fcpo_mode_[{$sPaymentID}]" value="[{$paymentmethod->fcpoGetOperationMode()}]">
             [{assign var="blDisplayCampaignMissing" value=false}]
             [{if $blDisplayCampaignMissing == false}]
@@ -94,9 +94,9 @@
                         <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_KLV_SAL"}]</label>
                         <div class="col-lg-2">
                             [{if $blKlv}]
-                                [{include file="form/fieldset/salutation.tpl" name="dynvalue[fcpo_klv_sal]" value=$dynvalue.fcpo_klv_sal class="form-control selectpicker show-tick"}]
+                                [{include file="form/fieldset/salutation.tpl" name="dynvalue[fcpo_klv_sal]" value=$dynvalue.fcpo_klv_sal class="form-control show-tick"}]
                             [{else}]
-                                [{include file="form/fieldset/salutation.tpl" name="dynvalue[fcpo_kls_sal]" value=$dynvalue.fcpo_kls_sal class="form-control selectpicker show-tick"}]
+                                [{include file="form/fieldset/salutation.tpl" name="dynvalue[fcpo_kls_sal]" value=$dynvalue.fcpo_kls_sal class="form-control show-tick"}]
                             [{/if}]
                         </div>
                     </div>

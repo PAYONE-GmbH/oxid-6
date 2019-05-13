@@ -453,7 +453,34 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         // skipping this action in case of order recalculation
         $iRet = $this->_fcpoFinishOrder($blRecalculatingOrder, $oUser, $oBasket, $oUserPayment);
 
+        // OXID-233 : handle amazon different login
+        $this->_fcpoAdjustAmazonPayUserDetails($oUserPayment);
+
         return $iRet;
+    }
+
+    /**
+     * OXID-233: If the user was logged in during order,
+     * its ID is set back as order__userid, to link back the order to that user
+     *
+     * ONLY during AmazonPay process, and with logged user
+     * (i.e session 'sOxidPreAmzUser' is set)
+     *
+     * @param \OxidEsales\Eshop\Application\Model\UserPayment $oUserPayment
+     */
+    protected function _fcpoAdjustAmazonPayUserDetails($oUserPayment)
+    {
+        $sUserId = $this->_oFcpoHelper->fcpoGetSessionVariable('sOxidPreAmzUser');
+        if (!empty($sUserId)) {
+            $this->oxorder__oxuserid = new \OxidEsales\Eshop\Core\Field($sUserId);
+            $this->save();
+
+            $oUserPayment->oxuserpayments__oxuserid = new \OxidEsales\Eshop\Core\Field($sUserId);
+            $oUserPayment->save();
+
+            $this->_oFcpoHelper->fcpoSetSessionVariable('usr', $sUserId);
+            $this->_oFcpoHelper->fcpoDeleteSessionVariable('sOxidPreAmzUser');
+        }
     }
 
 

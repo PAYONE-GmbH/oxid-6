@@ -188,9 +188,14 @@ class fcPayOneTransactionStatusHandler extends oxBase
             $sParams .= $this->_addParam($sKey, $mValue);
         }
 
+        $oConfig = $this->getConfig();
+        $sShopUrl = $oConfig->getShopUrl();
+        $sSslShopUrl = $oConfig->getSslShopUrl();
+
         $sParams = substr($sParams,1);
-        $sBaseUrl = (empty($this->getConfig()->getShopUrl())) ? $this->getConfig()->getSslShopUrl() : $this->getConfig()->getShopUrl();
-        $sForwarderUrl = $sBaseUrl . 'modules/fcPayOne/statusforward.php';
+        $sBaseUrl = (empty($sSslShopUrl)) ? $sShopUrl : $sSslShopUrl;
+
+        $sForwarderUrl = $sBaseUrl . 'modules/fc/fcpayone/statusforward.php';
 
         $oCurl = curl_init($sForwarderUrl);
         curl_setopt($oCurl, CURLOPT_POST, 1);

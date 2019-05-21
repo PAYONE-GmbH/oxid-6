@@ -503,35 +503,6 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
     }
 
     /**
-     * Testing getDefaultOnlineUeberweisung for coverage
-     *
-     * @param  void
-     * @return void
-     */
-    public function test_getDefaultOnlineUeberweisung_Coverage()
-    {
-        $oTestObject = $this->getMock(
-            'fcPayOnePaymentView', array(
-                'getSofortUeberweisung',
-                'getGiropay',
-                'getEPS',
-                'getPostFinanceEFinance',
-                'getPostFinanceCard',
-                'getIdeal',
-                'getP24',
-            )
-        );
-        $oTestObject->expects($this->any())->method('getSofortUeberweisung')->will($this->returnValue(false));
-        $oTestObject->expects($this->any())->method('getGiropay')->will($this->returnValue(false));
-        $oTestObject->expects($this->any())->method('getEPS')->will($this->returnValue(false));
-        $oTestObject->expects($this->any())->method('getPostFinanceEFinance')->will($this->returnValue(false));
-        $oTestObject->expects($this->any())->method('getPostFinanceCard')->will($this->returnValue(false));
-        $oTestObject->expects($this->any())->method('getIdeal')->will($this->returnValue(false));
-        $oTestObject->expects($this->any())->method('getP24')->will($this->returnValue(false));
-        $this->assertEquals('', $oTestObject->getDefaultOnlineUeberweisung());
-    }
-
-    /**
      * Testing getVisa vor Coverage
      *
      * @param  void

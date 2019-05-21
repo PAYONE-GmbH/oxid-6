@@ -340,40 +340,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     }
 
     /**
-     * Return the default type for this payment-type for the mobile-theme
-     * 
-     * @return string
-     */
-    public function getDefaultOnlineUeberweisung() 
-    {
-        if ($this->getSofortUeberweisung()) {
-            return 'PNT'; 
-        }
-        if ($this->getGiropay()) {
-            return 'GPY'; 
-        }
-        if ($this->getEPS()) {
-            return 'EPS'; 
-        }
-        if ($this->getPostFinanceEFinance()) {
-            return 'PFF'; 
-        }
-        if ($this->getPostFinanceCard()) {
-            return 'PFC'; 
-        }
-        if ($this->getIdeal()) {
-            return 'IDL'; 
-        }
-        if ($this->getP24()) {
-            return 'P24'; 
-        }
-        if ($this->getBancontact()) {
-            return 'BCT';
-        }
-        return '';
-    }
-
-    /**
      * Check if sub payment method Visa is available to the user
      * 
      * @return bool

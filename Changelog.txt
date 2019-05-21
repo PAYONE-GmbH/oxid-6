@@ -1,3 +1,23 @@
+==1.1.0==
+Features:
+
+* Amazon Pay
+* Moved transactionstatus forwarding to its own controller to make it more robust
+
+Bugfixes:
+
+* send dynamic shop version in request to PAYONE API
+* various smaller fixes
+
+Maintenance:
+
+* removed customerid due to high potential for errors and low actual benefit
+* Removed deprecated payment method Billsafe
+* Removed deprecated frontend for credit card
+* Updated unit tests
+* added iDEAL bankgrouptye HANDELSBANKEN
+* Wave theme compatibility
+
 ==1.0.10==
 Bugfixes
 

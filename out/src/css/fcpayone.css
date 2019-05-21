@@ -153,7 +153,7 @@
 
 /* overwriting OXID base style */
 .payment dl dd.activePayment {
-    display: inline-block;
+    display: block;
 }
 
 .fcRow {
@@ -205,4 +205,4 @@
         width: 33.333333333%;
         display: table-cell;
     }
-}  
+}

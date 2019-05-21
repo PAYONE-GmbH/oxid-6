@@ -2,24 +2,26 @@
     <dl>
         <dt>
             <input id="payment_[{$sPaymentID}]" type="radio" name="paymentid" value="[{$sPaymentID}]" [{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]checked[{/if}]>
-            <label for="payment_[{$sPaymentID}]"><b>[{$paymentmethod->oxpayments__oxdesc->value}]</b> [{$oView->fcpoGetFormattedPaymentCosts($paymentmethod)}]</label>
+            <label for="payment_[{$sPaymentID}]"><b>[{$paymentmethod->oxpayments__oxdesc->value}] [{$oView->fcpoGetFormattedPaymentCosts($paymentmethod)}]</b></label>
         </dt>
-        <dd class="[{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]activePayment[{/if}]">
+        <dd class="[{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}] activePayment[{else}]payment-option[{/if}]">
             <input type="hidden" name="fcpo_mode_[{$sPaymentID}]" value="[{$paymentmethod->fcpoGetOperationMode()}]">
+            <input type="hidden" name="dynvalue[fcporp_bill_profileid]" value="[{$oView->fcpoGetRatePayMatchedProfile('fcporp_bill')}]">
             <link href="[{$oViewConf->fcpoGetModuleCssPath('lightview.css')}]" rel="stylesheet">
             <script src="[{$oViewConf->fcpoGetModuleJsPath('jquery-1.10.1.min.js')}]"></script>
             <script src="[{$oViewConf->fcpoGetModuleJsPath()}]lightview/lightview.js"></script>
-            <ul class="form fcporp_bill_form">
-                <input type="hidden" name="dynvalue[fcporp_bill_profileid]" value="[{$oView->fcpoGetRatePayMatchedProfile('fcporp_bill')}]">
-                [{if $oView->fcpoRatePayShowUstid()}]
-                    <li>
-                        <label>[{oxmultilang ident="FCPO_RATEPAY_USTID"}]</label>
-                        <input placeholder="[{oxmultilang ident="FCPO_RATEPAY_USTID"}]" type='text' name="dynvalue[fcporp_bill_ustid]" value="[{$oView->fcpoGetUserValue('oxustid')}]">
-                    </li>
-                [{/if}]
-                [{if $oView->fcpoRatePayShowBirthdate()}]
-                    <li>
-                        <label>[{oxmultilang ident="FCPO_RATEPAY_BIRTHDATE"}]</label>
+            [{if $oView->fcpoRatePayShowUstid()}]
+                <div class="form-group fcporp_bill_ustid">
+                    <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_RATEPAY_USTID"}]</label>
+                    <div class="col-lg-9">
+                        <input placeholder="[{oxmultilang ident="FCPO_RATEPAY_USTID"}]" class="form-control" type="text" size="20" maxlength="64" name="dynvalue[fcporp_bill_ustid]" value="[{$oView->fcpoGetUserValue('oxustid')}]">
+                    </div>
+                </div>
+            [{/if}]
+            [{if $oView->fcpoRatePayShowBirthdate()}]
+                <div class="form-group fcporp_bill_birthdate">
+                    <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_RATEPAY_BIRTHDATE"}]</label>
+                    <div class="col-lg-9">
                         <select name="dynvalue[fcporp_bill_birthdate_day]">
                             [{foreach from=$oView->fcpoGetDayRange() item='sDay'}]
                                 <option value="[{$sDay}]" [{if $sDay == $oView->fcpoGetBirthdayField('day')}]selected[{/if}]>[{$sDay}]</option>
@@ -37,15 +39,17 @@
                                 <option value="[{$sYear}]" [{if $sYear == $oView->fcpoGetBirthdayField('year')}]selected[{/if}]>[{$sYear}]</option>
                             [{/foreach}]
                         </select>
-                    </li>
-                [{/if}]
-                [{if $oView->fcpoRatePayShowFon()}]
-                    <li>
-                        <label>[{oxmultilang ident="FCPO_RATEPAY_FON"}]</label>
-                        <input placeholder="[{oxmultilang ident="FCPO_RATEPAY_FON"}]" type='text' name="dynvalue[fcporp_bill_fon]" value="[{$oView->fcpoGetUserValue('oxfon')}]">
-                    </li>
-                [{/if}]
-            </ul>
+                    </div>
+                </div>
+            [{/if}]
+            [{if $oView->fcpoRatePayShowFon()}]
+                <div class="form-group fcporp_bill_fon">
+                    <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_RATEPAY_FON"}]</label>
+                    <div class="col-lg-9">
+                        <input placeholder="[{oxmultilang ident="FCPO_RATEPAY_FON"}]" class="form-control" type="text" size="20" maxlength="64" name="dynvalue[fcporp_bill_fon]" value="[{$oView->fcpoGetUserValue('oxfon')}]">
+                    </div>
+                </div>
+            [{/if}]
             [{block name="checkout_payment_longdesc"}]
                 [{if $paymentmethod->oxpayments__oxlongdesc->value}]
                     <div class="desc">

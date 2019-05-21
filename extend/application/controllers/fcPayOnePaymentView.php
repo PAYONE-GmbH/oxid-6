@@ -2970,6 +2970,62 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     }
 
     /**
+     * Template getter returns formatted payment costs by offering
+     * current oxpayment object
+     *
+     * @param object $oPayment
+     * @return string
+     */
+    public function fcpoGetFormattedPaymentCosts($oPayment)
+    {
+        $oPaymentPrice = $oPayment->getPrice();
+        $oViewConf = $this->_oFcpoHelper->fcpoGetViewConfig();
+        $oLang = $this->_oFcpoHelper->fcpoGetLang();
+
+        $dPrice = $oPaymentPrice->getBruttoPrice();
+        $blShowPrice = ($dPrice > 0.00);
+
+        if (!$blShowPrice) {
+            return '';
+        }
+
+        $blShowVATForPayCharge = $oViewConf->isFunctionalityEnabled('blShowVATForPayCharge');
+
+        // create output
+        $sFormattedCosts  = "(";
+        $sFormattedCosts .= $this->_fcpoFormatCurrency($dPrice);
+        if ($blShowVATForPayCharge) {
+            $dVat = $oPaymentPrice->getVatValue();
+            $sFormattedCosts .= " ".$oLang->translateString('PLUS_VAT');
+            $sFormattedCosts .= " ".$this->_fcpoFormatCurrency($dVat);
+        }
+        $sFormattedCosts  .= ")";
+
+        return $sFormattedCosts;
+    }
+
+    /**
+     * Formatting currency with currency sign
+     *
+     * @param double $dPrice
+     * @return string
+     */
+    protected function _fcpoFormatCurrency($dPrice)
+    {
+        $oCur = $this->getActCurrency();
+        $oLang = $this->_oFcpoHelper->fcpoGetLang();
+
+        $sPrice = $oLang->formatCurrency($dPrice, $oCur);
+        $sSide = $oCur->side;
+        $sOutput =
+            (isset($sSide) && $sSide == 'Front') ?
+                $oCur->sign . $sPrice :
+                $sPrice . ' ' . $oCur->sign;
+
+        return $sOutput;
+    }
+
+    /**
      * Remove all session variables of non selected payment
      * 
      * @param  object $oPayment
@@ -3473,6 +3529,22 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         $oUser = $oBasket->getBasketUser();
 
         return $oUser;
+    }
+
+    /**
+     * Fetch the agreement string based on locale
+     * then insert the payment method particle in the placeholder
+     *
+     * @param string $sPaymentId
+     * @return string
+     */
+    public function fcpoGetPoAgreementInit($sPaymentId)
+    {
+        $oTranslator = $this->_oFcpoHelper->fcpoGetLang();
+        $sBaseString = $oTranslator->translateString('FCPO_PAYOLUTION_AGREEMENT_PART_1');
+        $sPaymentMethodSuffix = $oTranslator->translateString('FCPO_PAYOLUTION_AGREEMENT_PART_1_' . strtoupper($sPaymentId));
+
+        return sprintf($sBaseString, $sPaymentMethodSuffix);
     }
 
 }

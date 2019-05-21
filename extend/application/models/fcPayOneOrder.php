@@ -111,7 +111,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      * @var boolean
      */
     protected $_blOrderPaymentFlaggedAsRedirect = null;
-    
+
     /**
      * Flag for finishing order completely
      * @var bool
@@ -360,13 +360,29 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      */
     public function finalizeOrder(OxidEsales\Eshop\Application\Model\Basket $oBasket, $oUser, $blRecalculatingOrder = false)
     {
-        $this->_sFcpoPaymentId = $oBasket->getPaymentId();
+        $sPaymentId = $oBasket->getPaymentId();
+        $this->_sFcpoPaymentId = $sPaymentId;
+        $blPayonePayment = $this->isPayOnePaymentType($sPaymentId);
 
-        // Use standard method if payment type does not belong to PAYONE
-        if ($this->isPayOnePaymentType($oBasket->getPaymentId()) === false) {
-            return parent::finalizeOrder($oBasket, $oUser, $blRecalculatingOrder);
+        // OXID-219 If payone method, the order will be completed by this method
+        // If overloading is needed, the _fcpoFinalizeOrder have to be overloaded
+        // Otherwise, the execution goes over, to the normal flow from parent class
+        if ($blPayonePayment) {
+            return $this->_fcpoFinalizeOrder($oBasket, $oUser, $blRecalculatingOrder);
         }
 
+        return parent::finalizeOrder($oBasket, $oUser, $blRecalculatingOrder);
+    }
+
+    /**
+     * Payone handling on finalizing order
+     *
+     * @param $oBasket
+     * @param $oUser
+     * @param $blRecalculatingOrder
+     * @return bool|int
+     */
+    protected function _fcpoFinalizeOrder($oBasket, $oUser, $blRecalculatingOrder) {
         $blSaveAfterRedirect = $this->_isRedirectAfterSave();
 
         $mRet = $this->_fcpoEarlyValidation($blSaveAfterRedirect, $oBasket, $oUser, $blRecalculatingOrder);
@@ -437,7 +453,34 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         // skipping this action in case of order recalculation
         $iRet = $this->_fcpoFinishOrder($blRecalculatingOrder, $oUser, $oBasket, $oUserPayment);
 
+        // OXID-233 : handle amazon different login
+        $this->_fcpoAdjustAmazonPayUserDetails($oUserPayment);
+
         return $iRet;
+    }
+
+    /**
+     * OXID-233: If the user was logged in during order,
+     * its ID is set back as order__userid, to link back the order to that user
+     *
+     * ONLY during AmazonPay process, and with logged user
+     * (i.e session 'sOxidPreAmzUser' is set)
+     *
+     * @param \OxidEsales\Eshop\Application\Model\UserPayment $oUserPayment
+     */
+    protected function _fcpoAdjustAmazonPayUserDetails($oUserPayment)
+    {
+        $sUserId = $this->_oFcpoHelper->fcpoGetSessionVariable('sOxidPreAmzUser');
+        if (!empty($sUserId)) {
+            $this->oxorder__oxuserid = new \OxidEsales\Eshop\Core\Field($sUserId);
+            $this->save();
+
+            $oUserPayment->oxuserpayments__oxuserid = new \OxidEsales\Eshop\Core\Field($sUserId);
+            $oUserPayment->save();
+
+            $this->_oFcpoHelper->fcpoSetSessionVariable('usr', $sUserId);
+            $this->_oFcpoHelper->fcpoDeleteSessionVariable('sOxidPreAmzUser');
+        }
     }
 
 
@@ -693,7 +736,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
 
     /**
      * Check Txid against transactionstatus table and set resulting order values
-     * 
+     *
      * @return boolean
      */
     protected function _fcpoCheckTxid()
@@ -1354,6 +1397,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         $this->_fcpoSaveWorkorderId($sPaymentId, $aResponse);
         $this->_fcpoSaveClearingReference($sPaymentId, $aResponse);
         $this->_fcpoSaveProfileIdent($sPaymentId, $aResponse);
+        $this->save();
     }
 
     /**

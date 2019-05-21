@@ -6,7 +6,7 @@
                 <input id="payment_[{$sPaymentID}]" type="radio" name="paymentid" value="[{$sPaymentID}]" [{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]checked[{/if}]>
                 <label for="payment_[{$sPaymentID}]"><b>[{$paymentmethod->oxpayments__oxdesc->value}] [{$oView->fcpoGetFormattedPaymentCosts($paymentmethod)}]</b></label>
             </dt>
-            <dd class="[{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]activePayment[{/if}]">
+            <dd class="[{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}] activePayment[{else}]payment-option[{/if}]">
                 <script type="text/javascript" src="[{$oViewConf->fcpoGetHostedPayoneJs()}]"></script>
                 <input type="hidden" name="dynvalue[fcpo_kknumber]" value="">
                 <input type="hidden" name="fcpo_cc_type" value="hosted">
@@ -18,7 +18,7 @@
                 <div class="form-group fcpo_kktype">
                     <label for="cardtype" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_CREDITCARD"}]</label>
                     <div class="col-lg-9">
-                        <select id="cardtype" name="dynvalue[fcpo_kktype]"  class="form-control selectpicker" required="required">
+                        <select id="cardtype" name="dynvalue[fcpo_kktype]"  class="form-control" required="required">
                             [{foreach from=$aFcPoCCPaymentMetaData item="oFcPoCCPaymentMetaData"}]
                                 <option value="[{$oFcPoCCPaymentMetaData->sPaymentTag}]" [{if $oFcPoCCPaymentMetaData->blSelected}]selected[{/if}]>[{$oFcPoCCPaymentMetaData->sPaymentName}]</option>
                             [{/foreach}]

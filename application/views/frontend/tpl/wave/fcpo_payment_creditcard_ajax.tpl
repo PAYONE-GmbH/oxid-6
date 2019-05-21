@@ -5,7 +5,7 @@
                 <input id="payment_[{$sPaymentID}]" type="radio" name="paymentid" value="[{$sPaymentID}]" [{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]checked[{/if}]>
                 <label for="payment_[{$sPaymentID}]"><b>[{$paymentmethod->oxpayments__oxdesc->value}] [{$oView->fcpoGetFormattedPaymentCosts($paymentmethod)}]</b></label>
             </dt>
-            <dd class="[{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]activePayment[{/if}]">
+            <dd class="[{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}] activePayment[{else}]payment-option[{/if}]">
                 <input type="hidden" name="fcpo_cc_type" value="ajax">
                 [{foreach from=$aFcPoCCPaymentMetaData item="oFcPoCCPaymentMetaData"}]
                     <input type="hidden" name="[{$oFcPoCCPaymentMetaData->sHashName}]" value="[{$oFcPoCCPaymentMetaData->sHashValue}]">
@@ -24,7 +24,7 @@
                 <div class="form-group fcpo_kktype">
                     <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_CREDITCARD"}]</label>
                     <div class="col-lg-9">
-                        <select name="dynvalue[fcpo_kktype]" [{if $oView->getMaestroUK()}]onchange="fcCheckType(this); return false;"[{/if}] class="form-control selectpicker" required="required">
+                        <select name="dynvalue[fcpo_kktype]" [{if $oView->getMaestroUK()}]onchange="fcCheckType(this); return false;"[{/if}] class="form-control" required="required">
                             [{foreach from=$aFcPoCCPaymentMetaData item="oFcPoCCPaymentMetaData"}]
                                 <option value="[{$oFcPoCCPaymentMetaData->sPaymentTag}]" [{if $oFcPoCCPaymentMetaData->blSelected}]selected[{/if}]>[{$oFcPoCCPaymentMetaData->sPaymentName}]</option>
                             [{/foreach}]
@@ -57,7 +57,7 @@
                 <div class="form-group fcpo_kkexpire">
                     <label class="req control-label col-xs-12 col-lg-3">[{oxmultilang ident="FCPO_VALID_UNTIL"}]</label>
                     <div class="col-xs-6 col-lg-2">
-                        <select name="dynvalue[fcpo_kkmonth]" class="form-control selectpicker" required="required">
+                        <select name="dynvalue[fcpo_kkmonth]" class="form-control" required="required">
                             <option [{if $dynvalue.fcpo_kkmonth == "01"}]selected[{/if}]>01</option>
                             <option [{if $dynvalue.fcpo_kkmonth == "02"}]selected[{/if}]>02</option>
                             <option [{if $dynvalue.fcpo_kkmonth == "03"}]selected[{/if}]>03</option>
@@ -73,7 +73,7 @@
                         </select>
                     </div>
                     <div class="col-xs-6 col-lg-2">
-                        <select name="dynvalue[fcpo_kkyear]"class="form-control selectpicker">
+                        <select name="dynvalue[fcpo_kkyear]"class="form-control">
                             [{foreach from=$oView->getCreditYears() item=year}]
                                 <option [{if $dynvalue.fcpo_kkyear == $year}]selected[{/if}]>[{$year}]</option>
                             [{/foreach}]

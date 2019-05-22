@@ -913,7 +913,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         $blReturn = (
             $this->oxorder__oxpaymenttype->value == 'fcpobillsafe' ||
             $this->oxorder__oxpaymenttype->value == 'fcpoklarna' ||
-            $this->oxorder__oxpaymenttype->value == 'fcpo_secinvoice'
+            $this->oxorder__oxpaymenttype->value == 'fcpo_secinvoice' ||
             $this->oxorder__oxpaymenttype->value == 'fcporp_bill'
         );
 

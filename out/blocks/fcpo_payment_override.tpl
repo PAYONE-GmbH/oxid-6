@@ -1,3 +1,7 @@
+<script type="text/javascript">
+    var oFcPayoneData = oFcPayoneData || [];
+</script>
+
 [{if $oViewConf->fcpoAmazonLoginSessionActive()}]
     [{assign var="sFcPoTemplatePath" value=$oView->fcpoGetActiveThemePath()}]
     [{if $oView->getAllSets()}]
@@ -9,7 +13,7 @@
     [{/if}]
 [{else}]
     <script type="text/javascript">
-        var oFcPayoneData = oFcPayoneData || [];
+
         oFcPayoneData.inputs =
             {
                 fcpo_mid:                       '[{$oView->getMerchantId()}]',

@@ -483,7 +483,7 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent
     public function fcpoGetAmzPopup()
     {
         $oConfig = $this->getConfig();
-        $sFCPOAmazonLoginMode = $oConfig->getConfigParam('sFCPOAmazonLoginMode');
+        $sFCPOAmazonLoginMode = (string) $oConfig->getConfigParam('sFCPOAmazonLoginMode');
         switch ($sFCPOAmazonLoginMode) {
             case 'popup':
                 $sReturn = 'true';

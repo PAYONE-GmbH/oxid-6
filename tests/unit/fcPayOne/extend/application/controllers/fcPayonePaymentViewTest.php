@@ -934,6 +934,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
                 'getPostFinanceCard',
                 'getIdeal',
                 'getP24',
+                'getBancontact',
                 '_fcpoGetOnlinePaymentData',
             )
         );
@@ -945,9 +946,10 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
         $oTestObject->expects($this->any())->method('getPostFinanceCard')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('getIdeal')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('getP24')->will($this->returnValue(true));
+        $oTestObject->expects($this->any())->method('getBancontact')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcpoGetOnlinePaymentData')->will($this->returnValue('someValue'));
 
-        $aExpect = array('someValue', 'someValue', 'someValue', 'someValue', 'someValue', 'someValue', 'someValue');
+        $aExpect = array('someValue', 'someValue', 'someValue', 'someValue', 'someValue', 'someValue', 'someValue', 'someValue');
         $aResponse = $oTestObject->fcpoGetOnlinePaymentMetaData();
 
         $this->assertEquals($aExpect, $aResponse);
@@ -967,6 +969,24 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
 
         $this->assertEquals('flow', $oTestObject->fcpoGetActiveThemePath());
+    }
+
+    /**
+     * Testing fcpoGetActiveThemePath for coverage
+     */
+    public function test_fcpoValidatePayolutionBillHasTelephone_Coverage() {
+        $oTestObject = $this->getMock('fcPayOnePaymentView', array('_fcpoValidatePayolutionBillHasTelephone', 'fcpoGetUserValue'));
+        $oTestObject->expects($this->any())->method('_fcpoValidatePayolutionBillHasTelephone')->will($this->returnValue(true));
+        $oTestObject->expects($this->any())->method('fcpoGetUserValue')->will($this->returnValue(false));
+
+        $oMockViewConfig = $this->getMock('oxViewConfig', array('fcpoGetActiveThemePath'));
+        $oMockViewConfig->expects($this->any())->method('fcpoGetActiveThemePath')->will($this->returnValue('flow'));
+
+        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
+        $oHelper->expects($this->any())->method('getFactoryObject')->will($this->returnValue($oMockViewConfig));
+        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
+
+        $this->assertTrue($oTestObject->_fcpoValidatePayolutionBillHasTelephone());
     }
 
 

@@ -406,6 +406,7 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrder extends OxidTestCase
      */
     public function test_finalizeOrder_IsPayone() 
     {
+        //TODO: reduce
         $oMockBasket = $this->getMock('oxBasket', array('getPaymentId'));
         $oMockBasket->expects($this->any())->method('getPaymentId')->will($this->returnValue('somePaymentId'));
 
@@ -576,8 +577,6 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrder extends OxidTestCase
         $oHelper->expects($this->any())->method('fcpoDeleteSessionVariable')->will($this->returnValue(true));
         $oHelper->expects($this->any())->method('fcpoGetUtils')->will($this->returnValue($oMockUtils));
 
-        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
-
         $this->assertEquals(1, $oTestObject->finalizeOrder($oMockBasket, $oMockUser, false));
     }
 
@@ -667,8 +666,6 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrder extends OxidTestCase
         $oHelper->expects($this->any())->method('fcpoGetSessionVariable')->will($this->returnValue('someSessionValue'));
         $oHelper->expects($this->any())->method('fcpoDeleteSessionVariable')->will($this->returnValue(true));
 
-        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
-
         $this->assertEquals(false, $oTestObject->finalizeOrder($oMockBasket, $oMockUser, false));
     }
 
@@ -755,13 +752,7 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrder extends OxidTestCase
         $oTestObject->expects($this->any())->method('_fcpoMarkVouchers')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcpoFinishOrder')->will($this->returnValue(true));
 
-        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
-        $oHelper->expects($this->any())->method('fcpoGetSessionVariable')->will($this->returnValue('someSessionValue'));
-        $oHelper->expects($this->any())->method('fcpoDeleteSessionVariable')->will($this->returnValue(true));
-
-        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
-
-        $this->assertEquals(1, $oTestObject->finalizeOrder($oMockBasket, $oMockUser, false));
+        $this->assertEquals(1, $oTestObject->finalizeOrder($oMockBasket, $oMockUser, true));
     }
 
     /**
@@ -2187,9 +2178,6 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrder extends OxidTestCase
         $oMockDb = $this->getMock('oxDb', array('Execute'));
         $oMockDb->expects($this->any())->method('Execute')->will($this->returnValue(true));
 
-        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
-        $oHelper->expects($this->any())->method('fcpoSetSessionVariable')->will($this->returnValue(true));
-        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
         $this->invokeSetAttribute($oTestObject, '_oFcpoDb', $oMockDb);
 
         $aMockResponse = array('add_paydata[instruction_notes]' => 'someValue', 'txid' => 'someTxid', 'add_paydata[clearing_reference]' => 'someReference');
@@ -2213,11 +2201,6 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrder extends OxidTestCase
         $oMockDb = $this->getMock('oxDb', array('Execute'));
         $oMockDb->expects($this->any())->method('Execute')->will($this->returnValue(true));
 
-        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
-        $oHelper->expects($this->any())->method('fcpoSetSessionVariable')->will($this->returnValue(true));
-        $oHelper->expects($this->any())->method('fcpoGetSessionVariable')->will($this->returnValue('someWorkerId'));
-        
-        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
         $this->invokeSetAttribute($oTestObject, '_oFcpoDb', $oMockDb);
 
         $aMockResponse = array('add_paydata[instruction_notes]' => 'someValue', 'txid' => 'someTxid', 'add_paydata[clearing_reference]' => 'someReference');

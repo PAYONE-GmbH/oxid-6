@@ -34,6 +34,7 @@
     [{*Don't show AmazonPay in standard checkout*}]
 [{elseif $sPaymentID == "fcpo_secinvoice"}]
     [{assign var="sFcPoTemplatePath" value=$sFcPoTemplatePath|cat:'/fcpo_payment_secinvoice.tpl'}]
+    [{include file=$oViewConf->fcpoGetAbsModuleTemplateFrontendPath($sFcPoTemplatePath)}]
 [{elseif $oViewConf->fcpoIsPayonePayment($sPaymentID)}]
     [{assign var="sFcPoTemplatePath" value=$sFcPoTemplatePath|cat:'/fcpo_payment_default.tpl'}]
     [{include file=$oViewConf->fcpoGetAbsModuleTemplateFrontendPath($sFcPoTemplatePath)}]

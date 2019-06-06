@@ -445,6 +445,9 @@ $aLang = array(
 'FCPO_AMAZONPAY_LOGINMODE_AUTO'             => 'Automatisch (Bei SSL "Popup" und ohne "Redirect")',
 'FCPO_AMAZONPAY_LOGINMODE_POPUP'            => 'Popup (Funktioniert nur mit SSL)',
 'FCPO_AMAZONPAY_LOGINMODE_REDIRECT'         => 'Redirect',
+'FCPO_CONFIG_GROUP_SECINVOICE'              => 'Gesicherter Rechnungskauf (rec/POV)',
+'FCPO_SECINVOICE_PORTAL_ID'                 => 'PAYONE Portal ID (für Zahlart Gesicherter Rechnungskauf)',
+'FCPO_SECINVOICE_PORTAL_KEY'                => 'PAYONE Portal Key (für Zahlart Gesicherter Rechnungskauf)',
 );
 
 /*

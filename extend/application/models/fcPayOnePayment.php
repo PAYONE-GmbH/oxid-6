@@ -57,6 +57,7 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         'fcpopo_installment',
         'fcporp_bill',
         'fcpoamazonpay',
+        'fcpo_secinvoice'
     );
     
     protected static $_aRedirectPayments = array(

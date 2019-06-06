@@ -965,6 +965,32 @@
         </div>
     </div>
 
+    <div class="groupExp">
+        <div>
+            <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="FCPO_CONFIG_GROUP_SECINVOICE"}]</b></a>
+            <dl>
+                <dt>
+                    <input type="text" class="txt" name="confstrs[sFCPOSecinvoicePortalId]" value="[{$confstrs.sFCPOSecinvoicePortalId}]" [{$readonly}]>
+                    [{oxinputhelp ident="FCPO_HELP_SECINVOICE_PORTAL_ID"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_SECINVOICE_PORTAL_ID"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+            <dl>
+                <dt>
+                    <input type="text" class="txt" name="confstrs[sFCPOSecinvoicePortalKey]" value="[{$confstrs.sFCPOSecinvoicePortalKey}]" [{$readonly}]>
+                    [{oxinputhelp ident="FCPO_HELP_SECINVOICE_PORTAL_KEY"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_SECINVOICE_PORTAL_KEY"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+        </div>
+    </div>
+
     <br>
     <input type="submit" class="edittext" name="save" value="[{oxmultilang ident="GENERAL_SAVE"}]" onClick="Javascript:document.myedit.fnc.value='save'" [{$readonly}]>
     <input type="submit" class="edittext" name="export" value="[{oxmultilang ident="FCPO_EXPORT_CONFIG"}]" target="_blank" onClick="Javascript:document.myedit.fnc.value='export'" [{$readonly}]>

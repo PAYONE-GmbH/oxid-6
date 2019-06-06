@@ -820,10 +820,10 @@ class fcPayOneOrder extends fcPayOneOrder_parent
     /**
      * Checks based on the transaction status received by PAYONE whether
      * the capture request is available for this order at the moment.
-     * 
+     *
      * @return bool
      */
-    public function allowCapture() 
+    public function allowCapture()
     {
         $blReturn = true;
         if ($this->oxorder__fcpoauthmode->value == 'authorization') {
@@ -841,19 +841,29 @@ class fcPayOneOrder extends fcPayOneOrder_parent
     /**
      * Checks based on the transaction status received by PAYONE whether
      * the debit request is available for this order at the moment.
-     * 
+     *
      * @return bool
      */
-    public function allowDebit() 
-    {
-        if ($this->oxorder__fcpoauthmode->value == 'authorization') {
-            $blReturn = true;
-        } else {
-            $iCount = $this->_oFcpoDb->GetOne("SELECT COUNT(*) FROM fcpotransactionstatus WHERE fcpo_txid = '{$this->oxorder__fcpotxid->value}' AND fcpo_txaction = 'capture'");
-            if ($iCount == 0) {
-                $blReturn = false;
-            }
-        }
+    public function allowDebit() {
+        $blIsAuthorization =
+            ($this->oxorder__fcpoauthmode->value == 'authorization');
+
+        if ($blIsAuthorization) return true;
+
+        $sQuery = "
+            SELECT 
+                COUNT(*) 
+            FROM 
+                fcpotransactionstatus 
+            WHERE 
+                fcpo_txid = '{$this->oxorder__fcpotxid->value}' AND 
+                fcpo_txaction = 'appointed'
+        ";
+
+        $iCount = (int) $this->_oFcpoDb->GetOne($sQuery);
+
+        $blReturn = ($iCount === 1);
+
         return $blReturn;
     }
 
@@ -903,6 +913,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         $blReturn = (
             $this->oxorder__oxpaymenttype->value == 'fcpobillsafe' ||
             $this->oxorder__oxpaymenttype->value == 'fcpoklarna' ||
+            $this->oxorder__oxpaymenttype->value == 'fcpo_secinvoice' ||
             $this->oxorder__oxpaymenttype->value == 'fcporp_bill'
         );
 

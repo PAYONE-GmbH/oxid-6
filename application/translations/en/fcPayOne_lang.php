@@ -181,6 +181,9 @@ $aLang = array(
 'FCPO_AMAZON_ERROR_PAYMENT_PLAN_NOT_SET'        => 'Please choose payment method.',
 'FCPO_AMAZON_ERROR_SHIPPING_ADDRESS_NOT_SET'    => 'Please choose an address',
 'FCPO_AMAZON_ERROR_900'                         => 'Please choose another payment method.',
+'FCPO_SECINVOICE_BIRTHDATE'                     => 'Please enter your birthday',
+'FCPO_NOT_ADULT'                                => 'Due to your age you are not allowed to use this payment. Please select another payment method',
+'FCPO_BIRTHDATE_INVALID'                        => 'Your birthdate has been entered incorrect.',
 );
 
 /*

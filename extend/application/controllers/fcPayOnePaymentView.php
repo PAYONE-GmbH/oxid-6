@@ -2003,6 +2003,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         $aRequestedValues = $this->_oFcpoHelper->fcpoGetRequestParameter('dynvalue');
 
         $this->_fcpoSaveBirthdayData($aRequestedValues, $sPaymentId);
+        $this->_fcpoSaveUserData($sPaymentId,'oxustid');
     }
 
     /**
@@ -2232,6 +2233,10 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         $mReturn = false;
         if (isset($aRequestedValues['fcpo_payolution_' . $sFieldNameAddition . '_'.$sDbFieldName])) {
             $mReturn = $aRequestedValues['fcpo_payolution_' . $sFieldNameAddition . '_'.$sDbFieldName];
+        }
+
+        if (isset($aRequestedValues['fcpo_secinvoice_ustid'])) {
+            $mReturn = (string) $aRequestedValues['fcpo_secinvoice_ustid'];
         }
 
         return $mReturn;

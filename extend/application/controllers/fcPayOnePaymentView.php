@@ -1310,7 +1310,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
 
             $oPayment = $this->_oFcpoHelper->getFactoryObject('oxpayment');
             $oPayment->load($sPaymentId);
-            $this->_fcpoSecInvoiceSaveRequestedValues($sPaymentId);
+            $mReturn = $this->_fcpoSecInvoiceSaveRequestedValues($mReturn, $sPaymentId);
             $blContinue = $this->_fcpoCheckBoniMoment($oPayment);
 
             if ($blContinue !== true) {
@@ -1964,7 +1964,9 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      * @return void
      */
     protected function _fcpoPayolutionSaveRequestedValues($sPaymentId) {
-        $blSavedBirthday = $this->_fcpoSaveBirthdayData($sPaymentId);
+        $aRequestedValues = $this->_oFcpoHelper->fcpoGetRequestParameter('dynvalue');
+
+        $blSavedBirthday = $this->_fcpoSaveBirthdayData($aRequestedValues, $sPaymentId);
         $blSavedUstid = $this->_fcpoSaveUserData($sPaymentId,'oxustid');
         $blSavedTelephone = $this->_fcpoSaveUserData($sPaymentId, 'oxfon');
 
@@ -1996,14 +1998,22 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     /**
      * Save requested values of secure invoice
      *
+     * @param mixed $mReturn
      * @param string $sPaymentId
-     * @return void
+     * @return bool
      */
-    protected function _fcpoSecInvoiceSaveRequestedValues($sPaymentId) {
+    protected function _fcpoSecInvoiceSaveRequestedValues($mReturn, $sPaymentId) {
+        $blIsSecInvoice = ($sPaymentId == 'fcpo_secinvoice');
+        if (!$blIsSecInvoice) return $mReturn;
+
         $aRequestedValues = $this->_oFcpoHelper->fcpoGetRequestParameter('dynvalue');
 
-        $this->_fcpoSaveBirthdayData($aRequestedValues, $sPaymentId);
-        $this->_fcpoSaveUserData($sPaymentId,'oxustid');
+        $blSavedBirthday = $this->_fcpoSaveBirthdayData($aRequestedValues, $sPaymentId);
+        $blSavedUstid = $this->_fcpoSaveUserData($sPaymentId,'oxustid');
+
+        $mReturn = ($blSavedBirthday || $blSavedUstid) ? $mReturn : false;
+
+        return $mReturn;
     }
 
     /**

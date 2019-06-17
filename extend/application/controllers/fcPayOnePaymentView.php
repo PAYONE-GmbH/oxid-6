@@ -2006,18 +2006,27 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         $blIsSecInvoice = ($sPaymentId == 'fcpo_secinvoice');
         if (!$blIsSecInvoice) return $mReturn;
 
-        $aRequestedValues = $this->_oFcpoHelper->fcpoGetRequestParameter('dynvalue');
+        $aRequestedValues =
+            $this->_oFcpoHelper->fcpoGetRequestParameter('dynvalue');
+        $aBirthdayValidation =
+            $this->_fcpoValidateBirthdayData($sPaymentId, $aRequestedValues);
+        $blBirthdayRequired = $aBirthdayValidation['blBirthdayRequired'];
 
-        $blSavedBirthday = $this->_fcpoSaveBirthdayData($aRequestedValues, $sPaymentId);
-        $blSavedUstid = $this->_fcpoSaveUserData($sPaymentId,'oxustid');
+        $blBirthdayCheckPassed = true;
+        if ($blBirthdayRequired) {
+            $blBirthdayCheckPassed =
+                $this->_fcpoSaveBirthdayData($aRequestedValues, $sPaymentId);
+        }
 
-        $mReturn = ($blSavedBirthday || $blSavedUstid) ? $mReturn : false;
+        $this->_fcpoSaveUserData($sPaymentId,'oxustid');
+
+        $mReturn = ($blBirthdayCheckPassed) ? $mReturn : false;
 
         return $mReturn;
     }
 
     /**
-     * Method checks if ustid should be saved and returns if it has saved this data or not
+     * Method checks if given field should be saved and returns if it has saved this data or not
      *
      * @param $sPaymentId
      * @return bool

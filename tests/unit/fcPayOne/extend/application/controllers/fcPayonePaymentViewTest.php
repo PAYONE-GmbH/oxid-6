@@ -1289,6 +1289,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
         $oTestObject->expects($this->any())->method('_fcpoGetRatePayStringAdditionByPaymentId')->will($this->returnValue('someString'));
         $oTestObject->expects($this->any())->method('_fcpoCheckRatePayProfileMatch')->will($this->returnValue(true));
 
+
         $this->assertEquals($aExpect, $oTestObject->_fcpoGetMatchingProfile('someId'));
     }
 
@@ -1485,6 +1486,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
                 '_fcCleanupSessionFragments',
                 '_fcpoPayolutionPreCheck',
                 '_fcpoCheckRatePayBillMandatoryUserData',
+                '_fcpoSecInvoiceSaveRequestedValues'
             )
         );
         $oTestObject->expects($this->any())->method('_fcpoSetKlarnaCampaigns')->will($this->returnValue(null));
@@ -1492,6 +1494,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
         $oTestObject->expects($this->any())->method('_fcpoSetBoniErrorValues')->will($this->returnValue(null));
         $oTestObject->expects($this->any())->method('_fcpoSetMandateParams')->will($this->returnValue(null));
         $oTestObject->expects($this->any())->method('_fcCleanupSessionFragments')->will($this->returnValue(null));
+        $oTestObject->expects($this->any())->method('_fcpoSecInvoiceSaveRequestedValues')->will($this->returnValue(null));
         $oTestObject->expects($this->any())->method('_fcpoPayolutionPreCheck')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcpoCheckRatePayBillMandatoryUserData')->will($this->returnValue(true));
 
@@ -1522,6 +1525,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
                 '_fcCleanupSessionFragments',
                 '_fcpoPayolutionPreCheck',
                 '_fcpoCheckRatePayBillMandatoryUserData',
+                '_fcpoSecInvoiceSaveRequestedValues'
             )
         );
         $oTestObject->expects($this->any())->method('_fcpoSetKlarnaCampaigns')->will($this->returnValue(null));
@@ -1531,6 +1535,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
         $oTestObject->expects($this->any())->method('_fcCleanupSessionFragments')->will($this->returnValue(null));
         $oTestObject->expects($this->any())->method('_fcpoPayolutionPreCheck')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcpoCheckRatePayBillMandatoryUserData')->will($this->returnValue(true));
+        $oTestObject->expects($this->any())->method('_fcpoSecInvoiceSaveRequestedValues')->will($this->returnValue(null));
 
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
         $oHelper->expects($this->any())->method('getFactoryObject')->will($this->returnValue($oMockPayment));
@@ -2185,7 +2190,8 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
                 '_fcpoCheckBoniMoment',
                 '_fcpoSetBoniErrorValues',
                 '_fcpoSetMandateParams',
-                '_fcCleanupSessionFragments'
+                '_fcCleanupSessionFragments',
+                '_fcpoSecInvoiceSaveRequestedValues'
             )
         );
         $oTestObject->expects($this->any())->method('_fcpoSetKlarnaCampaigns')->will($this->returnValue(true));
@@ -2193,6 +2199,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
         $oTestObject->expects($this->any())->method('_fcpoSetBoniErrorValues')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcpoSetMandateParams')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcCleanupSessionFragments')->will($this->returnValue('someText'));
+        $oTestObject->expects($this->any())->method('_fcpoSecInvoiceSaveRequestedValues')->will($this->returnValue(null));
 
         $oMockPayment = $this->getMock('oxPayment', array('load'));
         $oMockPayment->expects($this->any())->method('load')->will($this->returnValue(true));
@@ -2524,14 +2531,18 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
                 '_fcpoCheckBoniMoment',
                 '_fcpoSetBoniErrorValues',
                 '_fcpoSetMandateParams',
-                '_fcCleanupSessionFragments'
+                '_fcCleanupSessionFragments',
+                '_fcpoSecInvoiceSaveRequestedValues',
+                '_fcpoPayolutionPreCheck'
             )
         );
         $oTestObject->expects($this->any())->method('_fcpoSetKlarnaCampaigns')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcpoCheckBoniMoment')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcpoSetBoniErrorValues')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcpoSetMandateParams')->will($this->returnValue(true));
-        $oTestObject->expects($this->any())->method('_fcCleanupSessionFragments')->will($this->returnValue('someText'));
+        $oTestObject->expects($this->any())->method('_fcCleanupSessionFragments')->will($this->returnValue(null));
+        $oTestObject->expects($this->any())->method('_fcpoSecInvoiceSaveRequestedValues')->will($this->returnValue(null));
+        $oTestObject->expects($this->any())->method('_fcpoPayolutionPreCheck')->will($this->returnValue('order'));
 
         $oMockPayment = $this->getMock('oxPayment', array('load'));
         $oMockPayment->expects($this->any())->method('load')->will($this->returnValue(true));
@@ -2979,14 +2990,10 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
             'fcpo_payolution_debitnote_birthdate_month'=>'12',
             'fcpo_payolution_debitnote_birthdate_day'=>'07',
         );
-        $oTestObject
-            ->expects($this->any())
-            ->method('_fcpoGetRequestedValues')
-            ->will($this->returnValue($aMockRequestValues));
 
         $sExpect = "1978-12-07";
 
-        $this->assertEquals($sExpect, $oTestObject->_fcpoExtractBirthdateFromRequest($sMockPaymentId));
+        $this->assertEquals($sExpect, $oTestObject->_fcpoExtractBirthdateFromRequest($aMockRequestValues, $sMockPaymentId));
     }
 
     /**
@@ -3006,14 +3013,21 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
             ->method('_fcpoValidatePayolutionBirthdayData')
             ->will($this->returnValue(true));
 
+        $aMockRequestValues = array(
+            'fcpo_payolution_debitnote_birthdate_year'=>'1978',
+            'fcpo_payolution_debitnote_birthdate_month'=>'12',
+            'fcpo_payolution_debitnote_birthdate_day'=>'07',
+        );
+
         $sMockPaymentId = 'fcpopo_installment';
         $aExpect = array(
             'blValidBirthdateData' => true,
-            'blBirthdayRequired' => true,
-            'sRequestBirthdate' => '--',
+            'blBirthdayRequired' => true
         );
 
-        $this->assertEquals($aExpect, $oTestObject->_fcpoValidateBirthdayData($sMockPaymentId));
+        //die(var_dump($oTestObject->_fcpoValidateBirthdayData($sMockPaymentId, $aMockRequestValues)));
+
+        $this->assertEquals($aExpect, $oTestObject->_fcpoValidateBirthdayData($sMockPaymentId, $aMockRequestValues));
     }
 
     /**

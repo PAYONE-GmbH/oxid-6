@@ -1698,6 +1698,7 @@ class fcpoRequest extends oxSuperCfg
      */
     public function sendRequestCapture($oOrder, $dAmount, $blSettleAccount = true, $aPositions = false) 
     {
+        $this->_fcpoSetPortal($oOrder);
         $sPaymentId = $oOrder->oxorder__oxpaymenttype->value;
         $this->addParameter('request', 'capture'); //Request method
         $sMode = $oOrder->oxorder__fcpomode->value;
@@ -1757,7 +1758,43 @@ class fcpoRequest extends oxSuperCfg
 
         return $aResponse;
     }
-    
+
+    /**
+     * Method takes care for eventually other payment protal for fulfilling process
+     *
+     * @param $oOrder
+     * @return void
+     */
+    protected function _fcpoSetPortal($oOrder)
+    {
+        $this->_fcpoSetSecurePayPortal($oOrder);
+    }
+
+    /**
+     * If payment is Secure Invoice (rec/POV) other portal data
+     * has to be set for upcoming call
+     *
+     * @param $oOrder
+     * @return void
+     */
+    protected function _fcpoSetSecurePayPortal($oOrder)
+    {
+        $sPaymentId =
+            (string) $oOrder->oxorder__oxpaymenttype->value;
+        $blPaymentMatches = ($sPaymentId === 'fcpo_secinvoice');
+
+        if (!$blPaymentMatches) return;
+
+        $oConfig = $this->getConfig();
+        $sFCPOSecinvoicePortalKey =
+            $oConfig->getConfigParam('sFCPOSecinvoicePortalKey');
+        $sFCPOSecinvoicePortalId =
+            $oConfig->getConfigParam('sFCPOSecinvoicePortalId');
+
+        $this->addParameter('portalid', $sFCPOSecinvoicePortalId);
+        $this->addParameter('key', md5($sFCPOSecinvoicePortalKey));
+    }
+
     /**
      * Adds RatePay specific parameters
      * 
@@ -1789,6 +1826,7 @@ class fcpoRequest extends oxSuperCfg
      */
     public function sendRequestDebit($oOrder, $dAmount, $sBankCountry = false, $sBankAccount = false, $sBankCode = '', $sBankaccountholder = '', $aPositions = false) 
     {
+        $this->_fcpoSetPortal($oOrder);
         $sPaymentId = $oOrder->oxorder__oxpaymenttype->value;
         $this->_fcpoAddCaptureAndDebitRatePayParams($oOrder);
         $this->addParameter('request', 'debit'); //Request method

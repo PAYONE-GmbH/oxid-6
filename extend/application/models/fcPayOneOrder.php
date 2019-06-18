@@ -119,6 +119,12 @@ class fcPayOneOrder extends fcPayOneOrder_parent
     protected $_blFinishingSave = true;
 
     /**
+     * Indicator if loading basket from session has been triggered
+     * @var bool
+     */
+    protected $_blFcPoLoadFromSession = false;
+
+    /**
      * init object construction
      * 
      * @return null
@@ -375,6 +381,59 @@ class fcPayOneOrder extends fcPayOneOrder_parent
     }
 
     /**
+     * Overloading of basket load method for handling
+     * basket loading from session => avoiding loading it twice
+     *
+     * @param $oBasket
+     * @return mixed
+     * @see https://integrator.payone.de/jira/browse/OXID-263
+     */
+    protected function _loadFromBasket($oBasket)
+    {
+
+        $sSessionChallenge =
+            $this->_oFcpoHelper->fcpoGetSessionVariable('sess_challenge');
+
+        $blTriggerLoadingFromSession = (
+            $this->_blFcPoLoadFromSession &&
+            $sSessionChallenge
+        );
+
+        if (!$blTriggerLoadingFromSession)
+            return parent::_loadFromBasket($oBasket);
+
+        return $this->load($sSessionChallenge);
+    }
+
+    /**
+     * Assigns data, stored in oxorderarticles to oxorder object .
+     *
+     * @param bool $blExcludeCanceled excludes canceled items from list
+     *
+     * FATCHIP MOD:
+     * load articles from db if order already exists
+     *
+     * @return \oxlist
+     */
+    public function getOrderArticles($blExcludeCanceled = false)
+    {
+        $sSessionChallenge =
+            $this->_oFcpoHelper->fcpoGetSessionVariable('sess_challenge');
+
+        $blSetArticlesNull = (
+            $this->_blFcPoLoadFromSession &&
+            $sSessionChallenge
+        );
+
+        if ($blSetArticlesNull) {
+            //null trigger orderarticles getter from db
+            $this->_oArticles = null;
+        }
+
+        return parent::getOrderArticles($blExcludeCanceled);
+    }
+
+    /**
      * Payone handling on finalizing order
      *
      * @param $oBasket
@@ -583,6 +642,16 @@ class fcPayOneOrder extends fcPayOneOrder_parent
     {
         // check if this order is already stored
         $sGetChallenge = $this->_oFcpoHelper->fcpoGetSessionVariable('sess_challenge');
+
+        $this->_blFcPoLoadFromSession = (
+            $blSaveAfterRedirect &&
+            !$blRecalculatingOrder &&
+            $sGetChallenge &&
+            $oBasket &&
+            $oUser &&
+            $this->_checkOrderExist($sGetChallenge)
+        );
+
         if ($blSaveAfterRedirect === false && $this->_checkOrderExist($sGetChallenge)) {
             $oUtils = $this->_oFcpoHelper->fcpoGetUtils();
             $oUtils->logger('BLOCKER');

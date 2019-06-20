@@ -96,13 +96,21 @@ class fcPayOneTransactionStatusForwarder extends oxBase {
     public function handleForwarding() {
         $sPayoneStatus = $this->fcGetPostParam('txaction');
         
-        $sQuery = "SELECT fcpo_url, fcpo_timeout FROM fcpostatusforwarding WHERE fcpo_payonestatus = '{$sPayoneStatus}'";
-        $oResult = oxDb::getDb()->Execute($sQuery);
-        if ($oResult != false && $oResult->recordCount() > 0) {
-            while (!$oResult->EOF) {
-                $this->_forwardRequest($oResult->fields[0], $oResult->fields[1]);
-                $oResult->moveNext();
-            }
+        $sQuery = "
+            SELECT 
+                fcpo_url, 
+                fcpo_timeout 
+            FROM 
+                fcpostatusforwarding 
+            WHERE 
+                fcpo_payonestatus = '{$sPayoneStatus}'";
+
+        $aRows = oxDb::getDb()->getAll($sQuery);
+
+        foreach ($aRows as $aRow) {
+            $sUrl = (string) $aRow[0];
+            $iTimeout = (int) $aRow[1];
+            $this->_forwardRequest($sUrl, $iTimeout);
         }
     }
 }

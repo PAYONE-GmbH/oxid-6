@@ -1310,7 +1310,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
 
             $oPayment = $this->_oFcpoHelper->getFactoryObject('oxpayment');
             $oPayment->load($sPaymentId);
-            $this->_fcpoSecInvoiceSaveRequestedValues($sPaymentId);
+            $mReturn = $this->_fcpoSecInvoiceSaveRequestedValues($mReturn, $sPaymentId);
             $blContinue = $this->_fcpoCheckBoniMoment($oPayment);
 
             if ($blContinue !== true) {
@@ -1964,7 +1964,9 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      * @return void
      */
     protected function _fcpoPayolutionSaveRequestedValues($sPaymentId) {
-        $blSavedBirthday = $this->_fcpoSaveBirthdayData($sPaymentId);
+        $aRequestedValues = $this->_oFcpoHelper->fcpoGetRequestParameter('dynvalue');
+
+        $blSavedBirthday = $this->_fcpoSaveBirthdayData($aRequestedValues, $sPaymentId);
         $blSavedUstid = $this->_fcpoSaveUserData($sPaymentId,'oxustid');
         $blSavedTelephone = $this->_fcpoSaveUserData($sPaymentId, 'oxfon');
 
@@ -1996,17 +1998,35 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     /**
      * Save requested values of secure invoice
      *
+     * @param mixed $mReturn
      * @param string $sPaymentId
-     * @return void
+     * @return bool
      */
-    protected function _fcpoSecInvoiceSaveRequestedValues($sPaymentId) {
-        $aRequestedValues = $this->_oFcpoHelper->fcpoGetRequestParameter('dynvalue');
+    protected function _fcpoSecInvoiceSaveRequestedValues($mReturn, $sPaymentId) {
+        $blIsSecInvoice = ($sPaymentId == 'fcpo_secinvoice');
+        if (!$blIsSecInvoice) return $mReturn;
 
-        $this->_fcpoSaveBirthdayData($aRequestedValues, $sPaymentId);
+        $aRequestedValues =
+            $this->_oFcpoHelper->fcpoGetRequestParameter('dynvalue');
+        $aBirthdayValidation =
+            $this->_fcpoValidateBirthdayData($sPaymentId, $aRequestedValues);
+        $blBirthdayRequired = $aBirthdayValidation['blBirthdayRequired'];
+
+        $blBirthdayCheckPassed = true;
+        if ($blBirthdayRequired) {
+            $blBirthdayCheckPassed =
+                $this->_fcpoSaveBirthdayData($aRequestedValues, $sPaymentId);
+        }
+
+        $this->_fcpoSaveUserData($sPaymentId,'oxustid');
+
+        $mReturn = ($blBirthdayCheckPassed) ? $mReturn : false;
+
+        return $mReturn;
     }
 
     /**
-     * Method checks if ustid should be saved and returns if it has saved this data or not
+     * Method checks if given field should be saved and returns if it has saved this data or not
      *
      * @param $sPaymentId
      * @return bool
@@ -2155,8 +2175,9 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
                 $blValidBirthdateData = $this->_fcpoValidatePayolutionBirthdayData($sPaymentId, $aRequestedValues);
                 break;
             case 'fcpo_secinvoice':
+                $blB2CMode = ! $this->fcpoIsB2BPov();
+                $blBirthdayRequired = $blB2CMode;
                 $blValidBirthdateData = $this->_fcpoValidateSecInvoiceBirthdayData($sPaymentId, $aRequestedValues);
-                $blBirthdayRequired = true;
                 break;
         }
 
@@ -2231,6 +2252,10 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         $mReturn = false;
         if (isset($aRequestedValues['fcpo_payolution_' . $sFieldNameAddition . '_'.$sDbFieldName])) {
             $mReturn = $aRequestedValues['fcpo_payolution_' . $sFieldNameAddition . '_'.$sDbFieldName];
+        }
+
+        if (isset($aRequestedValues['fcpo_secinvoice_ustid'])) {
+            $mReturn = (string) $aRequestedValues['fcpo_secinvoice_ustid'];
         }
 
         return $mReturn;
@@ -3272,6 +3297,17 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
             ($blStrict) ? $blStrictConditions : $blNormalConditions;
 
         return $blConditionsFulfilled;
+    }
+
+    /**
+     * Generic method for determine if order is b2b
+     * Used by pov / rec
+     *
+     * @return bool
+     */
+    public function fcpoIsB2BPov() {
+        $oUser = $this->getUser();
+        return !empty($oUser->oxuser__oxcompany->value);
     }
 
     /**

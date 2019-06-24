@@ -18,8 +18,9 @@
                 <li>
                     <label for="cardtypeInput">[{oxmultilang ident="FCPO_CREDITCARD"}]</label>
                     <select id="cardtype" name="dynvalue[fcpo_kktype]">
+                        <option value="V" data-cardtype="none">[{oxmultilang ident="FCPO_CREDITCARD_CHOOSE"}]</option>
                         [{foreach from=$aFcPoCCPaymentMetaData item="oFcPoCCPaymentMetaData"}]
-                            <option value="[{$oFcPoCCPaymentMetaData->sPaymentTag}]" [{if $oFcPoCCPaymentMetaData->blSelected}]selected[{/if}]>[{$oFcPoCCPaymentMetaData->sPaymentName}]</option>
+                            <option value="[{$oFcPoCCPaymentMetaData->sPaymentTag}]" data-cardtype="[{$oFcPoCCPaymentMetaData->sPaymentTag}]" [{if $oFcPoCCPaymentMetaData->blSelected}]selected[{/if}]>[{$oFcPoCCPaymentMetaData->sPaymentName}]</option>
                         [{/foreach}]
                     </select>
                 </li>
@@ -50,6 +51,9 @@
                 </li>
                 <li>
                     <div id="errorOutput"></div>
+                    <div id="errorCVC" style="display:none;" class="alert-danger">[{oxmultilang ident="FCPO_CC_HOSTED_ERROR_CVC"}]</div>
+                    <div id="errorCardType" style="display:none;" class="alert-danger">[{oxmultilang ident="FCPO_CC_HOSTED_ERROR_CARDTYPE"}]</div>
+                    <div id="errorIncomplete" style="display:none;" class="alert-danger">[{oxmultilang ident="FCPO_CC_HOSTED_ERROR_INCOMPLETE"}]</div>
                 </li>
             </ul>
             [{oxid_include_dynamic file=$oViewConf->fcpoGetAbsModuleTemplateFrontendPath('fcpo_payment_creditcard_script.tpl')}]

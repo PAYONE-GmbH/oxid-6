@@ -528,8 +528,6 @@ function fcCheckPaymentSelection() {
         var oForm = getPaymentForm();
         if(sCheckedValue == 'fcpocreditcard' && oForm.fcpo_cc_type.value == 'ajax') {
             return startCCRequest();
-        } else if(sCheckedValue == 'fcpocreditcard' && oForm.fcpo_cc_type.value == 'hosted') {
-            return startCCHostedRequest();
         } else if(sCheckedValue == 'fcpodebitnote') {
             return startELVRequest(true);
         } else if(sCheckedValue == 'fcpoonlineueberweisung') {
@@ -677,90 +675,6 @@ function fcpoHandleMandateCheckbox(oCheckbox) {
             document.getElementById("orderConfirmAgbBottom").appendChild(oInput);
         }
     }
-}
-
-function fcInitCCIframes() {
-    var oForm = getPaymentForm();
-    var sKKType = fcpoGetCreditcardType();
-    var sMode = oForm["fcpo_mode_fcpocreditcard_" + sKKType].value;
-    request = {
-        request: 'creditcardcheck', // fixed value
-        responsetype: 'JSON', // fixed value
-        mode: sMode, // desired mode
-        mid: oForm.fcpo_mid.value, // your MID
-        aid: oForm.fcpo_aid.value, // your AID
-        portalid: oForm.fcpo_portalid.value, // your PortalId
-        encoding: oForm.fcpo_encoding.value, // desired encoding
-        storecarddata: 'yes', // fixed value
-        hash: oForm["fcpo_hashcc_" + sKKType].value
-    };
-    var iframes = new Payone.ClientApi.HostedIFrames(config, request);
-    iframes.setCardType("V");
-    sCardTypeId = 'cardtype';
-    if(document.getElementById('sFcpoCreditCardSelected')) {
-        sCardTypeId = 'sFcpoCreditCardSelected';
-    }
-    document.getElementById(sCardTypeId).onchange = function () {
-        iframes.setCardType(this.value); // on change: set new type of credit card to process
-    };
-    return iframes;
-}
-
-function startCCHostedRequest() { // Function called by submitting PAY-button
-    if (iframes.isComplete()) {
-        iframes.creditCardCheck('processPayoneResponseCCHosted');// Perform "CreditCardCheck" to create and get a
-        // PseudoCardPan; then call your function "payCallback"
-    } else {
-        console.debug("not complete");
-    }
-    return false;
-}
-
-/**
- * Process hosted iframe cc data
- *
- * @param response
- */
-function processPayoneResponseCCHosted(response) {
-    response = validateCardExpireDate(response);
-    console.log(response);
-    if (response.status === "VALID") {
-        var oForm = getPaymentForm();
-        oForm["dynvalue[fcpo_pseudocardpan]"].value = response.pseudocardpan;
-        oForm["dynvalue[fcpo_ccmode]"].value = getOperationMode(fcpoGetCreditcardType());
-        oForm["dynvalue[fcpo_kknumber]"].value = response.truncatedcardpan;
-        oForm.submit();
-    } else {
-        document.getElementById('errorOutput').innerHTML = response.errormessage;
-    }
-}
-
-/**
- * validates the expiredate given in response
- *
- * @param object response
- * @returns bool
- */
-function validateCardExpireDate(response) {
-    if (response.status === "VALID") {
-        // current year month string has to be set into format YYMM
-        var fullMonth = new Array("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12");
-        var currentDate = new Date();
-        var fullYear = currentDate.getFullYear(); // need to use full year because getYear() is broken due to Y2K-Bug
-        var month = currentDate.getMonth();
-        month = fullMonth[month];
-        var year = fullYear.toString();
-        year = year.substr(2, 4);
-        var currentYearMonth = year + month;
-        var responseYearMonth = response.cardexpiredate;
-        responseYearMonth = responseYearMonth.toString();
-        if (responseYearMonth <= currentYearMonth) {
-            response.status = 'INVALID';
-            response.errormessage = 'Verfallsdatum der Karte erreicht. Bitte nutzen Sie eine andere Karte.';
-        }
-    }
-
-    return response;
 }
 
 /**
@@ -915,3 +829,199 @@ $('#payolution_installment_check_availability').click(
     );
 
 }(document, 'script'));
+
+/**
+ * ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ * Following code is only used on cc hosted iframes
+ * ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ */
+
+function fcInitCCIframes() {
+    var oForm = getPaymentForm();
+    var sKKType = fcpoGetCreditcardType();
+    var sMode = oForm["fcpo_mode_fcpocreditcard_" + sKKType].value;
+
+    request = {
+        request: 'creditcardcheck', // fixed value
+        responsetype: 'JSON', // fixed value
+        mode: sMode, // desired mode
+        mid: oForm.fcpo_mid.value, // your MID
+        aid: oForm.fcpo_aid.value, // your AID
+        portalid: oForm.fcpo_portalid.value, // your PortalId
+        encoding: oForm.fcpo_encoding.value, // desired encoding
+        storecarddata: 'yes', // fixed value
+        hash: oForm["fcpo_hashcc_" + sKKType].value
+    };
+    var iframes = new Payone.ClientApi.HostedIFrames(config, request);
+
+    //set default cardType on initialization
+    iframes.setCardType("V");
+
+    return iframes;
+}
+
+/**
+ * validates the expiredate given in response
+ *
+ * @param object response
+ * @returns bool
+ */
+function validateCardExpireDate(response) {
+    if (response.status === "VALID") {
+        // current year month string has to be set into format YYMM
+        var fullMonth = new Array("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12");
+
+        var currentDate = new Date();
+        var fullYear = currentDate.getFullYear(); // need to use full year because getYear() is broken due to Y2K-Bug
+        var month = currentDate.getMonth();
+
+        month = fullMonth[month];
+        var year = fullYear.toString();
+        year = year.substr(2, 4);
+        var currentYearMonth = year + month;
+        var responseYearMonth = response.cardexpiredate;
+
+        responseYearMonth = responseYearMonth.toString();
+        if (responseYearMonth <= currentYearMonth) {
+            response.status = 'INVALID';
+            response.errormessage = 'Verfallsdatum der Karte erreicht. Bitte nutzen Sie eine andere Karte.';
+        }
+    }
+
+    return response;
+}
+
+/**
+ * Validate input (credit card data) on hosted iframes
+ *
+ * @return int
+ * 0 = incomplete
+ * 1 = complete
+ * 2 = cvc missing
+ *
+ */
+function validateCCHostedInputs() { // Function called by submitting PAY-button
+    if (iframes.isComplete()) {
+        return 1;
+    } else {
+        if(iframes.isCardTypeComplete() &&
+            iframes.isCardpanComplete() &&
+            iframes.isExpireMonthComplete() &&
+            iframes.isExpireYearComplete())
+        {
+            return 2;
+        }
+    }
+
+    return 0;
+}
+
+/**
+ * Process hosted iframe cc data
+ *
+ * @param response
+ */
+function processPayoneResponseCCHosted(response) {
+    response = validateCardExpireDate(response);
+    console.log(response);
+    if (response.status === "VALID") {
+        var oForm = getPaymentForm();
+        oForm["dynvalue[fcpo_pseudocardpan]"].value = response.pseudocardpan;
+        oForm["dynvalue[fcpo_ccmode]"].value = getOperationMode(fcpoGetCreditcardType());
+        oForm["dynvalue[fcpo_kknumber]"].value = response.truncatedcardpan;
+        oForm.submit();
+    } else {
+        document.getElementById('errorOutput').innerHTML = response.errormessage;
+    }
+}
+
+/**
+ * already displayed error will get hidden before recheck
+ */
+function hideCCHostedErrorsAtSubmit() {
+    $('#errorCardType').hide();
+    $('#errorCVC').hide();
+    $('#errorIncomplete').hide();
+}
+
+/**
+ * validates if customer has selected a valid card type on hosted iframes
+ *
+ * @param e
+ */
+function validateCardTypeCCHosted(e) {
+    var paymentId = $('input[name=paymentid]:checked').val();
+    var cardType = $( '#cardtype option:selected' ).attr('data-cardtype');
+    var oForm = getPaymentForm();
+
+    if(paymentId == 'fcpocreditcard' && oForm.fcpo_cc_type.value == 'hosted' && cardType == 'none') {
+        $('#errorCardType').show();
+
+        e.preventDefault();
+    }
+}
+
+/**
+ * validate input like cvc and missing fields
+ *
+ * @param e
+ */
+function validateInputCCHosted(e) {
+    var paymentId = $('input[name=paymentid]:checked').val();
+    var cardType = $( '#cardtype option:selected' ).attr('data-cardtype');
+    var oForm = getPaymentForm();
+
+    if(paymentId == 'fcpocreditcard' && oForm.fcpo_cc_type.value == 'hosted' && cardType != 'none') {
+        $validateResult = validateCCHostedInputs();
+
+        if($validateResult == 0) {
+            e.preventDefault();
+            $('#errorIncomplete').show();
+        } else if($validateResult == 2) {
+            $('#errorCVC').show();
+            e.preventDefault();
+        } else {
+            // halt here if response returns valid but data is not valid (expiry date e.g.)
+            e.preventDefault();
+            //perform request for validation
+            iframes.creditCardCheck('processPayoneResponseCCHosted');
+        }
+    }
+}
+
+/**
+ * if user is using browser back function,
+ * card type is preselected and cvc check may is not working
+ */
+function resetCardTypeCCHosted() {
+    var cardTypeOptionEl = $('#cardtype option[data-cardtype="none"]');
+    var cardTypeEl = $('#cardtype');
+
+    if(cardTypeOptionEl) {
+        cardTypeOptionEl.attr('selected', true);
+    }
+
+    if(cardTypeOptionEl && cardTypeEl && (typeof cardTypeEl.selectpicker === "function")) {
+        cardTypeEl.selectpicker('refresh');
+    }
+}
+
+/**
+ * handles form submission if method is credit card hosted iframe
+ */
+$( document).ready(function() {
+    var paymentForm = $( '#payment' );
+
+    resetCardTypeCCHosted();
+
+    //check cvc, check if cardtype is selected, progress request, output errors
+    paymentForm.on('submit', function(e) {
+        hideCCHostedErrorsAtSubmit();
+        validateCardTypeCCHosted(e);
+        validateInputCCHosted(e);
+    });
+
+    $('#cardtype').on('change', function(e) {
+        iframes.setCardType(this.value);
+    });
+});

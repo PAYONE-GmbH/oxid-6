@@ -72,6 +72,7 @@ $aLang = array(
 'FCPO_BANK_ACCOUNT_NUMBER'                      => 'Kto.Nr.:',
 'FCPO_BANK_GER_OLD'                             => 'oder bezahlen Sie wie gewohnt mit Ihren bekannten Kontodaten<br>(nur für Deutsche Kontoverbindungen).',
 'FCPO_CREDITCARD'                               => "Karte:",
+'FCPO_CREDITCARD_CHOOSE'                        => "Bitte wählen",
 'FCPO_CARD_VISA'                                => "Visa",
 'FCPO_CARD_MASTERCARD'                          => "Mastercard",
 'FCPO_NUMBER'                                   => "Nummer:",
@@ -192,6 +193,10 @@ $aLang = array(
 'FCPO_SECINVOICE_BIRTHDATE'                     => 'Bitte geben Sie ihr Geburtsdatum an',
 'FCPO_NOT_ADULT'                                => 'Sie sind aufgrund Ihres Alters leider nicht berechtigt die gewählte Zahlart zu verwenden. Bitte wählen Sie eine andere Zahlart.',
 'FCPO_BIRTHDATE_INVALID'                        => 'Ihr Geburtsdatum wurde nicht korrekt eingegeben',
+
+'FCPO_CC_HOSTED_ERROR_CARDTYPE'                 => 'Bitte wählen Sie einen Kartentyp',
+'FCPO_CC_HOSTED_ERROR_CVC'                      => 'Bitte CVC-Eingabe überprüfen',
+'FCPO_CC_HOSTED_ERROR_INCOMPLETE'               => 'Eingaben unvollständig'
 );
 
 /*

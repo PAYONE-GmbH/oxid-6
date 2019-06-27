@@ -20,6 +20,7 @@
             [{if $oView->getConfigParam('blFCPOCCUseCvc')}]
                 cardcvc2: {
                     selector: "cardcvc2", // put name of your div-container here
+                    length: {"A": 4, "V": 3, "M": 3, "J": 3, "P": 3},
                     type: "[{$oView->getConfigParam('sFCPOCCCVCType')}]", // select(default), text, password, tel
                     size: "[{$oView->getConfigParam('sFCPOCCCVCCount')}]",
                     maxlength: "[{$oView->getConfigParam('sFCPOCCCVCMax')}]",

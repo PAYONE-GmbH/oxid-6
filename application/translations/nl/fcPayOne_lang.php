@@ -69,6 +69,7 @@ $aLang = array(
     'FCPO_BANK_ACCOUNT_NUMBER' => 'Account number:',
     'FCPO_BANK_ACCOUNT_HOLDER' => 'Account holder:',
     'FCPO_CREDITCARD' => "Credit card:",
+    'FCPO_CREDITCARD_CHOOSE' => "Please select",
     'FCPO_CARD_VISA' => "Visa",
     'FCPO_CARD_MASTERCARD' => "Mastercard",
     'FCPO_NUMBER' => "Number:",
@@ -167,6 +168,10 @@ $aLang = array(
     'FCPO_PAYOLUTION_NO_INSTALLMENT_SELECTED' => 'You did not choose an installment.',
     'FCPO_PAYOLUTION_BIRTHDATE_INVALID' => 'Your date of birth was not entered correctly',
     'FCPO_RATEPAY_BIRTHDATE' => 'Date of birth',
+
+    'FCPO_CC_HOSTED_ERROR_CARDTYPE'                 => 'Please select a cardtype',
+    'FCPO_CC_HOSTED_ERROR_CVC'                      => 'Please check CVC',
+    'FCPO_CC_HOSTED_ERROR_INCOMPLETE'               => 'Input incomplete'
 );
 
 /*

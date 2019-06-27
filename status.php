@@ -125,10 +125,13 @@ class fcPayOneTransactionStatusHandler extends oxBase
     {
         $sKey = $this->fcGetPostParam('key');
         if($sKey) {
-            $aKeys = $this->_getConfigParams('sFCPOPortalKey');
+            $aKeys = array_merge(
+                array_values($this->_getConfigParams('sFCPOPortalKey')),
+                array_values($this->_getConfigParams('sFCPOSecinvoicePortalKey')) // OXID-228: Check also SecInvoice key
+            );
+
             foreach ($aKeys as $i => $sConfigKey) {
-                $sConfigKey = md5($sConfigKey);
-                if($sConfigKey == $sKey) {
+                if(md5($sConfigKey) == $sKey) {
                     return true;
                 }
             }

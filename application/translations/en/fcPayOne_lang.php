@@ -68,6 +68,7 @@ $aLang = array(
 'FCPO_BANK_ACCOUNT_NUMBER'                      => 'Account number:',
 'FCPO_BANK_ACCOUNT_HOLDER'                      => 'Account holder:',
 'FCPO_CREDITCARD'                               => "Credit card:",
+'FCPO_CREDITCARD_CHOOSE' => "Please select",
 'FCPO_CARD_VISA'                                => "Visa",
 'FCPO_CARD_MASTERCARD'                          => "Mastercard",
 'FCPO_NUMBER'                                   => "Number:",
@@ -182,8 +183,14 @@ $aLang = array(
 'FCPO_AMAZON_ERROR_SHIPPING_ADDRESS_NOT_SET'    => 'Please choose an address',
 'FCPO_AMAZON_ERROR_900'                         => 'Please choose another payment method.',
 'FCPO_SECINVOICE_BIRTHDATE'                     => 'Please enter your birthday',
+'FCPO_SECINVOICE_USTID'                         => 'Tax Identification Number',
+'FCPO_SECINVOICE_NO_COMPANY'                    => 'Not a company? Click <a href="index.php?cl=account_user" style="color:green;">here</a> for changing your address.',
 'FCPO_NOT_ADULT'                                => 'Due to your age you are not allowed to use this payment. Please select another payment method',
 'FCPO_BIRTHDATE_INVALID'                        => 'Your birthdate has been entered incorrect.',
+
+'FCPO_CC_HOSTED_ERROR_CARDTYPE'                 => 'Please select a cardtype',
+'FCPO_CC_HOSTED_ERROR_CVC'                      => 'Please check CVC',
+'FCPO_CC_HOSTED_ERROR_INCOMPLETE'               => 'Input incomplete'
 );
 
 /*

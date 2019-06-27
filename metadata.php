@@ -172,11 +172,6 @@ $aModule = array(
             'file' => 'fcpo_payment_select_override',
         ),
         array(
-            'template' => 'fcpayone_mobile_payment.tpl',
-            'block' => 'mb_select_payment',
-            'file' => 'fcpo_mb_payment_select_override',
-        ),
-        array(
             'template' => 'page/checkout/order.tpl',
             'block' => 'order_basket',
             'file' => 'fcpo_order_basket_override',
@@ -240,16 +235,6 @@ $aModule = array(
             'template' => 'page/checkout/basket.tpl',
             'block' => 'basket_btn_next_bottom',
             'file' => 'fcpo_basket_btn_next_bottom',
-        ),
-        array(
-            'template' => 'page/checkout/basket.tpl',
-            'block' => 'mb_basket_btn_next_top',
-            'file' => 'fcpo_mb_basket_btn_next',
-        ),
-        array(
-            'template' => 'page/checkout/basket.tpl',
-            'block' => 'mb_basket_btn_next_bottom',
-            'file' => 'fcpo_mb_basket_btn_next',
         ),
         array(
             'template' => 'page/checkout/payment.tpl',

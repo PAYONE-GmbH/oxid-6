@@ -19,8 +19,9 @@
                     <label for="cardtype" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_CREDITCARD"}]</label>
                     <div class="col-lg-9">
                         <select id="cardtype" name="dynvalue[fcpo_kktype]"  class="form-control selectpicker" required="required">
+                            <option value="V" data-cardtype="none">[{oxmultilang ident="FCPO_CREDITCARD_CHOOSE"}]</option>
                             [{foreach from=$aFcPoCCPaymentMetaData item="oFcPoCCPaymentMetaData"}]
-                                <option value="[{$oFcPoCCPaymentMetaData->sPaymentTag}]" [{if $oFcPoCCPaymentMetaData->blSelected}]selected[{/if}]>[{$oFcPoCCPaymentMetaData->sPaymentName}]</option>
+                                <option value="[{$oFcPoCCPaymentMetaData->sPaymentTag}]" data-cardtype="[{$oFcPoCCPaymentMetaData->sPaymentTag}]" [{if $oFcPoCCPaymentMetaData->blSelected}]selected[{/if}]>[{$oFcPoCCPaymentMetaData->sPaymentName}]</option>
                             [{/foreach}]
                         </select>
                     </div>
@@ -66,6 +67,15 @@
                         <div id="errorOutput" class="alert-danger"></div>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <div class="col-lg-9 col-lg-push-3">
+                        <div id="errorCVC" style="display:none;" class="alert-danger">[{oxmultilang ident="FCPO_CC_HOSTED_ERROR_CVC"}]</div>
+                        <div id="errorCardType" style="display:none;" class="alert-danger">[{oxmultilang ident="FCPO_CC_HOSTED_ERROR_CARDTYPE"}]</div>
+                        <div id="errorIncomplete" style="display:none;" class="alert-danger">[{oxmultilang ident="FCPO_CC_HOSTED_ERROR_INCOMPLETE"}]</div>
+                    </div>
+                </div>
+
                 [{oxid_include_dynamic file=$oViewConf->fcpoGetAbsModuleTemplateFrontendPath('fcpo_payment_creditcard_script.tpl')}]
                 [{block name="checkout_payment_longdesc"}]
                     [{if $paymentmethod->oxpayments__oxlongdesc->value}]

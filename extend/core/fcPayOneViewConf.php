@@ -53,6 +53,16 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent
     );
 
     /**
+     * List of themes and their
+     * @var array
+     */
+    protected $_aTheme2CssPayButtonSelector = array(
+        'flow' => 'nextStep',
+        'azure' => 'nextStep',
+        'wave' => 'nextStep',
+    );
+
+    /**
      * Counts the amount of widgets have been included by call
      * @var int
      */
@@ -297,6 +307,7 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent
     /**
      * Returns amazon seller id
      *
+     * @param void
      * @return string
      */
     public function fcpoGetAmazonPaySellerId()
@@ -308,6 +319,27 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent
     }
 
     /**
+     * Method returns css selector matching to used (parent-)theme
+     *
+     * @param void
+     * @return string
+     */
+    public function fcpoGetAmazonBuyNowButtonCssSelector()
+    {
+        $sThemeId = $this->fcpoGetActiveThemePath();
+
+        $blHasSelector =
+            isset($this->_aTheme2CssPayButtonSelector[$sThemeId]);
+
+        if (!$blHasSelector) return '';
+
+        $sCssSelector =
+            (string) $this->_aTheme2CssPayButtonSelector[$sThemeId];
+
+        return $sCssSelector;
+    }
+
+    /**
      * Method returns previously saved reference id
      *
      * @param void
@@ -315,7 +347,8 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent
      */
     public function fcpoGetAmazonPayReferenceId()
     {
-        $sAmazonReferenceId = $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoAmazonReferenceId');
+        $sAmazonReferenceId =
+            $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoAmazonReferenceId');
 
         return $sAmazonReferenceId;
     }
@@ -575,7 +608,6 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent
      *
      * @param void
      * @return string
-     * @todo class has to be moved into controller folder instead of models
      */
     public function fcpoGetAjaxControllerUrl() {
         $oConfig = $this->getConfig();

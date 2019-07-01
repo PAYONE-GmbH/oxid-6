@@ -1220,7 +1220,6 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         $sAuthorizationType = $oPayment->oxpayments__fcpoauthmode->value;
 
         $sRefNr = $oPORequest->getRefNr($this);
-        $this->_oFcpoHelper->fcpoSetSessionVariable('fcpoRefNr', $sRefNr);
 
         $aResponse = $oPORequest->sendRequestAuthorization($sAuthorizationType, $this, $this->getOrderUser(), $aDynvalue, $sRefNr);
         $sMode = $oPayment->fcpoGetMode($aDynvalue);

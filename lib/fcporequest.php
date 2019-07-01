@@ -1224,7 +1224,7 @@ class fcpoRequest extends oxSuperCfg
                 $aBankData['fcpo_payolution_' . $sFieldNameAddition . '_accountholder'] &&
                 $aBankData['fcpo_payolution_' . $sFieldNameAddition . '_iban'] &&
                 $aBankData['fcpo_payolution_' . $sFieldNameAddition . '_bic']
-                );
+        );
 
         if ($blValidBankData) {
             $this->addParameter('iban', $aBankData['fcpo_payolution_' . $sFieldNameAddition . '_iban']);
@@ -1646,6 +1646,45 @@ class fcpoRequest extends oxSuperCfg
         $this->addParameter('currency', $oCurr->name);
 
         $this->addParameter('workorderid', $sAmazonWorkorderId);
+
+        return $this->send();
+    }
+
+    /**
+     * Processing amazon pay confirm call
+     *
+     * @param $sAmazonReferenceId
+     * @return void
+     */
+    public function sendRequestGetConfirmAmazonPayOrder($sAmazonReferenceId)
+    {
+        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+        $sAmazonWorkorderId =
+            $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoAmazonWorkorderId');
+
+        $this->addParameter('request', 'genericpayment');
+        $this->addParameter('mode', $this->getOperationMode('fcpoamazonpay'));
+        $this->addParameter('aid', $oConfig->getConfigParam('sFCPOSubAccountID'));
+
+        $this->addParameter('clearingtype', 'wlt');
+        $this->addParameter('wallettype', 'AMZ');
+
+        $this->addParameter('add_paydata[action]', 'confirmorderreference');
+        $this->addParameter('add_paydata[amazon_reference_id]', $sAmazonReferenceId);
+        $this->addParameter('add_paydata[reference]', $this->getRefNr());
+
+        $this->addParameter('workorderid', $sAmazonWorkorderId);
+
+        $oCurr = $oConfig->getActShopCurrencyObject();
+        $this->addParameter('currency', $oCurr->name);
+
+        $sShopURL = $oConfig->getShopUrl();
+
+        $sSuccessUrl = $sShopURL . 'index.php?cl=order&fnc=execute';
+        $sErrorUrl = $sShopURL . "index.php?cl=basket";
+
+        $this->addParameter('successurl', $sSuccessUrl);
+        $this->addParameter('errorurl', $sErrorUrl);
 
         return $this->send();
     }
@@ -2757,6 +2796,10 @@ class fcpoRequest extends oxSuperCfg
      */
     public function getRefNr($oOrder = false) 
     {
+        $sSessionRefNr = $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoRefNr');
+        $blUseSessionRefNr = ($sSessionRefNr && !$oOrder);
+        if ($blUseSessionRefNr) return $sSessionRefNr;
+
         $oDb = oxDb::getDb();
         $sRawPrefix = (string) $this->getConfig()->getConfigParam('sFCPORefPrefix');
         $sPrefix = $oDb->quote($sRawPrefix);
@@ -2772,7 +2815,10 @@ class fcpoRequest extends oxSuperCfg
             $oDb->Execute($sQuery);
         }
 
-        return $sRawPrefix . $sRefNr;
+        $sRefNrComplete = $sRawPrefix . $sRefNr;
+        $this->_oFcpoHelper->fcpoSetSessionVariable('fcpoRefNr', $sRefNr);
+
+        return $sRefNrComplete;
     }
 
 }

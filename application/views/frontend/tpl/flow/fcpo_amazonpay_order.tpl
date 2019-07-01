@@ -5,7 +5,6 @@
         var buyNowBtns = document.getElementsByClassName('[{$oViewConf->fcpoGetAmazonBuyNowButtonCssSelector()}]');
 
         buyNowBtns[0].addEventListener('click', function () {
-            alert('tach!' +  " SellerId: " + sellerId + " ReferenceId:" + Id);
             OffAmazonPayments.initConfirmationFlow(sellerId, Id, function(confirmationFlow) {
                 placeOrder(confirmationFlow);
             });

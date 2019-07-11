@@ -51,6 +51,11 @@
                 amazonOrderReferenceId: '[{$oViewConf->fcpoGetAmazonPayReferenceId()}]',
                 onPaymentSelect: function(orderReference) {
                     console.log('triggered onPaymentSelect');
+
+                    $("[id^=paymentNextStepBottom]").each(function () {
+                        $(this).attr("disabled", true);
+                    });
+
                     var formParams = '{"fcpoAmazonReferenceId":"[{$oViewConf->fcpoGetAmazonPayReferenceId()}]"}';
                     $.ajax({
                         url: "[{$oViewConf->getBaseDir()}]modules/fc/fcpayone/application/models/fcpayone_ajax.php",
@@ -59,6 +64,9 @@
                         dataType: 'text',
                         data: { paymentid: "fcpoamazonpay", action: "get_amazon_reference_details", params: formParams },
                         success: function(Response) {
+                            $("[id^=paymentNextStepBottom]").each(function () {
+                                $(this).attr("disabled", false);
+                            });
                         }
                     });
                 },
@@ -75,7 +83,7 @@
     [{block name="checkout_payment_nextstep"}]
         <div class="well well-sm">
             <a href="[{oxgetseourl ident=$oViewConf->getOrderLink()}]" class="btn btn-default pull-left prevStep submitButton largeButton" id="paymentBackStepBottom"><i class="fa fa-caret-left"></i> [{oxmultilang ident="PREVIOUS_STEP"}]</a>
-            <button type="submit" name="userform" class="btn btn-primary pull-right submitButton nextStep largeButton" id="paymentNextStepBottom">[{oxmultilang ident="CONTINUE_TO_NEXT_STEP"}] <i class="fa fa-caret-right"></i></button>
+            <button disabled type="submit" name="userform" class="btn btn-primary pull-right submitButton nextStep largeButton" id="paymentNextStepBottom">[{oxmultilang ident="CONTINUE_TO_NEXT_STEP"}] <i class="fa fa-caret-right"></i></button>
             <div class="clearfix"></div>
         </div>
     [{/block}]

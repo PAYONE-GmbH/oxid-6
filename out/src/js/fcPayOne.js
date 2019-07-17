@@ -445,14 +445,16 @@ function startELVRequest() {
         oForm['dynvalue[fcpo_payolution_bic]'].value = getCleanedNumberIBAN(oForm['dynvalue[fcpo_payolution_bic]'].value);
     }
 
-    if(oForm['dynvalue[fcpo_elv_iban]'].value == '' && oForm['dynvalue[fcpo_elv_bic]'].value == '' && (!oForm['dynvalue[fcpo_elv_blz]'] || oForm['dynvalue[fcpo_elv_blz]'].value == '') && (!oForm['dynvalue[fcpo_elv_ktonr]'] || oForm['dynvalue[fcpo_elv_ktonr]'].value == '')) {
+    if(oForm['dynvalue[fcpo_elv_iban]'].value == '' && (!oForm['dynvalue[fcpo_elv_bic]'] || oForm['dynvalue[fcpo_elv_bic]'].value == '') && (!oForm['dynvalue[fcpo_elv_blz]'] || oForm['dynvalue[fcpo_elv_blz]'].value == '') && (!oForm['dynvalue[fcpo_elv_ktonr]'] || oForm['dynvalue[fcpo_elv_ktonr]'].value == '')) {
         document.getElementById('fcpo_elv_iban_invalid').style.display = 'block';
         return false;
     }
 
-    if(oForm['dynvalue[fcpo_payolution_iban]'].value == '' && oForm['dynvalue[fcpo_payolution_bic]'].value == '' ) {
-        document.getElementById('fcpo_payolution_iban_invalid').style.display = 'block';
-        return false;
+    if(oForm['dynvalue[fcpo_payolution_iban]'] && oForm['dynvalue[fcpo_payolution_bic]']) {
+        if (oForm['dynvalue[fcpo_payolution_iban]'].value == '' && oForm['dynvalue[fcpo_payolution_bic]'].value == '') {
+            document.getElementById('fcpo_payolution_iban_invalid').style.display = 'block';
+            return false;
+        }
     }
 
     var blIsGermany = false;
@@ -460,21 +462,23 @@ function startELVRequest() {
         blIsGermany = true;
     }
 
-    if(blIsGermany == true && (oForm['dynvalue[fcpo_elv_blz]'].value != '' || oForm['dynvalue[fcpo_elv_ktonr]'].value != '')) {
+    if(blIsGermany == true && oForm['dynvalue[fcpo_elv_iban]'].value == '') {
         if(oForm['dynvalue[fcpo_elv_ktonr]'].value == '' || oForm['dynvalue[fcpo_elv_ktonr]'].value.length > 10) {
             document.getElementById('fcpo_elv_ktonr_invalid').style.display = 'block';
             return false;
         }
+
         if(oForm['dynvalue[fcpo_elv_blz]'].value == '' || oForm['dynvalue[fcpo_elv_blz]'].value.length != 8) {
             document.getElementById('fcpo_elv_blz_invalid').style.display = 'block';
             return false;
         }
-    } else {
+    }
+    else {
         if(oForm['dynvalue[fcpo_elv_iban]'].value == '' || oForm['dynvalue[fcpo_elv_iban]'].value.length > 34) {
             document.getElementById('fcpo_elv_iban_invalid').style.display = 'block';
             return false;
         }
-        if(oForm['dynvalue[fcpo_elv_bic]'].value == '' || oForm['dynvalue[fcpo_elv_bic]'].value.length > 11) {
+        if(oForm['dynvalue[fcpo_elv_bic]'] && (oForm['dynvalue[fcpo_elv_bic]'].value == '' || oForm['dynvalue[fcpo_elv_bic]'].value.length > 11)) {
             document.getElementById('fcpo_elv_bic_invalid').style.display = 'block';
             return false;
         }
@@ -502,9 +506,10 @@ function startELVRequest() {
         solution_name : 'fatchip',
         solution_version : oForm.fcpo_integratorextver.value,
     };
-    if(oForm['dynvalue[fcpo_elv_iban]'].value != '' && oForm['dynvalue[fcpo_elv_bic]'].value != '') {
+
+    if(oForm['dynvalue[fcpo_elv_iban]'].value != '' && (!oForm['dynvalue[fcpo_elv_bic]'] || oForm['dynvalue[fcpo_elv_bic]'].value != '')) {
         data.iban = oForm['dynvalue[fcpo_elv_iban]'].value;
-        data.bic = oForm['dynvalue[fcpo_elv_bic]'].value;
+        if(oForm['dynvalue[fcpo_elv_bic]']) data.bic = oForm['dynvalue[fcpo_elv_bic]'].value;
     } else {
         data.bankcountry = fcpoGetElvCountry();
         data.bankaccount = oForm['dynvalue[fcpo_elv_ktonr]'].value;

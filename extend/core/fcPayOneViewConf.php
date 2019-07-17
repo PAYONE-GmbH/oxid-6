@@ -643,4 +643,18 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent
 
         return $blIsPayOne;
     }
+
+    /**
+     * Return amazon confirmation error url
+     *
+     * @return mixed
+     */
+    public function fcpoGetAmazonConfirmErrorUrl()
+    {
+        $oConfig = $this->getConfig();
+        $sShopUrl = $oConfig->getShopUrl();
+        $sShopUrl = $sShopUrl."index.php?cl=basket";
+
+        return $sShopUrl;
+    }
 }

@@ -2,9 +2,10 @@
     document.addEventListener("DOMContentLoaded", function() {
         var sellerId = '[{$oViewConf->fcpoGetAmazonPaySellerId()}]';
         var Id = '[{$oViewConf->fcpoGetAmazonPayReferenceId()}]'; // use the Order Reference AmazonOrderReferenceId
-        var buyNowBtns = document.getElementsByClassName('[{$oViewConf->fcpoGetAmazonBuyNowButtonCssSelector()}]');
+        var orderForm = document.getElementById('orderConfirmAgbBottom');
 
-        buyNowBtns[0].addEventListener('click', function () {
+        orderForm.addEventListener('submit', function (e) {
+            e.preventDefault();
             OffAmazonPayments.initConfirmationFlow(sellerId, Id, function(confirmationFlow) {
                 placeOrder(confirmationFlow);
             });
@@ -26,10 +27,13 @@
                 error: function (data) {
                     console.log('error triggering placeOrder');
                     confirmationFlow.error();
+                    window.onAmazonLoginReady = function () {
+                        amazon.Login.logout();
+                    };
+                    window.location.href = '[{$oViewConf->fcpoGetAmazonConfirmErrorUrl()}]';
                 },
-                timeout: "3000", //specify your timeout value (for example, 3000)
+                timeout: "30000", //specify your timeout value (for example, 3000)
             });
-            console.log('finished placeOrder');
         }
     });
 </script>

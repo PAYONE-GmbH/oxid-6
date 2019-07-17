@@ -1659,6 +1659,7 @@ class fcpoRequest extends oxSuperCfg
     public function sendRequestGetConfirmAmazonPayOrder($sAmazonReferenceId)
     {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+        $oSession = $this->_oFcpoHelper->fcpoGetSession();
         $sAmazonWorkorderId =
             $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoAmazonWorkorderId');
 
@@ -1677,6 +1678,10 @@ class fcpoRequest extends oxSuperCfg
 
         $oCurr = $oConfig->getActShopCurrencyObject();
         $this->addParameter('currency', $oCurr->name);
+
+        $oBasket = $oSession->getBasket();
+        $oPrice = $oBasket->getPrice();
+        $this->addParameter('amount', number_format($oPrice->getBruttoPrice(), 2, '.', '') * 100);
 
         $sShopURL = $oConfig->getShopUrl();
 

@@ -657,4 +657,48 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent
 
         return $sShopUrl;
     }
+
+    /**
+     * Returns current user md5 delivery address hash
+     *
+     * @return mixed
+     */
+    public function fcpoGetDeliveryMD5()
+    {
+        $oSession = $this->_oFcpoHelper->fcpoGetSession();
+        $oBasket = $oSession->getBasket();
+        $oUser = $oBasket->getBasketUser();
+
+        $sDeliveryMD5 = $oUser->getEncodedDeliveryAddress();
+
+        $sDelAddrInfo = $this->fcpoGetDelAddrInfo();
+        if ($sDelAddrInfo) {
+            $sDeliveryMD5 .= $sDelAddrInfo;
+        }
+
+        return $sDeliveryMD5;
+    }
+
+    /**
+     * Returns MD5 hash of current selected deliveryaddress
+     *
+     * @param void
+     * @return string
+     */
+    public function fcpoGetDelAddrInfo()
+    {
+        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+
+        $sAddressId = $oConfig->getRequestParameter('deladrid');
+        if (!$sAddressId) {
+            $oSession = $this->_oFcpoHelper->fcpoGetSession();
+            $sAddressId = $oSession->getVariable('deladrid');
+        }
+
+        $oAddress = $this->_oFcpoHelper->getFactoryObject('oxAddress');
+        $oAddress->load($sAddressId);
+        $sEncodedDeliveryAddress = $oAddress->getEncodedDeliveryAddress();
+
+        return (string)$sEncodedDeliveryAddress;
+    }
 }

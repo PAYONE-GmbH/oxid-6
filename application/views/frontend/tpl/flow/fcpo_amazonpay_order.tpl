@@ -13,7 +13,7 @@
 
         function placeOrder(confirmationFlow) {
             console.log('triggered placeOrder');
-            var formParams = '{"fcpoAmazonReferenceId":"[{$oViewConf->fcpoGetAmazonPayReferenceId()}]"}';
+            var formParams = '{"fcpoAmazonReferenceId":"[{$oViewConf->fcpoGetAmazonPayReferenceId()}]","fcpoAmazonStoken":"[{$oViewConf->getSessionChallengeToken()}]","fcpoAmazonDeliveryMD5":"[{$oViewConf->fcpoGetDeliveryMD5()}]"}';
             $.ajax({
                 url: '[{$oViewConf->fcpoGetAjaxControllerUrl()}]',
                 method: 'POST',

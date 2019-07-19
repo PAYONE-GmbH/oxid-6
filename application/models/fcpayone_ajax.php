@@ -107,23 +107,27 @@ class fcpayone_ajax extends oxBase
         $oSession = $this->_oFcpoHelper->fcpoGetSession();
         $aParams = json_decode($sParamsJson, true);
         $sAmazonReferenceId = $aParams['fcpoAmazonReferenceId'];
+        $sToken = $aParams['fcpoAmazonStoken'];
+        $sDeliveryMD5 = $aParams['fcpoAmazonDeliveryMD5'];
+
         $oSession->deleteVariable('fcpoAmazonReferenceId');
         $oSession->setVariable('fcpoAmazonReferenceId', $sAmazonReferenceId);
 
-        $this->_fcpoHandleConfirmAmazonPayOrder($sAmazonReferenceId);
+        $this->_fcpoHandleConfirmAmazonPayOrder($sAmazonReferenceId, $sToken, $sDeliveryMD5);
     }
 
     /**
      * Calls confirmorderreference call. Sends a 404 on invalid state
      *
      * @param $sAmazonReferenceId
+     * @param $sToken
      */
-    protected function _fcpoHandleConfirmAmazonPayOrder($sAmazonReferenceId)
+    protected function _fcpoHandleConfirmAmazonPayOrder($sAmazonReferenceId, $sToken, $sDeliveryMD5)
     {
         $oRequest = $this->_oFcpoHelper->getFactoryObject('fcporequest');
 
         $aResponse =
-            $oRequest->sendRequestGetConfirmAmazonPayOrder($sAmazonReferenceId);
+            $oRequest->sendRequestGetConfirmAmazonPayOrder($sAmazonReferenceId, $sToken, $sDeliveryMD5);
 
         $blSend400 = (
             isset($aResponse['status']) &&

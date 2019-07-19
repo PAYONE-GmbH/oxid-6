@@ -546,7 +546,7 @@ class fcpoRequest extends oxSuperCfg
      * @param bool $blIsPayPalExpress
      * @return void
      */
-    protected function _addRedirectUrls($sAbortClass, $sRefNr = false, $blIsPayPalExpress = false) 
+    protected function _addRedirectUrls($sAbortClass, $sRefNr = false, $blIsPayPalExpress = false, $sToken = false, $sDeliveryMD5 = false)
     {
         $oConfig = $this->getConfig();
         $oSession = $this->_oFcpoHelper->fcpoGetSession();
@@ -574,7 +574,10 @@ class fcpoRequest extends oxSuperCfg
             $sAddParams .= '&fnc=execute';
         }
 
-        if ($this->_oFcpoHelper->fcpoGetRequestParameter('sDeliveryAddressMD5')) {
+
+        if ($sDeliveryMD5) {
+            $sAddParams .= '&sDeliveryAddressMD5=' . $sDeliveryMD5;
+        } elseif ($this->_oFcpoHelper->fcpoGetRequestParameter('sDeliveryAddressMD5')) {
             $sAddParams .= '&sDeliveryAddressMD5=' . $this->_oFcpoHelper->fcpoGetRequestParameter('sDeliveryAddressMD5');
         }
 
@@ -588,10 +591,14 @@ class fcpoRequest extends oxSuperCfg
             $sAddParams .= '&fcspa=1'; // rewrite for oxserviceproductsagreement-param because of length-restriction
         }
 
+        if (!$sToken) {
+            $sToken = $this->_oFcpoHelper->fcpoGetRequestParameter('stoken');
+        }
+
         $oLang = $this->_oFcpoHelper->fcpoGetLang();
         $sPaymentErrorTextParam =  "&payerrortext=".$oLang->translateString('FCPO_PAY_ERROR_REDIRECT', null, false);
         $sPaymentErrorParam = '&payerror=-20'; // see source/modules/fc/fcpayone/out/blocks/fcpo_payment_errors.tpl
-        $sSuccessUrl = $sShopURL . 'index.php?cl=order&fcposuccess=1&ord_agb=1&stoken=' . $this->_oFcpoHelper->fcpoGetRequestParameter('stoken') . $sSid . $sAddParams . $sRToken;
+        $sSuccessUrl = $sShopURL . 'index.php?cl=order&fcposuccess=1&ord_agb=1&stoken=' . $sToken . $sSid . $sAddParams . $sRToken;
         $sErrorUrl = $sShopURL . 'index.php?type=error&cl=' . $sAbortClass . $sRToken . $sPaymentErrorParam . $sPaymentErrorTextParam;
         $sBackUrl = $sShopURL . 'index.php?type=cancel&cl=' . $sAbortClass . $sRToken;
 
@@ -1150,6 +1157,7 @@ class fcpoRequest extends oxSuperCfg
         $this->addParameter('add_paydata[amazon_address_token]', $sAmazonAddressToken);
         $this->addParameter('add_paydata[amazon_timeout]', $iAmazonTimeout);
         $this->addParameter('email', $oViewConf->fcpoAmazonEmailDecode($oUser->oxuser__oxusername->value));
+        $this->addParameter('add_paydata[reference]', $this->_oFcpoHelper->fcpoGetSessionVariable('amazonRefNr'));
 
         $sAmazonMode = $oConfig->getConfigParam('sFCPOAmazonMode');
         if ($sAmazonMode == 'alwayssync') {
@@ -1654,12 +1662,15 @@ class fcpoRequest extends oxSuperCfg
      * Processing amazon pay confirm call
      *
      * @param $sAmazonReferenceId
+     * @param $sToken
      * @return void
      */
-    public function sendRequestGetConfirmAmazonPayOrder($sAmazonReferenceId)
+    public function sendRequestGetConfirmAmazonPayOrder($sAmazonReferenceId, $sToken, $sDeliveryMD5)
     {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $oSession = $this->_oFcpoHelper->fcpoGetSession();
+        $sRefNr = $this->getRefNr();
+
         $sAmazonWorkorderId =
             $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoAmazonWorkorderId');
 
@@ -1672,7 +1683,8 @@ class fcpoRequest extends oxSuperCfg
 
         $this->addParameter('add_paydata[action]', 'confirmorderreference');
         $this->addParameter('add_paydata[amazon_reference_id]', $sAmazonReferenceId);
-        $this->addParameter('add_paydata[reference]', $this->getRefNr());
+        $this->addParameter('add_paydata[reference]', $sRefNr);
+        $this->_oFcpoHelper->fcpoSetSessionVariable('amazonRefNr', $sRefNr);
 
         $this->addParameter('workorderid', $sAmazonWorkorderId);
 
@@ -1683,13 +1695,7 @@ class fcpoRequest extends oxSuperCfg
         $oPrice = $oBasket->getPrice();
         $this->addParameter('amount', number_format($oPrice->getBruttoPrice(), 2, '.', '') * 100);
 
-        $sShopURL = $oConfig->getShopUrl();
-
-        $sSuccessUrl = $sShopURL . 'index.php?cl=order&fnc=execute';
-        $sErrorUrl = $sShopURL . "index.php?cl=basket";
-
-        $this->addParameter('successurl', $sSuccessUrl);
-        $this->addParameter('errorurl', $sErrorUrl);
+        $this->_addRedirectUrls('basket',false, false, $sToken, $sDeliveryMD5);
 
         return $this->send();
     }

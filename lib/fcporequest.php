@@ -541,12 +541,15 @@ class fcpoRequest extends oxSuperCfg
     /**
      * Adding redirect urls
      *
-     * @param string $sAbortClass
-     * @param string $sRefNr
+     * @param $sAbortClass
+     * @param bool $sRefNr
      * @param bool $blIsPayPalExpress
+     * @param bool $sToken
+     * @param bool $sDeliveryMD5
+     * @param bool $blAddAmazonLogoff
      * @return void
      */
-    protected function _addRedirectUrls($sAbortClass, $sRefNr = false, $blIsPayPalExpress = false, $sToken = false, $sDeliveryMD5 = false)
+    protected function _addRedirectUrls($sAbortClass, $sRefNr = false, $blIsPayPalExpress = false, $sToken = false, $sDeliveryMD5 = false, $blAddAmazonLogoff = false)
     {
         $oConfig = $this->getConfig();
         $oSession = $this->_oFcpoHelper->fcpoGetSession();
@@ -596,11 +599,15 @@ class fcpoRequest extends oxSuperCfg
         }
 
         $oLang = $this->_oFcpoHelper->fcpoGetLang();
-        $sPaymentErrorTextParam =  "&payerrortext=".$oLang->translateString('FCPO_PAY_ERROR_REDIRECT', null, false);
+        $sPaymentErrorTextParam =  "&payerrortext=".urlencode($oLang->translateString('FCPO_PAY_ERROR_REDIRECT', null, false));
         $sPaymentErrorParam = '&payerror=-20'; // see source/modules/fc/fcpayone/out/blocks/fcpo_payment_errors.tpl
         $sSuccessUrl = $sShopURL . 'index.php?cl=order&fcposuccess=1&ord_agb=1&stoken=' . $sToken . $sSid . $sAddParams . $sRToken;
         $sErrorUrl = $sShopURL . 'index.php?type=error&cl=' . $sAbortClass . $sRToken . $sPaymentErrorParam . $sPaymentErrorTextParam;
         $sBackUrl = $sShopURL . 'index.php?type=cancel&cl=' . $sAbortClass . $sRToken;
+
+        if ($blAddAmazonLogoff) {
+            $sErrorUrl .= "&fcpoamzaction=logoff";
+        }
 
         $this->addParameter('successurl', $sSuccessUrl);
         $this->addParameter('errorurl', $sErrorUrl);
@@ -1149,6 +1156,7 @@ class fcpoRequest extends oxSuperCfg
         $sAmazonAddressToken = $this->_oFcpoHelper->fcpoGetSessionVariable('sAmazonLoginAccessToken');
         $sAmazonReferenceId = $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoAmazonReferenceId');
         $iAmazonTimeout = $this->_fcpoGetAmazonTimeout();
+        $sAmazonRefNr = $this->_oFcpoHelper->fcpoGetSessionVariable('amazonRefNr');
 
         $this->addParameter('clearingtype', 'wlt');
         $this->addParameter('wallettype', 'AMZ');
@@ -1157,7 +1165,7 @@ class fcpoRequest extends oxSuperCfg
         $this->addParameter('add_paydata[amazon_address_token]', $sAmazonAddressToken);
         $this->addParameter('add_paydata[amazon_timeout]', $iAmazonTimeout);
         $this->addParameter('email', $oViewConf->fcpoAmazonEmailDecode($oUser->oxuser__oxusername->value));
-        $this->addParameter('add_paydata[reference]', $this->_oFcpoHelper->fcpoGetSessionVariable('amazonRefNr'));
+        $this->addParameter('reference', $sAmazonRefNr);
 
         $sAmazonMode = $oConfig->getConfigParam('sFCPOAmazonMode');
         if ($sAmazonMode == 'alwayssync') {
@@ -1695,7 +1703,7 @@ class fcpoRequest extends oxSuperCfg
         $oPrice = $oBasket->getPrice();
         $this->addParameter('amount', number_format($oPrice->getBruttoPrice(), 2, '.', '') * 100);
 
-        $this->_addRedirectUrls('basket',false, false, $sToken, $sDeliveryMD5);
+        $this->_addRedirectUrls('basket',false, false, $sToken, $sDeliveryMD5, true);
 
         return $this->send();
     }

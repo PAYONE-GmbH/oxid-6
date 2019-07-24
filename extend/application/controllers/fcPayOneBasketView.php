@@ -98,6 +98,7 @@ class fcPayOneBasketView extends fcPayOneBasketView_parent
             $this->_oFcpoHelper->fcpoDeleteSessionVariable('sAmazonLoginAccessToken');
             $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoAmazonWorkorderId');
             $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoAmazonReferenceId');
+            $this->_oFcpoHelper->fcpoDeleteSessionVariable('amazonRefNr');
             $this->_oFcpoHelper->fcpoDeleteSessionVariable('usr');
         }
     }

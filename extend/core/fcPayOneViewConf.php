@@ -701,4 +701,42 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent
 
         return (string)$sEncodedDeliveryAddress;
     }
+
+    /**
+     * Returns payment error wether from param or session
+     *
+     * @param void
+     * @return mixed
+     */
+    public function fcpoGetPaymentError()
+    {
+        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+        $iPayError = $oConfig->getRequestParameter('payerror');
+
+        if (!$iPayError) {
+            $oSession = $this->_oFcpoHelper->fcpoGetSession();
+            $iPayError = $oSession->getVariable('payerror');
+        }
+
+        return $iPayError;
+    }
+
+    /**
+     * Returns payment error text wether from param or session
+     *
+     * @param void
+     * @return mixed
+     */
+    public function fcpoGetPaymentErrorText()
+    {
+        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+        $sPayErrorText = $oConfig->getRequestParameter('payerrortext');
+
+        if (!$sPayErrorText) {
+            $oSession = $this->_oFcpoHelper->fcpoGetSession();
+            $sPayErrorText = $oSession->getVariable('payerrortext');
+        }
+
+        return $sPayErrorText;
+    }
 }

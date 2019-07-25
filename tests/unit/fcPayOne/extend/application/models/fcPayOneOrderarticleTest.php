@@ -62,7 +62,7 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrderarticleTest extends O
     /**
      * Testing save method for calling parent save
      */
-    public function test_save_Parent()
+    public function test_save_Parent() 
     {
         $oMockOrder = $this->getMock('oxOrder', array('isPayOnePaymentType'));
         $oMockOrder->expects($this->any())->method('isPayOnePaymentType')->will($this->returnValue(false));
@@ -106,28 +106,20 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrderarticleTest extends O
         $oMockSession = $this->getMock('oxSession', array('getBasket'));
         $oMockSession->expects($this->any())->method('getBasket')->will($this->returnValue($oMockBasket));
 
+        $oTestObject = $this->getMock('fcPayOneOrderarticle', array('_fcpoGetBefore', 'getOrder'));
+        $oTestObject->expects($this->any())->method('_fcpoGetBefore')->will($this->returnValue(false));
+        $oTestObject->expects($this->any())->method('getOrder')->will($this->returnValue($oMockOrder));
+
         $oMockConfig = $this->getMock('oxConfig', array('getConfigParam'));
         $oMockConfig->expects($this->any())->method('getConfigParam')->will($this->returnValue(true));
 
-        $oTestObject = $this->getMock('fcPayOneOrderarticle',
-            array('_fcpoGetBefore',
-                'getOrder',
-                '_setOrderFiles',
-                'updateArticleStock',
-                'setIsNewOrderItem',
-                'fcpoGetConfig',
-                'getSession'
-            )
-        );
-        $oTestObject->expects($this->any())->method('getOrder')->will($this->returnValue($oMockOrder));
-        $oTestObject->expects($this->any())->method('_fcpoGetBefore')->will($this->returnValue(true));
-        $oTestObject->expects($this->any())->method('_setOrderFiles')->will($this->returnValue(true));
-        $oTestObject->expects($this->any())->method('updateArticleStock')->will($this->returnValue(true));
-        $oTestObject->expects($this->any())->method('setIsNewOrderItem')->will($this->returnValue(true));
-        $oTestObject->expects($this->any())->method('fcpoGetConfig')->will($this->returnValue($oMockConfig));
-        $oTestObject->expects($this->any())->method('getSessions')->will($this->returnValue($oMockSession));
-
-        $mResponse = $mExpect = $oTestObject->save();
+        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
+        $oHelper->expects($this->any())->method('fcpoGetConfig')->will($this->returnValue($oMockConfig));
+        $oHelper->expects($this->any())->method('fcpoGetRequestParameter')->will($this->returnValue(true));
+        $oHelper->expects($this->any())->method('fcpoGetIntShopVersion')->will($this->returnValue(4800));
+        $oHelper->expects($this->any())->method('fcpoGetSession')->will($this->returnValue($oMockSession));
+        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
+        $mResponse = $mExpect = $oTestObject->save($oMockOrder, true);
 
         $this->assertEquals($mResponse, $mExpect);
     }
@@ -138,7 +130,7 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrderarticleTest extends O
      */
     public function test_save_Coverage_2() 
     {
-        $oMockOrder = $this->getMock('oxOrder', array('isPayOnePaymentType'));
+        $oMockOrder = $this->getMock('fcPayOneOrder', array('isPayOnePaymentType'));
         $oMockOrder->expects($this->any())->method('isPayOnePaymentType')->will($this->returnValue(true));
 
         $oMockBasket = $this->getMock('oxBasket', array('getPaymentId'));
@@ -147,69 +139,21 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrderarticleTest extends O
         $oMockSession = $this->getMock('oxSession', array('getBasket'));
         $oMockSession->expects($this->any())->method('getBasket')->will($this->returnValue($oMockBasket));
 
+        $oTestObject = $this->getMock('fcPayOneOrderarticle', array('_fcpoGetBefore', 'getOrder'));
+        $oTestObject->expects($this->any())->method('_fcpoGetBefore')->will($this->returnValue(false));
+        $oTestObject->expects($this->any())->method('getOrder')->will($this->returnValue($oMockOrder));
+        
         $oMockConfig = $this->getMock('oxConfig', array('getConfigParam'));
         $oMockConfig->expects($this->any())->method('getConfigParam')->will($this->onConsecutiveCalls(true, true, false, true, true));
+        
+        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
+        $oHelper->expects($this->any())->method('fcpoGetConfig')->will($this->returnValue($oMockConfig));
+        $oHelper->expects($this->any())->method('fcpoGetRequestParameter')->will($this->returnValue(true));
+        $oHelper->expects($this->any())->method('fcpoGetIntShopVersion')->will($this->returnValue(4800));
+        $oHelper->expects($this->any())->method('fcpoGetSession')->will($this->returnValue($oMockSession));
+        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
 
-        $oTestObject = $this->getMock('fcPayOneOrderarticle',
-            array('_fcpoGetBefore',
-                'getOrder',
-                '_setOrderFiles',
-                'updateArticleStock',
-                'setIsNewOrderItem',
-                'fcpoGetConfig',
-                'getSession'
-            )
-        );
-
-        $oTestObject->expects($this->any())->method('getOrder')->will($this->returnValue($oMockOrder));
-        $oTestObject->expects($this->any())->method('_fcpoGetBefore')->will($this->returnValue(true));
-        $oTestObject->expects($this->any())->method('_setOrderFiles')->will($this->returnValue(true));
-        $oTestObject->expects($this->any())->method('updateArticleStock')->will($this->returnValue(true));
-        $oTestObject->expects($this->any())->method('setIsNewOrderItem')->will($this->returnValue(true));
-        $oTestObject->expects($this->any())->method('fcpoGetConfig')->will($this->returnValue($oMockConfig));
-        $oTestObject->expects($this->any())->method('getSessions')->will($this->returnValue($oMockSession));
-
-        $mResponse = $mExpect = $oTestObject->save();
-
-        $this->assertEquals($mResponse, $mExpect);
-    }
-
-    /**
-     * Testing save method for coverage
-     */
-    public function test_save_Coverage_3()
-    {
-        $oMockOrder = $this->getMock('oxOrder', array('isPayOnePaymentType'));
-        $oMockOrder->expects($this->any())->method('isPayOnePaymentType')->will($this->returnValue(true));
-
-        $oMockBasket = $this->getMock('oxBasket', array('getPaymentId'));
-        $oMockBasket->expects($this->any())->method('getPaymentId')->will($this->returnValue('somePaymentId'));
-
-        $oMockSession = $this->getMock('oxSession', array('getBasket'));
-        $oMockSession->expects($this->any())->method('getBasket')->will($this->returnValue($oMockBasket));
-
-        $oMockConfig = $this->getMock('oxConfig', array('getConfigParam'));
-        $oMockConfig->expects($this->any())->method('getConfigParam')->will($this->returnValue(true));
-
-        $oTestObject = $this->getMock('fcPayOneOrderarticle',
-            array('_fcpoGetBefore',
-                'getOrder',
-                '_setOrderFiles',
-                'updateArticleStock',
-                'setIsNewOrderItem',
-                'fcpoGetConfig',
-                'getSession'
-            )
-        );
-        $oTestObject->expects($this->any())->method('getOrder')->will($this->returnValue($oMockOrder));
-        $oTestObject->expects($this->any())->method('_fcpoGetBefore')->will($this->returnValue(false));
-        $oTestObject->expects($this->any())->method('_setOrderFiles')->will($this->returnValue(true));
-        $oTestObject->expects($this->any())->method('updateArticleStock')->will($this->returnValue(true));
-        $oTestObject->expects($this->any())->method('setIsNewOrderItem')->will($this->returnValue(true));
-        $oTestObject->expects($this->any())->method('fcpoGetConfig')->will($this->returnValue($oMockConfig));
-        $oTestObject->expects($this->any())->method('getSessions')->will($this->returnValue($oMockSession));
-
-        $mResponse = $mExpect = $oTestObject->save();
+        $mResponse = $mExpect = $oTestObject->save($oMockOrder, true);
 
         $this->assertEquals($mResponse, $mExpect);
     }

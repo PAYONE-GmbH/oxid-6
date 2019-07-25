@@ -183,11 +183,11 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneThankyouView extends 
         
         $this->assertEquals(true, $oTestObject->fcpoIsAppointedError());
     }
-    
-    
+
     /**
      * Testing render method for coverage
-     * 
+     *
+     * @doesNotPerformAssertions
      * @param  void
      * @return void
      */
@@ -214,7 +214,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneThankyouView extends 
         /**
          * @todo: problems with staic parent call will lead to error.
          */
-        // $this->assertEquals('page/checkout/thankyou.tpl', $oTestObject->render());
+        //$this->assertEquals('page/checkout/thankyou.tpl', $oTestObject->render());
     }
 
     /**

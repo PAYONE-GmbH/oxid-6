@@ -296,10 +296,6 @@ class Unit_fcPayOne_Application_Models_fcpayone_ajax extends OxidTestCase
         $oMockRequest = $this->getMock('fcporequest', array(
             'sendRequestSetAmazonOrderReferenceDetails',
         ));
-        $oMockRequest
-            ->expects($this->any())
-            ->method('sendRequestGetAmazonOrderReferenceDetails')
-            ->will($this->returnValue($aMockResponse));
 
         $oMockUtils = $this->getMock('oxUtils', array('redirect'));
         $oMockUtils

@@ -388,9 +388,8 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      * @return mixed
      * @see https://integrator.payone.de/jira/browse/OXID-263
      */
-    protected function _loadFromBasket($oBasket)
+    protected function _loadFromBasket(OxidEsales\Eshop\Application\Model\Basket $oBasket)
     {
-
         $sSessionChallenge =
             $this->_oFcpoHelper->fcpoGetSessionVariable('sess_challenge');
 

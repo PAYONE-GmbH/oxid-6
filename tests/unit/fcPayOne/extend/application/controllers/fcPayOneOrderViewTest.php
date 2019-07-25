@@ -1,5 +1,5 @@
 <?php
-/** 
+/**
  * PAYONE OXID Connector is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -17,10 +17,9 @@
  * @copyright (C) Payone GmbH
  * @version   OXID eShop CE
  */
- 
-class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends OxidTestCase
+
+class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends OxidTestCaseCompatibilityWrapper
 {
-    
     /**
      * Call protected/private method of a class.
      *
@@ -712,7 +711,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
     public function test__fcpoThrowException_Coverage() 
     {
         $oTestObject = oxNew('fcPayOneOrderView');
-        $this->setExpectedException('oxException');
+        $this->wrapExpectException('oxException');
         $this->assertEquals('', $oTestObject->_fcpoThrowException('someMessage'));
     }
     
@@ -764,18 +763,6 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
         $oHelper = $this->getMock('fcpohelper', array('fcpoGetSessionVariable', 'fcpoDeleteSessionVariable', 'fcpoGetSession'));
         $oHelper->expects($this->any())->method('fcpoGetSessionVariable')->will($this->returnValue('someValue'));
         $oHelper->expects($this->any())->method('fcpoDeleteSessionVariable')->will($this->returnValue(true));
-        $oHelper->expects($this->any())->method('getFactoryObject')->will(
-            $this->onConsecutiveCalls(
-                $oMockRequest,
-                oxNew(oxubase::class),
-                $oMockOrder,
-                $oMockUserObject,
-                $oMockOrder,
-                $oMockOrder,
-                $oMockOrder,
-                $oMockOxDeliverySet
-            )
-        );
         $oHelper->expects($this->any())->method('fcpoGetSession')->will($this->returnValue($oMockSession));
 
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);

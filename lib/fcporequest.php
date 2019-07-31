@@ -2810,17 +2810,21 @@ class fcpoRequest extends oxSuperCfg
      * Get the next reference number for the upcoming PAYONE transaction
      * 
      * @param object $oOrder order object
-     * 
+     * @param bool $blAddPrefixToSession
      * @return string
      */
-    public function getRefNr($oOrder = false) 
+    public function getRefNr($oOrder = false, $blAddPrefixToSession = false)
     {
+        $sRawPrefix = (string) $this->getConfig()->getConfigParam('sFCPORefPrefix');
         $sSessionRefNr = $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoRefNr');
         $blUseSessionRefNr = ($sSessionRefNr && !$oOrder);
-        if ($blUseSessionRefNr) return $sSessionRefNr;
+        if ($blUseSessionRefNr) {
+            $sRefNrComplete = ($blAddPrefixToSession) ?
+                $sRawPrefix . $sSessionRefNr : $sSessionRefNr;
+            return $sRefNrComplete;
+        }
 
         $oDb = oxDb::getDb();
-        $sRawPrefix = (string) $this->getConfig()->getConfigParam('sFCPORefPrefix');
         $sPrefix = $oDb->quote($sRawPrefix);
 
         if ($oOrder && !empty($oOrder->oxorder__oxordernr->value)) {

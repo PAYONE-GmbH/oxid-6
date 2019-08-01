@@ -331,15 +331,15 @@
                                                     [{assign var="blShowDebit" value=true}]
                                                     <tr>
                                                         <td>
-                                                            <input type="hidden" name="capture_positions[[{$oOrderArt->getId()}]][price]" value="[{$oOrderArt->oxorderarticles__oxbprice->value}]">
-                                                            <input type="hidden" name="capture_positions[[{$oOrderArt->getId()}]][debit]" value="0">
-                                                            <input type="checkbox" name="capture_positions[[{$oOrderArt->getId()}]][debit]" value="1" checked>
+                                                            <input type="hidden" name="debit_positions[[{$oOrderArt->getId()}]][price]" value="[{$oOrderArt->oxorderarticles__oxbprice->value}]">
+                                                            <input type="hidden" name="debit_positions[[{$oOrderArt->getId()}]][debit]" value="0">
+                                                            <input type="checkbox" name="debit_positions[[{$oOrderArt->getId()}]][debit]" value="1" checked>
                                                         </td>
                                                         <td>
                                                             [{if $edit->oxorder__fcpoauthmode->value == 'preauthorization'}]
-                                                                <input type="text" size="3" name="capture_positions[[{$oOrderArt->getId()}]][amount]" value="[{$oOrderArt->oxorderarticles__fcpocapturedamount->value}]">
+                                                                <input type="text" size="3" name="debit_positions[[{$oOrderArt->getId()}]][amount]" value="[{$oOrderArt->oxorderarticles__fcpocapturedamount->value}]">
                                                             [{else}]
-                                                                <input type="text" size="3" name="capture_positions[[{$oOrderArt->getId()}]][amount]" value="[{$iLeftAmount}]">
+                                                                <input type="text" size="3" name="debit_positions[[{$oOrderArt->getId()}]][amount]" value="[{$iLeftAmount}]">
                                                             [{/if}]
                                                         </td>
                                                         <td>[{$oOrderArt->oxorderarticles__oxbprice->value|number_format:2:",":""}] [{$edit->oxorder__oxcurrency->value}]</td>
@@ -351,11 +351,11 @@
                                                 [{assign var="blShowDebit" value=true}]
                                                 <tr>
                                                     <td>
-                                                        <input type="hidden" name="capture_positions[oxdelcost][price]" value="[{$edit->oxorder__oxdelcost->value}]">
-                                                        <input type="hidden" name="capture_positions[oxdelcost][debit]" value="0">
-                                                        <input type="checkbox" name="capture_positions[oxdelcost][debit]" value="1" checked>
+                                                        <input type="hidden" name="debit_positions[oxdelcost][price]" value="[{$edit->oxorder__oxdelcost->value}]">
+                                                        <input type="hidden" name="debit_positions[oxdelcost][debit]" value="0">
+                                                        <input type="checkbox" name="debit_positions[oxdelcost][debit]" value="1" checked>
                                                     </td>
-                                                    <td><input type="hidden" name="capture_positions[oxdelcost][amount]" value="1">1</td>
+                                                    <td><input type="hidden" name="debit_positions[oxdelcost][amount]" value="1">1</td>
                                                     <td>[{$edit->oxorder__oxdelcost->value|number_format:2:",":""}] [{$edit->oxorder__oxcurrency->value}]</td>
                                                     <td>
                                                         [{if $edit->oxorder__oxdelcost->value > 0}]
@@ -371,11 +371,11 @@
                                                 [{assign var="blShowDebit" value=true}]
                                                 <tr>
                                                     <td>
-                                                        <input type="hidden" name="capture_positions[oxpaycost][price]" value="[{$edit->oxorder__oxpaycost->value}]">
-                                                        <input type="hidden" name="capture_positions[oxpaycost][debit]" value="0">
-                                                        <input type="checkbox" name="capture_positions[oxpaycost][debit]" value="1" checked>
+                                                        <input type="hidden" name="debit_positions[oxpaycost][price]" value="[{$edit->oxorder__oxpaycost->value}]">
+                                                        <input type="hidden" name="debit_positions[oxpaycost][debit]" value="0">
+                                                        <input type="checkbox" name="debit_positions[oxpaycost][debit]" value="1" checked>
                                                     </td>
-                                                    <td><input type="hidden" name="capture_positions[oxpaycost][amount]" value="1">1</td>
+                                                    <td><input type="hidden" name="debit_positions[oxpaycost][amount]" value="1">1</td>
                                                     <td>[{$edit->oxorder__oxpaycost->value|number_format:2:",":""}] [{$edit->oxorder__oxcurrency->value}]</td>
                                                     <td>
                                                         [{if $edit->oxorder__oxpaycost->value > 0}]
@@ -391,11 +391,11 @@
                                                 [{assign var="blShowDebit" value=true}]
                                                 <tr>
                                                     <td>
-                                                        <input type="hidden" name="capture_positions[oxwrapcost][price]" value="[{$edit->oxorder__oxwrapcost->value}]">
-                                                        <input type="hidden" name="capture_positions[oxwrapcost][debit]" value="0">
-                                                        <input type="checkbox" name="capture_positions[oxwrapcost][debit]" value="1" checked>
+                                                        <input type="hidden" name="debit_positions[oxwrapcost][price]" value="[{$edit->oxorder__oxwrapcost->value}]">
+                                                        <input type="hidden" name="debit_positions[oxwrapcost][debit]" value="0">
+                                                        <input type="checkbox" name="debit_positions[oxwrapcost][debit]" value="1" checked>
                                                     </td>
-                                                    <td><input type="hidden" name="capture_positions[oxwrapcost][amount]" value="1">1</td>
+                                                    <td><input type="hidden" name="debit_positions[oxwrapcost][amount]" value="1">1</td>
                                                     <td>[{$edit->oxorder__oxwrapcost->value|number_format:2:",":""}] [{$edit->oxorder__oxcurrency->value}]</td>
                                                     <td>[{oxmultilang ident="FCPO_WRAPPING"}]</td>
                                                 </tr>
@@ -404,11 +404,11 @@
                                                 [{assign var="blShowDebit" value=true}]
                                                 <tr>
                                                     <td>
-                                                        <input type="hidden" name="capture_positions[oxgiftcardcost][price]" value="[{$edit->oxorder__oxgiftcardcost->value}]">
-                                                        <input type="hidden" name="capture_positions[oxgiftcardcost][debit]" value="0">
-                                                        <input type="checkbox" name="capture_positions[oxgiftcardcost][debit]" value="1" checked>
+                                                        <input type="hidden" name="debit_positions[oxgiftcardcost][price]" value="[{$edit->oxorder__oxgiftcardcost->value}]">
+                                                        <input type="hidden" name="debit_positions[oxgiftcardcost][debit]" value="0">
+                                                        <input type="checkbox" name="debit_positions[oxgiftcardcost][debit]" value="1" checked>
                                                     </td>
-                                                    <td><input type="hidden" name="capture_positions[oxgiftcardcost][amount]" value="1">1</td>
+                                                    <td><input type="hidden" name="debit_positions[oxgiftcardcost][amount]" value="1">1</td>
                                                     <td>[{$edit->oxorder__oxgiftcardcost->value|number_format:2:",":""}] [{$edit->oxorder__oxcurrency->value}]</td>
                                                     <td>[{oxmultilang ident="FCPO_GIFTCARD"}]</td>
                                                 </tr>
@@ -418,11 +418,11 @@
                                                 [{assign var="dNegativeAmount" value=$edit->oxorder__oxvoucherdiscount->value*-1}]
                                                 <tr>
                                                     <td>
-                                                        <input type="hidden" name="capture_positions[oxvoucherdiscount][price]" value="[{$dNegativeAmount}]">
-                                                        <input type="hidden" name="capture_positions[oxvoucherdiscount][debit]" value="0">
-                                                        <input type="checkbox" name="capture_positions[oxvoucherdiscount][debit]" value="1" checked>
+                                                        <input type="hidden" name="debit_positions[oxvoucherdiscount][price]" value="[{$dNegativeAmount}]">
+                                                        <input type="hidden" name="debit_positions[oxvoucherdiscount][debit]" value="0">
+                                                        <input type="checkbox" name="debit_positions[oxvoucherdiscount][debit]" value="1" checked>
                                                     </td>
-                                                    <td><input type="hidden" name="capture_positions[oxvoucherdiscount][amount]" value="1">1</td>
+                                                    <td><input type="hidden" name="debit_positions[oxvoucherdiscount][amount]" value="1">1</td>
                                                     <td>[{$dNegativeAmount|number_format:2:",":""}] [{$edit->oxorder__oxcurrency->value}]</td>
                                                     <td>[{oxmultilang ident="FCPO_VOUCHER"}]</td>
                                                 </tr>
@@ -432,11 +432,11 @@
                                                 [{assign var="dNegativeAmount" value=$edit->oxorder__oxdiscount->value*-1}]
                                                 <tr>
                                                     <td>
-                                                        <input type="hidden" name="capture_positions[oxdiscount][price]" value="[{$dNegativeAmount}]">
-                                                        <input type="hidden" name="capture_positions[oxdiscount][debit]" value="0">
-                                                        <input type="checkbox" name="capture_positions[oxdiscount][debit]" value="1" checked>
+                                                        <input type="hidden" name="debit_positions[oxdiscount][price]" value="[{$dNegativeAmount}]">
+                                                        <input type="hidden" name="debit_positions[oxdiscount][debit]" value="0">
+                                                        <input type="checkbox" name="debit_positions[oxdiscount][debit]" value="1" checked>
                                                     </td>
-                                                    <td><input type="hidden" name="capture_positions[oxdiscount][amount]" value="1">1</td>
+                                                    <td><input type="hidden" name="debit_positions[oxdiscount][amount]" value="1">1</td>
                                                     <td>[{$dNegativeAmount|number_format:2:",":""}] [{$edit->oxorder__oxcurrency->value}]</td>
                                                     <td>[{oxmultilang ident="FCPO_DISCOUNT"}]</td>
                                                 </tr>

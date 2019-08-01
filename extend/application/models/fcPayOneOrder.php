@@ -384,11 +384,11 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      * Overloading of basket load method for handling
      * basket loading from session => avoiding loading it twice
      *
-     * @param $oBasket
+     * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket
      * @return mixed
      * @see https://integrator.payone.de/jira/browse/OXID-263
      */
-    protected function _loadFromBasket($oBasket)
+    protected function _loadFromBasket(\OxidEsales\Eshop\Application\Model\Basket $oBasket)
     {
 
         $sSessionChallenge =

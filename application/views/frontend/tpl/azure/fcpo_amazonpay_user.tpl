@@ -26,7 +26,7 @@
         [{block name="user_checkout_change_next_step_top"}]
             <div class="lineBox clear">
                 <a href="[{oxgetseourl ident=$oViewConf->getBasketLink()}]" class="prevStep submitButton largeButton" id="userBackStepTop">[{oxmultilang ident="PREVIOUS_STEP"}]</a>
-                <button id="userNextStepTop" class="submitButton largeButton nextStep" name="userform" type="submit">[{oxmultilang ident="CONTINUE_TO_NEXT_STEP"}]</button>
+                <button disabled id="userNextStepTop" class="submitButton largeButton nextStep" name="userform" type="submit">[{oxmultilang ident="CONTINUE_TO_NEXT_STEP"}]</button>
             </div>
         [{/block}]
 
@@ -90,6 +90,10 @@
                         orderReferenceId = orderReference.getAmazonOrderReferenceId();
                     },
                     onAddressSelect: function(orderReference) {
+                        $("[id^=userNextStep]").each(function () {
+                            $(this).attr("disabled", true);
+                        });
+
                         var formParams = "{";
                                 formParams += '"fcpoAmazonReferenceId":"' + orderReferenceId + '"';
                                 formParams += "}";
@@ -100,6 +104,9 @@
                             dataType: 'text',
                             data: { paymentid: "fcpoamazonpay", action: "get_amazon_reference_details", params: formParams },
                             success: function(Response) {
+                                $("[id^=userNextStep]").each(function () {
+                                    $(this).attr("disabled", false);
+                                });
                             }
                         });
                     },
@@ -118,7 +125,7 @@
 
         <div class="lineBox clear">
             <a href="[{oxgetseourl ident=$oViewConf->getBasketLink()}]" class="prevStep submitButton largeButton" id="userBackStepTop">[{oxmultilang ident="PREVIOUS_STEP"}]</a>
-            <button id="userNextStepTop" class="submitButton largeButton nextStep" name="userform" type="submit">[{oxmultilang ident="CONTINUE_TO_NEXT_STEP"}]</button>
+            <button disabled id="userNextStepTop" class="submitButton largeButton nextStep" name="userform" type="submit">[{oxmultilang ident="CONTINUE_TO_NEXT_STEP"}]</button>
         </div>
     [{/block}]
 </form>

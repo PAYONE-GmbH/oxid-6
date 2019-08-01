@@ -841,13 +841,17 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      */
     protected function _fcpoCheckRefNr() 
     {
-        $sReturn = "";
-        $iSessRefNr = $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoRefNr');
+        $oPORequest = $this->_oFcpoHelper->getFactoryObject('fcporequest');
+        $sSessRefNr = $oPORequest->getRefNr(false, true);
+        $sRequestRefNr = $this->_oFcpoHelper->fcpoGetRequestParameter('refnr');
 
-        if ($this->_oFcpoHelper->fcpoGetRequestParameter('refnr') != $iSessRefNr) {
-            $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoRefNr');
-            $sReturn = $this->_oFcpoHelper->fcpoGetLang()->translateString('FCPO_MANIPULATION');
-        }
+        $blValid = ($sRequestRefNr == $sSessRefNr);
+
+        if ($blValid) return '';
+
+        $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoRefNr');
+        $oLang = $this->_oFcpoHelper->fcpoGetLang();
+        $sReturn = $oLang->translateString('FCPO_MANIPULATION');
 
         return $sReturn;
     }
@@ -1289,7 +1293,6 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         $sAuthorizationType = $oPayment->oxpayments__fcpoauthmode->value;
 
         $sRefNr = $oPORequest->getRefNr($this);
-        $this->_oFcpoHelper->fcpoSetSessionVariable('fcpoRefNr', $sRefNr);
 
         $aResponse = $oPORequest->sendRequestAuthorization($sAuthorizationType, $this, $this->getOrderUser(), $aDynvalue, $sRefNr);
         $sMode = $oPayment->fcpoGetMode($aDynvalue);

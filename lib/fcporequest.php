@@ -541,12 +541,15 @@ class fcpoRequest extends oxSuperCfg
     /**
      * Adding redirect urls
      *
-     * @param string $sAbortClass
-     * @param string $sRefNr
+     * @param $sAbortClass
+     * @param bool $sRefNr
      * @param bool $blIsPayPalExpress
+     * @param bool $sToken
+     * @param bool $sDeliveryMD5
+     * @param bool $blAddAmazonLogoff
      * @return void
      */
-    protected function _addRedirectUrls($sAbortClass, $sRefNr = false, $blIsPayPalExpress = false) 
+    protected function _addRedirectUrls($sAbortClass, $sRefNr = false, $blIsPayPalExpress = false, $sToken = false, $sDeliveryMD5 = false, $blAddAmazonLogoff = false)
     {
         $oConfig = $this->getConfig();
         $oSession = $this->_oFcpoHelper->fcpoGetSession();
@@ -574,7 +577,10 @@ class fcpoRequest extends oxSuperCfg
             $sAddParams .= '&fnc=execute';
         }
 
-        if ($this->_oFcpoHelper->fcpoGetRequestParameter('sDeliveryAddressMD5')) {
+
+        if ($sDeliveryMD5) {
+            $sAddParams .= '&sDeliveryAddressMD5=' . $sDeliveryMD5;
+        } elseif ($this->_oFcpoHelper->fcpoGetRequestParameter('sDeliveryAddressMD5')) {
             $sAddParams .= '&sDeliveryAddressMD5=' . $this->_oFcpoHelper->fcpoGetRequestParameter('sDeliveryAddressMD5');
         }
 
@@ -588,12 +594,20 @@ class fcpoRequest extends oxSuperCfg
             $sAddParams .= '&fcspa=1'; // rewrite for oxserviceproductsagreement-param because of length-restriction
         }
 
+        if (!$sToken) {
+            $sToken = $this->_oFcpoHelper->fcpoGetRequestParameter('stoken');
+        }
+
         $oLang = $this->_oFcpoHelper->fcpoGetLang();
-        $sPaymentErrorTextParam =  "&payerrortext=".$oLang->translateString('FCPO_PAY_ERROR_REDIRECT', null, false);
+        $sPaymentErrorTextParam =  "&payerrortext=".urlencode($oLang->translateString('FCPO_PAY_ERROR_REDIRECT', null, false));
         $sPaymentErrorParam = '&payerror=-20'; // see source/modules/fc/fcpayone/out/blocks/fcpo_payment_errors.tpl
-        $sSuccessUrl = $sShopURL . 'index.php?cl=order&fcposuccess=1&ord_agb=1&stoken=' . $this->_oFcpoHelper->fcpoGetRequestParameter('stoken') . $sSid . $sAddParams . $sRToken;
+        $sSuccessUrl = $sShopURL . 'index.php?cl=order&fcposuccess=1&ord_agb=1&stoken=' . $sToken . $sSid . $sAddParams . $sRToken;
         $sErrorUrl = $sShopURL . 'index.php?type=error&cl=' . $sAbortClass . $sRToken . $sPaymentErrorParam . $sPaymentErrorTextParam;
         $sBackUrl = $sShopURL . 'index.php?type=cancel&cl=' . $sAbortClass . $sRToken;
+
+        if ($blAddAmazonLogoff) {
+            $sErrorUrl .= "&fcpoamzaction=logoff";
+        }
 
         $this->addParameter('successurl', $sSuccessUrl);
         $this->addParameter('errorurl', $sErrorUrl);
@@ -1142,6 +1156,7 @@ class fcpoRequest extends oxSuperCfg
         $sAmazonAddressToken = $this->_oFcpoHelper->fcpoGetSessionVariable('sAmazonLoginAccessToken');
         $sAmazonReferenceId = $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoAmazonReferenceId');
         $iAmazonTimeout = $this->_fcpoGetAmazonTimeout();
+        $sAmazonRefNr = $this->_oFcpoHelper->fcpoGetSessionVariable('amazonRefNr');
 
         $this->addParameter('clearingtype', 'wlt');
         $this->addParameter('wallettype', 'AMZ');
@@ -1150,6 +1165,7 @@ class fcpoRequest extends oxSuperCfg
         $this->addParameter('add_paydata[amazon_address_token]', $sAmazonAddressToken);
         $this->addParameter('add_paydata[amazon_timeout]', $iAmazonTimeout);
         $this->addParameter('email', $oViewConf->fcpoAmazonEmailDecode($oUser->oxuser__oxusername->value));
+        $this->addParameter('reference', $sAmazonRefNr);
 
         $sAmazonMode = $oConfig->getConfigParam('sFCPOAmazonMode');
         if ($sAmazonMode == 'alwayssync') {
@@ -1224,7 +1240,7 @@ class fcpoRequest extends oxSuperCfg
                 $aBankData['fcpo_payolution_' . $sFieldNameAddition . '_accountholder'] &&
                 $aBankData['fcpo_payolution_' . $sFieldNameAddition . '_iban'] &&
                 $aBankData['fcpo_payolution_' . $sFieldNameAddition . '_bic']
-                );
+        );
 
         if ($blValidBankData) {
             $this->addParameter('iban', $aBankData['fcpo_payolution_' . $sFieldNameAddition . '_iban']);
@@ -1646,6 +1662,48 @@ class fcpoRequest extends oxSuperCfg
         $this->addParameter('currency', $oCurr->name);
 
         $this->addParameter('workorderid', $sAmazonWorkorderId);
+
+        return $this->send();
+    }
+
+    /**
+     * Processing amazon pay confirm call
+     *
+     * @param $sAmazonReferenceId
+     * @param $sToken
+     * @return void
+     */
+    public function sendRequestGetConfirmAmazonPayOrder($sAmazonReferenceId, $sToken, $sDeliveryMD5)
+    {
+        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+        $oSession = $this->_oFcpoHelper->fcpoGetSession();
+        $sRefNr = $this->getRefNr();
+
+        $sAmazonWorkorderId =
+            $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoAmazonWorkorderId');
+
+        $this->addParameter('request', 'genericpayment');
+        $this->addParameter('mode', $this->getOperationMode('fcpoamazonpay'));
+        $this->addParameter('aid', $oConfig->getConfigParam('sFCPOSubAccountID'));
+
+        $this->addParameter('clearingtype', 'wlt');
+        $this->addParameter('wallettype', 'AMZ');
+
+        $this->addParameter('add_paydata[action]', 'confirmorderreference');
+        $this->addParameter('add_paydata[amazon_reference_id]', $sAmazonReferenceId);
+        $this->addParameter('add_paydata[reference]', $sRefNr);
+        $this->_oFcpoHelper->fcpoSetSessionVariable('amazonRefNr', $sRefNr);
+
+        $this->addParameter('workorderid', $sAmazonWorkorderId);
+
+        $oCurr = $oConfig->getActShopCurrencyObject();
+        $this->addParameter('currency', $oCurr->name);
+
+        $oBasket = $oSession->getBasket();
+        $oPrice = $oBasket->getPrice();
+        $this->addParameter('amount', number_format($oPrice->getBruttoPrice(), 2, '.', '') * 100);
+
+        $this->_addRedirectUrls('basket',false, false, $sToken, $sDeliveryMD5, true);
 
         return $this->send();
     }
@@ -2752,13 +2810,21 @@ class fcpoRequest extends oxSuperCfg
      * Get the next reference number for the upcoming PAYONE transaction
      * 
      * @param object $oOrder order object
-     * 
+     * @param bool $blAddPrefixToSession
      * @return string
      */
-    public function getRefNr($oOrder = false) 
+    public function getRefNr($oOrder = false, $blAddPrefixToSession = false)
     {
-        $oDb = oxDb::getDb();
         $sRawPrefix = (string) $this->getConfig()->getConfigParam('sFCPORefPrefix');
+        $sSessionRefNr = $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoRefNr');
+        $blUseSessionRefNr = ($sSessionRefNr && !$oOrder);
+        if ($blUseSessionRefNr) {
+            $sRefNrComplete = ($blAddPrefixToSession) ?
+                $sRawPrefix . $sSessionRefNr : $sSessionRefNr;
+            return $sRefNrComplete;
+        }
+
+        $oDb = oxDb::getDb();
         $sPrefix = $oDb->quote($sRawPrefix);
 
         if ($oOrder && !empty($oOrder->oxorder__oxordernr->value)) {
@@ -2772,7 +2838,10 @@ class fcpoRequest extends oxSuperCfg
             $oDb->Execute($sQuery);
         }
 
-        return $sRawPrefix . $sRefNr;
+        $sRefNrComplete = $sRawPrefix . $sRefNr;
+        $this->_oFcpoHelper->fcpoSetSessionVariable('fcpoRefNr', $sRefNr);
+
+        return $sRefNrComplete;
     }
 
 }

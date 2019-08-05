@@ -97,6 +97,49 @@ class fcpayone_ajax extends oxBase
     }
 
     /**
+     *
+     *
+     * @param $sParamsJson
+     * @return void
+     */
+    public function fcpoConfirmAmazonPayOrder($sParamsJson)
+    {
+        $oSession = $this->_oFcpoHelper->fcpoGetSession();
+        $aParams = json_decode($sParamsJson, true);
+        $sAmazonReferenceId = $aParams['fcpoAmazonReferenceId'];
+        $sToken = $aParams['fcpoAmazonStoken'];
+        $sDeliveryMD5 = $aParams['fcpoAmazonDeliveryMD5'];
+
+        $oSession->deleteVariable('fcpoAmazonReferenceId');
+        $oSession->setVariable('fcpoAmazonReferenceId', $sAmazonReferenceId);
+
+        $this->_fcpoHandleConfirmAmazonPayOrder($sAmazonReferenceId, $sToken, $sDeliveryMD5);
+    }
+
+    /**
+     * Calls confirmorderreference call. Sends a 404 on invalid state
+     *
+     * @param $sAmazonReferenceId
+     * @param $sToken
+     */
+    protected function _fcpoHandleConfirmAmazonPayOrder($sAmazonReferenceId, $sToken, $sDeliveryMD5)
+    {
+        $oRequest = $this->_oFcpoHelper->getFactoryObject('fcporequest');
+
+        $aResponse =
+            $oRequest->sendRequestGetConfirmAmazonPayOrder($sAmazonReferenceId, $sToken, $sDeliveryMD5);
+
+        $blSend400 = (
+            isset($aResponse['status']) &&
+            $aResponse['status'] != 'OK'
+        );
+
+        if ($blSend400) return header("HTTP/1.0 404 Not Found");
+
+        header("HTTP/1.0 200 Ok");
+    }
+
+    /**
      * Triggers call setorderreferencedetails
      *
      * @param $sAmazonReferenceId
@@ -379,4 +422,12 @@ if ($sPaymentId) {
         $oPayoneAjax->fcpoGetAmazonReferenceId($sParamsJson);
     }
 
+
+    $blConfirmAmazonOrder = (
+        $sAction == 'confirm_amazon_pay_order' &&
+        $sPaymentId == 'fcpoamazonpay'
+    );
+    if ($blConfirmAmazonOrder) {
+        $oPayoneAjax->fcpoConfirmAmazonPayOrder($sParamsJson);
+    }
 }

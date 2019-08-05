@@ -119,6 +119,12 @@ class fcPayOneOrder extends fcPayOneOrder_parent
     protected $_blFinishingSave = true;
 
     /**
+     * Indicator if loading basket from session has been triggered
+     * @var bool
+     */
+    protected $_blFcPoLoadFromSession = false;
+
+    /**
      * init object construction
      * 
      * @return null
@@ -375,6 +381,59 @@ class fcPayOneOrder extends fcPayOneOrder_parent
     }
 
     /**
+     * Overloading of basket load method for handling
+     * basket loading from session => avoiding loading it twice
+     *
+     * @param $oBasket
+     * @return mixed
+     * @see https://integrator.payone.de/jira/browse/OXID-263
+     */
+    protected function _loadFromBasket($oBasket)
+    {
+
+        $sSessionChallenge =
+            $this->_oFcpoHelper->fcpoGetSessionVariable('sess_challenge');
+
+        $blTriggerLoadingFromSession = (
+            $this->_blFcPoLoadFromSession &&
+            $sSessionChallenge
+        );
+
+        if (!$blTriggerLoadingFromSession)
+            return parent::_loadFromBasket($oBasket);
+
+        return $this->load($sSessionChallenge);
+    }
+
+    /**
+     * Assigns data, stored in oxorderarticles to oxorder object .
+     *
+     * @param bool $blExcludeCanceled excludes canceled items from list
+     *
+     * FATCHIP MOD:
+     * load articles from db if order already exists
+     *
+     * @return \oxlist
+     */
+    public function getOrderArticles($blExcludeCanceled = false)
+    {
+        $sSessionChallenge =
+            $this->_oFcpoHelper->fcpoGetSessionVariable('sess_challenge');
+
+        $blSetArticlesNull = (
+            $this->_blFcPoLoadFromSession &&
+            $sSessionChallenge
+        );
+
+        if ($blSetArticlesNull) {
+            //null trigger orderarticles getter from db
+            $this->_oArticles = null;
+        }
+
+        return parent::getOrderArticles($blExcludeCanceled);
+    }
+
+    /**
      * Payone handling on finalizing order
      *
      * @param $oBasket
@@ -583,6 +642,16 @@ class fcPayOneOrder extends fcPayOneOrder_parent
     {
         // check if this order is already stored
         $sGetChallenge = $this->_oFcpoHelper->fcpoGetSessionVariable('sess_challenge');
+
+        $this->_blFcPoLoadFromSession = (
+            $blSaveAfterRedirect &&
+            !$blRecalculatingOrder &&
+            $sGetChallenge &&
+            $oBasket &&
+            $oUser &&
+            $this->_checkOrderExist($sGetChallenge)
+        );
+
         if ($blSaveAfterRedirect === false && $this->_checkOrderExist($sGetChallenge)) {
             $oUtils = $this->_oFcpoHelper->fcpoGetUtils();
             $oUtils->logger('BLOCKER');
@@ -772,13 +841,17 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      */
     protected function _fcpoCheckRefNr() 
     {
-        $sReturn = "";
-        $iSessRefNr = $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoRefNr');
+        $oPORequest = $this->_oFcpoHelper->getFactoryObject('fcporequest');
+        $sSessRefNr = $oPORequest->getRefNr(false, true);
+        $sRequestRefNr = $this->_oFcpoHelper->fcpoGetRequestParameter('refnr');
 
-        if ($this->_oFcpoHelper->fcpoGetRequestParameter('refnr') != $iSessRefNr) {
-            $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoRefNr');
-            $sReturn = $this->_oFcpoHelper->fcpoGetLang()->translateString('FCPO_MANIPULATION');
-        }
+        $blValid = ($sRequestRefNr == $sSessRefNr);
+
+        if ($blValid) return '';
+
+        $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoRefNr');
+        $oLang = $this->_oFcpoHelper->fcpoGetLang();
+        $sReturn = $oLang->translateString('FCPO_MANIPULATION');
 
         return $sReturn;
     }
@@ -1220,7 +1293,6 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         $sAuthorizationType = $oPayment->oxpayments__fcpoauthmode->value;
 
         $sRefNr = $oPORequest->getRefNr($this);
-        $this->_oFcpoHelper->fcpoSetSessionVariable('fcpoRefNr', $sRefNr);
 
         $aResponse = $oPORequest->sendRequestAuthorization($sAuthorizationType, $this, $this->getOrderUser(), $aDynvalue, $sRefNr);
         $sMode = $oPayment->fcpoGetMode($aDynvalue);

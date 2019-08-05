@@ -241,6 +241,11 @@ $aModule = array(
             'block' => 'checkout_payment_errors',
             'file' => 'fcpo_payment_errors',
         ),
+        array(
+            'template' => 'page/checkout/basket.tpl',
+            'block' => 'checkout_basket_main',
+            'file' => 'fcpo_basket_errors',
+        ),
     ),
 );
 

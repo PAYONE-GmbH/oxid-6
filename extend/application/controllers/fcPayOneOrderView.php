@@ -83,9 +83,16 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
      */
     public function execute() 
     {
-        $sFcpoMandateCheckbox = $this->_oFcpoHelper->fcpoGetRequestParameter('fcpoMandateCheckbox');
+        $sFcpoMandateCheckbox =
+            $this->_oFcpoHelper->fcpoGetRequestParameter('fcpoMandateCheckbox');
         
-        $blConfirmMandateError = ((!$sFcpoMandateCheckbox || $sFcpoMandateCheckbox == 'false') && $this->_fcpoMandateAcceptanceNeeded());
+        $blConfirmMandateError = (
+            (
+                !$sFcpoMandateCheckbox ||
+                $sFcpoMandateCheckbox == 'false'
+            ) &&
+            $this->_fcpoMandateAcceptanceNeeded()
+        );
         
         if ($blConfirmMandateError) {
             $this->_blFcpoConfirmMandateError = 1;

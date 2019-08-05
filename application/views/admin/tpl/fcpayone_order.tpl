@@ -240,51 +240,6 @@
                                     <input type="button" onclick="onClickCapture(this);" value="[{oxmultilang ident="FCPO_EXECUTE"}]" style="padding: 0 4px 0 4px;">
                                 </td>
                             </tr>
-                            <tr><td colspan="2" style="border-bottom: 1px solid black;"></td></tr>
-                            <tr><td class="edittext" colspan="2"><strong>[{oxmultilang ident="FCPO_DEBIT"}]</strong></td></tr>
-[{* Hide bacnkaccountdata due it doesn't seem to fit here @see https://tickets.fatchip.de/view.php?id=31120#c97851
-                            <tr>
-                                <td class="edittext">
-                                    <strong>[{oxmultilang ident="FCPO_BANKCOUNTRY"}]</strong>
-                                </td>
-                                <td class="edittext">
-                                    <input id="fc_debit_bankcountry" type="text" name="debit_bankcountry" value="">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="edittext">
-                                    <strong>[{oxmultilang ident="FCPO_BANKACCOUNT"}]</strong>
-                                </td>
-                                <td class="edittext">
-                                    <input id="fc_debit_bankaccount" type="text" name="debit_bankaccount" value="">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="edittext">
-                                    <strong>[{oxmultilang ident="FCPO_BANKCODE"}]</strong>
-                                </td>
-                                <td class="edittext">
-                                    <input id="fc_debit_bankcode" type="text" name="debit_bankcode" value="">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="edittext">
-                                    <strong>[{oxmultilang ident="FCPO_BANKACCOUNTHOLDER"}]</strong>
-                                </td>
-                                <td class="edittext">
-                                    <input id="fc_debit_bankaccountholder" type="text" name="debit_bankaccountholder" value="0,00">
-                                </td>
-                            </tr>
-*}]
-                            <tr>
-                                <td class="edittext">
-                                    <strong>Betrag in [{$edit->oxorder__oxcurrency->value}]</strong>
-                                </td>
-                                <td class="edittext">
-                                    <input id="fc_debit_amount" type="text" name="debit_amount" value="0,00">
-                                    <input type="button" onclick="onClickDebit(this);" value="[{oxmultilang ident="FCPO_EXECUTE"}]" style="padding: 0 4px 0 4px;">
-                                </td>
-                            </tr>
                         [{/if}]
                     [{/if}]
                     [{if $edit->allowAccountSettlement() && $blShowCapture == true}]

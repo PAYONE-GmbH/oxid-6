@@ -67,7 +67,7 @@ class fcPayOneBasketitem extends fcPayOneBasketitem_parent
             $blCheckProduct = !($blReduceStockBefore && $blSuccess && $sRefNr);
         } elseif(is_null($blCheckProduct)) {
             // Set the default vaule as in a Shop.
-            $blCheckProduct = true;
+            $blCheckProduct = false;
         }
 
         try {

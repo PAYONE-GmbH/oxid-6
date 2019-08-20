@@ -1513,7 +1513,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      */
     protected function _fcpoPayolutionPreCheck($mReturn, $sPaymentId) 
     {
-        // payolution pre check
         $blPayolutionPayment = $this->_fcpoIsPayolution($sPaymentId);
 
         if ($blPayolutionPayment) {
@@ -1930,8 +1929,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      * @return void
      */
     protected function _fcpoPayolutionSaveRequestedValues($sPaymentId) {
-        $aRequestedValues = $this->_oFcpoHelper->fcpoGetRequestParameter('dynvalue');
-
+        $aRequestedValues = $this->_fcpoGetRequestedValues();
         $blSavedBirthday = $this->_fcpoSaveBirthdayData($aRequestedValues, $sPaymentId);
         $blSavedUstid = $this->_fcpoSaveUserData($sPaymentId,'oxustid');
         $blSavedTelephone = $this->_fcpoSaveUserData($sPaymentId, 'oxfon');
@@ -2136,7 +2134,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
             case 'fcpopo_bill':
             case 'fcpopo_debitnote':
             case 'fcpopo_installment':
-                $blB2CMode = $this->fcpoShowB2C();
+                $blB2CMode = $this->fcpoShowPayolutionB2C();
                 $blBirthdayRequired = $blB2CMode;
                 $blValidBirthdateData = $this->_fcpoValidatePayolutionBirthdayData($sPaymentId, $aRequestedValues);
                 break;
@@ -2429,7 +2427,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
                 $blReturn = true;
             }
         } else {
-            // reperform calculation due security reasons so the user can't change duration by manipulating hidden fields
             $sWorkOrderId = $this->_oFcpoHelper->fcpoGetSessionVariable('payolution_workorderid');
             $blValidCalculation = $this->_fcpoPerformInstallmentCalculation($sPaymentId, $sWorkOrderId);
             if (!$blValidCalculation) {

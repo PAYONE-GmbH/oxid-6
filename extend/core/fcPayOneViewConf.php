@@ -652,10 +652,16 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent
     public function fcpoGetAmazonConfirmErrorUrl()
     {
         $oConfig = $this->getConfig();
+        $oLang = $this->_oFcpoHelper->fcpoGetLang();
+
         $sShopUrl = $oConfig->getShopUrl();
         $sShopUrl = $sShopUrl."index.php?cl=basket";
 
-        return $sShopUrl;
+        $sTranslation = $oLang->translateString('FCPO_PAY_ERROR_REDIRECT', null, false);
+        $sPaymentErrorTextParam =  "&fcpoerror=".urlencode($sTranslation);
+        $sErrorUrl = $sShopUrl.$sPaymentErrorTextParam."&fcpoamzaction=logoff";
+
+        return $sErrorUrl;
     }
 
     /**

@@ -268,10 +268,10 @@ class fcpoRequest extends oxSuperCfg
         }
 
         $blIsWalletTypePaymentWithDelAddress = (
-                $oOrder->oxorder__oxpaymenttype->value == 'fcpopaydirekt' ||
-                $oOrder->fcIsPayPalOrder() === true &&
-                $this->getConfig()->getConfigParam('blFCPOPayPalDelAddress') === true
-                );
+            $oOrder->oxorder__oxpaymenttype->value == 'fcpopaydirekt' ||
+            $oOrder->fcIsPayPalOrder() === true &&
+            $oConfig->getConfigParam('blFCPOPayPalDelAddress') === true
+        );
 
         if ($oOrder->oxorder__oxdellname->value != '') {
             $oDelCountry = oxNew('oxcountry');
@@ -489,15 +489,6 @@ class fcpoRequest extends oxSuperCfg
         case 'fcpoamazonpay':
             $blAddRedirectUrls = $this->_fcpoAddAmazonPayParameters($oOrder);
             $this->addParameter('api_version', $this->_sApiVersion);
-            // TODO STEF check why unsetting is neccessary
-            /* unset($this->_aParameters['company']);
-            unset($this->_aParameters['shipping_company']);
-            unset($this->_aParameters['addressaddition']);
-            unset($this->_aParameters['shipping_addressaddition']);
-            unset($this->_aParameters['vatid']);
-            unset($this->_aParameters['telephonenumber']);
-            unset($this->_aParameters['customerid']);
-            */
             // sending customerid leads to error  1339 state faulty or missing
             unset($this->_aParameters['customerid']);
             break;

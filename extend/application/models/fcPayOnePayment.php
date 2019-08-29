@@ -57,7 +57,8 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         'fcpopo_installment',
         'fcporp_bill',
         'fcpoamazonpay',
-        'fcpo_secinvoice'
+        'fcpo_secinvoice',
+        'fcpopaydirekt_express',
     );
     
     protected static $_aRedirectPayments = array(
@@ -79,6 +80,19 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         'fcpopo_debitnote',
         'fcporp_bill',
     );
+
+    /**
+     * List of payments that are not foreseen to be shown as regular payment
+     * selection
+     *
+     * @var array
+     */
+    protected $_aExpressPayments = array(
+        'fcpomasterpass',
+        'fcpoamazonpay',
+        'fcpopaydirekt_express'
+    );
+
 
     /**
      * init object construction
@@ -116,6 +130,21 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         }
 
         return $blReturn;
+    }
+
+    /**
+     * Checks if this payment is foreseen to be shown as standard
+     * payment selection
+     *
+     * @param void
+     * @return bool
+     */
+    public function fcpoShowAsRegularPaymentSelection()
+    {
+        $sPaymentId = $this->getId();
+        $blPaymentAllowedInSelection =
+            !in_array($sPaymentId, $this->_aExpressPayments);
+        return $blPaymentAllowedInSelection;
     }
 
     public static function fcIsPayOneIframePaymentType($sPaymentId) 

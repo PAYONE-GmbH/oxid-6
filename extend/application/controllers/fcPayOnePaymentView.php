@@ -147,6 +147,23 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     }
 
     /**
+     * Wrapper for checking if payment is allowed to be in usual payment
+     * selection
+     *
+     * @param void
+     * @return bool
+     */
+    public function fcpoShowAsRegularPaymentSelection()
+    {
+        $sPaymentId = $this->_fcpoGetPaymentId();
+        $oPayment = $this->_oFcpoHelper->getFactoryObject('oxPayment');
+        $oPayment->load($sPaymentId);
+        $blShowAsRegularPaymentSelection =
+            $oPayment->fcpoShowAsRegularPaymentSelection();
+        return $blShowAsRegularPaymentSelection;
+    }
+
+    /**
      * Extends oxid standard method init()
      * Executes parent method parent::init().
      *

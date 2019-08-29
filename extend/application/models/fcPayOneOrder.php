@@ -987,7 +987,8 @@ class fcPayOneOrder extends fcPayOneOrder_parent
             $this->oxorder__oxpaymenttype->value == 'fcpobillsafe' ||
             $this->oxorder__oxpaymenttype->value == 'fcpoklarna' ||
             $this->oxorder__oxpaymenttype->value == 'fcpo_secinvoice' ||
-            $this->oxorder__oxpaymenttype->value == 'fcporp_bill'
+            $this->oxorder__oxpaymenttype->value == 'fcporp_bill' ||
+            $this->oxorder__oxpaymenttype->value == 'fcpopaydirekt_express'
         );
 
         return $blReturn;

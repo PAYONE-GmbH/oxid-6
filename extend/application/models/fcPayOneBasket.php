@@ -71,5 +71,25 @@ class fcPayOneBasket extends fcPayOneBasket_parent
         
         return $sPic;
     }
-    
+
+    /**
+     * Returns matching paydirekt express picture by config
+     *
+     * @param void
+     * @return string
+     */
+    public function fcpoGetPaydirektExpressPic()
+    {
+        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+        $sButtonType = $oConfig->getConfigParam('sPaydirektExpressButtonType');
+        $aAssignMap = array(
+            'green' => 'paydirekt-express-gruen.png',
+            'green2' => 'paydirekt-express-gruen2.png',
+            'white' => 'paydirekt-express-weiss.png',
+            'white2' => 'paydirekt-express-weiss2.png',
+        );
+        $blAvailable = in_array($sButtonType, array_keys($aAssignMap));
+        $sPic = ($blAvailable) ? $aAssignMap[$sButtonType] : '';
+        return $sPic;
+    }
 }

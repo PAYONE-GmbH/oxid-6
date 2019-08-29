@@ -457,6 +457,7 @@ $aLang = array(
 'FCPO_CONFIG_GROUP_SECINVOICE'              => 'Secure Invoice (rec/POV)',
 'FCPO_SECINVOICE_PORTAL_ID'                 => 'PAYONE Portal ID (for payment Secure Invoice)',
 'FCPO_SECINVOICE_PORTAL_KEY'                => 'PAYONE Portal Key (for payment Secure Invoice)',
+    'FCPO_CONFIG_GROUP_PAYDIREKT'               => 'Paydirekt',
     'FCPO_PAYDIREKT_BUTTONTYPE'                 => 'Design of Paydirekt-Express button',
     'FCPO_HELP_PAYDIREKT_BUTTONTYPE'            => 'Choose design of Paydirekt-Express button.',
     'FCPO_PAYDIREKT_EXPRESS_BUTTON_NONE'        => 'None',

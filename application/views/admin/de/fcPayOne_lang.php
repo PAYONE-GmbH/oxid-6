@@ -448,6 +448,7 @@ $aLang = array(
 'FCPO_CONFIG_GROUP_SECINVOICE'              => 'Gesicherter Rechnungskauf (rec/POV)',
 'FCPO_SECINVOICE_PORTAL_ID'                 => 'PAYONE Portal ID (für Zahlart Gesicherter Rechnungskauf)',
 'FCPO_SECINVOICE_PORTAL_KEY'                => 'PAYONE Portal Key (für Zahlart Gesicherter Rechnungskauf)',
+    'FCPO_CONFIG_GROUP_PAYDIREKT'               => 'Paydirekt',
     'FCPO_PAYDIREKT_BUTTONTYPE'                 => 'Design des Paydirekt-Express Buttons',
     'FCPO_HELP_PAYDIREKT_BUTTONTYPE'            => 'Wählen Sie das passende Design des Paydirekt-Express Buttons.',
     'FCPO_PAYDIREKT_EXPRESS_BUTTON_NONE'        => 'Keins',

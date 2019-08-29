@@ -6,7 +6,13 @@
         <input type="hidden" name="fnc" value="fcpoUsePayPalExpress">
         <input type="image" src="[{$oView->fcpoGetPayPalExpressPic()}]" style="float: right;margin-right:10px;">
     </form>
-    [{/if}]
+[{/if}]
+
+[{if $oViewConf->fcpoCanDisplayPaydirektExpressButton()}]
+    [{assign var="sFcPoTemplatePathPaydirektExpress" value=$sFcPoTemplatePath|cat:'/fcpayone_paydirekt_express_button.tpl'}]
+    [{include file=$oViewConf->fcpoGetAbsModuleTemplateFrontendPath($sFcPoTemplatePathPaydirektExpress)}]
+[{/if}]
+
 [{if $oViewConf->fcpoCanDisplayAmazonPayButton()}]
     [{assign var="sFcPoTemplatePath" value=$oViewConf->fcpoGetActiveThemePath()}]
     [{assign var="sFcPoTemplatePath" value=$sFcPoTemplatePath|cat:'/fcpayone_amazon_paybutton.tpl'}]

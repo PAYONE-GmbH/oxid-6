@@ -10,6 +10,11 @@
     </form>
 [{/if}]
 
+[{if $oViewConf->fcpoCanDisplayPaydirektExpressButton()}]
+    [{assign var="sFcPoTemplatePathPaydirektExpress" value=$sFcPoTemplatePath|cat:'/fcpayone_paydirekt_express_button.tpl'}]
+    [{include file=$oViewConf->fcpoGetAbsModuleTemplateFrontendPath($sFcPoTemplatePathPaydirektExpress)}]
+[{/if}]
+
 [{if $oViewConf->fcpoCanDisplayAmazonPayButton()}]
     [{assign var="sFcPoTemplatePathAmazon" value=$sFcPoTemplatePath|cat:'/fcpayone_amazon_paybutton.tpl'}]
     [{include
@@ -19,7 +24,3 @@
     }]
 [{/if}]
 
-[{if $oViewConf->fcpoCanDisplayPaydirektExpressButton()}]
-    [{assign var="sFcPoTemplatePathPaydirektExpress" value=$sFcPoTemplatePath|cat:'/fcpayone_paydirekt_express_button.tpl'}]
-    [{include file=$oViewConf->fcpoGetAbsModuleTemplateFrontendPath($sFcPoTemplatePathPaydirektExpress)}]
-[{/if}]

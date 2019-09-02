@@ -1120,11 +1120,15 @@ class fcpoRequest extends oxSuperCfg
 
     /**
      * Adding products from basket session into call
+     * Adding products from basket session into call
+     *
      *
      * @param void
+     * @param string $sDeliverySetId
      * @return void
+     * @return object
      */
-    protected function _fcpoAddBasketItemsFromSession()
+    protected function _fcpoAddBasketItemsFromSession($sDeliverySetId=false)
     {
         $oSession = $this->getSession();
         $oBasket = $oSession->getBasket();
@@ -1144,6 +1148,12 @@ class fcpoRequest extends oxSuperCfg
             $iIndex++;
         }
 
+        if ($sDeliverySetId) {
+            $oBasket->setShipping($sDeliverySetId);
+            $oDeliveryCosts = $oBasket->fcpoCalcDeliveryCost();
+            $oBasket->setCost('oxdelivery', $oDeliveryCosts);
+        }
+
         $sDeliveryCosts =
             $this->_fcpoFetchDeliveryCostsFromBasket($oBasket);
         $dDelveryCosts = (double) str_replace(',', '.', $sDeliveryCosts);
@@ -1152,6 +1162,8 @@ class fcpoRequest extends oxSuperCfg
         $this->addParameter('pr[' . (string) $iIndex . ']', $this->_fcpoGetCentPrice($dDelveryCosts));
         $this->addParameter('no[' . (string) $iIndex . ']', '1');
         $this->addParameter('de[' . (string) $iIndex . ']', 'Standard Versand');
+
+        return $oBasket;
     }
 
     /**
@@ -1765,9 +1777,9 @@ class fcpoRequest extends oxSuperCfg
      */
     public function sendRequestPaydirektCheckout($sWorkorderId = false) {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
-        $oSession = $this->getSession();
-        $oBasket = $oSession->getBasket();
-        $oPrice = $oBasket->getPrice();
+        $sShippingSetId = $oConfig->getConfigParam('sPaydirektExpressDeliverySetId');
+        $sShippingSetId = ($sShippingSetId == 'none') ? 'oxidstandard' : $sShippingSetId;
+
         $sOperationMode = $this->getOperationMode('fcpoamazonpay');
         $sSubAccountId = $oConfig->getConfigParam('sFCPOSubAccountID');
         $this->addParameter('request', 'genericpayment');
@@ -1781,17 +1793,40 @@ class fcpoRequest extends oxSuperCfg
             'add_paydata[web_url_shipping_terms]',
             $this->_fcpoGetPaydirektShippingTermsUrl()
         );
-        $iAmount =
-            number_format($oPrice->getBruttoPrice(), 2, '.', '') * 100;
-        $this->addParameter('amount', $iAmount);
         $oCurr = $oConfig->getActShopCurrencyObject();
         $this->addParameter('currency', $oCurr->name);
-        $this->_fcpoAddBasketItemsFromSession();
+
+        $oBasket = $this->_fcpoAddBasketItemsFromSession($sShippingSetId);
+        $this->_fcpoAddPaydirektExpressBasketAmount($oBasket, $sWorkorderId);
+
         $this->_addRedirectUrls('basket', false, 'fcpoHandlePaydirektExpress');
         if ($sWorkorderId) {
             $this->_fcpoAddPaydirektGetStatusParams($sWorkorderId);
         }
         return $this->send();
+    }
+
+    /**
+     * Fetches current basket and adding final amount
+     *
+     * @param object $oBasket
+     * @param string $sWorkOrderId
+     * @return void
+     */
+    protected function _fcpoAddPaydirektExpressBasketAmount($oBasket, $sWorkOrderId)
+    {
+        $oPrice = $oBasket->getPrice();
+        if (!$sWorkOrderId) {
+            // only do this on the first call due
+            // to session has been updated then
+            $sDeliveryCosts =
+                $this->_fcpoFetchDeliveryCostsFromBasket($oBasket);
+            $dDelveryCosts = (double) str_replace(',', '.', $sDeliveryCosts);
+            $oPrice->add($dDelveryCosts);
+        }
+        $iAmount =
+            number_format($oPrice->getBruttoPrice(), 2, '.', '') * 100;
+        $this->addParameter('amount', $iAmount);
     }
 
     /**

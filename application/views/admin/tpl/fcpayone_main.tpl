@@ -1020,7 +1020,23 @@
                 </dd>
                 <div class="spacer"></div>
             </dl>
-
+            <dl>
+                <dt>
+                    <select name="confstrs[sPaydirektExpressDeliverySetId]">
+                        <option value="none" [{if $confstrs.sPaydirektExpressDeliverySetId == "none"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_PAYDIREKT_EXPRESS_DELIVERY_NONE"}]</option>
+                        [{foreach from=$oView->fcpoGetDeliverySets() item="oDelivery"}]
+                            [{assign var="sCurrentSetId" value=$oDelivery->getId()}]
+                            [{assign var="sCurrentSetName" value=$oDelivery->oxdeliveryset__oxtitle->rawValue}]
+                            <option value="[{$sCurrentSetId}]" [{if $confstrs.sPaydirektExpressDeliverySetId == $sCurrentSetId}]SELECTED[{/if}]>[{$sCurrentSetName}]</option>
+                        [{/foreach}]
+                    </select>
+                    [{oxinputhelp ident="FCPO_HELP_PAYDIREKT_DELIVERYSET"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_PAYDIREKT_DELIVERYSET"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
         </div>
     </div>
 

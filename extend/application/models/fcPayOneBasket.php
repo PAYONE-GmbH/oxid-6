@@ -93,4 +93,42 @@ class fcPayOneBasket extends fcPayOneBasket_parent
 
         return $sPic;
     }
+
+    /**
+     * Iterates through basket items and calculates its delivery costs
+     *
+     * @return oxPrice
+     */
+    public function fcpoCalcDeliveryCost()
+    {
+        $myConfig = $this->getConfig();
+        $oDeliveryPrice = oxNew('oxprice');
+        if ($this->getConfig()->getConfigParam('blDeliveryVatOnTop')) {
+            $oDeliveryPrice->setNettoPriceMode();
+        } else {
+            $oDeliveryPrice->setBruttoPriceMode();
+        }
+        $oUser = oxNew('oxUser');
+        $oUser->oxuser__oxcountryid = new oxField('a7c40f631fc920687.20179984');
+        $fDelVATPercent = $this->getAdditionalServicesVatPercent();
+        $oDeliveryPrice->setVat($fDelVATPercent);
+        $aDeliveryList = oxRegistry::get("oxDeliveryList")->getDeliveryList(
+            $this,
+            $oUser,
+            $oUser->oxuser__oxcountryid->value,
+            $this->getShippingId()
+        );
+        if (count($aDeliveryList) > 0) {
+            foreach ($aDeliveryList as $oDelivery) {
+                //debug trace
+                if ($myConfig->getConfigParam('iDebug') == 5) {
+                    echo("DelCost : " . $oDelivery->oxdelivery__oxtitle->value . "<br>");
+                }
+                $oDeliveryPrice->addPrice($oDelivery->getDeliveryPrice($fDelVATPercent));
+            }
+        }
+
+        return $oDeliveryPrice;
+    }
+
 }

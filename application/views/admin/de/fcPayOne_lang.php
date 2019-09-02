@@ -458,6 +458,9 @@ $aLang = array(
     'FCPO_PAYDIREKT_EXPRESS_BUTTON_WHITE2'      => 'Weiß 2',
     'FCPO_PAYDIREKT_SHIPPING_TERMS_URL'         => 'Webadresse (URL) zu der Seite Ihrer Lieferbedingungen',
     'FCPO_HELP_PAYDIREKT_SHIPPING_TERMS_URL'    => 'Die Angabe einer Webadresse zu ihren Lieferbedinungen ist verpflichtend notwendig für die Verwendung von Paydirekt Express',
+    'FCPO_PAYDIREKT_EXPRESS_DELIVERY_NONE'      => 'Keine Auswahl (OXID-Standard wird verwendet)',
+    'FCPO_HELP_PAYDIREKT_DELIVERYSET'           => 'Bitte wählen sie die Lieferkosten, die für PayidirektExpress Bestellungen verwendet werden sollen',
+    'FCPO_PAYDIREKT_DELIVERYSET'                => 'Lieferbedingunen für PaydirektExpress Bestellungen',
 );
 
 /*

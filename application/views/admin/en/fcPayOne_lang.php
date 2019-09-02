@@ -467,6 +467,9 @@ $aLang = array(
     'FCPO_PAYDIREKT_EXPRESS_BUTTON_WHITE2'      => 'White 2',
     'FCPO_PAYDIREKT_SHIPPING_TERMS_URL'         => 'Webaddress (URL) to page of your shipping terms',
     'FCPO_HELP_PAYDIREKT_SHIPPING_TERMS_URL'    => 'Entering a webaddress is mandatory for usage of Paydirekt Express',
+    'FCPO_PAYDIREKT_EXPRESS_DELIVERY_NONE'      => 'No choice (OXID standard method will be used)',
+    'FCPO_HELP_PAYDIREKT_DELIVERYSET'           => 'Please choose the matching deliveryset for your PaydirektExpress orders',
+    'FCPO_PAYDIREKT_DELIVERYSET'                => 'Deliveryset to use for PaydirektExpress orders',
 );
 
 /*

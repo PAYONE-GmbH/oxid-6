@@ -3,7 +3,7 @@
 [{assign var="dynvalue" value=$oView->getDynValue()}]
 [{assign var="sFcPoTemplatePath" value=$oView->fcpoGetActiveThemePath()}]
 
-[{if $oView->fcpoShowAsRegularPaymentSelection() == false}]
+[{if $oView->fcpoShowAsRegularPaymentSelection($sPaymentID) == false}]
     [{*Don't show this payment in standard checkout => mostly express payments*}]
 [{elseif $sPaymentID == "fcpocreditcard" && $oView->fcpoGetCreditcardType() == "ajax"}]
     [{assign var="sFcPoTemplatePath" value=$sFcPoTemplatePath|cat:'/fcpo_payment_creditcard_ajax.tpl'}]

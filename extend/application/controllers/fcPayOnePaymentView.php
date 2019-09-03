@@ -150,12 +150,11 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      * Wrapper for checking if payment is allowed to be in usual payment
      * selection
      *
-     * @param void
+     * @param string $sPaymentId
      * @return bool
      */
-    public function fcpoShowAsRegularPaymentSelection()
+    public function fcpoShowAsRegularPaymentSelection($sPaymentId)
     {
-        $sPaymentId = $this->_fcpoGetPaymentId();
         $oPayment = $this->_oFcpoHelper->getFactoryObject('oxPayment');
         $oPayment->load($sPaymentId);
         $blShowAsRegularPaymentSelection =
@@ -2686,7 +2685,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      */
     protected function _fcpoGetPaymentId() 
     {
-        $sPaymentId = $sPaymentId = $this->_oFcpoHelper->fcpoGetRequestParameter('paymentid');
+        $sPaymentId = $this->_oFcpoHelper->fcpoGetRequestParameter('paymentid');
         if (!$sPaymentId) {
             $sPaymentId = $this->_oFcpoHelper->fcpoGetSessionVariable('paymentid');
         }

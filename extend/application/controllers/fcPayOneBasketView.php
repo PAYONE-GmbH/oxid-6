@@ -250,6 +250,8 @@ class fcPayOneBasketView extends fcPayOneBasketView_parent
      */
     public function fcpoUsePaydirektExpress()
     {
+        $this->fcpoLogoutUser();
+
         $oRequest = $this->_oFcpoHelper->getFactoryObject('fcporequest');
         $aOutput = $oRequest->sendRequestPaydirektCheckout();
         $blIsRedirect = ($aOutput['status'] == 'REDIRECT');
@@ -262,6 +264,22 @@ class fcPayOneBasketView extends fcPayOneBasketView_parent
         }
         $this->_iLastErrorNo = $aOutput['errorcode'];
         $this->_sLastError = $aOutput['customermessage'];
+
         return false;
     }
+
+
+    /**
+     * Logout user
+     *
+     * @param void
+     * @return void
+     */
+    public function fcpoLogoutUser()
+    {
+        $oSession = $this->_oFcpoHelper->fcpoGetSession();
+        $oSession->deleteVariable('usr');
+    }
+
+
 }

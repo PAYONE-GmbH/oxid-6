@@ -1816,7 +1816,12 @@ class fcpoRequest extends oxSuperCfg
     protected function _fcpoAddPaydirektExpressBasketAmount($oBasket, $sWorkOrderId)
     {
         $oPrice = $oBasket->getPrice();
-        if (!$sWorkOrderId) {
+        $oUser = $oBasket->getBasketUser();
+        $sUserName = $oUser->oxuser__oxusername->value;
+
+        $blAddCostsDirectly = (!$sWorkOrderId && !$sUserName);
+
+        if ($blAddCostsDirectly) {
             // only do this on the first call due
             // to session has been updated then
             $sDeliveryCosts =

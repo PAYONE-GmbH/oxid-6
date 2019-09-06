@@ -622,8 +622,6 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
             case self::FCPO_AMAZON_ERROR_INVALID_PAYMENT_METHOD:
             case self::FCPO_AMAZON_ERROR_PAYMENT_NOT_ALLOWED:
             case self::FCPO_AMAZON_ERROR_PAYMENT_PLAN_NOT_SET:
-                $mReturn = 'payment';
-                break;
             case self::FCPO_AMAZON_ERROR_TRANSACTION_TIMED_OUT:
             case self::FCPO_AMAZON_ERROR_REJECTED:
             case self::FCPO_AMAZON_ERROR_PROCESSING_FAILURE:

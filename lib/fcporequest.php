@@ -511,16 +511,6 @@ class fcpoRequest extends oxSuperCfg
             case 'fcpoamazonpay':
                 $blAddRedirectUrls = $this->_fcpoAddAmazonPayParameters($oOrder);
                 $this->addParameter('api_version', $this->_sApiVersion);
-                // TODO STEF check why unsetting is neccessary
-                /* unset($this->_aParameters['company']);
-                unset($this->_aParameters['shipping_company']);
-                unset($this->_aParameters['addressaddition']);
-                unset($this->_aParameters['shipping_addressaddition']);
-                unset($this->_aParameters['vatid']);
-                unset($this->_aParameters['telephonenumber']);
-                unset($this->_aParameters['customerid']);
-                */
-                // sending customerid leads to error  1339 state faulty or missing
                 unset($this->_aParameters['customerid']);
                 break;
             case 'fcpo_secinvoice':

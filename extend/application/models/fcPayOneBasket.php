@@ -71,5 +71,64 @@ class fcPayOneBasket extends fcPayOneBasket_parent
         
         return $sPic;
     }
-    
+
+    /**
+     * Returns matching paydirekt express picture by config
+     *
+     * @param void
+     * @return string
+     */
+    public function fcpoGetPaydirektExpressPic()
+    {
+        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+        $sButtonType = $oConfig->getConfigParam('sPaydirektExpressButtonType');
+        $aAssignMap = array(
+            'green' => 'paydirekt-express-gruen.png',
+            'green2' => 'paydirekt-express-gruen2.png',
+            'white' => 'paydirekt-express-weiss.png',
+            'white2' => 'paydirekt-express-weiss2.png',
+        );
+        $blAvailable = in_array($sButtonType, array_keys($aAssignMap));
+        $sPic = ($blAvailable) ? $aAssignMap[$sButtonType] : $aAssignMap['green'];
+
+        return $sPic;
+    }
+
+    /**
+     * Iterates through basket items and calculates its delivery costs
+     *
+     * @return oxPrice
+     */
+    public function fcpoCalcDeliveryCost()
+    {
+        $myConfig = $this->getConfig();
+        $oDeliveryPrice = oxNew('oxprice');
+        if ($this->getConfig()->getConfigParam('blDeliveryVatOnTop')) {
+            $oDeliveryPrice->setNettoPriceMode();
+        } else {
+            $oDeliveryPrice->setBruttoPriceMode();
+        }
+        $oUser = oxNew('oxUser');
+        $oUser->oxuser__oxcountryid = new oxField('a7c40f631fc920687.20179984');
+        $fDelVATPercent = $this->getAdditionalServicesVatPercent();
+        $oDeliveryPrice->setVat($fDelVATPercent);
+        $aDeliveryList = oxRegistry::get("oxDeliveryList")->getDeliveryList(
+            $this,
+            $oUser,
+            $oUser->oxuser__oxcountryid->value,
+            $this->getShippingId()
+        );
+        if (count($aDeliveryList) > 0) {
+            foreach ($aDeliveryList as $oDelivery) {
+                //debug trace
+                if ($myConfig->getConfigParam('iDebug') == 5) {
+                    echo("DelCost : " . $oDelivery->oxdelivery__oxtitle->value . "<br>");
+                }
+                $oDeliveryPrice->addPrice($oDelivery->getDeliveryPrice($fDelVATPercent));
+            }
+        }
+
+        return $oDeliveryPrice;
+    }
+
 }

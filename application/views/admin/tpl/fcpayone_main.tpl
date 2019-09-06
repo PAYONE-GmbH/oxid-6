@@ -991,6 +991,55 @@
         </div>
     </div>
 
+    <div class="groupExp">
+        <div>
+            <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="FCPO_CONFIG_GROUP_PAYDIREKT"}]</b></a>
+            <dl>
+                <dt>
+                    <select name="confstrs[sPaydirektExpressButtonType]">
+                        <option value="none" [{if $confstrs.sPaydirektExpressButtonType == "none"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_PAYDIREKT_EXPRESS_BUTTON_NONE"}]</option>
+                        <option value="green" [{if $confstrs.sPaydirektExpressButtonType == "green"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_PAYDIREKT_EXPRESS_BUTTON_GREEN"}]</option>
+                        <option value="green2" [{if $confstrs.sPaydirektExpressButtonType == "green2"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_PAYDIREKT_EXPRESS_BUTTON_GREEN2"}]</option>
+                        <option value="white" [{if $confstrs.sPaydirektExpressButtonType == "white"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_PAYDIREKT_EXPRESS_BUTTON_WHITE"}]</option>
+                        <option value="white2" [{if $confstrs.sPaydirektExpressButtonType == "white2"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_PAYDIREKT_EXPRESS_BUTTON_WHITE2"}]</option>
+                    </select>
+                    [{oxinputhelp ident="FCPO_HELP_PAYDIREKT_BUTTONTYPE"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_PAYDIREKT_BUTTONTYPE"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+            <dl>
+                <dt>
+                    <input type="text" class="txt" name="confstrs[sPaydirektShippingTermsUrl]" value="[{$confstrs.sPaydirektShippingTermsUrl}]">
+                    [{oxinputhelp ident="FCPO_HELP_PAYDIREKT_SHIPPING_TERMS_URL"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_PAYDIREKT_SHIPPING_TERMS_URL"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+            <dl>
+                <dt>
+                    <select name="confstrs[sPaydirektExpressDeliverySetId]">
+                        <option value="none" [{if $confstrs.sPaydirektExpressDeliverySetId == "none"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_PAYDIREKT_EXPRESS_DELIVERY_NONE"}]</option>
+                        [{foreach from=$oView->fcpoGetDeliverySets() item="oDelivery"}]
+                            [{assign var="sCurrentSetId" value=$oDelivery->getId()}]
+                            [{assign var="sCurrentSetName" value=$oDelivery->oxdeliveryset__oxtitle->rawValue}]
+                            <option value="[{$sCurrentSetId}]" [{if $confstrs.sPaydirektExpressDeliverySetId == $sCurrentSetId}]SELECTED[{/if}]>[{$sCurrentSetName}]</option>
+                        [{/foreach}]
+                    </select>
+                    [{oxinputhelp ident="FCPO_HELP_PAYDIREKT_DELIVERYSET"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_PAYDIREKT_DELIVERYSET"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+        </div>
+    </div>
+
     <br>
     <input type="submit" class="edittext" name="save" value="[{oxmultilang ident="GENERAL_SAVE"}]" onClick="Javascript:document.myedit.fnc.value='save'" [{$readonly}]>
     <input type="submit" class="edittext" name="export" value="[{oxmultilang ident="FCPO_EXPORT_CONFIG"}]" target="_blank" onClick="Javascript:document.myedit.fnc.value='export'" [{$readonly}]>

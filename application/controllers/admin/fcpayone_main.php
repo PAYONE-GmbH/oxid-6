@@ -858,6 +858,21 @@ class fcpayone_main extends fcpayone_admindetails
     }
 
     /**
+     * Returns a list of deliverysets for template select
+     *
+     * @param void
+     * @return array
+     */
+    public function fcpoGetDeliverySets()
+    {
+        $oDeliveryAdminList =
+            $this->_oFcpoHelper->getFactoryObject('DeliverySet_List');
+        $oList = $oDeliveryAdminList->getItemList();
+        $aDeliveryList = $oList->getArray();
+        return $aDeliveryList;
+    }
+
+    /**
      * Getter which delivers the error block part
      * 
      * @param  void

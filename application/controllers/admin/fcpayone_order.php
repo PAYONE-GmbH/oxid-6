@@ -225,7 +225,7 @@ class fcpayone_order extends fcpayone_admindetails
                 if ($dAmount < 0) {
                     $oResponse = $oPORequest->sendRequestDebit($oOrder, $dAmount, $sBankCountry, $sBankAccount, $sBankCode, $sBankaccountholder);
                 }
-            } elseif ($aPositions = $this->_oFcpoHelper->fcpoGetRequestParameter('capture_positions')) {
+            } elseif ($aPositions = $this->_oFcpoHelper->fcpoGetRequestParameter('debit_positions')) {
                 $dAmount = 0;
                 foreach ($aPositions as $sOrderArtKey => $aOrderArt) {
                     if ($aOrderArt['debit'] == '0') {

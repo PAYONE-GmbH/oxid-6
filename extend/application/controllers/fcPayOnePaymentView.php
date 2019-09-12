@@ -1531,7 +1531,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     {
         // payolution pre check
         $blPayolutionPayment = $this->_fcpoIsPayolution($sPaymentId);
-
         if ($blPayolutionPayment) {
             $mReturn = $this->_fcpoValidatePayolutionPreCheck($mReturn, $sPaymentId);
         }
@@ -1946,8 +1945,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      * @return void
      */
     protected function _fcpoPayolutionSaveRequestedValues($sPaymentId) {
-        $aRequestedValues = $this->_oFcpoHelper->fcpoGetRequestParameter('dynvalue');
-
+        $aRequestedValues = $this->_fcpoGetRequestedValues();
         $blSavedBirthday = $this->_fcpoSaveBirthdayData($aRequestedValues, $sPaymentId);
         $blSavedUstid = $this->_fcpoSaveUserData($sPaymentId,'oxustid');
         $blSavedTelephone = $this->_fcpoSaveUserData($sPaymentId, 'oxfon');

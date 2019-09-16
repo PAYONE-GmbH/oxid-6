@@ -2043,13 +2043,16 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         $blValidBirthdateData = $aBirthdayValidation['blValidBirthdateData'];
         $blBirthdayRequired = $aBirthdayValidation['blBirthdayRequired'];
 
+        if (!$blBirthdayRequired) {
+            return true;
+        }
+
         if ($blValidBirthdateData) {
             $sRequestBirthdate = $this->_fcpoExtractBirthdateFromRequest($aRequestedValues, $sPaymentId);
             $blRefreshBirthdate = ($sRequestBirthdate != '0000-00-00' && $sRequestBirthdate != '--');
             if ($blRefreshBirthdate) {
                 $oUser->oxuser__oxbirthdate = new oxField($sRequestBirthdate, oxField::T_RAW);
-                $oUser->save();
-                $blSavedData = true;
+                $blSavedData = (bool) $oUser->save();
             }
         } elseif($blBirthdayRequired) {
             $sMessage = $oLang->translateString('FCPO_PAYOLUTION_BIRTHDATE_INVALID');

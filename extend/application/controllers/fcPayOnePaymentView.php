@@ -1531,7 +1531,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     {
         // payolution pre check
         $blPayolutionPayment = $this->_fcpoIsPayolution($sPaymentId);
-
         if ($blPayolutionPayment) {
             $mReturn = $this->_fcpoValidatePayolutionPreCheck($mReturn, $sPaymentId);
         }
@@ -1946,8 +1945,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      * @return void
      */
     protected function _fcpoPayolutionSaveRequestedValues($sPaymentId) {
-        $aRequestedValues = $this->_oFcpoHelper->fcpoGetRequestParameter('dynvalue');
-
+        $aRequestedValues = $this->_fcpoGetRequestedValues();
         $blSavedBirthday = $this->_fcpoSaveBirthdayData($aRequestedValues, $sPaymentId);
         $blSavedUstid = $this->_fcpoSaveUserData($sPaymentId,'oxustid');
         $blSavedTelephone = $this->_fcpoSaveUserData($sPaymentId, 'oxfon');
@@ -2045,13 +2043,16 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         $blValidBirthdateData = $aBirthdayValidation['blValidBirthdateData'];
         $blBirthdayRequired = $aBirthdayValidation['blBirthdayRequired'];
 
+        if (!$blBirthdayRequired) {
+            return true;
+        }
+
         if ($blValidBirthdateData) {
             $sRequestBirthdate = $this->_fcpoExtractBirthdateFromRequest($aRequestedValues, $sPaymentId);
             $blRefreshBirthdate = ($sRequestBirthdate != '0000-00-00' && $sRequestBirthdate != '--');
             if ($blRefreshBirthdate) {
                 $oUser->oxuser__oxbirthdate = new oxField($sRequestBirthdate, oxField::T_RAW);
-                $oUser->save();
-                $blSavedData = true;
+                $blSavedData = (bool) $oUser->save();
             }
         } elseif($blBirthdayRequired) {
             $sMessage = $oLang->translateString('FCPO_PAYOLUTION_BIRTHDATE_INVALID');
@@ -2152,7 +2153,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
             case 'fcpopo_bill':
             case 'fcpopo_debitnote':
             case 'fcpopo_installment':
-                $blB2CMode = $this->fcpoShowB2C();
+                $blB2CMode = $this->fcpoShowPayolutionB2C();
                 $blBirthdayRequired = $blB2CMode;
                 $blValidBirthdateData = $this->_fcpoValidatePayolutionBirthdayData($sPaymentId, $aRequestedValues);
                 break;

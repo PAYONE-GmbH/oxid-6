@@ -266,13 +266,37 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent
      */
     public function fcpoCanDisplayAmazonPayButton()
     {
-        $oPayment = $this->_oFcpoHelper->getFactoryObject('oxpayment');
-        $oPayment->load('fcpoamazonpay');
-        $blIsActive = (bool)$oPayment->oxpayments__oxactive->value;
+        $blIsActive = $this->_fcpoPaymentIsActive('fcpoamazonpay');
 
         return $blIsActive;
     }
 
+    /**
+     * Returns if paydirekt express button can be shown
+     *
+     * @param void
+     * @return bool
+     */
+    public function fcpoCanDisplayPaydirektExpressButton()
+    {
+        $blIsActive = $this->_fcpoPaymentIsActive('fcpopaydirekt_express');
+        return $blIsActive;
+    }
+
+    /**
+     * Checks is given payment is active
+     *
+     * @param $sPaymentId
+     * @return bool
+     */
+    protected function _fcpoPaymentIsActive($sPaymentId)
+    {
+        $oPayment = $this->_oFcpoHelper->getFactoryObject('oxpayment');
+        $oPayment->load($sPaymentId);
+        $blIsActive = (bool) $oPayment->oxpayments__oxactive->value;
+
+        return $blIsActive;
+    }
 
     /**
      * Returns amazon widgets url depending if mode is live or test
@@ -652,10 +676,16 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent
     public function fcpoGetAmazonConfirmErrorUrl()
     {
         $oConfig = $this->getConfig();
+        $oLang = $this->_oFcpoHelper->fcpoGetLang();
+
         $sShopUrl = $oConfig->getShopUrl();
         $sShopUrl = $sShopUrl."index.php?cl=basket";
 
-        return $sShopUrl;
+        $sTranslation = $oLang->translateString('FCPO_PAY_ERROR_REDIRECT', null, false);
+        $sPaymentErrorTextParam =  "&fcpoerror=".urlencode($sTranslation);
+        $sErrorUrl = $sShopUrl.$sPaymentErrorTextParam."&fcpoamzaction=logoff";
+
+        return $sErrorUrl;
     }
 
     /**

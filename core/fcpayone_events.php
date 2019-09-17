@@ -348,6 +348,7 @@ class fcpayone_events
         'fcporp_bill' => 'Ratepay Rechnungskauf',
 	    'fcpoamazonpay' => 'AmazonPay',
         'fcpo_secinvoice' => 'Gesicherter Rechnungskauf',
+        'fcpopaydirekt_express' => 'Paydirekt Express',
     );
 
     /**
@@ -382,7 +383,7 @@ class fcpayone_events
     public static function onDeactivate()
     {
         self::$_oFcpoHelper = oxNew('fcpohelper');
-        self::deactivePaymethods();
+        self::deactivatePaymethods();
         $sMessage = "Payone-Zahlarten deaktiviert!<br>";
         self::clearTmp();
         $sMessage .= "Tmp geleert...<br>";
@@ -783,7 +784,7 @@ class fcpayone_events
      *
      * @return void
      */
-    public static function deactivePaymethods()
+    public static function deactivatePaymethods()
     {
         $sPaymenthodIds = "'" . implode("','", array_keys(self::$aPaymentMethods)) . "'";
         $sQ = "update oxpayments set oxactive = 0 where oxid in ($sPaymenthodIds)";

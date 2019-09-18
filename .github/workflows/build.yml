@@ -14,7 +14,7 @@ jobs:
       max-parallel: 15
       matrix:
         operating-system: [ubuntu-latest]
-        php-versions: ['7.0', '7.1', '7.2']
+        php-versions: ['7.1', '7.2', '7.3']
     name: PHP ${{ matrix.php-versions }} Test on ${{ matrix.operating-system }}
     steps:
     - name: Checkout
@@ -29,4 +29,7 @@ jobs:
     - name: Check Composer Version
       run: composer -V
     - name: Check PHP Extensions
-      run: php -m           
+      run: php -m
+    - name: Clone & Setup Oxid 6
+      run: |
+        composer create-project -n --no-progress --working-dir=/tmp/oxid6 oxid-esales/oxideshop-project . dev-b-6.1-ce

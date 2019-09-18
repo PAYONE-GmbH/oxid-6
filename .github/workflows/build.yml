@@ -32,4 +32,5 @@ jobs:
       run: php -m
     - name: Clone & Setup Oxid 6
       run: |
-        composer create-project -n --no-progress --working-dir=/tmp/oxid6 oxid-esales/oxideshop-project . dev-b-6.1-ce
+        mkdir /tmp/oxid6
+        composer create-project -n --no-progress --working-dir=/tmp/oxid6 oxid-esales/oxideshop-project /tmp/oxid6 dev-b-6.1-ce

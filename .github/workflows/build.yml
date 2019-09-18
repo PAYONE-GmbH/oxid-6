@@ -37,6 +37,8 @@ jobs:
         collation server: 'utf8_general_ci'
         mysql version: '5.6' 
         mysql database: 'oxid6_test'
+        mysql user: 'oxid6'
+        mysql password: 'oxid6'
     - name: Setup Oxid 6
       run: |
         mkdir /tmp/oxid6

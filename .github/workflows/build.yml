@@ -30,7 +30,14 @@ jobs:
       run: composer -V
     - name: Check PHP Extensions
       run: php -m
-    - name: Clone & Setup Oxid 6
+    - name: Setup Oxid 6
       run: |
         mkdir /tmp/oxid6
         composer create-project -n --no-progress --working-dir=/tmp/oxid6 oxid-esales/oxideshop-project /tmp/oxid6 dev-b-6.1-ce
+    - name: Remove default Payone plugin and install fresh
+      run: |
+        [ -d /tmp/oxid6/source/modules/fc/fcpayone ] && {echo "Removing from modules"; rm -rf /tmp/oxid6/source/modules/fc/fcpayone; }
+        [ -d /tmp/oxid6/vendor/payone-gmbh/oxid-6 ] && {echo "Removing from vendor"; rm -rf /tmp/oxid6/vendor/payone-gmbh/oxid-6; }
+        mkdir /tmp/oxid6/source/modules/fc/fcpayone
+        cp -R ./* /tmp/oxid6/source/modules/fc/fcpayone
+        ls /tmp/oxid6/source/modules/fc/fcpayone

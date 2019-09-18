@@ -56,4 +56,4 @@ jobs:
         cp -R ./* /tmp/oxid6/source/modules/fc/fcpayone
     - name: Run tests
       run: |
-        php /tmp/oxid6/vendor/bin/runtests
+        php /tmp/oxid6/vendor/bin/runtests /tmp/oxid6/source/modules/fc/fcpayone

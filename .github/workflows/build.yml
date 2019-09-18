@@ -15,7 +15,9 @@ jobs:
       matrix:
         operating-system: [ubuntu-latest]
         php-versions: ['7.1', '7.2', '7.3']
-        oxid-versions: ['dev-b-6.0-ce', 'dev-b-6.1-ce', 'dev-b-6.2-beta-ce']
+        # 6.2 beta seems to need a module configuration
+        #oxid-versions: ['dev-b-6.0-ce', 'dev-b-6.1-ce', 'dev-b-6.2-beta-ce']
+        oxid-versions: ['dev-b-6.0-ce', 'dev-b-6.1-ce']
     name: Oxid ${{ matrix.oxid-versions }} on PHP ${{ matrix.php-versions }}
     services:
       mysql:

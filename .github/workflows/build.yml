@@ -16,6 +16,15 @@ jobs:
         operating-system: [ubuntu-latest]
         php-versions: ['7.1', '7.2', '7.3']
     name: PHP ${{ matrix.php-versions }} Test on ${{ matrix.operating-system }}
+    services:
+      mysql:
+        image: mysql:5.7.27
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+        - 3306
+        volumes:
+        - $HOME/mysql:/var/lib/mysql
     steps:
     - name: Checkout
       uses: actions/checkout@master
@@ -30,15 +39,7 @@ jobs:
       run: composer -V
     - name: Check PHP Extensions
       run: php -m
-    - name: Install MySQL
-      uses: mirromutth/mysql-action@v1.1
-      with:
-        character set server: 'utf8'
-        collation server: 'utf8_general_ci'
-        mysql version: '5.6' 
-        mysql database: 'oxid6_test'
-        mysql user: 'oxid6'
-        mysql password: 'oxid6'
+
     - name: Setup Oxid 6
       run: |
         mkdir /tmp/oxid6

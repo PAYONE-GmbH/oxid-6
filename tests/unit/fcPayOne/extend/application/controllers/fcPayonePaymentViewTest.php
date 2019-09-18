@@ -2860,7 +2860,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
         $sMockPaymentId = 'somePaymentId';
 
         $oMockUser = $this->getMock('oxUser', array('save'));
-        $oMockUser->expects($this->any())->method('save')->will($this->returnValue(null));
+        $oMockUser->expects($this->any())->method('save')->will($this->returnValue(true));
 
         $aMockBirthdayValidityCheckResult = array(
             'blValidBirthdateData'=>true,

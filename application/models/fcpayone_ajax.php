@@ -261,7 +261,7 @@ class fcpayone_ajax extends oxBase
             foreach ($aCurrentInstallment['Months'] as $sMonth=>$aRatesDetails) {
                 $sHtml .= $this->_fcpoGetInsterestMonthDetail($sMonth, $aRatesDetails).'<br>';
             }
-            $sDownloadUrl = $oConfig->getShopUrl().'/modules/fcPayOne/lib/fcpopopup_content.php?login=1&loadurl='.$aCurrentInstallment['StandardCreditInformationUrl'];
+            $sDownloadUrl = $oConfig->getShopUrl().'/modules/fc/fcpayone/lib/fcpopopup_content.php?login=1&loadurl='.$aCurrentInstallment['StandardCreditInformationUrl'];
             $sHtml .= '</div>';
 
         }

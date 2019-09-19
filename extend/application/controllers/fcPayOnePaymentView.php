@@ -1529,7 +1529,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      */
     protected function _fcpoPayolutionPreCheck($mReturn, $sPaymentId) 
     {
-        // payolution pre check
         $blPayolutionPayment = $this->_fcpoIsPayolution($sPaymentId);
         if ($blPayolutionPayment) {
             $mReturn = $this->_fcpoValidatePayolutionPreCheck($mReturn, $sPaymentId);
@@ -2446,7 +2445,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
                 $blReturn = true;
             }
         } else {
-            // reperform calculation due security reasons so the user can't change duration by manipulating hidden fields
             $sWorkOrderId = $this->_oFcpoHelper->fcpoGetSessionVariable('payolution_workorderid');
             $blValidCalculation = $this->_fcpoPerformInstallmentCalculation($sPaymentId, $sWorkOrderId);
             if (!$blValidCalculation) {

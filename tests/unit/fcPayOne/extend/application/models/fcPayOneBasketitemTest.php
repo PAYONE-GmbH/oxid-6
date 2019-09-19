@@ -17,8 +17,8 @@
  * @copyright (C) Payone GmbH
  * @version   OXID eShop CE
  */
- 
-class Unit_fcPayOne_Extend_Application_Models_fcPayOneBasketitem extends OxidTestCase
+
+class Unit_fcPayOne_Extend_Application_Models_fcPayOneBasketitem extends OxidTestCaseCompatibilityWrapper
 {
     
     /**
@@ -66,7 +66,7 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneBasketitem extends OxidTes
     {
         $oTestObject = oxNew('fcPayOneBasketitem');
         
-        $this->setExpectedException('oxArticleException');
+        $this->wrapExpectException('oxArticleException');
         
         $this->assertEquals(null, $oTestObject->getArticle(true, 'someNumber'));
     }

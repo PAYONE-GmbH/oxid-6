@@ -225,7 +225,6 @@ class Unit_fcPayOne_Application_Models_fcpoexportconfig extends OxidTestCase
             '_fcpoGetShopXmlChecksums',
                 )
         );
-        $oTestObject->expects($this->any())->method('fcpoGetShopIds')->will($this->returnValue($aShopIds));
         $oTestObject->expects($this->any())->method('_fcpoGetShopXmlGeneric')->will($this->returnValue(''));
         $oTestObject->expects($this->any())->method('_fcpoGetShopXmlSystem')->will($this->returnValue(''));
         $oTestObject->expects($this->any())->method('_fcpoGetShopXmlGlobal')->will($this->returnValue(''));
@@ -341,6 +340,8 @@ class Unit_fcPayOne_Application_Models_fcpoexportconfig extends OxidTestCase
         $aResponse = $aExpect = $this->invokeMethod($oTestObject, '_fcpoGetShopXmlClearingTypes', array($aShopConfVars));
         //        $this->assertEquals($aExpect, $aResponse);
         $this->_fcpoTruncateTable('fcpostatusmapping');
+
+        $this->assertContains('<title><![CDATA[AmazonPay]]></title>', $aResponse);
     }
 
     /**

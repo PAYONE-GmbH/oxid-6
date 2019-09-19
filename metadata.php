@@ -34,7 +34,7 @@ $aModule = array(
                             https://www.payone.de
                         </a>',
     'thumbnail'     => 'picture.gif',
-    'version'       => '1.1.0',
+    'version'       => '1.2.0',
     'author'        => 'FATCHIP GmbH',
     'email'         => 'kontakt@fatchip.de',
     'url'           => 'https://wiki.fatchip.de/public/faqpayone',

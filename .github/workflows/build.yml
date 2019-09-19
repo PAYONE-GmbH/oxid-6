@@ -53,7 +53,7 @@ jobs:
     - name: Fiddle with plugin if exists, and install fresh
       # Metapackage 6.2-beta1 doesn't include payone, need to fetch from composer first
       run: |
-        if ! grep -q "payone-gmbh/oxid-6" vendor/oxid-esales/oxideshop-metapackage-ce/composer.json; then composer --working-dir=/tmp/oxid6 require payone-gmbh/oxid-6; fi
+        if ! grep -q "payone-gmbh/oxid-6" /tmp/oxid6/vendor/oxid-esales/oxideshop-metapackage-ce/composer.json; then composer --working-dir=/tmp/oxid6 require payone-gmbh/oxid-6; fi
         [ -d /tmp/oxid6/source/modules/fc/fcpayone ] && { echo "Removing from modules"; rm -rf /tmp/oxid6/source/modules/fc/fcpayone; }
         [ -d /tmp/oxid6/vendor/payone-gmbh/oxid-6 ] && { echo "Removing from vendor"; rm -rf /tmp/oxid6/vendor/payone-gmbh/oxid-6; }
         mkdir -p /tmp/oxid6/source/modules/fc/fcpayone

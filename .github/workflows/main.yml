@@ -1,0 +1,58 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  run:
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      max-parallel: 15
+      matrix:
+        operating-system: [ubuntu-latest]
+        php-versions: ['7.1', '7.2', '7.3']
+        oxid-versions: ['dev-b-6.0-ce', 'dev-b-6.1-ce', 'dev-b-6.2-beta-ce']
+    name: Oxid ${{ matrix.oxid-versions }} on PHP ${{ matrix.php-versions }}
+    services:
+      mysql:
+        image: mysql:5.7.27
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+        - 3306
+        volumes:
+        - $HOME/mysql:/var/lib/mysql
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+    - name: Install PHP
+      uses: shivammathur/setup-php@master
+      with:
+        php-version: ${{ matrix.php-versions }}
+        extension-csv: mbstring, xdebug
+    - name: Check PHP Version
+      run: php -v
+    - name: Check Composer Version
+      run: composer -V
+    - name: Check PHP Extensions
+      run: php -m
+
+    - name: Setup Oxid 6
+      run: |
+        mkdir /tmp/oxid6
+        composer create-project -n --no-progress --working-dir=/tmp/oxid6 oxid-esales/oxideshop-project /tmp/oxid6 ${{ matrix.oxid-versions }}
+        cp /tmp/oxid6/source/config.inc.php.dist /tmp/oxid6/source/config.inc.php
+        sed -i 's|<dbHost>|localhost|; s|<dbName>|oxideshop|; s|<dbUser>|root|; s|<dbPwd>|root|; s|<sShopURL>|http://localhost|; s|<sShopDir>|/tmp/oxid6/source|; s|<sCompileDir>|/tmp/oxid6/source/tmp|; s|\$this->iDebug = 0|\$this->iDebug = 1|' /tmp/oxid6/source/config.inc.php
+        sed -i "s|\$this->edition = ''|\$this->edition = 'CE'|" /tmp/oxid6/source/config.inc.php
+        sed -i "s|partial_module_paths: null|partial_module_paths: 'fc/fcpayone'|" /tmp/oxid6/test_config.yml
+        chmod -R 777 /tmp/oxid6/source/log
+    - name: Fiddle with plugin if exists, and install fresh
+      # Metapackage 6.2-beta1 doesn't include payone, need to fetch from composer first
+      run: |
+        if ! grep -q "payone-gmbh/oxid-6" /tmp/oxid6/vendor/oxid-esales/oxideshop-metapackage-ce/composer.json; then composer --working-dir=/tmp/oxid6 require payone-gmbh/oxid-6; fi
+        [ -d /tmp/oxid6/source/modules/fc/fcpayone ] && { echo "Removing from modules"; rm -rf /tmp/oxid6/source/modules/fc/fcpayone; }
+        [ -d /tmp/oxid6/vendor/payone-gmbh/oxid-6 ] && { echo "Removing from vendor"; rm -rf /tmp/oxid6/vendor/payone-gmbh/oxid-6; }
+        mkdir -p /tmp/oxid6/source/modules/fc/fcpayone
+        cp -R ./* /tmp/oxid6/source/modules/fc/fcpayone
+    - name: Run tests
+      run: |
+        php /tmp/oxid6/vendor/bin/runtests /tmp/oxid6/source/modules/fc/fcpayone/tests

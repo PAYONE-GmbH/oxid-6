@@ -142,10 +142,4 @@ class Unit_fcPayOne_Application_Controllers_fcpayoneiframe extends OxidTestCase
 
         $this->assertInstanceOf('oxOrder', $sResult);
     }
-
-
-
-
-
-
 }

@@ -151,8 +151,6 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_log_list extends Oxid
     public function test_getListSorting_Coverage() 
     {
         $oMockListObject = $this->getMockBuilder('oxList')->disableOriginalConstructor()->getMock();
-        $oMockListObject->expects($this->any())->method('getCoreTableName')->will($this->returnValue('myCoreTable'));
-        
         $oMockAdminListObject = $this->getMockBuilder('oxAdminList')->disableOriginalConstructor()->getMock();
         $oMockAdminListObject->expects($this->any())->method('getItemListBaseObject')->will($this->returnValue($oMockListObject));
         

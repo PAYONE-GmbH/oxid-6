@@ -213,10 +213,6 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_boni_main extends Oxi
     public function test__fcpoDeactivateRegularAddressCheck_Coverage() {
         $oTestObject = oxNew('fcpayone_boni_main');
         $oMockConfig = $this->getMock('oxConfig', array('saveShopConfVar'));
-        $oMockConfig
-            ->expects($this->any())
-            ->method('getConfigParam')
-            ->will($this->returnValue('-1'));
 
         $oHelper = $this
             ->getMockBuilder('fcpohelper')
@@ -294,10 +290,6 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_boni_main extends Oxi
         );
 
         $oMockConfig = $this->getMock('oxConfig', array('saveShopConfVar'));
-        $oMockConfig
-            ->expects($this->any())
-            ->method('getConfigParam')
-            ->will($this->returnValue(null));
         $oHelper = $this
             ->getMockBuilder('fcpohelper')
             ->disableOriginalConstructor()
@@ -332,10 +324,6 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_boni_main extends Oxi
         );
 
         $oMockConfig = $this->getMock('oxConfig', array('saveShopConfVar'));
-        $oMockConfig
-            ->expects($this->any())
-            ->method('getConfigParam')
-            ->will($this->returnValue(null));
         $oHelper = $this
             ->getMockBuilder('fcpohelper')
             ->disableOriginalConstructor()
@@ -371,16 +359,8 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_boni_main extends Oxi
             ->expects($this->any())
             ->method('_fcpoCheckBonicheckIsActive')
             ->will($this->returnValue(true));
-        $oTestObject
-            ->expects($this->any())
-            ->method('_fcpoBoniAddresscheckActive')
-            ->will($this->returnValue(false));
 
         $oMockConfig = $this->getMock('oxConfig', array('saveShopConfVar'));
-        $oMockConfig
-            ->expects($this->any())
-            ->method('getConfigParam')
-            ->will($this->returnValue(null));
 
         $oHelper = $this
             ->getMockBuilder('fcpohelper')
@@ -413,10 +393,6 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_boni_main extends Oxi
         $oTestObject
             ->expects($this->any())
             ->method('_fcpoCheckBonicheckIsActive')
-            ->will($this->returnValue(true));
-        $oTestObject
-            ->expects($this->any())
-            ->method('_fcpoCheckRegularAddressCheckActive')
             ->will($this->returnValue(true));
         $oTestObject
             ->expects($this->any())
@@ -502,10 +478,6 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_boni_main extends Oxi
             ->expects($this->any())
             ->method('fcpoGetLang')
             ->will($this->returnValue($oMockLang));
-        $oHelper
-            ->expects($this->any())
-            ->method('getStaticInstance')
-            ->will($this->returnValue($oMockUtilsView));
 
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
         $this->invokeSetAttribute($oTestObject, '_aValidationCodes', array('1'));

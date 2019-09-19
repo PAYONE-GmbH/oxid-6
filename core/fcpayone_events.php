@@ -584,7 +584,7 @@ class fcpayone_events
     {
         $aColumns = oxDb::getDb()->getAll("SHOW COLUMNS FROM {$sTableName} LIKE '{$sColumnName}'");
 
-        if (!$aColumns || count($aColumns == 0)) {
+        if (!$aColumns || empty($aColumns)) {
             try {
                 oxDb::getDb()->Execute($sQuery);
             } catch (Exception $e) {

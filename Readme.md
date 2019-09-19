@@ -1,3 +1,5 @@
+This is just a random change to test the Github Actions Pipeline
+
 # PAYONE for Oxid
 ![license LGPL](https://img.shields.io/badge/license-LGPL-blue.svg)
 [![GitHub issues](https://img.shields.io/github/issues/PAYONE-GmbH/oxid-6.svg)](https://github.com/PAYONE-GmbH/oxid-6/issues)

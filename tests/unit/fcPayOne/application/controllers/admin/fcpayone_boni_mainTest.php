@@ -353,12 +353,17 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_boni_main extends Oxi
     public function test__fcpoCheckIssetBoniAddresscheck_Coverage() {
         $oTestObject = $this->getMock('fcpayone_boni_main', array(
             '_fcpoCheckBonicheckIsActive',
-            '_fcpoDeactivateRegularAddressCheck',
+            '_fcpoBoniAddresscheckActive',
         ));
         $oTestObject
             ->expects($this->any())
             ->method('_fcpoCheckBonicheckIsActive')
             ->will($this->returnValue(true));
+        $oTestObject
+            ->expects($this->any())
+            ->method('_fcpoBoniAddresscheckActive')
+            ->will($this->returnValue(false));
+
 
         $oMockConfig = $this->getMock('oxConfig', array('saveShopConfVar'));
 
@@ -413,16 +418,18 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_boni_main extends Oxi
      */
     public function test__fcpoValidateAddresscheckBoniversum_Coverage() {
         $oTestObject = oxNew('fcpayone_boni_main');
-        $oMockConfig = $this->getMock('oxConfig', array('saveShopConfVar'));
+        $oMockConfig = $this->getMock('oxConfig', array(
+            'getConfigParam',
+            'saveShopConfVar',
+        ));
+        $oMockConfig
+            ->expects($this->any())
+            ->method('getConfigParam')
+            ->will($this->onConsecutiveCalls('CE', 'SOMEWRONGVALUE'));
         $oMockConfig
             ->expects($this->any())
             ->method('saveShopConfVar')
             ->will($this->returnValue(null));
-
-        $aMockConfStrs = array(
-            'sFCPOBonicheck'=>'CE',
-            'sFCPOAddresscheck'=>'someAddressCheck',
-        );
 
         $oHelper = $this
             ->getMockBuilder('fcpohelper')
@@ -432,10 +439,6 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_boni_main extends Oxi
             ->expects($this->any())
             ->method('fcpoGetConfig')
             ->will($this->returnValue($oMockConfig));
-        $oHelper
-            ->expects($this->any())
-            ->method('fcpoGetRequestParameter')
-            ->will($this->returnValue($aMockConfStrs));
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
 
         $this->assertEquals(

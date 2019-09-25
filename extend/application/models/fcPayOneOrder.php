@@ -1149,11 +1149,16 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      */
     public function validateStock($oBasket) 
     {
-        parent::validateStock($oBasket);
-
         $oConfig = $this->getConfig();
         $blReduceStockBefore = !(bool) $oConfig->getConfigParam('blFCPOReduceStock');
-        $blCheckProduct = ($blReduceStockBefore && $this->_isRedirectAfterSave()) ? false : true;
+        $blCheckProduct = (
+            $blReduceStockBefore &&
+            $this->_isRedirectAfterSave()
+        ) ? false : true;
+
+        if ($blCheckProduct) {
+            parent::validateStock($oBasket);
+        }
 
         foreach ($oBasket->getContents() as $key => $oContent) {
             try {
@@ -1168,11 +1173,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
 
             if ($blCheckProduct === true) {
                 // check if its still available
-                if (version_compare($oConfig->getVersion(), '4.3.0', '<')) {
-                    $dArtStockAmount = $this->fcGetArtStockInBasket($oBasket, $oProd->getId(), $key);
-                } else {
-                    $dArtStockAmount = $oBasket->getArtStockInBasket($oProd->getId(), $key);
-                }
+                $dArtStockAmount = $oBasket->getArtStockInBasket($oProd->getId(), $key);
                 $iOnStock = $oProd->checkForStock($oContent->getAmount(), $dArtStockAmount);
                 if ($iOnStock !== true) {
                     $oEx = oxNew('oxOutOfStockException');

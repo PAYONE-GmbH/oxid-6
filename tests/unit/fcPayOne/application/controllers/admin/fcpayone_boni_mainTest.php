@@ -364,8 +364,11 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_boni_main extends Oxi
             ->method('_fcpoBoniAddresscheckActive')
             ->will($this->returnValue(false));
 
-
         $oMockConfig = $this->getMock('oxConfig', array('saveShopConfVar'));
+        $oMockConfig
+            ->expects($this->any())
+            ->method('saveShopConfVar')
+            ->will($this->returnValue(null));
 
         $oHelper = $this
             ->getMockBuilder('fcpohelper')

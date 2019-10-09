@@ -526,6 +526,9 @@ class fcpoconfigexport extends oxBase
             'fcporp_bill' => 'fnc',
             'fcpocreditcard_iframe' => 'cc',
             'fcpobillsafe' => 'fnc',
+            'fcpoamazonpay' => 'wlt',
+            'fcpo_secinvoice' => 'rec',
+            'fcpopaydirekt_express' => 'wlt',
         );
 
         if (isset($aAbbreviations[$sPaymentId])) {

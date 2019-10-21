@@ -470,6 +470,11 @@ $aLang = array(
     'FCPO_PAYDIREKT_EXPRESS_DELIVERY_NONE'      => 'No choice (OXID standard method will be used)',
     'FCPO_HELP_PAYDIREKT_DELIVERYSET'           => 'Please choose the matching deliveryset for your PaydirektExpress orders',
     'FCPO_PAYDIREKT_DELIVERYSET'                => 'Deliveryset to use for PaydirektExpress orders',
+    'FCPO_GROUP_LOGGING'                        => 'Logging',
+    'FCPO_TRANSACTIONREDIRECTLOGGING_NONE'      => 'No logs (Default)',
+    'FCPO_TRANSACTIONREDIRECTLOGGING_ALL'       => 'Log everything',
+    'FCPO_TRANSACTIONREDIRECTLOGGING'           => 'Logging of transactionstatus redirects',
+    'FCPO_HELP_TRANSACTIONREDIRECTLOGGING'      => 'With this option activated, you can log activity of transactionstatus redirects. Content of this logging are landing in file <i>fcpo_message_forwarding.log</i> in your shops log folder. Please note, that this option should not be activated all the time due to it produces big log files',
 );
 
 /*

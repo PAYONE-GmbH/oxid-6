@@ -464,7 +464,7 @@ $aLang = array(
     'FCPO_GROUP_LOGGING'                        => 'Protokollierung',
     'FCPO_TRANSACTIONREDIRECTLOGGING_NONE'      => 'Keine Protokollierung (Standard)',
     'FCPO_TRANSACTIONREDIRECTLOGGING_ALL'       => 'Alles protokollieren',
-    'FCPO_TRANSACTIONREDIRECTLOGGING'           => 'Protokollieren der Weiterleitung von Transatkionsstatusmeldungen',
+    'FCPO_TRANSACTIONREDIRECTLOGGING'           => 'Protokollieren der Weiterleitung von Transaktionsstatusmeldungen',
     'FCPO_HELP_TRANSACTIONREDIRECTLOGGING'      => 'Hier können Sie die Protokollierung von Transaktionsstatusweiterleitungen aktivieren. Entsprechende Aktivitäten landen dann in der Datei <i>fcpo_message_forwarding.log</i> im Logverzeichnis des Shops. Die Protokollierung sollte nicht dauerhaft aktiviert werden, da dies große Logdateien erzeugt',
 );
 

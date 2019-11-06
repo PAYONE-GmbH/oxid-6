@@ -1040,6 +1040,26 @@
         </div>
     </div>
 
+    <div class="groupExp">
+        <div>
+            <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="FCPO_GROUP_LOGGING"}]</b></a>
+            <dl>
+                <dt>
+                    <select name="confstrs[sTransactionRedirectLogging]">
+                        <option value="none" [{if $confstrs.sTransactionRedirectLogging == "none"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_TRANSACTIONREDIRECTLOGGING_NONE"}]</option>
+                        <option value="all" [{if $confstrs.sTransactionRedirectLogging == "all"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_TRANSACTIONREDIRECTLOGGING_ALL"}]</option>
+                    </select>
+                    [{oxinputhelp ident="FCPO_HELP_TRANSACTIONREDIRECTLOGGING"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_TRANSACTIONREDIRECTLOGGING"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+        </div>
+    </div>
+
+
     <br>
     <input type="submit" class="edittext" name="save" value="[{oxmultilang ident="GENERAL_SAVE"}]" onClick="Javascript:document.myedit.fnc.value='save'" [{$readonly}]>
     <input type="submit" class="edittext" name="export" value="[{oxmultilang ident="FCPO_EXPORT_CONFIG"}]" target="_blank" onClick="Javascript:document.myedit.fnc.value='export'" [{$readonly}]>

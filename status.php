@@ -66,6 +66,9 @@ class fcPayOneTransactionStatusHandler extends oxBase
 {
 
     protected $_aShopList = null;
+
+    protected $_sLogFile = 'log/fcpo_message_forwarding.log';
+
     
     /**
      * Check and return post parameter
@@ -185,7 +188,6 @@ class fcPayOneTransactionStatusHandler extends oxBase
     }
 
     protected function _handleForwarding() {
-
         $sParams = '';
         foreach($_POST as $sKey => $mValue) {
             $sParams .= $this->_addParam($sKey, $mValue);
@@ -199,6 +201,7 @@ class fcPayOneTransactionStatusHandler extends oxBase
         $sBaseUrl = (empty($sSslShopUrl)) ? $sShopUrl : $sSslShopUrl;
 
         $sForwarderUrl = $sBaseUrl . 'modules/fc/fcpayone/statusforward.php';
+        $this->_logForwardMessage('Forward transaction message to own controller:'.$sForwarderUrl.'...');
 
         $oCurl = curl_init($sForwarderUrl);
         curl_setopt($oCurl, CURLOPT_POST, 1);
@@ -210,12 +213,51 @@ class fcPayOneTransactionStatusHandler extends oxBase
         curl_setopt($oCurl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($oCurl, CURLOPT_TIMEOUT_MS, 100);
 
-        $oResult = curl_exec($oCurl);
+        curl_exec($oCurl);
+        $aResult = curl_getinfo($oCurl);
+        $this->_logForwardMessage('Triggered forward! Result: '.print_r($aResult, true));
 
         curl_close($oCurl);
-
     }
-    
+
+    /**
+     * Logs given message if logging is activated
+     *
+     * @param $sMessage
+     * @return void
+     */
+    protected function _logForwardMessage($sMessage)
+    {
+        $blLoggingAllowed = $this->_fcCheckLoggingAllowed();
+        if (!$blLoggingAllowed) return;
+
+        $sBasePath = dirname(__FILE__) . "/../../../";
+        $sLogFilePath = $sBasePath.$this->_sLogFile;
+        $sPrefix = "[".date('Y-m-d H:i:s')."] ";
+        $sFullMessage = $sPrefix.$sMessage."\n";
+
+        $oLogFile = fopen($sLogFilePath, 'a');
+        fwrite($oLogFile, $sFullMessage);
+        fclose($oLogFile);
+    }
+
+    /**
+     * Check if logging is activated by configuration
+     *
+     * @param void
+     * @return bool
+     */
+    protected function _fcCheckLoggingAllowed()
+    {
+        $oConfig = $this->getConfig();
+        $sLogMethod =
+            $oConfig->getConfigParam('sTransactionRedirectLogging');
+
+        $blLoggingAllowed = $sLogMethod == 'all';
+
+        return $blLoggingAllowed;
+    }
+
     protected function _handleMapping($oOrder) 
     {
         $sPayoneStatus = $this->fcGetPostParam('txaction');

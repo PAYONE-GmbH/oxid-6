@@ -461,6 +461,11 @@ $aLang = array(
     'FCPO_PAYDIREKT_EXPRESS_DELIVERY_NONE'      => 'Keine Auswahl (OXID-Standard wird verwendet)',
     'FCPO_HELP_PAYDIREKT_DELIVERYSET'           => 'Bitte wählen sie die Lieferkosten, die für PayidirektExpress Bestellungen verwendet werden sollen',
     'FCPO_PAYDIREKT_DELIVERYSET'                => 'Lieferbedingunen für PaydirektExpress Bestellungen',
+    'FCPO_GROUP_LOGGING'                        => 'Protokollierung',
+    'FCPO_TRANSACTIONREDIRECTLOGGING_NONE'      => 'Keine Protokollierung (Standard)',
+    'FCPO_TRANSACTIONREDIRECTLOGGING_ALL'       => 'Alles protokollieren',
+    'FCPO_TRANSACTIONREDIRECTLOGGING'           => 'Protokollieren der Weiterleitung von Transaktionsstatusmeldungen',
+    'FCPO_HELP_TRANSACTIONREDIRECTLOGGING'      => 'Hier können Sie die Protokollierung von Transaktionsstatusweiterleitungen aktivieren. Entsprechende Aktivitäten landen dann in der Datei <i>fcpo_message_forwarding.log</i> im Logverzeichnis des Shops. Die Protokollierung sollte nicht dauerhaft aktiviert werden, da dies große Logdateien erzeugt',
 );
 
 /*

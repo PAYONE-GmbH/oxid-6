@@ -14,9 +14,6 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">
                         [{oxmultilang ident="BILLING_ADDRESS"}]
-                        <button type="submit" class="btn btn-xs btn-warning pull-right submitButton largeButton" title="[{oxmultilang ident="EDIT"}]">
-                            <i class="fa fa-pencil"></i>
-                        </button>
                     </h3>
                 </div>
                 <div class="panel-body">

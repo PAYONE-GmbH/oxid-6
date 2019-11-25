@@ -1570,13 +1570,6 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      * @return void
      */
     protected function _fcpoSetPayoneUserFlagsByAuthResponse($sResponseErrorCode, $sResponseCustomerMessage, $oPayGateway) {
-        $oUserFlag = oxNew('fcpouserflag');
-        $blSuccess = $oUserFlag->fcpoLoadByErrorCode($sResponseErrorCode);
-
-        if ($blSuccess) {
-            $oUser = $this->getOrderUser();
-            $oUser->fcpoAddPayoneUserFlag($oUserFlag);
-        }
         $oPayGateway->fcSetLastErrorNr($sResponseErrorCode);
         $oPayGateway->fcSetLastError($sResponseCustomerMessage);
     }

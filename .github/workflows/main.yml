@@ -58,5 +58,4 @@ jobs:
     - name: Run tests
       # Run composer update to make services available, see #128
       run: |
-        composer --working-dir=/tmp/oxid6 update
         php /tmp/oxid6/vendor/bin/runtests /tmp/oxid6/source/modules/fc/fcpayone/tests

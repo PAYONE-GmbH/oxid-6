@@ -7,10 +7,11 @@ jobs:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       max-parallel: 15
+      fail-fast: false
       matrix:
         operating-system: [ubuntu-latest]
         php-versions: ['7.1', '7.2']
-        oxid-versions: ['dev-b-6.0-ce', 'dev-b-6.1-ce', 'dev-b-6.2-beta-ce']
+        oxid-versions: ['dev-b-6.0-ce', 'dev-b-6.1-ce', 'dev-b-6.2-rc-ce']
       
     name: Oxid ${{ matrix.oxid-versions }} on PHP ${{ matrix.php-versions }}
     services:
@@ -29,7 +30,7 @@ jobs:
       uses: shivammathur/setup-php@master
       with:
         php-version: ${{ matrix.php-versions }}
-        extension-csv: mbstring, xdebug
+        extensions: mbstring, xdebug
     - name: Check PHP Version
       run: php -v
     - name: Check Composer Version
@@ -55,5 +56,6 @@ jobs:
         mkdir -p /tmp/oxid6/source/modules/fc/fcpayone
         cp -R ./* /tmp/oxid6/source/modules/fc/fcpayone
     - name: Run tests
+      # Run composer update to make services available, see #128
       run: |
         php /tmp/oxid6/vendor/bin/runtests /tmp/oxid6/source/modules/fc/fcpayone/tests

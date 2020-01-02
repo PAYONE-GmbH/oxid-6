@@ -1558,7 +1558,17 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrder extends OxidTestCase
     public function test_isDetailedProductInfoNeeded_Coverage() 
     {
         $oTestObject = oxNew('fcPayOneOrder');
-        $oTestObject->oxorder__oxpaymenttype = new oxField('fcpoklarna');
+        $oTestObject->oxorder__oxpaymenttype = new oxField('somePaymentNotOnExceptionList');
+
+        $oMockConfig = $this->getMock('oxConfig', array('getConfigParam'));
+        $oMockConfig
+            ->expects($this->any())
+            ->method('getConfigParam')
+            ->will($this->returnValue(true));
+
+        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
+        $oHelper->expects($this->any())->method('fcpoGetConfig')->will($this->returnValue($oMockConfig));
+        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
 
         $this->assertEquals(true, $oTestObject->isDetailedProductInfoNeeded());
     }

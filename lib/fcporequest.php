@@ -316,13 +316,7 @@ class fcpoRequest extends oxSuperCfg
 
         $blPaymentTypeKnown = $this->setPaymentParameters($oOrder, $aDynvalue, $sRefNr);
 
-        $blAddProductInfo = (
-            $oOrder->isDetailedProductInfoNeeded() ||
-            (
-                $blIsPreauthorization === false &&
-                $this->getConfig()->getConfigParam('blFCPOSendArticlelist') === true
-            )
-        );
+        $blAddProductInfo = $oOrder->isDetailedProductInfoNeeded();
 
         if ($blAddProductInfo) {
             $this->addProductInfo($oOrder);

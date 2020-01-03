@@ -1939,14 +1939,8 @@ class fcpoRequest extends oxSuperCfg
             $this->addParameter('capturemode', 'completed');
         }
 
-        // Bedingung $amount == $oOrder->oxorder__oxorder__oxtotalordersum->value nur solange wie Artikelliste nicht f?r Multi-Capture m?glich
-        $blAddProductInfo = (
-            $oOrder->isDetailedProductInfoNeeded() ||
-            (
-                $this->getConfig()->getConfigParam('blFCPOSendArticlelist') === true &&
-                $dAmount == $oOrder->oxorder__oxtotalordersum->value
-            )
-        );
+        $blAddProductInfo = $oOrder->isDetailedProductInfoNeeded();
+
         if ($blAddProductInfo) {
             $dAmount = $this->addProductInfo($oOrder, $aPositions);
             if ($aPositions !== false) {

@@ -223,15 +223,33 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      * Returns matching notiication string if sofo is configured to show iban
      * 
      * @param  void
-     * @return string
+     * @return bool
      */
     public function fcpoGetSofoShowIban() 
     {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $blFCPOSofoShowIban = $oConfig->getConfigParam('blFCPOSofoShowIban');
 
-        $sReturn = ($blFCPOSofoShowIban) ? 'true' : 'false';
-        return $sReturn;
+        return (bool) $blFCPOSofoShowIban;
+    }
+
+    /**
+     * Method checks if deprecated bankdata should be requested instead of
+     * IBAN/BIC
+     *
+     * @param void
+     * @return bool
+     */
+    public function fcpoForceDeprecatedBankData() {
+        $oCur = $this->getActCurrency();
+        $sCurrencySign = $oCur->sign;
+        $sBillCountrySign = $this->fcGetBillCountry();
+
+        return (
+            $this->fcpoGetSofoShowIban() &&
+            $sCurrencySign == 'CHF' &&
+            $sBillCountrySign == 'CH'
+        );
     }
 
     /**

@@ -683,12 +683,19 @@ class fcpayone_main extends fcpayone_admindetails
             'fcpodebitnote' => 'elv',
             'fcpopayadvance' => 'vor',
             'fcpoinvoice' => 'rec',
-            'fcpoonlineueberweisung' => 'sb',
             'fcpopaypal' => 'wlt',
             'fcpopaypal_express' => 'wlt',
             'fcpoklarna' => 'fnc',
             'fcpobarzahlen' => 'csh',
             'fcpopaydirekt' => 'wlt',
+            'fcpo_sofort' => 'sb',
+            'fcpo_giropay' => 'sb',
+            'fcpo_eps' => 'sb',
+            'fcpo_pf_finance' => 'sb',
+            'fcpo_pf_card' => 'sb',
+            'fcpo_ideal' => 'sb',
+            'fcpo_p24' => 'sb',
+            'fcpo_bancontact' => 'sb',
         );
 
         if (isset($aAbbreviations[$sPaymentId])) {

@@ -25,7 +25,7 @@
             [{oxmultilang ident="FCPO_OPERATION_MODE"}]
         </td>
         <td class="edittext">
-            [{if $edit->getId() == 'fcpocreditcard' || $edit->getId() == 'fcpoonlineueberweisung'}]
+            [{if $edit->getId() == 'fcpocreditcard'}]
                 [{oxmultilang ident="FCPO_INFOTEXT_SET_OPERATIONMODE"}]
             [{else}]
                 <table>
@@ -40,6 +40,11 @@
                     </tr>
                 </table>
             [{/if}]
+            [{if $edit->getId() == 'fcpo_sofort'}]
+                [{assign var="confbools" value=$oView->fcpoGetConfBools()}]
+                <input type=hidden name="confbools[blFCPOSofoShowIban]" value="false">
+                <input type="checkbox" name="confbools[blFCPOSofoShowIban]" value="true"  [{if ($confbools.blFCPOSofoShowIban)}]checked[{/if}]> <strong>[{oxmultilang ident="FCPO_SHOW_SOFO_IBAN_FIELDS"}]</strong>
+            [{/if}]
         </td>
     </tr>
 [{else}]
@@ -49,5 +54,4 @@
         </td>
     </tr>
 [{/if}]
-<!-- FCPAYONE END -->
 [{$smarty.block.parent}]

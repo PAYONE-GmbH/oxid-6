@@ -40,13 +40,20 @@
                     </tr>
                 </table>
             [{/if}]
-            [{if $edit->getId() == 'fcpo_sofort'}]
-                [{assign var="confbools" value=$oView->fcpoGetConfBools()}]
-                <input type=hidden name="confbools[blFCPOSofoShowIban]" value="false">
-                <input type="checkbox" name="confbools[blFCPOSofoShowIban]" value="true"  [{if ($confbools.blFCPOSofoShowIban)}]checked[{/if}]> <strong>[{oxmultilang ident="FCPO_SHOW_SOFO_IBAN_FIELDS"}]</strong>
-            [{/if}]
         </td>
     </tr>
+    [{if $edit->getId() == 'fcpo_sofort'}]
+        [{assign var="confbools" value=$oView->fcpoGetConfBools()}]
+        <tr>
+            <td class="edittext" width="70">
+                [{oxmultilang ident="FCPO_SHOW_SOFO_IBAN_FIELDS"}]
+            </td>
+            <td>
+                <input type=hidden name="confbools[blFCPOSofoShowIban]" value="0">
+                <input type="checkbox" name="confbools[blFCPOSofoShowIban]" value="1"  [{if ($confbools.blFCPOSofoShowIban)}]checked[{/if}]>
+            </td>
+        </tr>
+    [{/if}]
 [{else}]
     <tr>
         <td colspan="2">

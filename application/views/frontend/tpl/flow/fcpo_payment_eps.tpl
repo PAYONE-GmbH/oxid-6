@@ -4,7 +4,7 @@
         <label for="payment_[{$sPaymentID}]"><b>[{$paymentmethod->oxpayments__oxdesc->value}]</b> [{$oView->fcpoGetFormattedPaymentCosts($paymentmethod)}]</label>
     </dt>
     <dd>
-        <div class="form-group" id="fcpo_ou_eps" style="display: none;">
+        <div class="form-group" id="fcpo_ou_eps">
             <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANKGROUPTYPE"}]</label>
             <div class="col-lg-9">
                 <select name="dynvalue[fcpo_so_bankgrouptype_eps]" class="form-control selectpicker">

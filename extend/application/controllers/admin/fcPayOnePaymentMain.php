@@ -36,8 +36,8 @@ class fcPayOnePaymentMain extends fcPayOnePaymentMain_parent
         $this->_oFcpoConfigExport = oxNew('fcpoconfigexport');
         $this->_oFcpoHelper = oxNew('fcpohelper');
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
-        $sOxid = $oConfig->getShopId();
-        $this->_fcpoLoadConfigs($sOxid);
+        $sShopId = $oConfig->getShopId();
+        $this->_fcpoLoadConfigs($sShopId);
     }
 
     /**
@@ -66,9 +66,12 @@ class fcPayOnePaymentMain extends fcPayOnePaymentMain_parent
 
         if (is_array($aConfBools)) {
             foreach ($aConfBools as $sVarName => $sVarVal) {
-                $oConfig->saveShopConfVar("bool", $sVarName, $sVarVal);
+                $oConfig->saveShopConfVar("bool", $sVarName, (bool) $sVarVal);
             }
         }
+
+        $sShopId = $oConfig->getShopId();
+        $this->_fcpoLoadConfigs($sShopId);
     }
 
     /**

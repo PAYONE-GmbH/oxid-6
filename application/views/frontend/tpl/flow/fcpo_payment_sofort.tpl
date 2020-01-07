@@ -5,7 +5,7 @@
     </dt>
     <dd class="[{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]activePayment[{/if}]">
         [{if $oView->fcpoGetSofoShowIban()}]
-            [{if $this->fcpoForceDeprecatedBankData()}]
+            [{if $oView->fcpoForceDeprecatedBankData()}]
                 <div class="form-group" id="fcpo_ou_blz">
                     <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_CODE"}]</label>
                     <div class="col-lg-9">

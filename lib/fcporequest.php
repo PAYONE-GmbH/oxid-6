@@ -456,7 +456,7 @@ class fcpoRequest extends oxSuperCfg
                 $this->addParameter('clearingtype', 'rec'); //Payment method
                 break;
             case 'fcpo_sofort':
-                $this->addParametersOnlineSofort($aDynvalue);
+                $this->addParametersOnlineSofort($oOrder, $aDynvalue);
                 $blAddRedirectUrls = true;
                 break;
             case 'fcpo_giropay':
@@ -665,13 +665,32 @@ class fcpoRequest extends oxSuperCfg
     {
         $this->addParameter('clearingtype', 'sb'); //Payment method
         $this->addParameter('onlinebanktransfertype', 'PNT');
-        if (isset($aDynvalue['fcpo_ou_ktonr']) && $aDynvalue['fcpo_ou_ktonr'] != '' && isset($aDynvalue['fcpo_ou_blz']) && $aDynvalue['fcpo_ou_blz'] != '') {
+
+        $blUseDeprecatedAccountData = (
+            isset($aDynvalue['fcpo_ou_ktonr']) &&
+            $aDynvalue['fcpo_ou_ktonr'] != '' &&
+            isset($aDynvalue['fcpo_ou_blz']) &&
+            $aDynvalue['fcpo_ou_blz'] != ''
+        );
+
+        $blUseSepaData = (
+            isset($aDynvalue['fcpo_ou_iban']) &&
+            $aDynvalue['fcpo_ou_iban'] != '' &&
+            isset($aDynvalue['fcpo_ou_bic']) &&
+            $aDynvalue['fcpo_ou_bic'] != ''
+        );
+
+        if ($blUseDeprecatedAccountData) {
             $this->addParameter('bankaccount', $aDynvalue['fcpo_ou_ktonr']);
             $this->addParameter('bankcode', $aDynvalue['fcpo_ou_blz']);
-        } elseif (isset($aDynvalue['fcpo_ou_iban']) && $aDynvalue['fcpo_ou_iban'] != '' && isset($aDynvalue['fcpo_ou_bic']) && $aDynvalue['fcpo_ou_bic'] != '') {
+        } elseif ($blUseSepaData) {
             $this->addParameter('iban', $aDynvalue['fcpo_ou_iban']);
             $this->addParameter('bic', $aDynvalue['fcpo_ou_bic']);
         }
+
+        $oBillCountry = oxNew('oxcountry');
+        $oBillCountry->load($oOrder->oxorder__oxbillcountryid->value);
+        $this->addParameter('bankcountry', $oBillCountry->oxcountry__oxisoalpha2->value);
     }
 
     /**

@@ -983,7 +983,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      */
     public function isDetailedProductInfoNeeded() 
     {
-        $blReturn = (
+        $blForcedByPaymentMethod = (
             $this->oxorder__oxpaymenttype->value == 'fcpobillsafe' ||
             $this->oxorder__oxpaymenttype->value == 'fcpoklarna' ||
             $this->oxorder__oxpaymenttype->value == 'fcpo_secinvoice' ||
@@ -991,7 +991,12 @@ class fcPayOneOrder extends fcPayOneOrder_parent
             $this->oxorder__oxpaymenttype->value == 'fcpopaydirekt_express'
         );
 
-        return $blReturn;
+        if ($blForcedByPaymentMethod) return true;
+
+        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+        $blSendArticleList = $oConfig->getConfigParam('blFCPOSendArticlelist');
+
+        return $blSendArticleList;
     }
 
     /**

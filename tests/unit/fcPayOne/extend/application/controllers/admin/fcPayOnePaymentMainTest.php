@@ -117,13 +117,6 @@ class Unit_fcPayOne_Extend_Application_Controllers__Admin_fcPayOnePaymentMain ex
     {
         $oTestObject = oxNew('fcPayOnePaymentMain');
         $aMockExportConfig = array('bools'=>array('someValue'=> true));
-        $oMockConfigExport = $this->getMock('fcpoconfigexport', array(
-            'fcpoGetConfig',
-        ));
-        $oMockConfigExport
-            ->expects($this->any())
-            ->method('fcpoGetConfig')
-            ->will($this->returnValue($aMockExportConfig));
 
         $oHelper =
             $this->getMockBuilder('fcpoconfigexport')
@@ -132,7 +125,7 @@ class Unit_fcPayOne_Extend_Application_Controllers__Admin_fcPayOnePaymentMain ex
         $oHelper
             ->expects($this->any())
             ->method('fcpoGetConfig')
-            ->will($this->returnValue($oMockConfigExport));
+            ->will($this->returnValue($aMockExportConfig));
         $this->invokeSetAttribute($oTestObject, '_oFcpoConfigExport', $oHelper);
 
         $this->assertEquals(null, $oTestObject->_fcpoLoadConfigs('someId'));

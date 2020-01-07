@@ -527,12 +527,11 @@ class fcPayOnePayment extends fcPayOnePayment_parent
     {
         $sReturn = '';
         $sId = $this->getId();
-        $blIdAffected = in_array($sId, array('fcpocreditcard', 'fcpoonlineueberweisung'));
+        $blIdAffected = in_array($sId, array('fcpocreditcard'));
 
         if ($blIdAffected) {
             $aMap = array(
                 'fcpocreditcard' => $aDynvalue['fcpo_ccmode'],
-                'fcpoonlineueberweisung' => $this->fcpoGetOperationMode($aDynvalue['fcpo_sotype']),
             );
 
             $sReturn = $aMap[$sId];

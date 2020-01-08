@@ -466,6 +466,8 @@ $aLang = array(
     'FCPO_TRANSACTIONREDIRECTLOGGING_ALL'       => 'Alles protokollieren',
     'FCPO_TRANSACTIONREDIRECTLOGGING'           => 'Protokollieren der Weiterleitung von Transaktionsstatusmeldungen',
     'FCPO_HELP_TRANSACTIONREDIRECTLOGGING'      => 'Hier können Sie die Protokollierung von Transaktionsstatusweiterleitungen aktivieren. Entsprechende Aktivitäten landen dann in der Datei <i>fcpo_message_forwarding.log</i> im Logverzeichnis des Shops. Die Protokollierung sollte nicht dauerhaft aktiviert werden, da dies große Logdateien erzeugt',
+    'FCPO_HASH_METHOD'                          => 'Key-Verschlüsselungsverfahren',
+    'FCPO_HELP_HASH_METHOD'                     => 'Hier können Sie einstellen, welches Key-Verschlüsselungsverfahren zur Kommunikation mit der Payone-API verwendet wird. Wenn möglich, wird die Verwendung von sha2-384 empfohlen.',
 );
 
 /*

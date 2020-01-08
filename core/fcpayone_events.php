@@ -799,9 +799,32 @@ class fcpayone_events
      */
     public static function setDefaultConfigValues()
     {
-        if (!self::$_oFcpoHelper->fcpoGetConfig()->getConfigParam('sFCPOAddresscheck')) {
-            self::$_oFcpoHelper->fcpoGetConfig()->saveShopConfVar('str', 'sFCPOAddresscheck', 'NO');
+        $oConfig = self::$_oFcpoHelper->fcpoGetConfig();
+        $blIsUpdate = self::isUpdate();
+
+        if ($blIsUpdate) {
+            $oConfig->saveShopConfVar('str', 'sFCPOHashMethod', 'md5');
+        } else {
+            $oConfig->saveShopConfVar('str', 'sFCPOHashMethod', 'sha2-384');
         }
+
+        if (!$oConfig->getConfigParam('sFCPOAddresscheck')) {
+            $oConfig->saveShopConfVar('str', 'sFCPOAddresscheck', 'NO');
+        }
+    }
+
+    /**
+     * If there is an existing merchant id we assume, that current activation
+     * is an update
+     *
+     * @param void
+     * @return bool
+     */
+    public static function isUpdate()
+    {
+        $oConfig = self::$_oFcpoHelper->fcpoGetConfig();
+
+        return (bool) ($oConfig->getConfigParam('sFCPOMerchantID'));
     }
 
 }

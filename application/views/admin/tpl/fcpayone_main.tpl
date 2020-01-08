@@ -81,6 +81,19 @@
                 </dd>
                 <div class="spacer"></div>
             </dl>
+            <dl>
+                <dt>
+                    <select name="confstrs[sFCPOHashMethod]">
+                        <option value="md5" [{if $confstrs.sFCPOHashMethod == "md5"}]SELECTED[{/if}]>md5</option>
+                        <option value="sha2-384" [{if $confstrs.sFCPOHashMethod == "sha2-384"}]SELECTED[{/if}]>sha2-384 (empfohlen)</option>
+                    </select>
+                    [{oxinputhelp ident="FCPO_HELP_HASH_METHOD"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_HASH_METHOD"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
         </div>
     </div>
 

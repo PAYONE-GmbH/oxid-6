@@ -603,7 +603,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
             'yes';
 
         $sHashMD5 = md5($sData.$sKey);
-        $sHashSha2 = hash_hmac('sha2-384', $sData, $sKey);
+        $sHashSha2 = hash_hmac('sha384', $sData, $sKey);
 
         $sHash = ($sFCPOHashMethod == 'sha2-384')
             ? $sHashSha2 : $sHashMD5;

@@ -801,10 +801,11 @@ class fcpayone_events
     {
         $oConfig = self::$_oFcpoHelper->fcpoGetConfig();
         $blIsUpdate = self::isUpdate();
+        $blHashMethodSet = (bool) $oConfig->getConfigParam('sFCPOHashMethod');
 
-        if ($blIsUpdate) {
+        if (!$blHashMethodSet && $blIsUpdate) {
             $oConfig->saveShopConfVar('str', 'sFCPOHashMethod', 'md5');
-        } else {
+        } else if (!$blHashMethodSet) {
             $oConfig->saveShopConfVar('str', 'sFCPOHashMethod', 'sha2-384');
         }
 

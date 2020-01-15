@@ -588,17 +588,26 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      */
     public function getHashCC($sType = '') 
     {
-        $sHash = md5(
+        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+        $sFCPOHashMethod = $oConfig->getConfigParam('sFCPOHashMethod');
+        $sKey = $this->getPortalKey();
+
+        $sData =
             $this->getSubAccountId() .
-                $this->getEncoding() .
-                $this->getMerchantId() .
-                $this->_getOperationModeCC($sType) .
-                $this->getPortalId() .
-                'creditcardcheck' .
-                'JSON' .
-                'yes' .
-                $this->getPortalKey()
-        );
+            $this->getEncoding() .
+            $this->getMerchantId() .
+            $this->_getOperationModeCC($sType) .
+            $this->getPortalId() .
+            'creditcardcheck' .
+            'JSON' .
+            'yes';
+
+        $sHashMD5 = md5($sData.$sKey);
+        $sHashSha2 = hash_hmac('sha384', $sData, $sKey);
+
+        $sHash = ($sFCPOHashMethod == 'sha2-384')
+            ? $sHashSha2 : $sHashMD5;
+
         return $sHash;
     }
 

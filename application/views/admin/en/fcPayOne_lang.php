@@ -475,6 +475,8 @@ $aLang = array(
     'FCPO_TRANSACTIONREDIRECTLOGGING_ALL'       => 'Log everything',
     'FCPO_TRANSACTIONREDIRECTLOGGING'           => 'Logging of transactionstatus redirects',
     'FCPO_HELP_TRANSACTIONREDIRECTLOGGING'      => 'With this option activated, you can log activity of transactionstatus redirects. Content of this logging are landing in file <i>fcpo_message_forwarding.log</i> in your shops log folder. Please note, that this option should not be activated all the time due to it produces big log files',
+    'FCPO_HASH_METHOD'                          => 'Hash Method',
+    'FCPO_HELP_HASH_METHOD'                     => 'Here you can setup the hash method which will be used for communication with Payone-API. If possible, use sha2-384',
 );
 
 /*

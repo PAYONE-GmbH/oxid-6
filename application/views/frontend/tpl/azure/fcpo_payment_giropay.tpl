@@ -5,32 +5,33 @@
     </dt>
     <dd class="[{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]activePayment[{/if}]">
 
-        <div class="form-group" id="fcpo_ou_blz">
-            <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_CODE"}]</label>
+        <div class="form-group" id="fcpo_ou_iban_gpy">
+            <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_IBAN"}]</label>
             <div class="col-lg-9">
-                <input placeholder="[{oxmultilang ident="FCPO_BANK_CODE"}]" class="form-control" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_ou_blz]" value="[{$dynvalue.fcpo_ou_blz}]">
-                <div id="fcpo_ou_blz_invalid" class="fcpo_check_error">
+                <input placeholder="[{oxmultilang ident="FCPO_BANK_IBAN"}]" class="form-control" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_ou_iban_gpy]" value="[{$dynvalue.fcpo_ou_iban_gpy}]">
+                <div id="fcpo_ou_iban_invalid" class="fcpo_check_error">
                     <span class="help-block ">
                         <ul role="alert" class="list-unstyled text-danger">
-                            <li>[{oxmultilang ident="FCPO_BLZ_INVALID"}]</li>
+                            <li>[{oxmultilang ident="FCPO_IBAN_INVALID"}]</li>
                         </ul>
                     </span>
                 </div>
             </div>
         </div>
-        <div class="form-group" id="fcpo_ou_ktonr" style="display: none;">
-            <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_ACCOUNT_NUMBER"}]</label>
+        <div class="form-group" id="fcpo_ou_bic_gpy">
+            <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_BIC"}]</label>
             <div class="col-lg-9">
-                <input placeholder="[{oxmultilang ident="FCPO_BANK_ACCOUNT_NUMBER"}]" class="form-control" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_ou_ktonr]" value="[{$dynvalue.fcpo_ou_ktonr}]">
-                <div id="fcpo_ou_ktonr_invalid" class="fcpo_check_error">
+                <input placeholder="[{oxmultilang ident="FCPO_BANK_BIC"}]" class="form-control" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_ou_bic_gpy]" value="[{$dynvalue.fcpo_ou_bic_gpy}]">
+                <div id="fcpo_ou_bic_invalid" class="fcpo_check_error">
                     <span class="help-block ">
                         <ul role="alert" class="list-unstyled text-danger">
-                            <li>[{oxmultilang ident="FCPO_KTONR_INVALID"}]</li>
+                            <li>[{oxmultilang ident="FCPO_BIC_INVALID"}]</li>
                         </ul>
                     </span>
                 </div>
             </div>
         </div>
+
 
         [{block name="checkout_payment_longdesc"}]
             [{if $paymentmethod->oxpayments__oxlongdesc->value|trim}]

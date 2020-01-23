@@ -704,8 +704,8 @@ class fcpoRequest extends oxSuperCfg
         $this->addParameter('clearingtype', 'sb'); //Payment method
         $this->addParameter('onlinebanktransfertype', 'GPY');
         $this->addParameter('bankcountry', 'DE');
-        $this->addParameter('iban', $aDynvalue['fcpo_ou_iban']);
-        $this->addParameter('bic', $aDynvalue['fcpo_ou_bic']);
+        $this->addParameter('iban', $aDynvalue['fcpo_ou_iban_gpy']);
+        $this->addParameter('bic', $aDynvalue['fcpo_ou_bic_gpy']);
     }
 
     /**

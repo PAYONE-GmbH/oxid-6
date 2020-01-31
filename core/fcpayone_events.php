@@ -44,7 +44,8 @@ class fcpayone_events
         'fcpocommerzfinanz',
         'fcpoklarna_installment',
         'fcpocreditcard_iframe',
-        'fcpobillsafe'
+        'fcpobillsafe',
+        'fcpoonlineueberweisung',
     );
     public static $sQueryTableFcporefnr = "
         CREATE TABLE fcporefnr (
@@ -349,6 +350,14 @@ class fcpayone_events
 	    'fcpoamazonpay' => 'AmazonPay',
         'fcpo_secinvoice' => 'Gesicherter Rechnungskauf',
         'fcpopaydirekt_express' => 'Paydirekt Express',
+        'fcpo_sofort' => 'Sofortüberweisung',
+        'fcpo_giropay' => 'Giropay',
+        'fcpo_eps' => 'eps - Onlineüberweisung',
+        'fcpo_pf_finance' => 'PostFinance E-Finance',
+        'fcpo_pf_card' => 'PostFinance Card',
+        'fcpo_ideal' => 'iDeal',
+        'fcpo_p24' => 'P24',
+        'fcpo_bancontact' => 'Bancontact',
     );
 
     /**

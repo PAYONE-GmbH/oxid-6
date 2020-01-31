@@ -39,6 +39,8 @@ $aModule = array(
     'email'         => 'kontakt@fatchip.de',
     'url'           => 'https://wiki.fatchip.de/public/faqpayone',
     'extend'        => array(
+        // controllers admin
+        'payment_main'                      => 'fc/fcpayone/extend/application/controllers/admin/fcPayOnePaymentMain',
         // controllers
         'basket'                            => 'fc/fcpayone/extend/application/controllers/fcPayOneBasketView',
         'user'                              => 'fc/fcpayone/extend/application/controllers/fcPayOneUserView',

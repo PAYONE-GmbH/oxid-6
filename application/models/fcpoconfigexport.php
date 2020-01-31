@@ -529,6 +529,14 @@ class fcpoconfigexport extends oxBase
             'fcpoamazonpay' => 'wlt',
             'fcpo_secinvoice' => 'rec',
             'fcpopaydirekt_express' => 'wlt',
+            'fcpo_sofort' => 'sb',
+            'fcpo_giropay' => 'sb',
+            'fcpo_eps' => 'sb',
+            'fcpo_pf_finance' => 'sb',
+            'fcpo_pf_card' => 'sb',
+            'fcpo_ideal' => 'sb',
+            'fcpo_p24' => 'sb',
+            'fcpo_bancontact' => 'sb',
         );
 
         if (isset($aAbbreviations[$sPaymentId])) {

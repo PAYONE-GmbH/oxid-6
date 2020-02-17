@@ -453,7 +453,6 @@ $aLang = array(
 'FCPO_CREDITRATING_BONIVERSUM_RED'          => 'Red',
 'FCPO_CREDITRATING_BONIVERSUM_YELLOW'       => 'Yellow',
 'FCPO_CREDITRATING_BONIVERSUM_GREEN'        => 'Green',
-'FCPO_BONI_ERROR_SET_TO_BONIVERSUM_PERSON'  => '<b>Please note:</b><br>Adresschecktype has been set to "Boniversum Addresscheck Person" , due to your  Bonicheck has been set to "Boniversum VERITA Score".',
 'FCPO_CONFIG_GROUP_SECINVOICE'              => 'Secure Invoice (rec/POV)',
 'FCPO_SECINVOICE_PORTAL_ID'                 => 'PAYONE Portal ID (for payment Secure Invoice)',
 'FCPO_SECINVOICE_PORTAL_KEY'                => 'PAYONE Portal Key (for payment Secure Invoice)',
@@ -483,6 +482,8 @@ $aLang = array(
 'FCPO_BONI_ERROR_NO_BONIADDRESSCHECK_SET'  => '<b>Please note:</b><br>Adresschecktype has been set to "BASIC" due to your Bonicheck is set active, but no mandatory Adresschecktype has been set.',
 'FCPO_BONI_ERROR_SET_TO_BASIC'              => '<b>Please note:</b><br>Adresschecktype has been set to "Basic" due to your combination of Boni- and Addresscheck is not allowed.',
 'FCPO_BONI_ERROR_SET_TO_PERSON'             => '<b>Please note:</b><br>Adresschecktype has been set to "Person" due to your combination of Boni- and Addresscheck is not allowed.',
+'FCPO_ADDRESSCHECKTYPE_REGULAR_SET_INACTIVE' => '<b>Please note:</b><br>Regular Adresschecktype has been deactivated due to your Bonicheck is set active. Please configure Addresschecktype in Bonicheck-Section.',
+
 );
 
 /*

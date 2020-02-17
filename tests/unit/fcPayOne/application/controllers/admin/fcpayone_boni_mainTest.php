@@ -193,6 +193,34 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_boni_main extends Oxi
      *
      * @param void
      * @return void
+     * @throws
+     */
+    public function test__fcpoBoniAddresscheckActive_Coverage() {
+        $oTestObject = oxNew('fcpayone_boni_main');
+        $oMockConfig = $this->getMock('oxConfig', array('getConfigParam'));
+        $oMockConfig
+            ->expects($this->any())
+            ->method('getConfigParam')
+            ->will($this->returnValue('someValue'));
+
+        $oHelper = $this
+            ->getMockBuilder('fcpohelper')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $oHelper
+            ->expects($this->any())
+            ->method('fcpoGetConfig')
+            ->will($this->returnValue($oMockConfig));
+        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
+
+        $this->assertEquals(false, $oTestObject->_fcpoBoniAddresscheckActive());
+    }
+
+    /**
+     * Testing _fcpoBoniAddresscheckActive for coverage
+     *
+     * @param void
+     * @return void
      */
     protected function _fcpoValidateAddresscheckType() {
         $this->_aValidationCodes = array();

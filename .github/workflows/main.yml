@@ -39,12 +39,11 @@ jobs:
       run: php -m
 
     - name: Setup Oxid 6
-      # Have to check for existance of config.inc.php.dist because it doesn't seem to be there everytime
       run: |
         mkdir /tmp/oxid6
-        composer create-project -n --no-progress --working-dir=/tmp/oxid6 oxid-esales/oxideshop-project /tmp/oxid6 ${{ matrix.oxid-versions }}
-        [ -e /tmp/oxid6/source/config.inc.php.dist ] && { cp /tmp/oxid6/source/config.inc.php.dist /tmp/oxid6/source/config.inc.php; }
-        [ ! -e /tmp/oxid6/source/config.inc.php ] && { echo "Config.inc.php not found."; return 255; }
+        cd /tmp/oxid6
+        composer create-project -n --no-progress oxid-esales/oxideshop-project . ${{ matrix.oxid-versions }}
+        cp /tmp/oxid6/source/config.inc.php.dist /tmp/oxid6/source/config.inc.php
         sed -i 's|<dbHost>|localhost|; s|<dbName>|oxideshop|; s|<dbUser>|root|; s|<dbPwd>|root|; s|<sShopURL>|http://localhost|; s|<sShopDir>|/tmp/oxid6/source|; s|<sCompileDir>|/tmp/oxid6/source/tmp|; s|\$this->iDebug = 0|\$this->iDebug = 1|' /tmp/oxid6/source/config.inc.php
         sed -i "s|\$this->edition = ''|\$this->edition = 'CE'|" /tmp/oxid6/source/config.inc.php
         sed -i "s|partial_module_paths: null|partial_module_paths: 'fc/fcpayone'|" /tmp/oxid6/test_config.yml

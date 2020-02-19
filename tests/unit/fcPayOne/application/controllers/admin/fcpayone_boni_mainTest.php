@@ -213,7 +213,7 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_boni_main extends Oxi
             ->will($this->returnValue($oMockConfig));
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
 
-        $this->assertEquals(false, $oTestObject->_fcpoBoniAddresscheckActive());
+        $this->assertEquals(true, $oTestObject->_fcpoBoniAddresscheckActive());
     }
 
     /**

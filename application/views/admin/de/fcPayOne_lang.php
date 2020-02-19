@@ -468,6 +468,12 @@ $aLang = array(
     'FCPO_HELP_TRANSACTIONREDIRECTLOGGING'      => 'Hier können Sie die Protokollierung von Transaktionsstatusweiterleitungen aktivieren. Entsprechende Aktivitäten landen dann in der Datei <i>fcpo_message_forwarding.log</i> im Logverzeichnis des Shops. Die Protokollierung sollte nicht dauerhaft aktiviert werden, da dies große Logdateien erzeugt',
     'FCPO_HASH_METHOD'                          => 'Key-Verschlüsselungsverfahren',
     'FCPO_HELP_HASH_METHOD'                     => 'Hier können Sie einstellen, welches Key-Verschlüsselungsverfahren zur Kommunikation mit der Payone-API verwendet wird. Wenn möglich, wird die Verwendung von sha2-384 empfohlen.',
+    'FCPO_BONI_ERROR_DEACTIVATED_REGULAR_ADDRESSCHECK' => '<b>Bitte beachten Sie:</b><br>Die eigenständige Addressprüfung wurde deaktiviert, da Sie die Bonitätsprüfung aktiviert haben. Die hiermit zusammenhängenden Addresschecks werden seperat eingestellt.',
+    'FCPO_BONI_ERROR_DEACTIVATED_BONI_ADDRESSCHECK' => '<b>Bitte beachten Sie:</b><br>Die Bonitäts-Adressprüfung wurde deaktiviert, da Sie die Bonitätsprüfung deaktiviert haben.',
+    'FCPO_BONI_ERROR_NO_BONIADDRESSCHECK_SET'   => '<b>Bitte beachten Sie:</b><br>Die Bonitäts-Adressprüfung wurde auf "BASIC" gesetzt, da Sie die Bonitätsprüfung aktiviert haben, aber noch keinen dazugehörige Adressprüfung ausgewählt haben.',
+    'FCPO_ADDRESSCHECKTYPE_REGULAR_SET_INACTIVE' => '<b>Bitte beachten Sie:</b><br>Die eigenständige Addressprüfung wurde deaktiviert, da Sie die Bonitätsprüfung aktiviert haben. <br>Bitte konfigurieren Sie die Adressprüfung im Bereich der Bonitätsprüfung.',
+    'FCPO_BONI_ERROR_SET_TO_BASIC'              => '<b>Bitte beachten Sie:</b><br>Der Adresschecktyp wurde auf "Basic" gesetzt, da ihre gewählte Kombination aus Boni- und Adresscheck nicht erlaubt ist.',
+    'FCPO_BONI_ERROR_SET_TO_PERSON'             => '<b>Bitte beachten Sie:</b><br>Der Adresschecktyp wurde auf "Person" gesetzt, da ihre gewählte Kombination aus Boni- und Adresscheck nicht erlaubt ist.',
 );
 
 /*

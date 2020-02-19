@@ -175,7 +175,7 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
      * @param  void
      * @return void
      */
-    public function test_fcpoGetConfBools_Coverage() 
+    public function test_fcpoGetConfBools_Coverage()
     {
         $oTestObject = oxNew('fcpayone_main');
 
@@ -235,7 +235,7 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
      * @param  void
      * @return void
      */
-    public function test_Save_Coverage() 
+    public function test_Save_Coverage()
     {
         $oTestObject = $this->getMock(
             'fcpayone_main', array(
@@ -315,7 +315,7 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
      * @param  void
      * @return void
      */
-    public function test__fcpoLoadConfigs_Coverage() 
+    public function test__fcpoLoadConfigs_Coverage()
     {
         $oTestObject = oxNew('fcpayone_main');
         $this->assertEquals(null, $this->invokeMethod($oTestObject, '_fcpoLoadConfigs', array('oxbaseshop')));
@@ -327,7 +327,7 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
      * @param  void
      * @return void
      */
-    public function test__fcpoInsertCampaigns_Coverage() 
+    public function test__fcpoInsertCampaigns_Coverage()
     {
         $oTestObject = oxNew('fcpayone_main');
 

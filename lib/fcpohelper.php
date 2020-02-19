@@ -528,6 +528,16 @@ class fcpohelper extends oxBase
     }
 
     /**
+     * Returns a static instance of given object name
+     *
+     * @param $sObjectName
+     * @return mixed
+     */
+    public function getStaticInstance($sObjectName) {
+        return oxRegistry::get($sObjectName);
+    }
+ 
+    /**
      * Loads shop version and formats it in a certain way
      *
      * @param  void

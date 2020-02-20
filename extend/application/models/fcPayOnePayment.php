@@ -620,4 +620,26 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         return $blAllowed;
     }
 
+    /**
+     * Method will be usually called at the end of an order and decides wether
+     * clearingdata should be offered or not
+     *
+     * @param $oOrder
+     * @return bool
+     */
+    public function fcpoShowClearingData($oOrder)
+    {
+        $sPaymentId = $this->oxpayments__oxid->value;
+
+        $blShow = (
+            $sPaymentId == 'fcpopayadvance' ||
+            (
+                $sPaymentId == 'fcpoinvoice' &&
+                $oOrder->oxorder__fcpoauthmode == 'authorization'
+            )
+        );
+
+        return $blShow;
+    }
+
 }

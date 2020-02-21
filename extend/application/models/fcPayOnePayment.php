@@ -252,7 +252,7 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         $sOrderId = oxDb::getDb()->quote($sOrderId);
         $sMandateIdentification = oxDb::getDb()->quote(basename($sMandateIdentification . '.pdf'));
 
-        $sQuery = "INSERT INTO fcpopdfmandates VALUES (" . $sOrderId . ", " . $sMandateIdentification . ")";
+        $sQuery = "INSERT INTO fcpopdfmandates (OXORDERID, FCPO_FILENAME) VALUES (" . $sOrderId . ", " . $sMandateIdentification . ")";
         $this->_oFcpoDb->Execute($sQuery);
     }
 

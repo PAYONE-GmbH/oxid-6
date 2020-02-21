@@ -190,7 +190,9 @@ $aLang = array(
 
 'FCPO_CC_HOSTED_ERROR_CARDTYPE'                 => 'Please select a cardtype',
 'FCPO_CC_HOSTED_ERROR_CVC'                      => 'Please check CVC',
-'FCPO_CC_HOSTED_ERROR_INCOMPLETE'               => 'Input incomplete'
+'FCPO_CC_HOSTED_ERROR_INCOMPLETE'               => 'Input incomplete',
+'FCPO_EMAIL_CLEARING_SUBJECT'                   => 'Your clearingdata for ordernumber ',
+'FCPO_EMAIL_CLEARING_BODY_WELCOME'              => "Hello %NAME% %SURNAME%,\nfor clearing your invoice, please use the following data:\n\n",
 );
 
 /*

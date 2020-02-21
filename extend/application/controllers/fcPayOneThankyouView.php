@@ -234,5 +234,20 @@ class fcPayOneThankyouView extends fcPayOneThankyouView_parent
         
         return $this->_sBarzahlenHtml;
     }
+
+    /**
+     * View controller getter for deciding if clearing data should be shown
+     */
+    public function fcpoShowClearingData()
+    {
+        $oOrder = $this->getOrder();
+        $sPaymentId = $oOrder->oxorder__oxpaymenttype->value;
+        $oPayment = oxNew('oxpayment');
+        $oPayment->load($sPaymentId);
+
+        $blShowClearingData = $oPayment->fcpoShowClearingData($oOrder);
+
+        return $blShowClearingData;
+    }
     
 }

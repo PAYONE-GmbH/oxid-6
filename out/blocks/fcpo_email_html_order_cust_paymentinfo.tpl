@@ -9,7 +9,7 @@
         [{oxmultilang ident="FCPO_EMAIL_BIC"}] [{$shop->oxshops__oxbiccode->value}]<br>
         [{oxmultilang ident="FCPO_EMAIL_IBAN"}] [{$shop->oxshops__oxibannumber->value}]
     </p>
-[{elseif $payment->fcpoShowClearingData($order)}]
+[{elseif $order->fcpoShowClearingData()}]
     <h3 style="font-weight: bold; margin: 20px 0 7px; padding: 0; line-height: 35px; font-size: 12px;font-family: Arial, Helvetica, sans-serif; text-transform: uppercase; border-bottom: 4px solid #ddd;">
         [{oxmultilang ident="FCPO_EMAIL_BANK_DETAILS"}]
     </h3>

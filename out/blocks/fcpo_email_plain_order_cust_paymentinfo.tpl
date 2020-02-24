@@ -4,7 +4,7 @@
 [{oxmultilang ident="FCPO_EMAIL_ACCOUNTNUMBER"}] [{$shop->oxshops__oxbanknumber->value}]<br>
 [{oxmultilang ident="FCPO_EMAIL_BIC"}] [{$shop->oxshops__oxbiccode->value}]<br>
 [{oxmultilang ident="FCPO_EMAIL_IBAN"}] [{$shop->oxshops__oxibannumber->value}]
-[{elseif $payment->fcpoShowClearingData($order)}]
+[{elseif $order->fcpoShowClearingData()}]
 [{oxmultilang ident="FCPO_BANKACCOUNTHOLDER"}] [{$order->getFcpoBankaccountholder()}]
 [{oxmultilang ident="FCPO_EMAIL_BANK"}] [{$order->getFcpoBankname()}]
 [{oxmultilang ident="FCPO_EMAIL_ROUTINGNUMBER"}] [{$order->getFcpoBankcode()}]

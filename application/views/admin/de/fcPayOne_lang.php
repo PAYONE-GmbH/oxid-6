@@ -474,6 +474,8 @@ $aLang = array(
     'FCPO_ADDRESSCHECKTYPE_REGULAR_SET_INACTIVE' => '<b>Bitte beachten Sie:</b><br>Die eigenständige Addressprüfung wurde deaktiviert, da Sie die Bonitätsprüfung aktiviert haben. <br>Bitte konfigurieren Sie die Adressprüfung im Bereich der Bonitätsprüfung.',
     'FCPO_BONI_ERROR_SET_TO_BASIC'              => '<b>Bitte beachten Sie:</b><br>Der Adresschecktyp wurde auf "Basic" gesetzt, da ihre gewählte Kombination aus Boni- und Adresscheck nicht erlaubt ist.',
     'FCPO_BONI_ERROR_SET_TO_PERSON'             => '<b>Bitte beachten Sie:</b><br>Der Adresschecktyp wurde auf "Person" gesetzt, da ihre gewählte Kombination aus Boni- und Adresscheck nicht erlaubt ist.',
+    'FCPO_EMAIL_CLEARING_SUBJECT'                   => 'Ihre Überweisungsdaten zur Bestellnummer',
+    'FCPO_EMAIL_CLEARING_BODY_WELCOME'              => "Hallo %NAME% %SURNAME%,\nzur Begleichung der Rechnung verwenden Sie bitte folgende Daten zur Überweisung:\n\n",
 );
 
 /*

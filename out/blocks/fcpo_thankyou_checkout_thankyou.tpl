@@ -26,11 +26,16 @@
         [{/if}]
     [{/if}]
     [{if $oView->fcpoShowClearingData()}]
-        [{oxmultilang ident="FCPO_BANKACCOUNTHOLDER"}] [{$order->getFcpoBankaccountholder()}]<br>
-        [{oxmultilang ident="FCPO_EMAIL_BANK"}] [{$order->getFcpoBankname()}]<br>
-        [{oxmultilang ident="FCPO_EMAIL_ROUTINGNUMBER"}] [{$order->getFcpoBankcode()}]<br>
-        [{oxmultilang ident="FCPO_EMAIL_ACCOUNTNUMBER"}] [{$order->getFcpoBanknumber()}]<br>
-        [{oxmultilang ident="FCPO_EMAIL_BIC"}] [{$order->getFcpoBiccode()}]<br>
-        [{oxmultilang ident="FCPO_EMAIL_IBAN"}] [{$order->getFcpoIbannumber()}]
+        <h3>
+            [{oxmultilang ident="FCPO_EMAIL_BANK_DETAILS"}]
+        </h3>
+        <div>
+            [{oxmultilang ident="FCPO_BANKACCOUNTHOLDER"}] [{$order->getFcpoBankaccountholder()}]<br>
+            [{oxmultilang ident="FCPO_EMAIL_BANK"}] [{$order->getFcpoBankname()}]<br>
+            [{oxmultilang ident="FCPO_EMAIL_ROUTINGNUMBER"}] [{$order->getFcpoBankcode()}]<br>
+            [{oxmultilang ident="FCPO_EMAIL_ACCOUNTNUMBER"}] [{$order->getFcpoBanknumber()}]<br>
+            [{oxmultilang ident="FCPO_EMAIL_BIC"}] [{$order->getFcpoBiccode()}]<br>
+            [{oxmultilang ident="FCPO_EMAIL_IBAN"}] [{$order->getFcpoIbannumber()}]
+        </div>
     [{/if}]
 [{/if}]

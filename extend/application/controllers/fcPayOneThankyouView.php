@@ -237,17 +237,17 @@ class fcPayOneThankyouView extends fcPayOneThankyouView_parent
 
     /**
      * View controller getter for deciding if clearing data should be shown
+     *
+     * @param void
+     * @return bool
      */
     public function fcpoShowClearingData()
     {
         $oOrder = $this->getOrder();
-        $sPaymentId = $oOrder->oxorder__oxpaymenttype->value;
-        $oPayment = oxNew('oxpayment');
-        $oPayment->load($sPaymentId);
 
-        $blShowClearingData = $oPayment->fcpoShowClearingData($oOrder);
+        $blShowClearingData =
+            $oOrder->fcpoShowClearingData($oOrder);
 
         return $blShowClearingData;
     }
-    
 }

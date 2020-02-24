@@ -483,7 +483,8 @@ $aLang = array(
 'FCPO_BONI_ERROR_SET_TO_BASIC'              => '<b>Please note:</b><br>Adresschecktype has been set to "Basic" due to your combination of Boni- and Addresscheck is not allowed.',
 'FCPO_BONI_ERROR_SET_TO_PERSON'             => '<b>Please note:</b><br>Adresschecktype has been set to "Person" due to your combination of Boni- and Addresscheck is not allowed.',
 'FCPO_ADDRESSCHECKTYPE_REGULAR_SET_INACTIVE' => '<b>Please note:</b><br>Regular Adresschecktype has been deactivated due to your Bonicheck is set active. Please configure Addresschecktype in Bonicheck-Section.',
-
+'FCPO_EMAIL_CLEARING_SUBJECT'                   => 'Ihre Überweisungsdaten zur Bestellnummer',
+'FCPO_EMAIL_CLEARING_BODY_WELCOME'              => "Hallo %NAME% %SURNAME%,\nzur Begleichung der Rechnung verwenden Sie bitte folgende Daten zur Überweisung:\n\n",
 );
 
 /*

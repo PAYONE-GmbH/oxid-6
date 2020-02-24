@@ -668,7 +668,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         $oLang = $this->_oFcpoHelper->getFactoryObject('oxLang');
         $oShop = $this->_oFcpoHelper->getFactoryObject('oxShop');
         $oShop->load($this->oxorder__oxshopid->value);
-        $sBody = $oLang->translateString('FCPO_EMAIL_CLEARING_BODY');
+        $sBody = $oLang->translateString('FCPO_EMAIL_CLEARING_BODY_WELCOME');
         $sBody = str_replace('%NAME%', $this->oxorder__oxbillfname->value, $sBody);
         $sBody = str_replace('%SURNAME%', $this->oxorder__oxbilllname->value, $sBody);
         $sBody .= $oLang->translateString("FCPO_BANKACCOUNTHOLDER").": ".$this->getFcpoBankaccountholder();
@@ -1413,6 +1413,28 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         $mResult = $this->_fcpoHandleAuthorizationResponse($aResponse, $oPayGateway, $sRefNr, $sMode, $sAuthorizationType, $blReturnRedirectUrl);
 
         return $mResult;
+    }
+
+    /**
+     * Method will be usually called at the end of an order and decides wether
+     * clearingdata should be offered or not
+     *
+     * @param $oOrder
+     * @return bool
+     */
+    public function fcpoShowClearingData()
+    {
+        $sPaymentId = $this->oxorder__oxpaymenttype->value;
+
+        $blShow = (
+            $sPaymentId == 'fcpopayadvance' ||
+            (
+                $sPaymentId == 'fcpoinvoice' &&
+                $this->oxorder__fcpoauthmode == 'authorization'
+            )
+        );
+
+        return $blShow;
     }
 
     /**

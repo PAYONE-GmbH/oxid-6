@@ -623,7 +623,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         $sAuthMode = $this->oxorder__fcpoauthmode->value;
 
         $blSendMail = (
-            $sPaymentId == 'fcpoinvoice' &&
+            in_array($sPaymentId, array('fcpoinvoice','fcpopayadvance')) &&
             $sAuthMode == 'preauthorization'
         );
 
@@ -1435,11 +1435,8 @@ fclose($oFile);
         $sPaymentId = $this->oxorder__oxpaymenttype->value;
 
         $blShow = (
-            $sPaymentId == 'fcpopayadvance' ||
-            (
-                $sPaymentId == 'fcpoinvoice' &&
-                $this->oxorder__fcpoauthmode == 'authorization'
-            )
+            $this->oxorder__fcpoauthmode == 'authorization' &&
+            in_array($sPaymentId, array('fcpopayadvance', 'fcpoinvoice'))
         );
 
         return $blShow;

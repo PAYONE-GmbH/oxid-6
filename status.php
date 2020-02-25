@@ -391,7 +391,17 @@ class fcPayOneTransactionStatusHandler extends oxBase
                     oxDb::getDb()->Execute($query);
                 }
                 if($this->fcGetPostParam('txaction') == 'paid') {
-                    $query = "UPDATE oxorder SET oxfolder = 'ORDERFOLDER_NEW', oxtransstatus = 'OK' WHERE oxid = '{$sOrderId}' AND oxtransstatus = 'INCOMPLETE' AND oxfolder = 'ORDERFOLDER_PROBLEMS'";
+                    $query = "
+                        UPDATE 
+                            oxorder 
+                        SET 
+                            oxfolder = 'ORDERFOLDER_NEW', 
+                            oxtransstatus = 'OK' 
+                        WHERE 
+                            oxid = '{$sOrderId}' AND 
+                            oxtransstatus IN ('INCOMPLETE', 'ERROR') AND 
+                            oxfolder = 'ORDERFOLDER_PROBLEMS'
+                        ";
                     oxDb::getDb()->Execute($query);
                 }
 

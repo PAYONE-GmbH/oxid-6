@@ -671,12 +671,15 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         $sBody = $oLang->translateString('FCPO_EMAIL_CLEARING_BODY_WELCOME');
         $sBody = str_replace('%NAME%', $this->oxorder__oxbillfname->value, $sBody);
         $sBody = str_replace('%SURNAME%', $this->oxorder__oxbilllname->value, $sBody);
-        $sBody .= $oLang->translateString("FCPO_BANKACCOUNTHOLDER").": ".$this->getFcpoBankaccountholder();
-        $sBody .= $oLang->translateString("FCPO_EMAIL_BANK").": ".$this->getFcpoBankname();
-        $sBody .= $oLang->translateString("FCPO_EMAIL_ROUTINGNUMBER").": ".$this->getFcpoBankcode();
-        $sBody .= $oLang->translateString("FCPO_EMAIL_ACCOUNTNUMBER").": ".$this->getFcpoBanknumber();
-        $sBody .= $oLang->translateString("FCPO_EMAIL_BIC").": ".$this->getFcpoBiccode();
-        $sBody .= $oLang->translateString("FCPO_EMAIL_IBAN").": ".$this->getFcpoIbannumber();
+        $sBody .= $oLang->translateString("FCPO_BANKACCOUNTHOLDER").": ".$this->getFcpoBankaccountholder()."\n";
+        $sBody .= $oLang->translateString("FCPO_EMAIL_BANK")." ".$this->getFcpoBankname()."\n";
+        $sBody .= $oLang->translateString("FCPO_EMAIL_ROUTINGNUMBER")." ".$this->getFcpoBankcode()."\n";
+        $sBody .= $oLang->translateString("FCPO_EMAIL_ACCOUNTNUMBER")." ".$this->getFcpoBanknumber()."\n";
+        $sBody .= $oLang->translateString("FCPO_EMAIL_BIC")." ".$this->getFcpoBiccode()."\n";
+        $sBody .= $oLang->translateString("FCPO_EMAIL_IBAN")." ".$this->getFcpoIbannumber()."\n";
+        $sBody .= "\n\n";
+        $sThankyou = $oLang->translateString('FCPO_EMAIL_CLEARING_BODY_THANKYOU');
+        $sBody .= str_replace('%SHOPNAME%', $oShop->oxshops__oxname->value, $sThankyou);
 
         return $sBody;
     }
@@ -1137,10 +1140,12 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         );
 
         if ($blFetchCaptureResponse) {
+            $sWhere = "fcpo_request LIKE '%".$this->oxorder__fcpotxid->value."%'";
             $sAnd = "
                 fcpo_requesttype = 'capture'
             ";
         } else {
+            $sWhere = "fcpo_refnr = '{$this->oxorder__fcporefnr->value}' ";
             $sAnd = "
                 fcpo_requesttype = 'preauthorization' OR 
                 fcpo_requesttype = 'authorization'
@@ -1150,12 +1155,15 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         $sQuery = "
             SELECT oxid 
             FROM fcporequestlog 
-            WHERE fcpo_refnr = '{$this->oxorder__fcporefnr->value}' 
+            WHERE {$sWhere}
             AND (
                 {$sAnd}
             )
         ";
-
+$sPath = getShopBasePath()."/log/andre.log";
+$oFile = fopen($sPath, 'a');
+fwrite($oFile, $sQuery."\n");
+fclose($oFile);
         return $sQuery;
     }
 

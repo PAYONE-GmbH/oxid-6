@@ -476,6 +476,12 @@ $aLang = array(
     'FCPO_BONI_ERROR_SET_TO_PERSON'             => '<b>Bitte beachten Sie:</b><br>Der Adresschecktyp wurde auf "Person" gesetzt, da ihre gewählte Kombination aus Boni- und Adresscheck nicht erlaubt ist.',
     'FCPO_EMAIL_CLEARING_SUBJECT'                   => 'Ihre Überweisungsdaten zur Bestellnummer',
     'FCPO_EMAIL_CLEARING_BODY_WELCOME'              => "Hallo %NAME% %SURNAME%,\nzur Begleichung der Rechnung verwenden Sie bitte folgende Daten zur Überweisung:\n\n",
+    'FCPO_EMAIL_BANK'                               => 'Bankname:',
+    'FCPO_EMAIL_ROUTINGNUMBER'                      => 'BLZ:',
+    'FCPO_EMAIL_ACCOUNTNUMBER'                      => 'Kto.Nr.:',
+    'FCPO_EMAIL_BIC'                                => 'BIC:',
+    'FCPO_EMAIL_IBAN'                               => 'IBAN:',
+    'FCPO_EMAIL_CLEARING_BODY_THANKYOU'             => 'Vielen Dank, dein %SHOPNAME%-Team',
 );
 
 /*

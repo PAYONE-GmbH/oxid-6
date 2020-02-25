@@ -485,6 +485,12 @@ $aLang = array(
 'FCPO_ADDRESSCHECKTYPE_REGULAR_SET_INACTIVE' => '<b>Please note:</b><br>Regular Adresschecktype has been deactivated due to your Bonicheck is set active. Please configure Addresschecktype in Bonicheck-Section.',
 'FCPO_EMAIL_CLEARING_SUBJECT'                   => 'Ihre Überweisungsdaten zur Bestellnummer',
 'FCPO_EMAIL_CLEARING_BODY_WELCOME'              => "Hallo %NAME% %SURNAME%,\nzur Begleichung der Rechnung verwenden Sie bitte folgende Daten zur Überweisung:\n\n",
+'FCPO_EMAIL_BANK'                               => 'Bank:',
+'FCPO_EMAIL_ROUTINGNUMBER'                      => 'Bank Code:',
+'FCPO_EMAIL_ACCOUNTNUMBER'                      => 'Account No.:',
+'FCPO_EMAIL_BIC'                                => 'BIC:',
+'FCPO_EMAIL_IBAN'                               => 'IBAN:',
+'FCPO_EMAIL_CLEARING_BODY_THANKYOU'             => 'Thank you, your %SHOPNAME%-Team',
 );
 
 /*

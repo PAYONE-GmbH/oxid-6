@@ -12,7 +12,9 @@ jobs:
         operating-system: [ubuntu-latest]
         php-versions: ['7.1', '7.2']
         oxid-versions: ['dev-b-6.0-ce', 'dev-b-6.1-ce', 'dev-b-6.2-rc-ce']
-      
+        exclude:
+          - php-versions: '7.1'
+            oxid-versions: 'dev-b-6.2-rc-ce'    
     name: Oxid ${{ matrix.oxid-versions }} on PHP ${{ matrix.php-versions }}
     services:
       mysql:
@@ -55,7 +57,7 @@ jobs:
         [ -d /tmp/oxid6/source/modules/fc/fcpayone ] && { echo "Removing from modules"; rm -rf /tmp/oxid6/source/modules/fc/fcpayone; }
         [ -d /tmp/oxid6/vendor/payone-gmbh/oxid-6 ] && { echo "Removing from vendor"; rm -rf /tmp/oxid6/vendor/payone-gmbh/oxid-6; }
         mkdir -p /tmp/oxid6/source/modules/fc/fcpayone
-        cp -R ./* /tmp/oxid6/source/modules/fc/fcpayone
+        cp -R $GITHUB_WORKSPACE/* /tmp/oxid6/source/modules/fc/fcpayone
     - name: Run tests
       # Run composer update to make services available, see #128
       run: |

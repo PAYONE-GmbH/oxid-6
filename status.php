@@ -391,17 +391,21 @@ class fcPayOneTransactionStatusHandler extends oxBase
                     oxDb::getDb()->Execute($query);
                 }
                 if($this->fcGetPostParam('txaction') == 'paid') {
+                    $oLang = oxNew('oxLang');
+                    $sReplacement = $oLang->translateString('FCPO_REMARK_APPOINTED_MISSING');
+
                     $query = "
                         UPDATE 
                             oxorder 
                         SET 
                             oxfolder = 'ORDERFOLDER_NEW', 
-                            oxtransstatus = 'OK' 
+                            oxtransstatus = 'OK',
+                            oxremark = REPLACE(oxremark, '".$sReplacement."', '')
                         WHERE 
                             oxid = '{$sOrderId}' AND 
                             oxtransstatus IN ('INCOMPLETE', 'ERROR') AND 
                             oxfolder = 'ORDERFOLDER_PROBLEMS'
-                        ";
+                    ";
                     oxDb::getDb()->Execute($query);
                 }
 

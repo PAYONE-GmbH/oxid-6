@@ -11,6 +11,7 @@
 [{oxmultilang ident="FCPO_EMAIL_ACCOUNTNUMBER"}] [{$order->getFcpoBanknumber()}]
 [{oxmultilang ident="FCPO_EMAIL_BIC"}] [{$order->getFcpoBiccode()}]
 [{oxmultilang ident="FCPO_EMAIL_IBAN"}] [{$order->getFcpoIbannumber()}]
+[{oxmultilang ident="FCPO_EMAIL_USAGE"}]: [{$order->oxorder__fcpotxid->value}]
 [{elseif $payment->oxuserpayments__oxpaymentsid->value == "fcpopo_bill" || $payment->oxuserpayments__oxpaymentsid->value == "fcpopo_debitnote"}]
 [{oxmultilang ident="FCPO_PAYOLUTION_EMAIL_CLEARING"}]: [{$smarty.session.payolution_clearing}]
 [{else}]

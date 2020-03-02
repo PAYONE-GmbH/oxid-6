@@ -194,6 +194,7 @@ $aLang = array(
 'FCPO_EMAIL_CLEARING_SUBJECT'                   => 'Your clearingdata for ordernumber ',
 'FCPO_EMAIL_CLEARING_BODY_WELCOME'              => "Hello %NAME% %SURNAME%,\nfor clearing your invoice, please use the following data:\n\n",
 'FCPO_EMAIL_CLEARING_BODY_THANKYOU'             => 'Thank you, your %SHOPNAME%-Team',
+'FCPO_EMAIL_USAGE'                              => 'Usage',
 );
 
 /*

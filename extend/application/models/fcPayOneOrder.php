@@ -677,6 +677,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         $sBody .= $oLang->translateString("FCPO_EMAIL_ACCOUNTNUMBER")." ".$this->getFcpoBanknumber()."\n";
         $sBody .= $oLang->translateString("FCPO_EMAIL_BIC")." ".$this->getFcpoBiccode()."\n";
         $sBody .= $oLang->translateString("FCPO_EMAIL_IBAN")." ".$this->getFcpoIbannumber()."\n";
+        $sBody .= $oLang->translateString("FCPO_EMAIL_USAGE").": ".$this->oxorder__fcpotxid->value."\n";
         $sBody .= "\n\n";
         $sThankyou = $oLang->translateString('FCPO_EMAIL_CLEARING_BODY_THANKYOU');
         $sBody .= str_replace('%SHOPNAME%', $oShop->oxshops__oxname->value, $sThankyou);

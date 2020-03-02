@@ -35,7 +35,8 @@
             [{oxmultilang ident="FCPO_EMAIL_ROUTINGNUMBER"}] [{$order->getFcpoBankcode()}]<br>
             [{oxmultilang ident="FCPO_EMAIL_ACCOUNTNUMBER"}] [{$order->getFcpoBanknumber()}]<br>
             [{oxmultilang ident="FCPO_EMAIL_BIC"}] [{$order->getFcpoBiccode()}]<br>
-            [{oxmultilang ident="FCPO_EMAIL_IBAN"}] [{$order->getFcpoIbannumber()}]
+            [{oxmultilang ident="FCPO_EMAIL_IBAN"}] [{$order->getFcpoIbannumber()}] <br>
+            [{oxmultilang ident="FCPO_EMAIL_USAGE"}]: [{$order->oxorder__fcpotxid->value}]
         </div>
     [{/if}]
 [{/if}]

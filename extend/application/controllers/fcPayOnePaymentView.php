@@ -960,6 +960,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     {
         $aMap = array(
             'fcporp_bill' => 'invoice',
+            'fcporp_debitnote' => 'elv',
         );
 
         $sReturn = '';

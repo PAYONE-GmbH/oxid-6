@@ -198,7 +198,14 @@ $aLang = array(
 
 'FCPO_CC_HOSTED_ERROR_CARDTYPE'                 => 'Bitte wählen Sie einen Kartentyp',
 'FCPO_CC_HOSTED_ERROR_CVC'                      => 'Bitte CVC-Eingabe überprüfen',
-'FCPO_CC_HOSTED_ERROR_INCOMPLETE'               => 'Eingaben unvollständig'
+'FCPO_CC_HOSTED_ERROR_INCOMPLETE'               => 'Eingaben unvollständig',
+'FCPO_RATEPAY_AGREE'                            => 'Einwilligung',
+'FCPO_RATEPAY_NOT_AGREED'                       => 'Sie haben die Einwilligung zur Übertragung der erforderlichen Daten an Ratepay nicht bestätigt.',
+'FCPO_RATEPAY_SEPA_NOT_AGREED'                  => 'Sie haben das SEPA Lastschriftmandat noch nicht erteilt.',
+'FCPO_RATEPAY_SEPA_AGREEMENT_PART_1'            => 'Hiermit erteile ich das',
+'FCPO_RATEPAY_SEPA_AGREE'                       => 'SEPA-Lastschriftmandat',
+'FCPO_RATEPAY_ACCOUNTHOLDER'                    => 'Kontoinhaber',
+
 );
 
 /*

@@ -752,6 +752,7 @@
                         [{oxmultilang ident="FCPO_PROFILES_RATEPAY_PAYMENT"}]: 
                         <select class="edittext" name="aRatepayProfiles[[{$sOxid}]][paymentid]">
                             <option value="fcporp_bill" [{if $aRatePayProfile.OXPAYMENTID == 'fcporp_bill'}]selected[{/if}]>RatePay Rechnung</option>
+                            <option value="fcporp_debitnote" [{if $aRatePayProfile.OXPAYMENTID == 'fcporp_debitnote'}]selected[{/if}]>RatePay Lastschrift</option>
                         </select>
                         <input type="submit" class="edittext" name="aRatepayProfiles[[{$sOxid}]][delete]" value="[{oxmultilang ident="FCPO_RATEPAY_DELETE_PROFILE"}]" onClick="Javascript:document.myedit.fnc.value='save'" [{$readonly}]><br>
                         [{if $aRatePayProfile.merchant_name =='PayONE'}]

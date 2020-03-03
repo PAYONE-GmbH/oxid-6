@@ -6,30 +6,30 @@
         </dt>
         <dd class="[{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]activePayment[{/if}]">
             <input type="hidden" name="fcpo_mode_[{$sPaymentID}]" value="[{$paymentmethod->fcpoGetOperationMode()}]">
-            <ul class="form fcporp_bill_form">
-                <input type="hidden" name="dynvalue[fcporp_bill_profileid]" value="[{$oView->fcpoGetRatePayMatchedProfile('fcporp_bill')}]">
+            <ul class="form fcporp_debitnote_form">
+                <input type="hidden" name="dynvalue[fcporp_debitnote_profileid]" value="[{$oView->fcpoGetRatePayMatchedProfile('fcporp_debitnote')}]">
                 [{if $oView->fcpoRatePayShowUstid()}]
                     <li>
                         <label>[{oxmultilang ident="FCPO_RATEPAY_USTID"}]</label>
-                        <input placeholder="[{oxmultilang ident="FCPO_RATEPAY_USTID"}]" type='text' name="dynvalue[fcporp_bill_ustid]" value="[{$oView->fcpoGetUserValue('oxustid')}]">
+                        <input placeholder="[{oxmultilang ident="FCPO_RATEPAY_USTID"}]" type='text' name="dynvalue[fcporp_debitnote_ustid]" value="[{$oView->fcpoGetUserValue('oxustid')}]">
                     </li>
                 [{/if}]
                 [{if $oView->fcpoRatePayShowBirthdate()}]
                     <li>
                         <label>[{oxmultilang ident="FCPO_RATEPAY_BIRTHDATE"}]</label>
-                        <select name="dynvalue[fcporp_bill_birthdate_day]">
+                        <select name="dynvalue[fcporp_debitnote_birthdate_day]">
                             [{foreach from=$oView->fcpoGetDayRange() item='sDay'}]
                                 <option value="[{$sDay}]" [{if $sDay == $oView->fcpoGetBirthdayField('day')}]selected[{/if}]>[{$sDay}]</option>
                             [{/foreach}]
                         </select>
                         &nbsp;
-                        <select name="dynvalue[fcporp_bill_birthdate_month]">
+                        <select name="dynvalue[fcporp_debitnote_birthdate_month]">
                             [{foreach from=$oView->fcpoGetMonthRange() item='sMonth'}]
                                 <option value="[{$sMonth}]" [{if $sMonth == $oView->fcpoGetBirthdayField('month')}]selected[{/if}]>[{$sMonth}]</option>
                             [{/foreach}]
                         </select>
                         &nbsp;
-                        <select name="dynvalue[fcporp_bill_birthdate_year]">
+                        <select name="dynvalue[fcporp_debitnote_birthdate_year]">
                             [{foreach from=$oView->fcpoGetYearRange() item='sYear'}]
                                 <option value="[{$sYear}]" [{if $sYear == $oView->fcpoGetBirthdayField('year')}]selected[{/if}]>[{$sYear}]</option>
                             [{/foreach}]
@@ -39,7 +39,7 @@
                 [{if $oView->fcpoRatePayShowFon()}]
                     <li>
                         <label>[{oxmultilang ident="FCPO_RATEPAY_FON"}]</label>
-                        <input placeholder="[{oxmultilang ident="FCPO_RATEPAY_FON"}]" type='text' name="dynvalue[fcporp_bill_fon]" value="[{$oView->fcpoGetUserValue('oxfon')}]">
+                        <input placeholder="[{oxmultilang ident="FCPO_RATEPAY_FON"}]" type='text' name="dynvalue[fcporp_debitnote_fon]" value="[{$oView->fcpoGetUserValue('oxfon')}]">
                     </li>
                 [{/if}]
                 <li>

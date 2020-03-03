@@ -11,12 +11,12 @@
                 <div class="form-group fcporp_debitnote_ustid">
                     <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_RATEPAY_USTID"}]</label>
                     <div class="col-lg-9">
-                        <input placeholder="[{oxmultilang ident="FCPO_RATEPAY_USTID"}]" class="form-control" type="text" size="20" maxlength="64" name="dynvalue[fcporp_bill_ustid]" value="[{$oView->fcpoGetUserValue('oxustid')}]">
+                        <input placeholder="[{oxmultilang ident="FCPO_RATEPAY_USTID"}]" class="form-control" type="text" size="20" maxlength="64" name="dynvalue[fcporp_debitnote_ustid]" value="[{$oView->fcpoGetUserValue('oxustid')}]">
                     </div>
                 </div>
             [{/if}]
             [{if $oView->fcpoRatePayShowBirthdate()}]
-                <div class="form-group fcporp_bill_birthdate">
+                <div class="form-group fcporp_debitnote_birthdate">
                     <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_RATEPAY_BIRTHDATE"}]</label>
                     <div class="col-lg-9">
                         <select name="dynvalue[fcporp_debitnote_birthdate_day]">
@@ -43,7 +43,7 @@
                 <div class="form-group fcporp_debitnote_fon">
                     <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_RATEPAY_FON"}]</label>
                     <div class="col-lg-9">
-                        <input placeholder="[{oxmultilang ident="FCPO_RATEPAY_FON"}]" class="form-control" type="text" size="20" maxlength="64" name="dynvalue[fcporp_bill_fon]" value="[{$oView->fcpoGetUserValue('oxfon')}]">
+                        <input placeholder="[{oxmultilang ident="FCPO_RATEPAY_FON"}]" class="form-control" type="text" size="20" maxlength="64" name="dynvalue[fcporp_debitnote_fon]" value="[{$oView->fcpoGetUserValue('oxfon')}]">
                     </div>
                 </div>
             [{/if}]
@@ -71,10 +71,13 @@
             </div>
 
             <div class="alert alert-info col-lg-offset-3 desc">
-                <input name="dynvalue[fcpo_ratepay_debitnote_agreed]" value="agreed" type="checkbox">[{oxmultilang ident="FCPO_RATEPAY_AGREE"}] [{oxmultilang ident="FCPO_RATEPAY_AGREEMENT_PART_2"}]
+                [{oxmultilang ident='FCPO_RATEPAY_MANDATE_IDENTIFICATION'}]
             </div>
             <div class="alert alert-info col-lg-offset-3 desc">
-                <input name="dynvalue[fcpo_ratepay_debitnote_sepa_agreed]" value="agreed" type="checkbox">&nbsp;[{oxmultilang ident="FCPO_RATEPAY_SEPA_AGREEMENT_PART_1"}] [{oxmultilang ident="FCPO_RATEPAY_SEPA_AGREE"}]
+                <input name="dynvalue[fcpo_ratepay_debitnote_agreed]" value="agreed" type="checkbox"> [{oxmultilang ident="FCPO_RATEPAY_AGREE"}]
+            </div>
+            <div class="alert alert-info col-lg-offset-3 desc">
+                <input name="dynvalue[fcpo_ratepay_debitnote_sepa_agreed]" value="agreed" type="checkbox">&nbsp;[{oxmultilang ident="FCPO_RATEPAY_SEPA_AGREE"}]
             </div>
 
             [{block name="checkout_payment_longdesc"}]

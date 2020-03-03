@@ -195,17 +195,15 @@ $aLang = array(
 'FCPO_SECINVOICE_NO_COMPANY'                    => 'Keine Firma? Klicken Sie <a href="index.php?cl=account_user" style="color:green;">hier</a> um Ihre Addresse zu ändern.',
 'FCPO_NOT_ADULT'                                => 'Sie sind aufgrund Ihres Alters leider nicht berechtigt die gewählte Zahlart zu verwenden. Bitte wählen Sie eine andere Zahlart.',
 'FCPO_BIRTHDATE_INVALID'                        => 'Ihr Geburtsdatum wurde nicht korrekt eingegeben',
-
 'FCPO_CC_HOSTED_ERROR_CARDTYPE'                 => 'Bitte wählen Sie einen Kartentyp',
 'FCPO_CC_HOSTED_ERROR_CVC'                      => 'Bitte CVC-Eingabe überprüfen',
 'FCPO_CC_HOSTED_ERROR_INCOMPLETE'               => 'Eingaben unvollständig',
-'FCPO_RATEPAY_AGREE'                            => 'Einwilligung',
+'FCPO_RATEPAY_AGREE'                            => '<p>Im Rahmen des Bestellvorgangs übermitteln wir Ihre Daten zum Zwecke der Identitäts- und Bonitätsprüfung sowie der Vertragsabwicklung an RATEPAY. Es gelten die <a href="//ratepay.com/legal" title="Legal - RatePAY" target="_blank">zusätzlichen AGB für RATEPAY-Zahlungsarten und die Datenschutzhinweise der RatePAY GmbH</a> für SEPA-Lastschrift.</p>',
 'FCPO_RATEPAY_NOT_AGREED'                       => 'Sie haben die Einwilligung zur Übertragung der erforderlichen Daten an Ratepay nicht bestätigt.',
 'FCPO_RATEPAY_SEPA_NOT_AGREED'                  => 'Sie haben das SEPA Lastschriftmandat noch nicht erteilt.',
-'FCPO_RATEPAY_SEPA_AGREEMENT_PART_1'            => 'Hiermit erteile ich das',
-'FCPO_RATEPAY_SEPA_AGREE'                       => 'SEPA-Lastschriftmandat',
+'FCPO_RATEPAY_SEPA_AGREE'                       => '<p>Ich ermächtige die RatePAY GmbH, Zahlungen von meinem Konto mittels Lastschrift einzuziehen. Zugleich weise ich mein	Kreditinstitut an, die von der RatePAY GmbH auf mein Konto gezogenen Lastschriften einzulösen.</p><p>Hinweis: Ich kann innerhalb von acht Wochen, beginnend mit dem	Belastungsdatum, die Erstattung des belasteten Betrages verlangen. Es gelten dabei die mit meinem Kreditinstitut vereinbarten Bedingungen.</p>',
 'FCPO_RATEPAY_ACCOUNTHOLDER'                    => 'Kontoinhaber',
-
+'FCPO_RATEPAY_MANDATE_IDENTIFICATION'           => '<p>RatePAY GmbH, Franklinstraße 28-29, D-10587 Berlin<br> Gläubiger-ID: DE39RPY00000568463<br> Mandatsreferenz: WIRD SEPARAT MITGETEILT</p>',
 );
 
 /*

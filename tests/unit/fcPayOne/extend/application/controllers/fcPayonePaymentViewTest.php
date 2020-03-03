@@ -157,7 +157,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
             'somePaymentId' => 'someProfile'
         );
 
-        $this->invokeSetAttribute($oTestObject, '_aRatePayBillProfileIds', $aMockProfileIds);
+        $this->invokeSetAttribute($oTestObject, '_aRatePayProfileIds', $aMockProfileIds);
         $this->assertEquals('someProfile', $oTestObject->fcpoGetRatePayMatchedProfile('somePaymentId'));
     }
 

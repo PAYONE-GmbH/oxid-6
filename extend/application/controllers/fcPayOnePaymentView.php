@@ -915,11 +915,15 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
                 $dProfileBasketValueMax = (double) $aCurrentRatePayProfile[$sProfileBasketMaxIndex];
                 $dProfileBasketValueMin = (double) $aCurrentRatePayProfile[$sProfileBasketMinIndex];
                 $sProfileActivationStatus = $aCurrentRatePayProfile[$sProfileActivationStatusIndex];
+                $sProfileCountryBilling = $aCurrentRatePayProfile['country_code_billing'];
+                $sProfileCurrency = $aCurrentRatePayProfile['currency'];
 
                 $aRatepayMatchData = array(
                     'basketvalue_max' => $dProfileBasketValueMax,
                     'basketvalue_min' => $dProfileBasketValueMin,
                     'activation_status' => $sProfileActivationStatus,
+                    'country_code_billing' => $sProfileCountryBilling,
+                    'currency' => $sProfileCurrency,
                 );
 
                 $blProfileMatches = $this->_fcpoCheckRatePayProfileMatch($aRatepayMatchData);
@@ -941,16 +945,36 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      */
     protected function _fcpoCheckRatePayProfileMatch($aRatepayMatchData) 
     {
-        $blReturn = false;
-        if ($aRatepayMatchData['activation_status'] == '2') {
-            $dBasketValue = $this->fcpoGetBasketSum();
-
-            if ($dBasketValue <= $aRatepayMatchData['basketvalue_max'] && $dBasketValue >= $aRatepayMatchData['basketvalue_min']) {
-                $blReturn = true;
-            }
+        if ($aRatepayMatchData['activation_status'] != '2') {
+            return false;
         }
 
-        return $blReturn;
+        $dBasketValue = $this->fcpoGetBasketSum();
+        $blBasketValueMatches = (
+            $dBasketValue <= $aRatepayMatchData['basketvalue_max'] &&
+            $dBasketValue >= $aRatepayMatchData['basketvalue_min']
+        );
+        if (!$blBasketValueMatches) {
+            return false;
+        }
+
+        $sBillCountry = $this->fcGetBillCountry();
+        $blCountryMatches = (
+            $sBillCountry == $aRatepayMatchData['country_code_billing']
+        );
+        if (!$blCountryMatches) {
+            return false;
+        }
+
+        $oCur = $this->getActCurrency();
+        $blCurrencyMatches = (
+            $oCur->name == $aRatepayMatchData['currency']
+        );
+        if (!$blCurrencyMatches) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

@@ -3054,7 +3054,7 @@ class fcpoRequest extends oxSuperCfg
             $this->removeParameter('solution_version');
         }
 
-        $sPath = 'modules/fcPayOne/mandates/' . $sMandateIdentification . '.pdf';
+        $sPath = 'modules/fc/fcpayone/mandates/' . $sMandateIdentification . '.pdf';
         $sDestinationFile = getShopBasePath() . $sPath;
 
         $aOptions = array(
@@ -3076,7 +3076,7 @@ class fcpoRequest extends oxSuperCfg
                     $oDb->Execute($sQuery);
                 }
 
-                $sReturn = $this->getConfig()->getShopUrl() . "modules/fcPayOne/download.php?id=" . $sOrderId;
+                $sReturn = $this->getConfig()->getShopUrl() . "modules/fc/fcpayone/download.php?id=" . $sOrderId;
                 $sStatus = 'SUCCESS';
 
                 $aOutput = array(

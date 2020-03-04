@@ -98,7 +98,7 @@ class fcPayOneThankyouView extends fcPayOneThankyouView_parent
             if($sMandateIdentification && $aMandate['mandate_status'] == 'active') {
                 $oPayment = $this->_oFcpoHelper->getFactoryObject('oxPayment');
                 $oPayment->fcpoAddMandateToDb($oOrder->getId(), $sMandateIdentification);
-                $sPdfUrl = $oConfig->getShopUrl()."modules/fcPayOne/download.php?id=".$oOrder->getId();
+                $sPdfUrl = $oConfig->getShopUrl()."modules/fc/fcpayone/download.php?id=".$oOrder->getId();
             } elseif($sMandateIdentification && $sMode && $oOrder) {
                 $oPORequest = $this->_oFcpoHelper->getFactoryObject('fcporequest');
                 $sPdfUrl = $oPORequest->sendRequestGetFile($oOrder->getId(), $sMandateIdentification, $sMode);

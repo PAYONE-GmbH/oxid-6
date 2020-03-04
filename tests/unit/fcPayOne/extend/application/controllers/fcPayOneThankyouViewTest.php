@@ -104,7 +104,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneThankyouView extends 
 
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
 
-        $sExpect = 'http://www.someshopurl.org/modules/fcPayOne/download.php?id=someId&uid=someUserId';
+        $sExpect = 'http://www.someshopurl.org/modules/fc/fcpayone/download.php?id=someId&uid=someUserId';
         
         $this->assertEquals($sExpect, $oTestObject->fcpoGetMandatePdfUrl());
     }

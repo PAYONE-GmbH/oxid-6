@@ -234,5 +234,20 @@ class fcPayOneThankyouView extends fcPayOneThankyouView_parent
         
         return $this->_sBarzahlenHtml;
     }
-    
+
+    /**
+     * View controller getter for deciding if clearing data should be shown
+     *
+     * @param void
+     * @return bool
+     */
+    public function fcpoShowClearingData()
+    {
+        $oOrder = $this->getOrder();
+
+        $blShowClearingData =
+            $oOrder->fcpoShowClearingData($oOrder);
+
+        return $blShowClearingData;
+    }
 }

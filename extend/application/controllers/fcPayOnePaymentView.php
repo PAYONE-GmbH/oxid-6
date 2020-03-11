@@ -1324,7 +1324,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
 
             if ($blContinue !== true) {
                 $this->_fcpoSetBoniErrorValues($sPaymentId);
-                $mReturn = null;
+                $mReturn = 'basket';
             } else {
                 $this->_fcpoSetMandateParams($oPayment);
             }
@@ -2587,11 +2587,9 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         $this->_oFcpoHelper->fcpoSetSessionVariable('_selected_paymentid', $sPaymentId);
         $this->_oFcpoHelper->fcpoDeleteSessionVariable('stsprotection');
 
-        if ($this->_fcGetCurrentVersion() >= 4400) {
-            $oSession = $this->_oFcpoHelper->fcpoGetSession();
-            $oBasket = $oSession->getBasket();
-            $oBasket->setTsProductId(null);
-        }
+        $oSession = $this->_oFcpoHelper->fcpoGetSession();
+        $oBasket = $oSession->getBasket();
+        $oBasket->setTsProductId(null);
     }
 
     /**

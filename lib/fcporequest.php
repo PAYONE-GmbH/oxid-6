@@ -3072,7 +3072,7 @@ class fcpoRequest extends oxSuperCfg
             if (file_exists($sDestinationFile)) {
                 $sExists = $oDb->GetOne("SELECT oxorderid FROM fcpopdfmandates WHERE oxorderid = " . $oDb->quote($sOrderId) . " LIMIT 1");
                 if (!$sExists) {
-                    $sQuery = "INSERT INTO fcpopdfmandates VALUES (" . $oDb->quote($sOrderId) . ", " . $oDb->quote(basename($sDestinationFile)) . ")";
+                    $sQuery = "INSERT INTO fcpopdfmandates (OXORDERID, FCPO_FILENAME) VALUES (" . $oDb->quote($sOrderId) . ", " . $oDb->quote(basename($sDestinationFile)) . ")";
                     $oDb->Execute($sQuery);
                 }
 

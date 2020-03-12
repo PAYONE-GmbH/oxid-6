@@ -900,6 +900,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      * 
      * @param  string $sPaymentId
      * @return array
+     * @todo: The whole process of matching a profile should be moved into ratepay-model
      */
     protected function _fcpoGetMatchingProfile($sPaymentId) 
     {

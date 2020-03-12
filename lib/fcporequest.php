@@ -2132,16 +2132,15 @@ class fcpoRequest extends oxSuperCfg
     /**
      * Adds RatePay specific parameters
      * 
-     * @param  type $oOrder
+     * @param  object $oOrder
      * @return void
+     * @todo: currently only shop id will be fetched
      */
     protected function _fcpoAddCaptureAndDebitRatePayParams($oOrder) 
     {
         $sPaymentId = $oOrder->oxorder__oxpaymenttype->value;
         if (in_array($sPaymentId, $this->_aRatePayPayments)) {
-            $oRatePay = oxNew('fcporatepay');
-            $aRatePayProfile = $oRatePay->fcpoGetProfileDataByPaymentId($sPaymentId);
-            $sRatePayShopId = $aRatePayProfile['shopid'];
+            $sRatePayShopId = $oOrder->getFcpoRatepayShopId();
             $this->addParameter('add_paydata[shop_id]', $sRatePayShopId);
         }
     }

@@ -204,6 +204,10 @@ $aLang = array(
 'FCPO_RATEPAY_SEPA_AGREE'                       => '<p>Ich ermächtige die RatePAY GmbH, Zahlungen von meinem Konto mittels Lastschrift einzuziehen. Zugleich weise ich mein	Kreditinstitut an, die von der RatePAY GmbH auf mein Konto gezogenen Lastschriften einzulösen.</p><p>Hinweis: Ich kann innerhalb von acht Wochen, beginnend mit dem	Belastungsdatum, die Erstattung des belasteten Betrages verlangen. Es gelten dabei die mit meinem Kreditinstitut vereinbarten Bedingungen.</p>',
 'FCPO_RATEPAY_ACCOUNTHOLDER'                    => 'Kontoinhaber',
 'FCPO_RATEPAY_MANDATE_IDENTIFICATION'           => '<p>RatePAY GmbH, Franklinstraße 28-29, D-10587 Berlin<br> Gläubiger-ID: DE39RPY00000568463<br> Mandatsreferenz: WIRD SEPARAT MITGETEILT</p>',
+'FCPO_EMAIL_CLEARING_SUBJECT'                   => 'Ihre Überweisungsdaten zur Bestellnummer',
+'FCPO_EMAIL_CLEARING_BODY_WELCOME'              => "Hallo %NAME% %SURNAME%,\nzur Begleichung der Rechnung verwenden Sie bitte folgende Daten zur Überweisung:\n\n",
+'FCPO_EMAIL_CLEARING_BODY_THANKYOU'             => 'Vielen Dank, dein %SHOPNAME%-Team',
+'FCPO_EMAIL_USAGE'                              => 'Verwendungszweck',
 );
 
 /*

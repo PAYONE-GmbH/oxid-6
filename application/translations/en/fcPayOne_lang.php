@@ -193,6 +193,13 @@ $aLang = array(
 'FCPO_RATEPAY_SEPA_AGREE'                       => '<p>I hereby authorise RatePAY GmbH to collect payments from my account by direct debit. At the same time, I authorise my bank to debit my account in accordance with the instructions from RatePAY GmbH.</p><p>Note: As part of my rights, I am entitled to a refund from my ibank under the terms and conditions of my agreement with my bank.	A refund must be claimed within 8 weeks starting from the date on which my account was debited. My rights are explained in a statement that I can obtain from my bank.</p>',
 'FCPO_RATEPAY_ACCOUNTHOLDER'                    => 'Accountholder',
 'FCPO_RATEPAY_MANDATE_IDENTIFICATION'           => '<p>RatePAY GmbH, Franklinstraße 28-29, D-10587 Berlin, Germany<br> Creditor ID: DE39RPY00000568463<br> Mandate Reference: WILL BE COMMUNICATED SEPARATELY</p>',
+'FCPO_CC_HOSTED_ERROR_CARDTYPE'                 => 'Please select a cardtype',
+'FCPO_CC_HOSTED_ERROR_CVC'                      => 'Please check CVC',
+'FCPO_CC_HOSTED_ERROR_INCOMPLETE'               => 'Input incomplete',
+'FCPO_EMAIL_CLEARING_SUBJECT'                   => 'Your clearingdata for ordernumber ',
+'FCPO_EMAIL_CLEARING_BODY_WELCOME'              => "Hello %NAME% %SURNAME%,\nfor clearing your invoice, please use the following data:\n\n",
+'FCPO_EMAIL_CLEARING_BODY_THANKYOU'             => 'Thank you, your %SHOPNAME%-Team',
+'FCPO_EMAIL_USAGE'                              => 'Usage',
 );
 
 /*

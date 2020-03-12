@@ -191,6 +191,7 @@ class fcpayone_order extends fcpayone_admindetails
 
             $this->_sResponsePrefix = 'FCPO_CAPTURE_';
             $this->_aResponse = $oResponse;
+            $oOrder->fcpoSendClearingDataAfterCapture();
         }
     }
 

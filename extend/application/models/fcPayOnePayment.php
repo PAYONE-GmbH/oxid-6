@@ -621,5 +621,4 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         
         return $blAllowed;
     }
-
 }

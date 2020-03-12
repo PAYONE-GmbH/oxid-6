@@ -142,7 +142,7 @@ $aLang = array(
 'FCPO_HELP_BASIC_ADDRESSCHECK'              => 'Check the address on existence and supplementing and correcting the address (Possible for addresses in Germany, Austria, Switzerland, Netherlands, Belgium, Luxembourg, France, Italy, Spain, Portugal, Denmark, Sweden, Finland, Norway, Poland, Slovakia, Czech Republic, Hungary, U.S., Canada)',
 'FCPO_HELP_PERSON_ADDRESSCHECK'             => 'Check whether the person is known by the specified address, check the address on existence and supplementing and correcting the address (only Germany)',
 'FCPO_CONSUMERSCORETYPE'                    => 'Consumerscore check',
-'FCPO_NO_BONICHECK'                         => 'Do not perform comsumer score check',
+'FCPO_NO_BONICHECK'                         => 'Do not perform consumer score check',
 'FCPO_HARD_BONICHECK'                       => 'Infoscore (Hard features)',
 'FCPO_ALL_BONICHECK'                        => 'Infoscore (All features)',
 'FCPO_ALL_SCORE_BONICHECK'                  => 'Infoscore (All features + Consumerscore)',
@@ -483,7 +483,15 @@ $aLang = array(
 'FCPO_BONI_ERROR_SET_TO_BASIC'              => '<b>Please note:</b><br>Adresschecktype has been set to "Basic" due to your combination of Boni- and Addresscheck is not allowed.',
 'FCPO_BONI_ERROR_SET_TO_PERSON'             => '<b>Please note:</b><br>Adresschecktype has been set to "Person" due to your combination of Boni- and Addresscheck is not allowed.',
 'FCPO_ADDRESSCHECKTYPE_REGULAR_SET_INACTIVE' => '<b>Please note:</b><br>Regular Adresschecktype has been deactivated due to your Bonicheck is set active. Please configure Addresschecktype in Bonicheck-Section.',
-
+'FCPO_EMAIL_CLEARING_SUBJECT'                   => 'Ihre Überweisungsdaten zur Bestellnummer',
+'FCPO_EMAIL_CLEARING_BODY_WELCOME'              => "Hallo %NAME% %SURNAME%,\nzur Begleichung der Rechnung verwenden Sie bitte folgende Daten zur Überweisung:\n\n",
+'FCPO_EMAIL_BANK'                               => 'Bank:',
+'FCPO_EMAIL_ROUTINGNUMBER'                      => 'Bank Code:',
+'FCPO_EMAIL_ACCOUNTNUMBER'                      => 'Account No.:',
+'FCPO_EMAIL_BIC'                                => 'BIC:',
+'FCPO_EMAIL_IBAN'                               => 'IBAN:',
+'FCPO_EMAIL_CLEARING_BODY_THANKYOU'             => 'Thank you, your %SHOPNAME%-Team',
+'FCPO_EMAIL_USAGE'                              => 'Usage',
 );
 
 /*

@@ -411,19 +411,7 @@ class fcpayone_main extends fcpayone_admindetails
      */
     protected function _fcpoValidateAccountData()
     {
-        $aConfStrs = $this->_oFcpoHelper->fcpoGetRequestParameter("confstrs");
-
-        $blValidPrefix = is_numeric($aConfStrs['sFCPORefPrefix']);
-
-        if (!$blValidPrefix) {
-            $this->_fcpoAddConfigError('FCPO_CONFERROR_PREFIX_NUMERIC');
-        }
-
-        $blValid = (
-            $blValidPrefix
-        );
-
-        return $blValid;
+        return true;
     }
 
     /**

@@ -1161,10 +1161,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
                 {$sAnd}
             )
         ";
-$sPath = getShopBasePath()."/log/andre.log";
-$oFile = fopen($sPath, 'a');
-fwrite($oFile, $sQuery."\n");
-fclose($oFile);
+
         return $sQuery;
     }
 

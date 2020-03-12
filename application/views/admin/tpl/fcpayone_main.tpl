@@ -18,6 +18,8 @@
     <input type="hidden" name="cl" value="fcpayone_main">
 </form>
 
+
+
 <form autocomplete="off" name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post" enctype="multipart/form-data">
     [{$oViewConf->getHiddenSid()}]
     <input type="hidden" name="cl" value="fcpayone_main">
@@ -27,7 +29,14 @@
     [{oxmultilang ident="FCPO_MAIN_CONFIG_INFOTEXT"}]<br><br>
 
     [{oxmultilang ident="FCPO_MODULE_VERSION"}] [{$oView->fcpoGetModuleVersion()}]<br><br>
-    
+
+    [{if $oView->fcpoGetConfigErrors()}]
+        [{foreach from=$oView->fcpoGetConfigErrors() item='sErrorMessage'}]
+            <div style="padding:4px;background: red;color: white;font-weight: bold;">
+                [{$sErrorMessage}]
+            </div>
+        [{/foreach}]
+    [{/if}]
     <div class="groupExp">
         <div>
             <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="FCPO_CONFIG_GROUP_CONN"}]</b></a>

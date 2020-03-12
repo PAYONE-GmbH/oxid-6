@@ -483,6 +483,7 @@ $aLang = array(
     'FCPO_EMAIL_IBAN'                               => 'IBAN:',
     'FCPO_EMAIL_CLEARING_BODY_THANKYOU'             => 'Vielen Dank, dein %SHOPNAME%-Team',
     'FCPO_EMAIL_USAGE'                              => 'Verwendungszweck',
+    'FCPO_CONFERROR_PREFIX_NUMERIC'                 => 'Der optionale Referenznummernpräfix muss numerisch sein.',
 );
 
 /*

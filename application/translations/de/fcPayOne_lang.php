@@ -189,7 +189,7 @@ $aLang = array(
 'FCPO_AMAZON_ERROR_SHIPPING_ADDRESS_NOT_SET'    => 'Bitte wählen Sie eine Adresse.',
 'FCPO_AMAZON_ERROR_900'                         => 'Entschuldigung, die Transaktion mit Amazon Pay war nicht erfolgreich. Bitte wählen Sie eine andere Zahlart.',
 'FCPO_AMAZON_LOGIN'                             => 'Mit Amazon einloggen.',
-'FCPO_SECINVOICE_BIRTHDATE'                     => 'Bitte geben Sie ihr Geburtsdatum an',
+'FCPO_SECINVOICE_BIRTHDATE'                     => 'Geburtsdatum',
 'FCPO_SECINVOICE_USTID'                         => 'Umsatzsteueridentifiationsnummer',
 'FCPO_SECINVOICE_NO_COMPANY'                    => 'Keine Firma? Klicken Sie <a href="index.php?cl=account_user" style="color:green;">hier</a> um Ihre Addresse zu ändern.',
 'FCPO_NOT_ADULT'                                => 'Sie sind aufgrund Ihres Alters leider nicht berechtigt die gewählte Zahlart zu verwenden. Bitte wählen Sie eine andere Zahlart.',

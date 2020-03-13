@@ -12,7 +12,7 @@
             <script src="[{$oViewConf->fcpoGetModuleJsPath()}]lightview/lightview.js"></script>
             [{if $oView->fcpoRatePayShowUstid()}]
                 <div class="form-group fcporp_bill_ustid">
-                    <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_RATEPAY_USTID"}]</label>
+                    <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_RATEPAY_USTID"}]:</label>
                     <div class="col-lg-9">
                         <input placeholder="[{oxmultilang ident="FCPO_RATEPAY_USTID"}]" class="form-control" type="text" size="20" maxlength="64" name="dynvalue[fcporp_bill_ustid]" value="[{$oView->fcpoGetUserValue('oxustid')}]">
                     </div>
@@ -20,7 +20,7 @@
             [{/if}]
             [{if $oView->fcpoRatePayShowBirthdate()}]
                 <div class="form-group fcporp_bill_birthdate">
-                    <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_RATEPAY_BIRTHDATE"}]</label>
+                    <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_RATEPAY_BIRTHDATE"}]:</label>
                     <div class="col-lg-9">
                         <select name="dynvalue[fcporp_bill_birthdate_day]">
                             [{foreach from=$oView->fcpoGetDayRange() item='sDay'}]
@@ -44,7 +44,7 @@
             [{/if}]
             [{if $oView->fcpoRatePayShowFon()}]
                 <div class="form-group fcporp_bill_fon">
-                    <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_RATEPAY_FON"}]</label>
+                    <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_RATEPAY_FON"}]:</label>
                     <div class="col-lg-9">
                         <input placeholder="[{oxmultilang ident="FCPO_RATEPAY_FON"}]" class="form-control" type="text" size="20" maxlength="64" name="dynvalue[fcporp_bill_fon]" value="[{$oView->fcpoGetUserValue('oxfon')}]">
                     </div>

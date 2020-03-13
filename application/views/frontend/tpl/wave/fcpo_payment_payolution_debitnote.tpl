@@ -10,7 +10,7 @@
         
         [{if $oView->fcpoShowPayolutionB2C()}]
             <div class="form-group cpo_payolution_debitnote_birthdate">
-                <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_PAYOLUTION_BIRTHDATE"}]</label>
+                <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_PAYOLUTION_BIRTHDATE"}]:</label>
                 <div class="col-lg-9">
                     <select name="dynvalue[fcpo_payolution_debitnote_birthdate_day]">
                         [{foreach from=$oView->fcpoGetDayRange() item='sDay'}]
@@ -33,13 +33,13 @@
             </div>
         [{/if}]
         <div class="form-group fcpo_payolution_debitnote_accountholder">
-            <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_PAYOLUTION_ACCOUNTHOLDER"}]</label>
+            <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_PAYOLUTION_ACCOUNTHOLDER"}]:</label>
             <div class="col-lg-9">
                 <input placeholder="[{oxmultilang ident="FCPO_PAYOLUTION_ACCOUNTHOLDER"}]" class="form-control js-oxValidate js-oxValidate_notEmpty"  type="text" size="20" maxlength="64" name="dynvalue[fcpo_payolution_debitnote_accountholder]" value="[{$dynvalue.fcpo_payolution_debitnote_accountholder}]" onkeyup="fcHandleDebitInputs();return false;" required="required">
             </div>
         </div> 
         <div class="form-group fcpo_payolution_debitnote_iban">
-            <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_IBAN"}]</label>
+            <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_IBAN"}]:</label>
             <div class="col-lg-9">
                 <input placeholder="[{oxmultilang ident="FCPO_BANK_IBAN"}]" class="form-control js-oxValidate js-oxValidate_notEmpty" type="text" size="20" maxlength="64" name="dynvalue[fcpo_payolution_debitnote_iban]" value="[{$dynvalue.fcpo_payolution_debitnote_iban}]" onkeyup="fcHandleDebitInputs();return false;" required="required">
                 <div id="fcpo_payolution_iban_invalid" class="fcpo_check_error">
@@ -50,9 +50,9 @@
             </div>
         </div>
         <div class="form-group fcpo_payolution_debitnote_bic">
-            <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_BIC"}]</label>
+            <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_BIC"}]:</label>
             <div class="col-lg-9">
-                <input class="form-control js-oxValidate js-oxValidate_notEmpty" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_payolution_debitnote_bic]" value="[{$dynvalue.fcpo_payolution_debitnote_bic}]" onkeyup="fcHandleDebitInputs();return false;" required="required">
+                <input placeholder="[{oxmultilang ident="FCPO_BANK_BIC"}]" class="form-control js-oxValidate js-oxValidate_notEmpty" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_payolution_debitnote_bic]" value="[{$dynvalue.fcpo_payolution_debitnote_bic}]" onkeyup="fcHandleDebitInputs();return false;" required="required">
                 <div id="fcpo_payolution_bic_invalid" class="fcpo_check_error">
                     <p class="oxValidateError" style="display: block;">
                         [{oxmultilang ident="FCPO_BIC_INVALID"}]

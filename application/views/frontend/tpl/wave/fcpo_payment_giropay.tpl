@@ -5,7 +5,7 @@
     </dt>
     <dd class="[{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]activePayment[{/if}]">
         <div class="form-group" id="fcpo_ou_iban_gpy">
-            <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_IBAN"}]</label>
+            <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_IBAN"}]:</label>
             <div class="col-lg-9">
                 <input placeholder="[{oxmultilang ident="FCPO_BANK_IBAN"}]" class="form-control" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_ou_iban_gpy]" value="[{$dynvalue.fcpo_ou_iban_gpy}]">
                 <div id="fcpo_ou_iban_invalid" class="fcpo_check_error">
@@ -18,7 +18,7 @@
             </div>
         </div>
         <div class="form-group" id="fcpo_ou_bic_gpy">
-            <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_BIC"}]</label>
+            <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_BIC"}]:</label>
             <div class="col-lg-9">
                 <input placeholder="[{oxmultilang ident="FCPO_BANK_BIC"}]" class="form-control" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_ou_bic_gpy]" value="[{$dynvalue.fcpo_ou_bic_gpy}]">
                 <div id="fcpo_ou_bic_invalid" class="fcpo_check_error">

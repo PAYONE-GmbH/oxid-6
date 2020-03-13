@@ -28,7 +28,7 @@
                 </div>
             </div>
             <div class="form-group fcpo_elv_country">
-                <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_COUNTRY"}]</label>
+                <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_COUNTRY"}]:</label>
                 <div class="col-lg-9">
                     <select name="dynvalue[fcpo_elv_country]" onchange="fcCheckDebitCountry(this);return false;" class="form-control selectpicker" required="required">
                         [{foreach from=$oView->fcpoGetDebitCountries() key=sCountryId item=sCountry}]
@@ -38,7 +38,7 @@
                 </div>
             </div>
             <div class="form-group fcpo_elv_iban">
-                <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_IBAN"}]</label>
+                <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_IBAN"}]:</label>
                 <div class="col-lg-9">
                     <input placeholder="[{oxmultilang ident="FCPO_BANK_IBAN"}]" class="form-control" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_elv_iban]" value="[{$dynvalue.fcpo_elv_iban}]" onkeyup="fcHandleDebitInputs('[{$oView->fcpoGetBICMandatory()}]]');return false;">
                     <div id="fcpo_elv_iban_invalid" class="fcpo_check_error">
@@ -52,7 +52,7 @@
             </div>
             [{if $oView->getConfigParam('blFCPODebitBICMandatory')}]
                 <div class="form-group fcpo_elv_bic">
-                    <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_BIC"}]</label>
+                    <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_BIC"}]:</label>
                     <div class="col-lg-9">
                         <input placeholder="[{oxmultilang ident="FCPO_BANK_BIC"}]" class="form-control" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_elv_bic]" value="[{$dynvalue.fcpo_elv_bic}]" onkeyup="fcHandleDebitInputs('[{$oView->fcpoGetBICMandatory()}]]');return false;">
                         <div id="fcpo_elv_bic_invalid" class="fcpo_check_error">
@@ -73,7 +73,7 @@
                         </div>
                     </div>
                     <div class="form-group fcpo_elv_ktonr" >
-                        <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_ACCOUNT_NUMBER"}]</label>
+                        <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_ACCOUNT_NUMBER"}]:</label>
                         <div class="col-lg-9">
                             <input placeholder="[{oxmultilang ident="FCPO_BANK_ACCOUNT_NUMBER"}]" class="form-control" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_elv_ktonr]" value="[{$dynvalue.fcpo_elv_ktonr}]" onkeyup="fcHandleDebitInputs('[{$oView->fcpoGetBICMandatory()}]]');return false;">
                             <div id="fcpo_elv_ktonr_invalid" class="fcpo_check_error">
@@ -87,7 +87,7 @@
                     </div>
                 </div>
                 <div class="form-group fcpo_elv_blz" id="fcpo_elv_blz" style="display: none;">
-                    <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_CODE"}]</label>
+                    <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_CODE"}]:</label>
                     <div class="col-lg-9">
                         <input placeholder="[{oxmultilang ident="FCPO_BANK_CODE"}]" class="form-control" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_elv_blz]" value="[{$dynvalue.fcpo_elv_blz}]" onkeyup="fcHandleDebitInputs('[{$oView->fcpoGetBICMandatory()}]]');return false;">
                         <div id="fcpo_elv_blz_invalid" class="fcpo_check_error">

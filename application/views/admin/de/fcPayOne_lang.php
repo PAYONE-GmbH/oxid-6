@@ -218,7 +218,6 @@ $aLang = array(
 'FCPO_GIFTCARD'                             => "Grußkarte",
 'FCPO_SURCHARGE'                            => 'Aufschlag',
 'FCPO_DEDUCTION'                            => 'Abschlag',
-'FCPO_PAYMENTTYPE'                          => "Zahlungsart:",
 'FCPO_SHIPPINGCOST'                         => "Versandkosten",
 'FCPO_PRODUCT_CAPTURE'                      => "Abbuchen",
 'FCPO_PRODUCT_AMOUNT'                       => "Menge",
@@ -261,7 +260,6 @@ $aLang = array(
     
 'FCPO_KLARNA_STORE_ID_ADMIN'                => "StoreIDs",
 'FCPO_KLARNA_ADD_STORE_ID'                  => "weitere StoreID hinzufügen",
-'FCPO_KLARNA_DELETE_STORE_ID'               => "Löschen",
     
 'FCPO_CONFIG_GROUP_CONN'                    => "Verbindungs-Einstellungen",
 'FCPO_CONFIG_GROUP_GENERAL'                 => "Allgemein",
@@ -339,12 +337,12 @@ $aLang = array(
 'FCPO_CC_CUSTOM_TEMPLATE'                   => 'Benutzerdefinierte Anpassung hosted-Iframe',
 'FCPO_CC_PREVIEW'                           => 'Vorschau',
     
-'FCPO_CREDITCARD'                           => 'Karte:',
-'FCPO_NUMBER'                               => 'Nummer:',
-'FCPO_CARD_SECURITY_CODE'                   => 'Prüfziffer:',
-'FCPO_VALID_UNTIL'                          => 'Gültig bis:',
-'FCPO_FIRSTNAME'                            => 'Vorname:',
-'FCPO_LASTNAME'                             => 'Nachname:',
+'FCPO_CREDITCARD'                           => 'Karte',
+'FCPO_NUMBER'                               => 'Nummer',
+'FCPO_CARD_SECURITY_CODE'                   => 'Prüfziffer',
+'FCPO_VALID_UNTIL'                          => 'Gültig bis',
+'FCPO_FIRSTNAME'                            => 'Vorname',
+'FCPO_LASTNAME'                             => 'Nachname',
     
 'FCPO_PREVIEW_NOTICE'                       => '&Auml;nderungen sind in der Vorschau erst nach dem Speichern sichtbar!',
     
@@ -476,11 +474,11 @@ $aLang = array(
     'FCPO_BONI_ERROR_SET_TO_PERSON'             => '<b>Bitte beachten Sie:</b><br>Der Adresschecktyp wurde auf "Person" gesetzt, da ihre gewählte Kombination aus Boni- und Adresscheck nicht erlaubt ist.',
     'FCPO_EMAIL_CLEARING_SUBJECT'                   => 'Ihre Überweisungsdaten zur Bestellnummer',
     'FCPO_EMAIL_CLEARING_BODY_WELCOME'              => "Hallo %NAME% %SURNAME%,\nzur Begleichung der Rechnung verwenden Sie bitte folgende Daten zur Überweisung:\n\n",
-    'FCPO_EMAIL_BANK'                               => 'Bankname:',
-    'FCPO_EMAIL_ROUTINGNUMBER'                      => 'BLZ:',
-    'FCPO_EMAIL_ACCOUNTNUMBER'                      => 'Kto.Nr.:',
-    'FCPO_EMAIL_BIC'                                => 'BIC:',
-    'FCPO_EMAIL_IBAN'                               => 'IBAN:',
+    'FCPO_EMAIL_BANK'                               => 'Bankname',
+    'FCPO_EMAIL_ROUTINGNUMBER'                      => 'BLZ',
+    'FCPO_EMAIL_ACCOUNTNUMBER'                      => 'Kto.Nr.',
+    'FCPO_EMAIL_BIC'                                => 'BIC',
+    'FCPO_EMAIL_IBAN'                               => 'IBAN',
     'FCPO_EMAIL_CLEARING_BODY_THANKYOU'             => 'Vielen Dank, dein %SHOPNAME%-Team',
     'FCPO_EMAIL_USAGE'                              => 'Verwendungszweck',
 );

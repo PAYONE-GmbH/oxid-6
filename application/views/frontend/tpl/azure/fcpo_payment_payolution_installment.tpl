@@ -12,7 +12,7 @@
             <div class="fcCol fcCol-1">
                 <div class="content">
                     <p id="payolution_installment_availibility_headline" class="payolution_installment_box_headline">1. [{oxmultilang ident="FCPO_PAYOLUTION_CHECK_INSTALLMENT_AVAILABILITY"}]</p>
-                    <p id="payolution_installment_availibility_subtitle" class="payolution_installment_box_subtitle">[{oxmultilang ident="FCPO_PAYOLUTION_BIRTHDATE"}]</p>
+                    <p id="payolution_installment_availibility_subtitle" class="payolution_installment_box_subtitle">[{oxmultilang ident="FCPO_PAYOLUTION_BIRTHDATE"}]:</p>
                     <p id="payolution_installment_availibility_body" class="payolution_installment_box_body">
                     <p id="payolution_installment_availibility_body" class="payolution_installment_box_body">
                         <select name="dynvalue[fcpo_payolution_installment_birthdate_day]">
@@ -88,12 +88,12 @@
                                 </div>
                             </li>
                             <li>
-                                <label>[{oxmultilang ident="FCPO_PAYOLUTION_ACCOUNTHOLDER"}]</label>
-                                <input autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_payolution_installment_accountholder]" value="[{$dynvalue.fcpo_payolution_installment_accountholder}]" onkeyup="fcHandleDebitInputs();return false;">
+                                <label>[{oxmultilang ident="FCPO_PAYOLUTION_ACCOUNTHOLDER"}]:</label>
+                                <input placeholder="[{oxmultilang ident="FCPO_PAYOLUTION_ACCOUNTHOLDER"}]" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_payolution_installment_accountholder]" value="[{$dynvalue.fcpo_payolution_installment_accountholder}]" onkeyup="fcHandleDebitInputs();return false;">
                             </li>
                             <li>
-                                <label>[{oxmultilang ident="FCPO_BANK_IBAN"}]</label>
-                                <input autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_payolution_installment_iban]" value="[{$dynvalue.fcpo_payolution_installment_iban}]" onkeyup="fcHandleDebitInputs();return false;">
+                                <label>[{oxmultilang ident="FCPO_BANK_IBAN"}]:</label>
+                                <input placeholder="[{oxmultilang ident="FCPO_BANK_IBAN"}]" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_payolution_installment_iban]" value="[{$dynvalue.fcpo_payolution_installment_iban}]" onkeyup="fcHandleDebitInputs();return false;">
                                 <div id="fcpo_payolution_iban_invalid" class="fcpo_check_error">
                                     <p class="oxValidateError" style="display: block;">
                                         [{oxmultilang ident="FCPO_IBAN_INVALID"}]
@@ -101,8 +101,8 @@
                                 </div>
                             </li>
                             <li>
-                                <label>[{oxmultilang ident="FCPO_BANK_BIC"}]</label>
-                                <input autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_payolution_installment_bic]" value="[{$dynvalue.fcpo_payolution_installment_bic}]" onkeyup="fcHandleDebitInputs();return false;">
+                                <label>[{oxmultilang ident="FCPO_BANK_BIC"}]:</label>
+                                <input placeholder="[{oxmultilang ident="FCPO_BANK_BIC"}]" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_payolution_installment_bic]" value="[{$dynvalue.fcpo_payolution_installment_bic}]" onkeyup="fcHandleDebitInputs();return false;">
                                 <div id="fcpo_payolution_bic_invalid" class="fcpo_check_error">
                                     <p class="oxValidateError" style="display: block;">
                                         [{oxmultilang ident="FCPO_BIC_INVALID"}]

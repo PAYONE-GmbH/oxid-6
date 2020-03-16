@@ -74,54 +74,6 @@ function fcCheckDebitCountry() {
     fcHandleDebitInputs();
 }
 
-function fcCheckOUType(select, SofoShowIban) {
-    if (typeof SofoShowIban === 'undefined') {
-        SofoShowIban = $('#fcpoSofoShowIban').val();
-    }
-    var oForm = getPaymentForm();
-    if(document.getElementById('fcpo_ou_iban')) {
-        document.getElementById('fcpo_ou_iban').style.display = 'none';
-    }
-    if(document.getElementById('fcpo_ou_bic')) {
-        document.getElementById('fcpo_ou_bic').style.display = 'none';
-    }
-    if(document.getElementById('fcpo_ou_blz')) {
-        document.getElementById('fcpo_ou_blz').style.display = 'none';
-    }
-    if(document.getElementById('fcpo_ou_ktonr')) {
-        document.getElementById('fcpo_ou_ktonr').style.display = 'none';
-    }
-    if(document.getElementById('fcpo_ou_eps')) {
-        document.getElementById('fcpo_ou_eps').style.display = 'none';
-    }
-    if(document.getElementById('fcpo_ou_idl')) {
-        document.getElementById('fcpo_ou_idl').style.display = 'none';
-    }
-    if(oForm['dynvalue[fcpo_sotype]'].value == 'PNT') {
-        if (SofoShowIban == 'true') {
-            if(oForm.fcpo_bill_country.value == 'CH' && oForm.fcpo_currency.value == 'CHF') {
-                document.getElementById('fcpo_ou_blz').style.display = '';
-                document.getElementById('fcpo_ou_ktonr').style.display = '';
-            } else {
-                document.getElementById('fcpo_ou_iban').style.display = '';
-                document.getElementById('fcpo_ou_bic').style.display = '';
-            }
-        }
-    }
-    if(oForm['dynvalue[fcpo_sotype]'].value == 'GPY') {
-        document.getElementById('fcpo_ou_iban').style.display = '';
-        document.getElementById('fcpo_ou_bic').style.display = '';
-    }
-
-    if(oForm['dynvalue[fcpo_sotype]'].value == 'EPS') {
-        document.getElementById('fcpo_ou_eps').style.display = '';
-    }
-
-    if(oForm['dynvalue[fcpo_sotype]'].value == 'IDL') {
-        document.getElementById('fcpo_ou_idl').style.display = '';
-    }
-}
-
 function resetErrorContainers() {
     if(document.getElementById('fcpo_cc_number_invalid')) {
         document.getElementById('fcpo_cc_number_invalid').style.display = '';

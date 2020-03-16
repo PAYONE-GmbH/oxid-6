@@ -33,7 +33,11 @@ if(file_exists(dirname(__FILE__)."/config.ipwhitelist.php")) {
 $sClientIp = null;
 if(isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
     $aIps = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
-    $sClientIp = trim($aIps[0]);
+    $sTmpClientIp = trim($aIps[0]);
+    $blAllowed = in_array($sTmpClientIp, $aWhitelistForwarded);
+    if ($blAllowed) {
+        $sClientIp = $sTmpClientIp;
+    }
 }
 
 $sRemoteIp = isset($sClientIp) ? $sClientIp : $_SERVER['REMOTE_ADDR'];
@@ -66,6 +70,9 @@ class fcPayOneTransactionStatusHandler extends oxBase
 {
 
     protected $_aShopList = null;
+
+    protected $_sLogFile = 'log/fcpo_message_forwarding.log';
+
     
     /**
      * Check and return post parameter
@@ -76,9 +83,9 @@ class fcPayOneTransactionStatusHandler extends oxBase
     public function fcGetPostParam( $sKey ) 
     {
         $sReturn    = '';
-        $mValue     = filter_input(INPUT_GET, $sKey);
+        $mValue     = filter_input(INPUT_GET, $sKey, FILTER_SANITIZE_SPECIAL_CHARS);
         if (!$mValue) {
-            $mValue = filter_input(INPUT_POST, $sKey);
+            $mValue = filter_input(INPUT_POST, $sKey, FILTER_SANITIZE_SPECIAL_CHARS);
         }
         if ($mValue ) {
             if($this->getConfig()->isUtf() ) {
@@ -164,9 +171,111 @@ class fcPayOneTransactionStatusHandler extends oxBase
 
         $sQuery = "
             INSERT INTO fcpotransactionstatus (
-                FCPO_ORDERNR,   FCPO_KEY,           FCPO_TXACTION,          FCPO_PORTALID,          FCPO_AID,           FCPO_CLEARINGTYPE,          FCPO_TXTIME,                        FCPO_CURRENCY,          FCPO_USERID,            FCPO_ACCESSNAME,            FCPO_ACCESSCODE,            FCPO_PARAM,         FCPO_MODE,          FCPO_PRICE,         FCPO_TXID,          FCPO_REFERENCE,         FCPO_SEQUENCENUMBER,            FCPO_COMPANY,           FCPO_FIRSTNAME,         FCPO_LASTNAME,          FCPO_STREET,            FCPO_ZIP,           FCPO_CITY,          FCPO_EMAIL,         FCPO_COUNTRY,           FCPO_SHIPPING_COMPANY,          FCPO_SHIPPING_FIRSTNAME,            FCPO_SHIPPING_LASTNAME,         FCPO_SHIPPING_STREET,           FCPO_SHIPPING_ZIP,          FCPO_SHIPPING_CITY,         FCPO_SHIPPING_COUNTRY,          FCPO_BANKCOUNTRY,           FCPO_BANKACCOUNT,           FCPO_BANKCODE,          FCPO_BANKACCOUNTHOLDER,         FCPO_CARDEXPIREDATE,            FCPO_CARDTYPE,          FCPO_CARDPAN,           FCPO_CUSTOMERID,            FCPO_BALANCE,           FCPO_RECEIVABLE,        FCPO_CLEARING_BANKACCOUNTHOLDER,        FCPO_CLEARING_BANKACCOUNT,          FCPO_CLEARING_BANKCODE,         FCPO_CLEARING_BANKNAME,         FCPO_CLEARING_BANKBIC,          FCPO_CLEARING_BANKIBAN,         FCPO_CLEARING_LEGALNOTE,        FCPO_CLEARING_DUEDATE,          FCPO_CLEARING_REFERENCE,        FCPO_CLEARING_INSTRUCTIONNOTE
+                FCPO_ORDERNR,
+                FCPO_KEY,
+                FCPO_TXACTION,
+                FCPO_PORTALID,
+                FCPO_AID,
+                FCPO_CLEARINGTYPE,
+                FCPO_TXTIME,
+                FCPO_CURRENCY,
+                FCPO_USERID,    
+                FCPO_ACCESSNAME,
+                FCPO_ACCESSCODE,
+                FCPO_PARAM,
+                FCPO_MODE,
+                FCPO_PRICE,
+                FCPO_TXID,
+                FCPO_REFERENCE,
+                FCPO_SEQUENCENUMBER,
+                FCPO_COMPANY,
+                FCPO_FIRSTNAME,
+                FCPO_LASTNAME,
+                FCPO_STREET,
+                FCPO_ZIP,
+                FCPO_CITY,
+                FCPO_EMAIL,
+                FCPO_COUNTRY,
+                FCPO_SHIPPING_COMPANY,
+                FCPO_SHIPPING_FIRSTNAME,
+                FCPO_SHIPPING_LASTNAME,
+                FCPO_SHIPPING_STREET,
+                FCPO_SHIPPING_ZIP,
+                FCPO_SHIPPING_CITY,
+                FCPO_SHIPPING_COUNTRY,
+                FCPO_BANKCOUNTRY,
+                FCPO_BANKACCOUNT,
+                FCPO_BANKCODE,
+                FCPO_BANKACCOUNTHOLDER,
+                FCPO_CARDEXPIREDATE,
+                FCPO_CARDTYPE,  
+                FCPO_CARDPAN,
+                FCPO_CUSTOMERID,
+                FCPO_BALANCE,
+                FCPO_RECEIVABLE,
+                FCPO_CLEARING_BANKACCOUNTHOLDER,
+                FCPO_CLEARING_BANKACCOUNT,
+                FCPO_CLEARING_BANKCODE,
+                FCPO_CLEARING_BANKNAME,
+                FCPO_CLEARING_BANKBIC,
+                FCPO_CLEARING_BANKIBAN,         
+                FCPO_CLEARING_LEGALNOTE,
+                FCPO_CLEARING_DUEDATE,
+                FCPO_CLEARING_REFERENCE,
+                FCPO_CLEARING_INSTRUCTIONNOTE
             ) VALUES (
-                '{$iOrderNr}',  '".$this->fcGetPostParam('key')."',   '".$this->fcGetPostParam('txaction')."',  '".$this->fcGetPostParam('portalid')."',  '".$this->fcGetPostParam('aid')."',   '".$this->fcGetPostParam('clearingtype')."',  FROM_UNIXTIME('".$this->fcGetPostParam('txtime')."'), '".$this->fcGetPostParam('currency')."',  '".$this->fcGetPostParam('userid')."',    '".$this->fcGetPostParam('accessname')."',    '".$this->fcGetPostParam('accesscode')."',    '".$this->fcGetPostParam('param')."', '".$this->fcGetPostParam('mode')."',  '".$this->fcGetPostParam('price')."', '".$this->fcGetPostParam('txid')."',  '".$this->fcGetPostParam('reference')."', '".$this->fcGetPostParam('sequencenumber')."',    '".$this->fcGetPostParam('company')."',   '".$this->fcGetPostParam('firstname')."', '".$this->fcGetPostParam('lastname')."',  '".$this->fcGetPostParam('street')."',    '".$this->fcGetPostParam('zip')."',   '".$this->fcGetPostParam('city')."',  '".$this->fcGetPostParam('email')."', '".$this->fcGetPostParam('country')."',   '".$this->fcGetPostParam('shipping_company')."',  '".$this->fcGetPostParam('shipping_firstname')."',    '".$this->fcGetPostParam('shipping_lastname')."', '".$this->fcGetPostParam('shipping_street')."',   '".$this->fcGetPostParam('shipping_zip')."',  '".$this->fcGetPostParam('shipping_city')."', '".$this->fcGetPostParam('shipping_country')."',  '".$this->fcGetPostParam('bankcountry')."',   '".$this->fcGetPostParam('bankaccount')."',   '".$this->fcGetPostParam('bankcode')."',  '".$this->fcGetPostParam('bankaccountholder')."', '".$this->fcGetPostParam('cardexpiredate')."',    '".$this->fcGetPostParam('cardtype')."',  '".$this->fcGetPostParam('cardpan')."',   '".$this->fcGetPostParam('customerid')."',    '".$this->fcGetPostParam('balance')."',   '".$this->fcGetPostParam('receivable')."','".$this->fcGetPostParam('clearing_bankaccountholder')."','".$this->fcGetPostParam('clearing_bankaccount')."',  '".$this->fcGetPostParam('clearing_bankcode')."', '".$this->fcGetPostParam('clearing_bankname')."', '".$this->fcGetPostParam('clearing_bankbic')."',  '".$this->fcGetPostParam('clearing_bankiban')."', '".$this->fcGetPostParam('clearing_legalnote')."','".$this->fcGetPostParam('clearing_duedate')."',  '".$this->fcGetPostParam('clearing_reference')."','".$this->fcGetPostParam('clearing_instructionnote')."'
+                '{$iOrderNr}',
+                '".$this->fcGetPostParam('key')."',
+                '".$this->fcGetPostParam('txaction')."',
+                '".$this->fcGetPostParam('portalid')."',
+                '".$this->fcGetPostParam('aid')."',
+                '".$this->fcGetPostParam('clearingtype')."',
+                FROM_UNIXTIME('".$this->fcGetPostParam('txtime')."'),
+                '".$this->fcGetPostParam('currency')."',
+                '".$this->fcGetPostParam('userid')."',
+                '".$this->fcGetPostParam('accessname')."',
+                '".$this->fcGetPostParam('accesscode')."',
+                '".$this->fcGetPostParam('param')."', 
+                '".$this->fcGetPostParam('mode')."',  
+                '".$this->fcGetPostParam('price')."', 
+                '".$this->fcGetPostParam('txid')."',  
+                '".$this->fcGetPostParam('reference')."', 
+                '".$this->fcGetPostParam('sequencenumber')."',
+                '".$this->fcGetPostParam('company')."',   
+                '".$this->fcGetPostParam('firstname')."', 
+                '".$this->fcGetPostParam('lastname')."',  
+                '".$this->fcGetPostParam('street')."',    
+                '".$this->fcGetPostParam('zip')."',   
+                '".$this->fcGetPostParam('city')."',  
+                '".$this->fcGetPostParam('email')."', 
+                '".$this->fcGetPostParam('country')."',   
+                '".$this->fcGetPostParam('shipping_company')."',  
+                '".$this->fcGetPostParam('shipping_firstname')."',    
+                '".$this->fcGetPostParam('shipping_lastname')."', 
+                '".$this->fcGetPostParam('shipping_street')."',   
+                '".$this->fcGetPostParam('shipping_zip')."',  
+                '".$this->fcGetPostParam('shipping_city')."', 
+                '".$this->fcGetPostParam('shipping_country')."',  
+                '".$this->fcGetPostParam('bankcountry')."',   
+                '".$this->fcGetPostParam('bankaccount')."',   
+                '".$this->fcGetPostParam('bankcode')."',  
+                '".$this->fcGetPostParam('bankaccountholder')."', 
+                '".$this->fcGetPostParam('cardexpiredate')."',    
+                '".$this->fcGetPostParam('cardtype')."',  
+                '".$this->fcGetPostParam('cardpan')."',   
+                '".$this->fcGetPostParam('customerid')."',    
+                '".$this->fcGetPostParam('balance')."',   
+                '".$this->fcGetPostParam('receivable')."',
+                '".$this->fcGetPostParam('clearing_bankaccountholder')."',
+                '".$this->fcGetPostParam('clearing_bankaccount')."',  
+                '".$this->fcGetPostParam('clearing_bankcode')."', 
+                '".$this->fcGetPostParam('clearing_bankname')."', 
+                '".$this->fcGetPostParam('clearing_bankbic')."',  
+                '".$this->fcGetPostParam('clearing_bankiban')."', 
+                '".$this->fcGetPostParam('clearing_legalnote')."',
+                '".$this->fcGetPostParam('clearing_duedate')."',  
+                '".$this->fcGetPostParam('clearing_reference')."',
+                '".$this->fcGetPostParam('clearing_instructionnote')."'
             )";
         oxDb::getDb()->Execute($sQuery);
     }
@@ -185,7 +294,6 @@ class fcPayOneTransactionStatusHandler extends oxBase
     }
 
     protected function _handleForwarding() {
-
         $sParams = '';
         foreach($_POST as $sKey => $mValue) {
             $sParams .= $this->_addParam($sKey, $mValue);
@@ -199,6 +307,7 @@ class fcPayOneTransactionStatusHandler extends oxBase
         $sBaseUrl = (empty($sSslShopUrl)) ? $sShopUrl : $sSslShopUrl;
 
         $sForwarderUrl = $sBaseUrl . 'modules/fc/fcpayone/statusforward.php';
+        $this->_logForwardMessage('Forward transaction message to own controller:'.$sForwarderUrl.'...');
 
         $oCurl = curl_init($sForwarderUrl);
         curl_setopt($oCurl, CURLOPT_POST, 1);
@@ -210,12 +319,51 @@ class fcPayOneTransactionStatusHandler extends oxBase
         curl_setopt($oCurl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($oCurl, CURLOPT_TIMEOUT_MS, 100);
 
-        $oResult = curl_exec($oCurl);
+        curl_exec($oCurl);
+        $aResult = curl_getinfo($oCurl);
+        $this->_logForwardMessage('Triggered forward! Result: '.print_r($aResult, true));
 
         curl_close($oCurl);
-
     }
-    
+
+    /**
+     * Logs given message if logging is activated
+     *
+     * @param $sMessage
+     * @return void
+     */
+    protected function _logForwardMessage($sMessage)
+    {
+        $blLoggingAllowed = $this->_fcCheckLoggingAllowed();
+        if (!$blLoggingAllowed) return;
+
+        $sBasePath = dirname(__FILE__) . "/../../../";
+        $sLogFilePath = $sBasePath.$this->_sLogFile;
+        $sPrefix = "[".date('Y-m-d H:i:s')."] ";
+        $sFullMessage = $sPrefix.$sMessage."\n";
+
+        $oLogFile = fopen($sLogFilePath, 'a');
+        fwrite($oLogFile, $sFullMessage);
+        fclose($oLogFile);
+    }
+
+    /**
+     * Check if logging is activated by configuration
+     *
+     * @param void
+     * @return bool
+     */
+    protected function _fcCheckLoggingAllowed()
+    {
+        $oConfig = $this->getConfig();
+        $sLogMethod =
+            $oConfig->getConfigParam('sTransactionRedirectLogging');
+
+        $blLoggingAllowed = $sLogMethod == 'all';
+
+        return $blLoggingAllowed;
+    }
+
     protected function _handleMapping($oOrder) 
     {
         $sPayoneStatus = $this->fcGetPostParam('txaction');
@@ -243,7 +391,21 @@ class fcPayOneTransactionStatusHandler extends oxBase
                     oxDb::getDb()->Execute($query);
                 }
                 if($this->fcGetPostParam('txaction') == 'paid') {
-                    $query = "UPDATE oxorder SET oxfolder = 'ORDERFOLDER_NEW', oxtransstatus = 'OK' WHERE oxid = '{$sOrderId}' AND oxtransstatus = 'INCOMPLETE' AND oxfolder = 'ORDERFOLDER_PROBLEMS'";
+                    $oLang = oxNew('oxLang');
+                    $sReplacement = $oLang->translateString('FCPO_REMARK_APPOINTED_MISSING');
+
+                    $query = "
+                        UPDATE 
+                            oxorder 
+                        SET 
+                            oxfolder = 'ORDERFOLDER_NEW', 
+                            oxtransstatus = 'OK',
+                            oxremark = REPLACE(oxremark, '".$sReplacement."', '')
+                        WHERE 
+                            oxid = '{$sOrderId}' AND 
+                            oxtransstatus IN ('INCOMPLETE', 'ERROR') AND 
+                            oxfolder = 'ORDERFOLDER_PROBLEMS'
+                    ";
                     oxDb::getDb()->Execute($query);
                 }
 

@@ -108,7 +108,7 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOnePaymentTest extends OxidTe
         $oHelper->expects($this->any())->method('fcpoGetConfig')->will($this->returnValue($oMockConfig));
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
         
-        $this->assertEquals('live', $oTestObject->fcpoGetOperationMode('fcpoonlineueberweisung'));
+        $this->assertEquals('live', $oTestObject->fcpoGetOperationMode('fcpo_sofort'));
     }
     
     
@@ -380,9 +380,13 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOnePaymentTest extends OxidTe
      */
     public function test_fcpoGetMode_Coverage() 
     {
-        $oTestObject = $this->getMock('fcPayOnePayment', array('getId', 'fcpoGetOperationMode'));
-        $oTestObject->expects($this->any())->method('getId')->will($this->returnValue('fcpoonlineueberweisung'));
-        $oTestObject->expects($this->any())->method('fcpoGetOperationMode')->will($this->returnValue('someValue'));
+        $oTestObject = $this->getMock('fcPayOnePayment', array(
+            'getId',
+        ));
+        $oTestObject
+            ->expects($this->any())
+            ->method('getId')
+            ->will($this->returnValue('fcpocreditcard'));
         
         $aMockDynValues = array('fcpo_ccmode'=>'someValue','fcpo_sotype'=>'someValue');
         

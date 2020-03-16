@@ -175,7 +175,37 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
         $oHelper->expects($this->any())->method('fcpoGetConfig')->will($this->returnValue($oMockConfig));
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
 
-        $this->assertEquals('true', $oTestObject->fcpoGetSofoShowIban());
+        $this->assertEquals(true, $oTestObject->fcpoGetSofoShowIban());
+    }
+
+    /**
+     * Testing fcpoForceDeprecatedBankData for coverage
+     */
+    public function test_fcpoForceDeprecatedBankData_Coverage()
+    {
+        $oMockCur = new stdClass();
+        $oMockCur->sign = "CHF";
+
+        $oTestObject = $this->getMock('fcPayOnePaymentView', array(
+            'getActCurrency',
+            'fcGetBillCountry',
+            'fcpoGetSofoShowIban',
+        ));
+
+        $oTestObject
+            ->expects($this->any())
+            ->method('getActCurrency')
+            ->will($this->returnValue($oMockCur));
+        $oTestObject
+            ->expects($this->any())
+            ->method('fcGetBillCountry')
+            ->will($this->returnValue('CH'));
+        $oTestObject
+            ->expects($this->any())
+            ->method('fcpoGetSofoShowIban')
+            ->will($this->returnValue(true));
+
+        $this->assertEquals(true, $oTestObject->fcpoForceDeprecatedBankData());
     }
 
     /**

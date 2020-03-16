@@ -29,6 +29,8 @@ class fcPayOneTransactionStatusForwarder extends oxBase {
 
     protected $_aShopList = null;
 
+    protected $_sLogFile = 'log/fcpo_message_forwarding.log';
+
     /**
      * Check and return post parameter
      *
@@ -52,6 +54,45 @@ class fcPayOneTransactionStatusForwarder extends oxBase {
         return $sReturn;
     }
 
+
+    /**
+     * Logs given message if logging is activated
+     *
+     * @param $sMessage
+     * @return void
+     */
+    protected function _logForwardMessage($sMessage)
+    {
+        $blLoggingAllowed = $this->_fcCheckLoggingAllowed();
+        if (!$blLoggingAllowed) return;
+
+        $sBasePath = dirname(__FILE__) . "/../../../";
+        $sLogFilePath = $sBasePath.$this->_sLogFile;
+        $sPrefix = "[".date('Y-m-d H:i:s')."] ";
+        $sFullMessage = $sPrefix.$sMessage."\n";
+
+        $oLogFile = fopen($sLogFilePath, 'a');
+        fwrite($oLogFile, $sFullMessage);
+        fclose($oLogFile);
+    }
+
+    /**
+     * Check if logging is activated by configuration
+     *
+     * @param void
+     * @return bool
+     */
+    protected function _fcCheckLoggingAllowed()
+    {
+        $oConfig = $this->getConfig();
+        $sLogMethod =
+            $oConfig->getConfigParam('sTransactionRedirectLogging');
+
+        $blLoggingAllowed = $sLogMethod == 'all';
+
+        return $blLoggingAllowed;
+    }
+
     protected function _addParam($sKey, $mValue)
     {
         $sParams = '';
@@ -66,12 +107,16 @@ class fcPayOneTransactionStatusForwarder extends oxBase {
     }
 
     protected function _forwardRequest($sUrl, $iTimeout) {
+        $this->_logForwardMessage('Trying to forward to url: '.$sUrl.'...');
         if ($iTimeout == 0) {
             $iTimeout = 45;
         }
         
         $sParams = '';
-        foreach($_POST as $sKey => $mValue) {
+        $aPostParams = filter_input_array(INPUT_POST);
+        $this->_logForwardMessage(print_r($aPostParams, true));
+
+        foreach($aPostParams as $sKey => $mValue) {
             $sParams .= $this->_addParam($sKey, $mValue);
         }
 
@@ -84,10 +129,12 @@ class fcPayOneTransactionStatusForwarder extends oxBase {
         curl_setopt($oCurl, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($oCurl, CURLOPT_TIMEOUT, $iTimeout);
 
+
         try {
             $oResult = curl_exec($oCurl);
+            $this->_logForwardMessage('Success! Result: '.print_r($oResult, true));
         } catch (Exception $e) {
-            // do nothing
+            $this->_logForwardMessage('Failed! Exception: '.print_r($e, true));
         }
 
         curl_close($oCurl);
@@ -106,6 +153,8 @@ class fcPayOneTransactionStatusForwarder extends oxBase {
                 fcpo_payonestatus = '{$sPayoneStatus}'";
 
         $aRows = oxDb::getDb()->getAll($sQuery);
+
+        $this->_logForwardMessage('Handle fowardings: '.print_r($aRows, true));
 
         foreach ($aRows as $aRow) {
             $sUrl = (string) $aRow[0];

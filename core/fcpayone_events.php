@@ -44,7 +44,8 @@ class fcpayone_events
         'fcpocommerzfinanz',
         'fcpoklarna_installment',
         'fcpocreditcard_iframe',
-        'fcpobillsafe'
+        'fcpobillsafe',
+        'fcpoonlineueberweisung',
     );
     public static $sQueryTableFcporefnr = "
         CREATE TABLE fcporefnr (
@@ -349,6 +350,14 @@ class fcpayone_events
 	    'fcpoamazonpay' => 'AmazonPay',
         'fcpo_secinvoice' => 'Gesicherter Rechnungskauf',
         'fcpopaydirekt_express' => 'Paydirekt Express',
+        'fcpo_sofort' => 'Sofortüberweisung',
+        'fcpo_giropay' => 'Giropay',
+        'fcpo_eps' => 'eps - Onlineüberweisung',
+        'fcpo_pf_finance' => 'PostFinance E-Finance',
+        'fcpo_pf_card' => 'PostFinance Card',
+        'fcpo_ideal' => 'iDeal',
+        'fcpo_p24' => 'P24',
+        'fcpo_bancontact' => 'Bancontact',
     );
 
     /**
@@ -541,7 +550,7 @@ class fcpayone_events
 
         self::changeColumnTypeIfWrong('fcpotransactionstatus', 'FCPO_USERID', 'varchar(32)', self::$sQueryChangeToVarchar1);
         self::changeColumnTypeIfWrong('fcpotransactionstatus', 'FCPO_TXID', 'varchar(32)', self::$sQueryChangeToVarchar2);
-        self::changeColumnTypeIfWrong('fcporequestlog', 'FCPO_REFNR', 'varchar(32)', self::$sQueryChangeFcporequestlog);
+        self::changeColumnTypeIfWrong('fcporequestlog', 'FCPO_REFNR', 'int(11)', self::$sQueryChangeFcporequestlog);
         self::changeColumnTypeIfWrong('oxorder', 'FCPOREFNR', 'varchar(32)', self::$sQueryChangeRefNrToVarchar);
 
         self::dropIndexIfExists('fcporefnr', 'FCPO_REFNR');
@@ -633,9 +642,14 @@ class fcpayone_events
      */
     public static function changeColumnTypeIfWrong($sTableName, $sColumnName, $sExpectedType, $sQuery)
     {
-        if (oxDb::getDb()->getOne("SHOW COLUMNS FROM {$sTableName} WHERE FIELD = '{$sColumnName}' AND TYPE = '{$sExpectedType}'")) {
+        $sCheckQuery = "
+            SHOW COLUMNS 
+            FROM {$sTableName} 
+            WHERE FIELD = '{$sColumnName}' 
+            AND TYPE = '{$sExpectedType}'
+        ";
+        if (oxDb::getDb()->getOne($sCheckQuery)) {
             oxDb::getDb()->Execute($sQuery);
-            // echo 'In Tabelle '.$sTableName.' Spalte '.$sColumnName.' auf Typ '.$sExpectedType.' umgestellt.<br>';
             return true;
         }
         return false;
@@ -799,9 +813,33 @@ class fcpayone_events
      */
     public static function setDefaultConfigValues()
     {
-        if (!self::$_oFcpoHelper->fcpoGetConfig()->getConfigParam('sFCPOAddresscheck')) {
-            self::$_oFcpoHelper->fcpoGetConfig()->saveShopConfVar('str', 'sFCPOAddresscheck', 'NO');
+        $oConfig = self::$_oFcpoHelper->fcpoGetConfig();
+        $blIsUpdate = self::isUpdate();
+        $blHashMethodSet = (bool) $oConfig->getConfigParam('sFCPOHashMethod');
+
+        if (!$blHashMethodSet && $blIsUpdate) {
+            $oConfig->saveShopConfVar('str', 'sFCPOHashMethod', 'md5');
+        } else if (!$blHashMethodSet) {
+            $oConfig->saveShopConfVar('str', 'sFCPOHashMethod', 'sha2-384');
         }
+
+        if (!$oConfig->getConfigParam('sFCPOAddresscheck')) {
+            $oConfig->saveShopConfVar('str', 'sFCPOAddresscheck', 'NO');
+        }
+    }
+
+    /**
+     * If there is an existing merchant id we assume, that current activation
+     * is an update
+     *
+     * @param void
+     * @return bool
+     */
+    public static function isUpdate()
+    {
+        $oConfig = self::$_oFcpoHelper->fcpoGetConfig();
+
+        return (bool) ($oConfig->getConfigParam('sFCPOMerchantID'));
     }
 
 }

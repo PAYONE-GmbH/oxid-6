@@ -49,4 +49,16 @@
             </div>
         </form>
     </div>
+    [{if $oView->getOrderRemark()}]
+    <div class="panel panel-default orderRemarks">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                [{oxmultilang ident="WHAT_I_WANTED_TO_SAY"}]
+            </h3>
+        </div>
+        <div class="panel-body">
+            [{$oView->getOrderRemark()|@nl2br}]
+        </div>
+    </div>
+    [{/if}]
 </div>

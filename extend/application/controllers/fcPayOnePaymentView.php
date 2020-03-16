@@ -223,15 +223,33 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      * Returns matching notiication string if sofo is configured to show iban
      * 
      * @param  void
-     * @return string
+     * @return bool
      */
     public function fcpoGetSofoShowIban() 
     {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $blFCPOSofoShowIban = $oConfig->getConfigParam('blFCPOSofoShowIban');
 
-        $sReturn = ($blFCPOSofoShowIban) ? 'true' : 'false';
-        return $sReturn;
+        return (bool) $blFCPOSofoShowIban;
+    }
+
+    /**
+     * Method checks if deprecated bankdata should be requested instead of
+     * IBAN/BIC
+     *
+     * @param void
+     * @return bool
+     */
+    public function fcpoForceDeprecatedBankData() {
+        $oCur = $this->getActCurrency();
+        $sCurrencySign = $oCur->sign;
+        $sBillCountrySign = $this->fcGetBillCountry();
+
+        return (
+            $this->fcpoGetSofoShowIban() &&
+            $sCurrencySign == 'CHF' &&
+            $sBillCountrySign == 'CH'
+        );
     }
 
     /**
@@ -588,17 +606,26 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      */
     public function getHashCC($sType = '') 
     {
-        $sHash = md5(
+        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+        $sFCPOHashMethod = $oConfig->getConfigParam('sFCPOHashMethod');
+        $sKey = $this->getPortalKey();
+
+        $sData =
             $this->getSubAccountId() .
-                $this->getEncoding() .
-                $this->getMerchantId() .
-                $this->_getOperationModeCC($sType) .
-                $this->getPortalId() .
-                'creditcardcheck' .
-                'JSON' .
-                'yes' .
-                $this->getPortalKey()
-        );
+            $this->getEncoding() .
+            $this->getMerchantId() .
+            $this->_getOperationModeCC($sType) .
+            $this->getPortalId() .
+            'creditcardcheck' .
+            'JSON' .
+            'yes';
+
+        $sHashMD5 = md5($sData.$sKey);
+        $sHashSha2 = hash_hmac('sha384', $sData, $sKey);
+
+        $sHash = ($sFCPOHashMethod == 'sha2-384')
+            ? $sHashSha2 : $sHashMD5;
+
         return $sHash;
     }
 

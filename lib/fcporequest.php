@@ -316,13 +316,7 @@ class fcpoRequest extends oxSuperCfg
 
         $blPaymentTypeKnown = $this->setPaymentParameters($oOrder, $aDynvalue, $sRefNr);
 
-        $blAddProductInfo = (
-            $oOrder->isDetailedProductInfoNeeded() ||
-            (
-                $blIsPreauthorization === false &&
-                $this->getConfig()->getConfigParam('blFCPOSendArticlelist') === true
-            )
-        );
+        $blAddProductInfo = $oOrder->isDetailedProductInfoNeeded();
 
         if ($blAddProductInfo) {
             $this->addProductInfo($oOrder);
@@ -455,8 +449,36 @@ class fcpoRequest extends oxSuperCfg
             case 'fcpoinvoice':
                 $this->addParameter('clearingtype', 'rec'); //Payment method
                 break;
-            case 'fcpoonlineueberweisung':
-                $this->addParametersOnlineTransaction($oOrder, $aDynvalue);
+            case 'fcpo_sofort':
+                $this->addParametersOnlineSofort($oOrder, $aDynvalue);
+                $blAddRedirectUrls = true;
+                break;
+            case 'fcpo_giropay':
+                $this->addParametersOnlineGiropay($aDynvalue);
+                $blAddRedirectUrls = true;
+                break;
+            case 'fcpo_eps':
+                $this->addParametersOnlineEps($aDynvalue);
+                $blAddRedirectUrls = true;
+                break;
+            case 'fcpo_pf_finance':
+                $this->addParametersOnlinePostFinance();
+                $blAddRedirectUrls = true;
+                break;
+            case 'fcpo_pf_card':
+                $this->addParametersOnlinePostFinanceCard();
+                $blAddRedirectUrls = true;
+                break;
+            case 'fcpo_ideal':
+                $this->addParametersOnlineIdeal($aDynvalue);
+                $blAddRedirectUrls = true;
+                break;
+            case 'fcpo_p24':
+                $this->addParametersOnlineP24();
+                $blAddRedirectUrls = true;
+                break;
+            case 'fcpo_bancontact':
+                $this->addParametersOnlineBancontact($oOrder);
                 $blAddRedirectUrls = true;
                 break;
             case 'fcpopaypal':
@@ -627,6 +649,142 @@ class fcpoRequest extends oxSuperCfg
     }
 
     /**
+     * Add parameters needed for sofort
+     *
+     * @param $oOrder
+     * @param $aDynvalue
+     * @return void
+     */
+    protected function addParametersOnlineSofort($oOrder, $aDynvalue)
+    {
+        $this->addParameter('clearingtype', 'sb'); //Payment method
+        $this->addParameter('onlinebanktransfertype', 'PNT');
+
+        $blUseDeprecatedAccountData = (
+            isset($aDynvalue['fcpo_ou_ktonr']) &&
+            $aDynvalue['fcpo_ou_ktonr'] != '' &&
+            isset($aDynvalue['fcpo_ou_blz']) &&
+            $aDynvalue['fcpo_ou_blz'] != ''
+        );
+
+        $blUseSepaData = (
+            isset($aDynvalue['fcpo_ou_iban']) &&
+            $aDynvalue['fcpo_ou_iban'] != '' &&
+            isset($aDynvalue['fcpo_ou_bic']) &&
+            $aDynvalue['fcpo_ou_bic'] != ''
+        );
+
+        if ($blUseDeprecatedAccountData) {
+            $this->addParameter('bankaccount', $aDynvalue['fcpo_ou_ktonr']);
+            $this->addParameter('bankcode', $aDynvalue['fcpo_ou_blz']);
+        } elseif ($blUseSepaData) {
+            $this->addParameter('iban', $aDynvalue['fcpo_ou_iban']);
+            $this->addParameter('bic', $aDynvalue['fcpo_ou_bic']);
+        }
+
+        $oBillCountry = oxNew('oxcountry');
+        $oBillCountry->load($oOrder->oxorder__oxbillcountryid->value);
+        $this->addParameter('bankcountry', $oBillCountry->oxcountry__oxisoalpha2->value);
+    }
+
+    /**
+     * Add parameters needed for giropay
+     *
+     * @param $aDynvalue
+     * @return void
+     */
+    protected function addParametersOnlineGiropay($aDynvalue)
+    {
+        $this->addParameter('clearingtype', 'sb'); //Payment method
+        $this->addParameter('onlinebanktransfertype', 'GPY');
+        $this->addParameter('bankcountry', 'DE');
+        $this->addParameter('iban', $aDynvalue['fcpo_ou_iban_gpy']);
+        $this->addParameter('bic', $aDynvalue['fcpo_ou_bic_gpy']);
+    }
+
+    /**
+     * Add parameters needed for eps
+     *
+     * @param $aDynvalue
+     * @return void
+     */
+    protected function addParametersOnlineEps($aDynvalue)
+    {
+        $this->addParameter('clearingtype', 'sb'); //Payment method
+        $this->addParameter('onlinebanktransfertype', 'EPS');
+        $this->addParameter('bankcountry', 'AT');
+        $this->addParameter('bankgrouptype', $aDynvalue['fcpo_so_bankgrouptype_eps']);
+    }
+
+    /**
+     * Add parameters needed for post finance financing
+     *
+     * @param void
+     * @return void
+     */
+    protected function addParametersOnlinePostFinance()
+    {
+        $this->addParameter('clearingtype', 'sb'); //Payment method
+        $this->addParameter('onlinebanktransfertype', 'PFF');
+        $this->addParameter('bankcountry', 'CH');
+    }
+
+    /**
+     * Add parameters needed for post finance card
+     *
+     * @param void
+     * @return void
+     */
+    protected function addParametersOnlinePostFinanceCard()
+    {
+        $this->addParameter('clearingtype', 'sb'); //Payment method
+        $this->addParameter('onlinebanktransfertype', 'PFC');
+        $this->addParameter('bankcountry', 'CH');
+    }
+
+    /**
+     * Add parameters needed for Ideal
+     *
+     * @param $aDynvalue
+     * @return void
+     */
+    protected function addParametersOnlineIdeal($aDynvalue)
+    {
+        $this->addParameter('clearingtype', 'sb'); //Payment method
+        $this->addParameter('onlinebanktransfertype', 'IDL');
+        $this->addParameter('bankcountry', 'NL');
+        $this->addParameter('bankgrouptype', $aDynvalue['fcpo_so_bankgrouptype_idl']);
+    }
+
+    /**
+     * Add parameters needed for P24
+     *
+     * @param void
+     * @return void
+     */
+    protected function addParametersOnlineP24()
+    {
+        $this->addParameter('clearingtype', 'sb'); //Payment method
+        $this->addParameter('onlinebanktransfertype', 'P24');
+        $this->addParameter('bankcountry', 'PL');
+    }
+
+    /**
+     * Add parameters needed for Bancontact
+     *
+     * @param $oOrder
+     * @return void
+     */
+    protected function addParametersOnlineBancontact($oOrder)
+    {
+        $this->addParameter('clearingtype', 'sb'); //Payment method
+        $this->addParameter('onlinebanktransfertype', 'BCT');
+        $oBillCountry = oxNew('oxcountry');
+        $oBillCountry->load($oOrder->oxorder__oxbillcountryid->value);
+        $this->addParameter('bankcountry', $oBillCountry->oxcountry__oxisoalpha2->value);
+    }
+
+    /**
      * Set payment parameters for the payment method "Online ?berweisung"
      * and return true if payment-method is known or false if payment-method is unknown
      *
@@ -635,53 +793,7 @@ class fcpoRequest extends oxSuperCfg
      */
     protected function addParametersOnlineTransaction($oOrder, $aDynvalue) 
     {
-        $this->addParameter('clearingtype', 'sb'); //Payment method
-        $this->addParameter('onlinebanktransfertype', $aDynvalue['fcpo_sotype']);
-        // Override mode for Sofort-?berweisung type
-        $this->addParameter('mode', $this->getOperationMode($oOrder->oxorder__oxpaymenttype->value, $aDynvalue['fcpo_sotype']));
-        switch ($aDynvalue['fcpo_sotype']) {
-            case 'PNT':
-                $oBillCountry = oxNew('oxcountry');
-                $oBillCountry->load($oOrder->oxorder__oxbillcountryid->value);
-                $this->addParameter('bankcountry', $oBillCountry->oxcountry__oxisoalpha2->value);
-                if (isset($aDynvalue['fcpo_ou_ktonr']) && $aDynvalue['fcpo_ou_ktonr'] != '' && isset($aDynvalue['fcpo_ou_blz']) && $aDynvalue['fcpo_ou_blz'] != '') {
-                    $this->addParameter('bankaccount', $aDynvalue['fcpo_ou_ktonr']);
-                    $this->addParameter('bankcode', $aDynvalue['fcpo_ou_blz']);
-                } elseif (isset($aDynvalue['fcpo_ou_iban']) && $aDynvalue['fcpo_ou_iban'] != '' && isset($aDynvalue['fcpo_ou_bic']) && $aDynvalue['fcpo_ou_bic'] != '') {
-                    $this->addParameter('iban', $aDynvalue['fcpo_ou_iban']);
-                    $this->addParameter('bic', $aDynvalue['fcpo_ou_bic']);
-                }
-                break;
-            case 'GPY':
-                $this->addParameter('bankcountry', 'DE');
-                $this->addParameter('iban', $aDynvalue['fcpo_ou_iban']);
-                $this->addParameter('bic', $aDynvalue['fcpo_ou_bic']);
-                break;
-            case 'EPS':
-                $this->addParameter('bankcountry', 'AT');
-                $this->addParameter('bankgrouptype', $aDynvalue['fcpo_so_bankgrouptype_eps']);
-                break;
-            case 'PFF':
-                $this->addParameter('bankcountry', 'CH');
-                break;
-            case 'PFC':
-                $this->addParameter('bankcountry', 'CH');
-                break;
-            case 'IDL':
-                $this->addParameter('bankcountry', 'NL');
-                $this->addParameter('bankgrouptype', $aDynvalue['fcpo_so_bankgrouptype_idl']);
-                break;
-            case 'P24':
-                $this->addParameter('bankcountry', 'PL');
-                break;
-            case 'BCT':
-                $oBillCountry = oxNew('oxcountry');
-                $oBillCountry->load($oOrder->oxorder__oxbillcountryid->value);
-                $this->addParameter('bankcountry', $oBillCountry->oxcountry__oxisoalpha2->value);
-                break;
-            default:
-                break;
-        }
+
     }
 
 
@@ -1945,14 +2057,8 @@ class fcpoRequest extends oxSuperCfg
             $this->addParameter('capturemode', 'completed');
         }
 
-        // Bedingung $amount == $oOrder->oxorder__oxorder__oxtotalordersum->value nur solange wie Artikelliste nicht f?r Multi-Capture m?glich
-        $blAddProductInfo = (
-            $oOrder->isDetailedProductInfoNeeded() ||
-            (
-                $this->getConfig()->getConfigParam('blFCPOSendArticlelist') === true &&
-                $dAmount == $oOrder->oxorder__oxtotalordersum->value
-            )
-        );
+        $blAddProductInfo = $oOrder->isDetailedProductInfoNeeded();
+
         if ($blAddProductInfo) {
             $dAmount = $this->addProductInfo($oOrder, $aPositions);
             if ($aPositions !== false) {
@@ -2336,7 +2442,7 @@ class fcpoRequest extends oxSuperCfg
     protected function _fcpoCheckUseFallbackBoniversum($aResponse) {
         $oConfig = $this->getConfig();
         $sScore = $aResponse['score'];
-        $sAddresscheckType = $this->_fcpoGetAddressCheckType();
+        $sAddresscheckType = $this->_fcpoGetBoniAddresscheckType();
 
         $blUseFallBack = (
             $sScore == 'U' &&
@@ -2357,11 +2463,26 @@ class fcpoRequest extends oxSuperCfg
     /**
      * Check, correct and return addresschecktype
      *
+     * @param void
+     * @return string
      */
     protected function _fcpoGetAddressCheckType() {
         $oConfig = $this->getConfig();
-        $sBoniCheckType = $oConfig->getConfigParam('sFCPOBonicheck');
         $sAddressCheckType = $oConfig->getConfigParam('sFCPOAddresscheck');
+
+        return $sAddressCheckType;
+    }
+
+    /**
+     * Check, correct and return addresschecktype
+     *
+     * @param void
+     * @return string
+     */
+    protected function _fcpoGetBoniAddresscheckType() {
+        $oConfig = $this->getConfig();
+        $sBoniCheckType = $oConfig->getConfigParam('sFCPOBonicheck');
+        $sAddressCheckType = $oConfig->getConfigParam('sFCPOConsumerAddresscheck');
 
         if ($sBoniCheckType == 'CE') {
             $sAddressCheckType = 'PB';
@@ -2369,6 +2490,7 @@ class fcpoRequest extends oxSuperCfg
 
         return $sAddressCheckType;
     }
+
 
 
     /**
@@ -2521,7 +2643,7 @@ class fcpoRequest extends oxSuperCfg
             $this->addParameter('mode', $oConfig->getConfigParam('sFCPOBoniOpMode')); //Operationmode live or test
             $this->addParameter('aid', $oConfig->getConfigParam('sFCPOSubAccountID')); //ID of PayOne Sub-Account
 
-            $this->addParameter('addresschecktype', $oConfig->getConfigParam('sFCPOAddresscheck'));
+            $this->addParameter('addresschecktype', $oConfig->getConfigParam('sFCPOConsumerAddresscheck'));
             $this->addParameter('consumerscoretype', $oConfig->getConfigParam('sFCPOBonicheck'));
 
             $this->addAddressParamsByUser($oUser);

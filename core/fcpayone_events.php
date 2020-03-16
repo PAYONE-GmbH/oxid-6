@@ -550,7 +550,7 @@ class fcpayone_events
 
         self::changeColumnTypeIfWrong('fcpotransactionstatus', 'FCPO_USERID', 'varchar(32)', self::$sQueryChangeToVarchar1);
         self::changeColumnTypeIfWrong('fcpotransactionstatus', 'FCPO_TXID', 'varchar(32)', self::$sQueryChangeToVarchar2);
-        self::changeColumnTypeIfWrong('fcporequestlog', 'FCPO_REFNR', 'varchar(32)', self::$sQueryChangeFcporequestlog);
+        self::changeColumnTypeIfWrong('fcporequestlog', 'FCPO_REFNR', 'int(11)', self::$sQueryChangeFcporequestlog);
         self::changeColumnTypeIfWrong('oxorder', 'FCPOREFNR', 'varchar(32)', self::$sQueryChangeRefNrToVarchar);
 
         self::dropIndexIfExists('fcporefnr', 'FCPO_REFNR');
@@ -642,9 +642,14 @@ class fcpayone_events
      */
     public static function changeColumnTypeIfWrong($sTableName, $sColumnName, $sExpectedType, $sQuery)
     {
-        if (oxDb::getDb()->getOne("SHOW COLUMNS FROM {$sTableName} WHERE FIELD = '{$sColumnName}' AND TYPE = '{$sExpectedType}'")) {
+        $sCheckQuery = "
+            SHOW COLUMNS 
+            FROM {$sTableName} 
+            WHERE FIELD = '{$sColumnName}' 
+            AND TYPE = '{$sExpectedType}'
+        ";
+        if (oxDb::getDb()->getOne($sCheckQuery)) {
             oxDb::getDb()->Execute($sQuery);
-            // echo 'In Tabelle '.$sTableName.' Spalte '.$sColumnName.' auf Typ '.$sExpectedType.' umgestellt.<br>';
             return true;
         }
         return false;

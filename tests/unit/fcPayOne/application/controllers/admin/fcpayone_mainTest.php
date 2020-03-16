@@ -239,16 +239,17 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     {
         $oTestObject = $this->getMock(
             'fcpayone_main', array(
-            '_fcpoCheckAndAddStoreId',
-            '_fcpoCheckAndAddCampaign',
-            '_fcpoCheckAndAddLogos',
-            '_fcpoInsertStoreIds',
-            '_fcpoInsertCampaigns',
-            '_fcpoCheckRequestAmazonPayConfiguration',
-            '_handlePayPalExpressLogos',
-            '_fcpoInsertProfiles',
-            '_fcpoCheckAndAddRatePayProfile',
-            '_fcpoLoadConfigs',
+                '_fcpoCheckAndAddStoreId',
+                '_fcpoCheckAndAddCampaign',
+                '_fcpoCheckAndAddLogos',
+                '_fcpoInsertStoreIds',
+                '_fcpoInsertCampaigns',
+                '_fcpoCheckRequestAmazonPayConfiguration',
+                '_handlePayPalExpressLogos',
+                '_fcpoInsertProfiles',
+                '_fcpoCheckAndAddRatePayProfile',
+                '_fcpoLoadConfigs',
+                '_fcpoValidateData',
             )
         );
         $oTestObject->method('_fcpoCheckAndAddStoreId')->will($this->returnValue(null));
@@ -261,6 +262,7 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
         $oTestObject->method('_fcpoInsertProfiles')->will($this->returnValue(null));
         $oTestObject->method('_fcpoCheckAndAddRatePayProfile')->will($this->returnValue(null));
         $oTestObject->method('_fcpoLoadConfigs')->will($this->returnValue(null));
+        $oTestObject->method('_fcpoValidateData')->will($this->returnValue(true));
 
         $oMockConfig = $this->getMockBuilder('oxConfig')->disableOriginalConstructor()->getMock();
         $oMockConfig->expects($this->any())->method('saveShopConfVar')->will($this->returnValue(true));

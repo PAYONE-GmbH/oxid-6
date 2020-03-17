@@ -3006,12 +3006,10 @@ class fcpoRequest extends oxSuperCfg
         $this->addParameter('email', $oUser->oxuser__oxusername->value);
         $this->addParameter('language', $this->_oFcpoHelper->fcpoGetLang()->getLanguageAbbr());
         $this->addParameter('bankcountry', $aDynvalue['fcpo_elv_country']);
-        if (isset($aDynvalue['fcpo_elv_iban']) && $aDynvalue['fcpo_elv_iban'] != '' && isset($aDynvalue['fcpo_elv_bic']) && $aDynvalue['fcpo_elv_bic'] != '') {
+        if ($this->_fcpoAddIban($aDynvalue)) {
             $this->addParameter('iban', $aDynvalue['fcpo_elv_iban']);
-            $this->addParameter('bic', $aDynvalue['fcpo_elv_bic']);
-        } elseif (isset($aDynvalue['fcpo_elv_ktonr']) && $aDynvalue['fcpo_elv_ktonr'] != '' && isset($aDynvalue['fcpo_elv_blz']) && $aDynvalue['fcpo_elv_blz'] != '') {
-            $this->addParameter('bankaccount', $aDynvalue['fcpo_elv_ktonr']);
-            $this->addParameter('bankcode', $aDynvalue['fcpo_elv_blz']);
+            $sBic = (isset($aDynvalue['fcpo_elv_bic'])) ? $aDynvalue['fcpo_elv_bic'] : '';
+            $this->addParameter('bic', $sBic);
         }
 
         $oCur = $oConfig->getActShopCurrencyObject();
@@ -3023,6 +3021,24 @@ class fcpoRequest extends oxSuperCfg
         }
 
         return $aResponse;
+    }
+
+    /**
+     * Method checks if iban can be added
+     *
+     * @param array $aDynvalue
+     * @return bool
+     */
+    protected function _fcpoAddIban($aDynvalue)
+    {
+        $blAddIban = (
+            (
+                isset($aDynvalue['fcpo_elv_iban']) &&
+                $aDynvalue['fcpo_elv_iban'] != ''
+            )
+        );
+
+        return $blAddIban;
     }
 
     /**

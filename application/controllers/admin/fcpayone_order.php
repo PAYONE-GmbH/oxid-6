@@ -307,10 +307,11 @@ class fcpayone_order extends fcpayone_admindetails
 
         if ($blFCPOMandateDownload) {
             $oOrder = $this->fcpoGetInstance("oxOrder");
+            $oOrder->load($sOxid);
             $sFilename = $oOrder->fcpoGetMandateFilename();
 
             if ($sFilename) {
-                $sPath = getShopBasePath() . 'modules/fcPayOne/mandates/' . $sFilename;
+                $sPath = getShopBasePath() . 'modules/fc/fcpayone/mandates/' . $sFilename;
 
                 if (!$this->_oFcpoHelper->fcpoFileExists($sPath)) {
                     $this->_redownloadMandate($sFilename);
@@ -319,12 +320,8 @@ class fcpayone_order extends fcpayone_admindetails
                 if ($this->_oFcpoHelper->fcpoFileExists($sPath)) {
                     if (!$blUnitTest) {
                         header("Content-Type: application/pdf"); 
-                    }
-                    if (!$blUnitTest) {
-                        header("Content-Disposition: attachment; filename=\"{$sFilename}\""); 
-                    }
-                    if (!$blUnitTest) {
-                        readfile($sPath); 
+                        header("Content-Disposition: attachment; filename=\"{$sFilename}\"");
+                        readfile($sPath);
                     }
                 }
             }

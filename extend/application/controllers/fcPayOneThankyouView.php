@@ -85,7 +85,7 @@ class fcPayOneThankyouView extends fcPayOneThankyouView_parent
 
         if($oOrder->oxorder__oxpaymenttype->value == 'fcpodebitnote' && $oConfig->getConfigParam('blFCPOMandateDownload')) {
             $sMandateIdentification = false;
-            $sMode = false;
+            $sMode = 'test';
 
             $aMandate = $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoMandate');
             if($aMandate && array_key_exists('mandate_identification', $aMandate) !== false) {

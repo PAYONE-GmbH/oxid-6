@@ -291,6 +291,21 @@ class fcpayone_events
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;    
     ";
 
+    public static $sQueryTableStatusForwardQueue = "
+        CREATE TABLE `fcpostatusforwardqueue` (
+          `OXID` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+          `FCSTATUSMESSAGEID` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+          `FCSTATUSFORWARDID` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+          `FCTRIES` int(11) NOT NULL,
+          `FCLASTTRY` datetime NOT NULL,
+          `FCLASTREQUEST` text NOT NULL,
+          `FCLASTRESPONSE` text NOT NULL,
+          PRIMARY KEY (`OXID`),
+          KEY `FCSTATUSMESSAGEID` (`FCSTATUSMESSAGEID`),
+          KEY `FCSTATUSFORWARDID` (`FCSTATUSFORWARDID`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8;    
+    ";
+
     public static $sQueryAlterOxorderTxid = "ALTER TABLE oxorder ADD COLUMN FCPOTXID VARCHAR(32) CHARSET utf8 COLLATE utf8_general_ci DEFAULT '' NOT NULL;";
     public static $sQueryAlterOxorderRefNr = "ALTER TABLE oxorder ADD COLUMN FCPOREFNR VARCHAR(128) DEFAULT '0' NOT NULL;";
     public static $sQueryAlterOxorderAuthMode = "ALTER TABLE oxorder ADD COLUMN FCPOAUTHMODE VARCHAR(32) CHARSET utf8 COLLATE utf8_general_ci DEFAULT '' NOT NULL;";
@@ -502,6 +517,7 @@ class fcpayone_events
         self::addTableIfNotExists('fcporatepay', self::$sQueryTableRatePay);
         self::addTableIfNotExists('fcpouserflags', self::$sQueryTableFcpoUserFlags);
         self::addTableIfNotExists('fcpouser2flag', self::$sQueryTableFcpoUser2Flag);
+        self::addTableIfNotExists('fcpostatusforwardqueue', self::$sQueryTableStatusForwardQueue);
 
         //ADD COLUMNS TO EXISTING TABLES
         self::addColumnIfNotExists('oxorder', 'FCPOTXID', self::$sQueryAlterOxorderTxid);

@@ -483,6 +483,12 @@ $aLang = array(
     'FCPO_EMAIL_IBAN'                               => 'IBAN:',
     'FCPO_EMAIL_CLEARING_BODY_THANKYOU'             => 'Vielen Dank, dein %SHOPNAME%-Team',
     'FCPO_EMAIL_USAGE'                              => 'Verwendungszweck',
+    'FCPO_TRANSACTIONREDIRECTMETHOD_DIRECT'         => 'Direkte Weiterleitung (Standard)',
+    'FCPO_TRANSACTIONREDIRECTMETHOD_CRONJOB'        => 'Verzögert mit Cronjob (Übertragungssicherheit)',
+    'FCPO_HELP_TRANSACTIONREDIRECTMETHOD'           => 'Wählen Sie die Methode wie Transaktionsstatusmeldungen weitergeleitet werden. Ihnen stehen zur Auswahl:<br><b>Direkte Weiterleitung:</b><br>Bei der direkten Weiterleitung wird die Statusmeldung direkt an die konfigurierten Ziele weitergeleitet. Sie bietet eine hohe Weiterleitungsgeschwindigkeit und eine moderate Übertragungssicherheit.<br><b>Verzögert mit Cronjob:</b><br>Diese Methode leitet die Statusmeldung nicht direkt weiter, sondern sammelt die eingehenden Aufrufe und leitet diese erst durch einen Cronjobaufruf an die Ziele weiter. Diese Methode bietet vor allem eine hohe Übertragungssicherheit. Die Weiterleitungsgeschwindigkeit hängt von der Serverkonfiguration ab. Bitte konsultieren Sie das <a href="">Handbuch</a> um zu erfahren wie Sie diesen Modus effizient einrichten',
+    'FCPO_TRANSACTIONREDIRECTMETHOD'                => 'Weiterleitungsmethode',
+    'FCPO_TRANSACTIONREDIRECT_TIMEOUT'              => 'Zeitlimit in ms bei Direktweiterleitungen',
+    'FCPO_HELP_TRANSACTIONREDIRECT_TIMEOUT'          => 'Um eine unterbrechungsfreie Weiterleitung zu ermöglichen werden Statusmeldungen im Modus "Direkte Weiterleitung" mit einem Zeitlimit versendet. Abhängig von ihrem Serversetup kann es notwendig sein, dass Sie einen höheren Wert als die Voreingstellten 100ms benötigen.',
 );
 
 /*

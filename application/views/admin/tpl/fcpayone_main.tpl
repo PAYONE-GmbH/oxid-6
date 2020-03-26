@@ -967,6 +967,31 @@
                 </dd>
                 <div class="spacer"></div>
             </dl>
+            <dl>
+                <dt>
+                    <select name="confstrs[sTransactionRedirectMethod]">
+                        <option value="direct" [{if $confstrs.sTransactionRedirectMethod == "direct"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_TRANSACTIONREDIRECTMETHOD_DIRECT"}]</option>
+                        <option value="cronjob" [{if $confstrs.sTransactionRedirectMethod == "cronjob"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_TRANSACTIONREDIRECTMETHOD_CRONJOB"}]</option>
+                    </select>
+                    [{oxinputhelp ident="FCPO_HELP_TRANSACTIONREDIRECTMETHOD"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_TRANSACTIONREDIRECTMETHOD"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+            [{if $confstrs.sTransactionRedirectMethod != "cronjob"}]
+                <dl>
+                    <dt>
+                        <input type="text" class="txt" name="confstrs[sTransactionRedirectTimeout]" value="[{$confstrs.sTransactionRedirectTimeout}]" [{$readonly}]>
+                        [{oxinputhelp ident="FCPO_HELP_TRANSACTIONREDIRECT_TIMEOUT"}]
+                    </dt>
+                    <dd>
+                        [{oxmultilang ident="FCPO_TRANSACTIONREDIRECT_TIMEOUT"}]
+                    </dd>
+                    <div class="spacer"></div>
+                </dl>
+            [{/if}]
         </div>
     </div>
 

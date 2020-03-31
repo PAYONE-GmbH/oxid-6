@@ -24,142 +24,211 @@ ini_set('log_errors', 1);
 ini_set('error_log', '../../../log/fcpoErrors.log');
 
 include_once dirname(__FILE__) . "/../../../bootstrap.php";
+include_once dirname(__FILE__) . "/statusbase.php";
 
-class fcPayOneTransactionStatusForwarder extends oxBase {
-
-    protected $_aShopList = null;
-
-    protected $_sLogFile = 'log/fcpo_message_forwarding.log';
-
+class fcPayOneTransactionStatusForwarder extends fcPayOneTransactionStatusBase {
     /**
-     * Check and return post parameter
-     *
-     * @param  string $sKey
-     * @return string
-     */
-    public function fcGetPostParam( $sKey )
-    {
-        $sReturn    = '';
-        $mValue     = filter_input(INPUT_GET, $sKey);
-        if (!$mValue) {
-            $mValue = filter_input(INPUT_POST, $sKey);
-        }
-        if ($mValue ) {
-            if($this->getConfig()->isUtf() ) {
-                $mValue = utf8_encode($mValue);
-            }
-            $sReturn = $mValue;
-        }
-
-        return $sReturn;
-    }
-
-
-    /**
-     * Logs given message if logging is activated
-     *
-     * @param $sMessage
-     * @return void
-     */
-    protected function _logForwardMessage($sMessage)
-    {
-        $blLoggingAllowed = $this->_fcCheckLoggingAllowed();
-        if (!$blLoggingAllowed) return;
-
-        $sBasePath = dirname(__FILE__) . "/../../../";
-        $sLogFilePath = $sBasePath.$this->_sLogFile;
-        $sPrefix = "[".date('Y-m-d H:i:s')."] ";
-        $sFullMessage = $sPrefix.$sMessage."\n";
-
-        $oLogFile = fopen($sLogFilePath, 'a');
-        fwrite($oLogFile, $sFullMessage);
-        fclose($oLogFile);
-    }
-
-    /**
-     * Check if logging is activated by configuration
+     * Get requests to forward to and trigger forwarding
      *
      * @param void
-     * @return bool
+     * @return void
+     * @throws
      */
-    protected function _fcCheckLoggingAllowed()
+    protected function _forwardRequests()
     {
-        $oConfig = $this->getConfig();
-        $sLogMethod =
-            $oConfig->getConfigParam('sTransactionRedirectLogging');
-
-        $blLoggingAllowed = $sLogMethod == 'all';
-
-        return $blLoggingAllowed;
-    }
-
-    protected function _addParam($sKey, $mValue)
-    {
-        $sParams = '';
-        if(is_array($mValue)) {
-            foreach ($mValue as $sKey2 => $mValue2) {
-                $sParams .= $this->_addParam($sKey.'['.$sKey2.']', $mValue2);
-            }
-        } else {
-            $sParams .= "&".$sKey."=".urlencode($mValue);
-        }
-        return $sParams;
-    }
-
-    protected function _forwardRequest($sUrl, $iTimeout) {
-        $this->_logForwardMessage('Trying to forward to url: '.$sUrl.'...');
-        if ($iTimeout == 0) {
-            $iTimeout = 45;
-        }
-        
-        $sParams = '';
-        $aPostParams = filter_input_array(INPUT_POST);
-        $this->_logForwardMessage(print_r($aPostParams, true));
-
-        foreach($aPostParams as $sKey => $mValue) {
-            $sParams .= $this->_addParam($sKey, $mValue);
-        }
-
-        $sParams = substr($sParams,1);
-
-        $oCurl = curl_init($sUrl);
-        curl_setopt($oCurl, CURLOPT_POST, 1);
-        curl_setopt($oCurl, CURLOPT_POSTFIELDS, $sParams);
-        curl_setopt($oCurl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($oCurl, CURLOPT_SSL_VERIFYHOST, false);
-        curl_setopt($oCurl, CURLOPT_TIMEOUT, $iTimeout);
-
-
         try {
-            $oResult = curl_exec($oCurl);
-            $this->_logForwardMessage('Success! Result: '.print_r($oResult, true));
+            $sLimitStatusmessageId =
+                $this->fcGetPostParam('statusmessageid');
+
+            if ($sLimitStatusmessageId) {
+                $sQueryLimitStatusmessageId =
+                    " AND  FCSTATUSMESSAGEID='{$sLimitStatusmessageId}' ";
+            }
+
+            $sQuery = "
+                SELECT
+                    OXID,
+                    FCSTATUSMESSAGEID,
+                    FCSTATUSFORWARDID
+                FROM fcpostatusforwardqueue
+                WHERE FCFULFILLED='0'
+                {$sQueryLimitStatusmessageId}
+            ";
+
+            $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+            $aRows = $oDb->getAll($sQuery);
+
+            foreach ($aRows as $aRow) {
+                $sQueueId = $aRow['FCSTATUSMESSAGEID'];
+                $sStatusmessageId = $aRow['FCSTATUSMESSAGEID'];
+                $sForwardId = $aRow['FCSTATUSFORWARDID'];
+
+                $this->_forwardRequest($sQueueId, $sForwardId, $sStatusmessageId);
+            }
         } catch (Exception $e) {
-            $this->_logForwardMessage('Failed! Exception: '.print_r($e, true));
+            throw $e;
+        }
+    }
+
+    /**
+     * Forward request from queue
+     *
+     * @param $sQueueId
+     * @param $sForwardId
+     * @param $sStatusmessageId
+     * @return void
+     * @throws
+     */
+    protected function _forwardRequest($sQueueId, $sForwardId, $sStatusmessageId) {
+        try {
+            $aParams = $this->_fetchPostParams($sStatusmessageId);
+            $sParams = $aParams['string'];
+            $aRequest = $aParams['array'];
+            $aForwardData = $this->_getForwardData($sForwardId);
+            $iTimeout = $aForwardData['timeout'];
+            $sUrl = $aForwardData['url'];
+            $this->_logForwardMessage('Trying to forward to url: '.$sUrl.'...');
+            $this->_logForwardMessage($sParams);
+            $sParams = substr($sParams,1);
+
+            $oCurl = curl_init($sUrl);
+            curl_setopt($oCurl, CURLOPT_POST, 1);
+            curl_setopt($oCurl, CURLOPT_POSTFIELDS, $sParams);
+            curl_setopt($oCurl, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($oCurl, CURLOPT_SSL_VERIFYHOST, false);
+            curl_setopt($oCurl, CURLOPT_TIMEOUT, $iTimeout);
+
+            $mResult = curl_exec($oCurl);
+            $mCurlInfo = curl_getinfo($oCurl);
+            $blValidResult = (is_string($mResult) && trim($mResult) == 'TSOK');
+            $this->_setForwardingResult($sQueueId, $blValidResult, $aRequest, $mResult, $mCurlInfo);
+        } catch (Exception $e) {
+            throw $e;
         }
 
         curl_close($oCurl);
     }
 
-    public function handleForwarding() {
-        $sPayoneStatus = $this->fcGetPostParam('txaction');
-        
+    /**
+     * Updates processed queue entry with current data
+     *
+     * @param $sQueueId
+     * @param $blValidResult
+     * @param $aRequest
+     * @param $mResult
+     * @param $mCurlInfo
+     * @throws Exception
+     */
+    protected function _setForwardingResult($sQueueId, $blValidResult, $aRequest, $mResult, $mCurlInfo)
+    {
+        try {
+            $oDb = oxDb::getDb();
+            $sFulfilled = ($blValidResult) ? '1' : '0';
+            $sFulfilled = $oDb->quote($sFulfilled);
+            $sRequest =$oDb->quote(print_r($aRequest, true));
+            $sResponse = $oDb->quote((string) $mResult);
+            $sResponseInfo = $oDb->quote((string) $mCurlInfo);
+
+            $sQuery = "
+            UPDATE fcpostatusforwardqueue
+            SET 
+                FCTRIES=FCTRIES+1,
+                FCLASTTRY=NOW(),
+                FCLASTREQUEST=".$sRequest.",
+                FCLASTRESPONSE=".$sResponse.",
+                FCRESPONSEINFO=".$sResponseInfo.",
+                FCFULFILLED=".$sFulfilled."
+            WHERE
+                OXID=".$oDb->quote($sQueueId);
+
+            $oDb->execute($sQuery);
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * Collects request data from database and prepare result
+     *
+     * @param $sStatusmessageId
+     * @return array
+     * @throws
+     */
+    protected function _fetchPostParams($sStatusmessageId)
+    {
+        try {
+            $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+            $sQuery = "
+                SELECT * 
+                FROM fcpotransactionstatus 
+                WHERE OXID=".$oDb->quote($sStatusmessageId);
+
+            $aRow = $oDb->getRow($sQuery);
+            if ($aRow === false) {
+                $sExceptionMessage =
+                    'Could not find transaction status message for ID '.$sStatusmessageId.'!';
+                throw new Exception($sExceptionMessage);
+            }
+
+            $aRequestParams = $this->_cleanParams($aRow);
+            $sParams = '';
+            foreach($aRequestParams as $sKey => $mValue) {
+                $sParams .= $this->_addParam($sKey, $mValue);
+            }
+
+            return array(
+                'string' => $sParams,
+                'array' => $aRequestParams,
+            );
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * Returns elementary forward data
+     *
+     * @param $sForwardId
+     * @return
+     * @throws
+     */
+    protected function _getForwardData($sForwardId)
+    {
+        $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
         $sQuery = "
-            SELECT 
-                fcpo_url, 
-                fcpo_timeout 
-            FROM 
-                fcpostatusforwarding 
-            WHERE 
-                fcpo_payonestatus = '{$sPayoneStatus}'";
+                SELECT 
+                    FCPO_URL,
+                    FCPO_TIMEOUT
+                FROM fcpostatusforwarding 
+                WHERE OXID=".$oDb->quote($sForwardId);
 
-        $aRows = oxDb::getDb()->getAll($sQuery);
+        $aRow = $oDb->getRow($sQuery);
+        if ($aRow === false) {
+            throw new Exception('Could not find forward data for ID '.$sForwardId.'!');
+        }
 
-        $this->_logForwardMessage('Handle fowardings: '.print_r($aRows, true));
+        return array(
+            'url' => $aRow['FCPO_URL'],
+            'timeout' => $aRow['FCPO_TIMEOUT'],
+        );
+    }
 
-        foreach ($aRows as $aRow) {
-            $sUrl = (string) $aRow[0];
-            $iTimeout = (int) $aRow[1];
-            $this->_forwardRequest($sUrl, $iTimeout);
+    /**
+     * Central handling of forward request
+     *
+     * @param void
+     * @return void
+     */
+    public function handleForwarding() {
+        try {
+            $this->_isKeyValid();
+            $this->_forwardRequests();
+
+            echo 'TSOK';
+        } catch (Exception $e) {
+            echo "Error occured! Please check logfile for details.";
+            $this->_logException($e->getMessage());
+            return;
         }
     }
 }

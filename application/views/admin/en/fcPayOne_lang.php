@@ -498,6 +498,14 @@ $aLang = array(
 'FCPO_TRANSACTIONREDIRECTMETHOD'                => 'Method of statusmessage redirecting',
 'FCPO_TRANSACTIONREDIRECT_TIMEOUT'              => 'Timeout for direct redirects',
 'FCPO_HELP_TRANSACTIONREDIRECT_TIMEOUT'         => 'For offering direct redirects without any interruptions, there is a need for having a timout for mode "Direct redirects". Depending on the setup of your server it can be nessessary to have a higher value then 100ms default.',
+'FCPO_FORWARD_REDIRECTS'                        => 'Transaction status redirects',
+'FCPO_FORWARD_REDIRECT_TARGETURL'               => 'Target',
+'FCPO_FORWARD_REDIRECT_TRIES'                   => 'Tries',
+'FCPO_FORWARD_REDIRECT_LASTTRY'                 => 'Last tried',
+'FCPO_FORWARD_REDIRECT_FULFILLED'               => 'Success',
+'FCPO_FORWARD_REDIRECT_FULFILLED_YES'           => 'Yes',
+'FCPO_FORWARD_REDIRECT_FULFILLED_NO'            => 'No',
+'FCPO_FORWARD_REDIRECT_DETAILS'                 => 'Details',
 );
 
 /*

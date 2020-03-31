@@ -186,6 +186,25 @@ class fcPayOneTransactionStatusForwarder extends fcPayOneTransactionStatusBase {
     }
 
     /**
+     * Removes all empty params
+     *
+     * @param $aParams
+     * @return array
+     */
+    protected function _cleanParams($aParams)
+    {
+        $aCleanedParams = array();
+        foreach ($aParams as $sKey=>$sValue) {
+            if (!$sValue) {
+                continue;
+            }
+            $aCleanedParams[$sKey] = $sValue;
+        }
+
+        return $aCleanedParams;
+    }
+
+    /**
      * Returns elementary forward data
      *
      * @param $sForwardId

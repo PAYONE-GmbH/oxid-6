@@ -141,4 +141,57 @@ class fcpayone_log extends fcpayone_admindetails
         return $sReturn;
     }
 
+    /**
+     * Triggering forward redirects of current status message
+     *
+     * @param void
+     * @return void
+     */
+    public function fcpoTriggerForwardRedirects()
+    {
+        $sStatusmessageId = $this->_oFcpoHelper->fcpoGetRequestParameter("oxid");
+        if (!$sStatusmessageId || $sStatusmessageId = -1) {
+            return;
+        }
+        $sKey = $this->_oFcpoHelper->fcpoGetRequestParameter("key");
+
+        $oConfig = $this->getConfig();
+        $sShopUrl = $oConfig->getShopUrl();
+        $sSslShopUrl = $oConfig->getSslShopUrl();
+
+        $sParams = '';
+        $sParams .= $this->_addParam('key', $sKey);
+        $sParams .= $this->_addParam('statusmessageid', $sStatusmessageId);
+        $sParams = substr($sParams,1);
+        $sBaseUrl = (empty($sSslShopUrl)) ? $sShopUrl : $sSslShopUrl;
+        $sConfTimeout = $oConfig->getConfigParam('sTransactionRedirectTimeout');
+        $iTimeout = ($sConfTimeout) ? (int) $sConfTimeout : 100;
+
+        $sForwarderUrl = $sBaseUrl . 'modules/fc/fcpayone/statusforward.php';
+
+        $oCurl = curl_init($sForwarderUrl);
+        curl_setopt($oCurl, CURLOPT_POST, 1);
+        curl_setopt($oCurl, CURLOPT_POSTFIELDS, $sParams);
+
+        curl_setopt($oCurl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($oCurl, CURLOPT_SSL_VERIFYHOST, false);
+
+        curl_setopt($oCurl, CURLOPT_TIMEOUT_MS, $iTimeout);
+
+        curl_exec($oCurl);
+        curl_close($oCurl);
+    }
+
+    protected function _addParam($sKey, $mValue)
+    {
+        $sParams = '';
+        if(is_array($mValue)) {
+            foreach ($mValue as $sKey2 => $mValue2) {
+                $sParams .= $this->_addParam($sKey.'['.$sKey2.']', $mValue2);
+            }
+        } else {
+            $sParams .= "&".$sKey."=".urlencode($mValue);
+        }
+        return $sParams;
+    }
 }

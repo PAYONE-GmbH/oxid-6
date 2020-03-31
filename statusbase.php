@@ -175,4 +175,17 @@ class fcPayOneTransactionStatusBase extends oxBase {
         fwrite($oLogFile, $sFullMessage);
         fclose($oLogFile);
     }
+
+    protected function _addParam($sKey, $mValue)
+    {
+        $sParams = '';
+        if(is_array($mValue)) {
+            foreach ($mValue as $sKey2 => $mValue2) {
+                $sParams .= $this->_addParam($sKey.'['.$sKey2.']', $mValue2);
+            }
+        } else {
+            $sParams .= "&".$sKey."=".urlencode($mValue);
+        }
+        return $sParams;
+    }
 }

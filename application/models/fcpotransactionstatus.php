@@ -199,6 +199,56 @@ class fcpoTransactionStatus extends oxBase
     }
 
     /**
+     * Template getter for returning forward redirects
+     *
+     * @param void
+     * @return array|false
+     */
+    public function fcpoGetForwardRedirects()
+    {
+        $sStatusmessageId = $this->getId();
+        $sQuery = "
+            SELECT 
+                sf.FCPO_URL,
+                sfq.FCTRIES,
+                sfq.FCLASTTRY,
+                sfq.FCFULFILLED,
+                sfq.FCLASTREQUEST,
+                sfq.FCLASTRESPONSE,
+                sfq.FCRESPONSEINFO
+            FROM fcpostatusforwardqueue sfq
+            LEFT JOIN fcpostatusforwarding sf ON (sfq.FCSTATUSFORWARDID = sf.OXID)
+            WHERE sfq.FCSTATUSMESSAGEID='{$sStatusmessageId}'  
+        ";
+
+        $aRows = $this->_oFcpoDb->GetAll($sQuery);
+
+        if (!is_array($aRows) || count($aRows) == 0) {
+            return false;
+        }
+        $aForwardRedirects = array();
+        foreach ($aRows as $aRow) {
+            $oForwardRedirect = new stdClass();
+            $oForwardRedirect->targetUrl = $aRow['FCPO_URL'];
+            $oForwardRedirect->tries = $aRow['FCTRIES'];
+            $oForwardRedirect->lastTry = $aRow['FCLASTTRY'];
+            $oForwardRedirect->fulfilled = $aRow['FCFULFILLED'];
+            $sDetails =
+                "REQUEST\n=======\n".
+                $aRow['FCLASTREQUEST']."\n\n".
+                "RESPONSE\n========\n".
+                $aRow['FCLASTRESPONSE']."\n\n".
+                "REQUESTINFO\n===========\n".
+                $aRow['FCLASTRESPONSE']."\n\n";
+            $oForwardRedirect->details = $sDetails;
+
+            $aForwardRedirects[] = $oForwardRedirect;
+        }
+
+        return $aForwardRedirects;
+    }
+
+    /**
      * This method decides if given option1 or 2 will be used by checking if given value
      * 
      * @param  double $dValue

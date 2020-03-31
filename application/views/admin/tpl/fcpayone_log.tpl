@@ -1,30 +1,29 @@
 [{include file="headitem.tpl" title="SYSREQ_MAIN_TITLE"|oxmultilangassign}]
 
-[{ if $readonly}]
+[{if $readonly}]
     [{assign var="readonly" value="readonly disabled"}]
 [{else}]
     [{assign var="readonly" value=""}]
 [{/if}]
 
-<form autocomplete="off" name="transfer" id="transfer" action="[{ $oViewConf->getSelfLink() }]" method="post">
-    [{ $oViewConf->getHiddenSid() }]
-    <input type="hidden" name="oxid" value="[{ $oxid }]">
+<form autocomplete="off" name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
+    [{$oViewConf->getHiddenSid()}]
+    <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="cl" value="fcpayone_log">
 </form>
 
-[{ if $oxid == '-1' }]
+[{if $oxid == '-1'}]
 
-[{oxmultilang ident="FCPO_NO_TRANSACTION"}]
+    [{oxmultilang ident="FCPO_NO_TRANSACTION"}]
 
-[{ else }]
-
+[{else}]
     <table style="border: 1px solid #C8C8C8;">
         <tr>
             <td class="listitem" >
                 TXACTION
             </td>
             <td class="listitem">
-                [{ $edit->fcpotransactionstatus__fcpo_txaction->value }]
+                [{$edit->fcpotransactionstatus__fcpo_txaction->value}]
             </td>
         </tr>
 
@@ -33,7 +32,7 @@
                 PORTALID
             </td>
             <td class="listitem2">
-                [{ $edit->fcpotransactionstatus__fcpo_portalid->value }]
+                [{$edit->fcpotransactionstatus__fcpo_portalid->value}]
             </td>
         </tr>
 
@@ -42,7 +41,7 @@
                 AID
             </td>
             <td class="listitem">
-                [{ $edit->fcpotransactionstatus__fcpo_aid->value }]
+                [{$edit->fcpotransactionstatus__fcpo_aid->value}]
             </td>
         </tr>
 
@@ -51,7 +50,7 @@
                 CLEARINGTYPE
             </td>
             <td class="listitem2">
-                [{ $edit->fcpotransactionstatus__fcpo_clearingtype->value }]
+                [{$edit->fcpotransactionstatus__fcpo_clearingtype->value}]
             </td>
         </tr>
 
@@ -60,7 +59,7 @@
                 TXTIME
             </td>
             <td class="listitem">
-                [{ $edit->fcpotransactionstatus__fcpo_txtime->value }]
+                [{$edit->fcpotransactionstatus__fcpo_txtime->value}]
             </td>
         </tr>
 
@@ -69,7 +68,7 @@
                 CURRENCY
             </td>
             <td class="listitem2">
-                [{ $edit->fcpotransactionstatus__fcpo_currency->value }]
+                [{$edit->fcpotransactionstatus__fcpo_currency->value}]
             </td>
         </tr>
 
@@ -78,7 +77,7 @@
                 USERID
             </td>
             <td class="listitem">
-                [{ $edit->fcpotransactionstatus__fcpo_userid->value }]
+                [{$edit->fcpotransactionstatus__fcpo_userid->value}]
             </td>
         </tr>
 
@@ -87,7 +86,7 @@
                 ACCESSNAME
             </td>
             <td class="listitem2">
-                [{ $edit->fcpotransactionstatus__fcpo_accessname->value }]
+                [{$edit->fcpotransactionstatus__fcpo_accessname->value}]
             </td>
         </tr>
 
@@ -96,7 +95,7 @@
                 ACCESSCODE
             </td>
             <td class="listitem">
-                [{ $edit->fcpotransactionstatus__fcpo_accesscode->value }]
+                [{$edit->fcpotransactionstatus__fcpo_accesscode->value}]
             </td>
         </tr>
 
@@ -105,7 +104,7 @@
                 MODE
             </td>
             <td class="listitem2">
-                [{ $edit->fcpotransactionstatus__fcpo_mode->value }]
+                [{$edit->fcpotransactionstatus__fcpo_mode->value}]
             </td>
         </tr>
 
@@ -114,7 +113,7 @@
                 PRICE
             </td>
             <td class="listitem">
-                [{ $edit->fcpotransactionstatus__fcpo_price->value }]
+                [{$edit->fcpotransactionstatus__fcpo_price->value}]
             </td>
         </tr>        
         
@@ -123,7 +122,7 @@
                 CLEARING_BANKACCOUNTHOLDER
             </td>
             <td class="listitem2">
-                [{ $edit->fcpotransactionstatus__fcpo_clearing_bankaccountholder->value }]
+                [{$edit->fcpotransactionstatus__fcpo_clearing_bankaccountholder->value}]
             </td>
         </tr>
         
@@ -132,7 +131,7 @@
                 CLEARING_BANKACCOUNT
             </td>
             <td class="listitem">
-                [{ $edit->fcpotransactionstatus__fcpo_clearing_bankaccount->value }]
+                [{$edit->fcpotransactionstatus__fcpo_clearing_bankaccount->value}]
             </td>
         </tr>
         
@@ -141,7 +140,7 @@
                 CLEARING_BANKCODE
             </td>
             <td class="listitem2">
-                [{ $edit->fcpotransactionstatus__fcpo_clearing_bankcode->value }]
+                [{$edit->fcpotransactionstatus__fcpo_clearing_bankcode->value}]
             </td>
         </tr>
         
@@ -150,7 +149,7 @@
                 CLEARING_BANKNAME
             </td>
             <td class="listitem">
-                [{ $edit->fcpotransactionstatus__fcpo_clearing_bankname->value }]
+                [{$edit->fcpotransactionstatus__fcpo_clearing_bankname->value}]
             </td>
         </tr>
         
@@ -159,7 +158,7 @@
                 CLEARING_BANKBIC
             </td>
             <td class="listitem2">
-                [{ $edit->fcpotransactionstatus__fcpo_clearing_bankbic->value }]
+                [{$edit->fcpotransactionstatus__fcpo_clearing_bankbic->value}]
             </td>
         </tr>
         
@@ -168,7 +167,7 @@
                 CLEARING_BANKIBAN
             </td>
             <td class="listitem">
-                [{ $edit->fcpotransactionstatus__fcpo_clearing_bankiban->value }]
+                [{$edit->fcpotransactionstatus__fcpo_clearing_bankiban->value}]
             </td>
         </tr>
         
@@ -177,7 +176,7 @@
                 CLEARING_LEGALNOTE
             </td>
             <td class="listitem2">
-                [{ $edit->fcpotransactionstatus__fcpo_clearing_legalnote->value }]
+                [{$edit->fcpotransactionstatus__fcpo_clearing_legalnote->value}]
             </td>
         </tr>
         
@@ -186,7 +185,7 @@
                 CLEARING_DUEDATE
             </td>
             <td class="listitem">
-                [{ $edit->fcpotransactionstatus__fcpo_clearing_duedate->value }]
+                [{$edit->fcpotransactionstatus__fcpo_clearing_duedate->value}]
             </td>
         </tr>
         
@@ -195,7 +194,7 @@
                 CLEARING_REFERENCE
             </td>
             <td class="listitem2">
-                [{ $edit->fcpotransactionstatus__fcpo_clearing_reference->value }]
+                [{$edit->fcpotransactionstatus__fcpo_clearing_reference->value}]
             </td>
         </tr>
         
@@ -204,7 +203,7 @@
                 CLEARING_INSTRUCTIONNOTE
             </td>
             <td class="listitem">
-                [{ $edit->fcpotransactionstatus__fcpo_clearing_instructionnote->value }]
+                [{$edit->fcpotransactionstatus__fcpo_clearing_instructionnote->value}]
             </td>
         </tr>
 
@@ -213,7 +212,7 @@
                 TXID
             </td>
             <td class="listitem2">
-                [{ $edit->fcpotransactionstatus__fcpo_txid->value }]
+                [{$edit->fcpotransactionstatus__fcpo_txid->value}]
             </td>
         </tr>
 
@@ -222,7 +221,7 @@
                 REFERENCE
             </td>
             <td class="listitem">
-                [{ $edit->fcpotransactionstatus__fcpo_reference->value }]
+                [{$edit->fcpotransactionstatus__fcpo_reference->value}]
             </td>
         </tr>
 
@@ -231,7 +230,7 @@
                 SEQUENCENUMBER
             </td>
             <td class="listitem2">
-                [{ $edit->fcpotransactionstatus__fcpo_sequencenumber->value }]
+                [{$edit->fcpotransactionstatus__fcpo_sequencenumber->value}]
             </td>
         </tr>
 
@@ -240,7 +239,7 @@
                 COMPANY
             </td>
             <td class="listitem">
-                [{ $edit->fcpotransactionstatus__fcpo_company->value }]
+                [{$edit->fcpotransactionstatus__fcpo_company->value}]
             </td>
         </tr>
 
@@ -249,7 +248,7 @@
                 FIRSTNAME
             </td>
             <td class="listitem2">
-                [{ $edit->fcpotransactionstatus__fcpo_firstname->value }]
+                [{$edit->fcpotransactionstatus__fcpo_firstname->value}]
             </td>
         </tr>
 
@@ -258,7 +257,7 @@
                 LASTNAME
             </td>
             <td class="listitem">
-                [{ $edit->fcpotransactionstatus__fcpo_lastname->value }]
+                [{$edit->fcpotransactionstatus__fcpo_lastname->value}]
             </td>
         </tr>
 
@@ -267,7 +266,7 @@
                 STREET
             </td>
             <td class="listitem2">
-                [{ $edit->fcpotransactionstatus__fcpo_street->value }]
+                [{$edit->fcpotransactionstatus__fcpo_street->value}]
             </td>
         </tr>
 
@@ -276,7 +275,7 @@
                 ZIP
             </td>
             <td class="listitem">
-                [{ $edit->fcpotransactionstatus__fcpo_zip->value }]
+                [{$edit->fcpotransactionstatus__fcpo_zip->value}]
             </td>
         </tr>
 
@@ -285,7 +284,7 @@
                 CITY
             </td>
             <td class="listitem2">
-                [{ $edit->fcpotransactionstatus__fcpo_city->value }]
+                [{$edit->fcpotransactionstatus__fcpo_city->value}]
             </td>
         </tr>
 
@@ -294,7 +293,7 @@
                 EMAIL
             </td>
             <td class="listitem">
-                [{ $edit->fcpotransactionstatus__fcpo_email->value }]
+                [{$edit->fcpotransactionstatus__fcpo_email->value}]
             </td>
         </tr>
 
@@ -303,7 +302,7 @@
                 COUNTRY
             </td>
             <td class="listitem2">
-                [{ $edit->fcpotransactionstatus__fcpo_country->value }]
+                [{$edit->fcpotransactionstatus__fcpo_country->value}]
             </td>
         </tr>
 
@@ -312,7 +311,7 @@
                 SHIPPING_COMPANY
             </td>
             <td class="listitem">
-                [{ $edit->fcpotransactionstatus__fcpo_shipping_company->value }]
+                [{$edit->fcpotransactionstatus__fcpo_shipping_company->value}]
             </td>
         </tr>
 
@@ -321,7 +320,7 @@
                 SHIPPING_FIRSTNAME
             </td>
             <td class="listitem2">
-                [{ $edit->fcpotransactionstatus__fcpo_shipping_firstname->value }]
+                [{$edit->fcpotransactionstatus__fcpo_shipping_firstname->value}]
             </td>
         </tr>
 
@@ -330,7 +329,7 @@
                 SHIPPING_LASTNAME
             </td>
             <td class="listitem">
-                [{ $edit->fcpotransactionstatus__fcpo_shipping_lastname->value }]
+                [{$edit->fcpotransactionstatus__fcpo_shipping_lastname->value}]
             </td>
         </tr>
 
@@ -339,7 +338,7 @@
                 SHIPPING_STREET
             </td>
             <td class="listitem2">
-                [{ $edit->fcpotransactionstatus__fcpo_shipping_street->value }]
+                [{$edit->fcpotransactionstatus__fcpo_shipping_street->value}]
             </td>
         </tr>
 
@@ -348,7 +347,7 @@
                 SHIPPING_ZIP
             </td>
             <td class="listitem">
-                [{ $edit->fcpotransactionstatus__fcpo_shipping_zip->value }]
+                [{$edit->fcpotransactionstatus__fcpo_shipping_zip->value}]
             </td>
         </tr>
 
@@ -357,7 +356,7 @@
                 SHIPPING_CITY
             </td>
             <td class="listitem2">
-                [{ $edit->fcpotransactionstatus__fcpo_shipping_city->value }]
+                [{$edit->fcpotransactionstatus__fcpo_shipping_city->value}]
             </td>
         </tr>
 
@@ -366,7 +365,7 @@
                 SHIPPING_COUNTRY
             </td>
             <td class="listitem">
-                [{ $edit->fcpotransactionstatus__fcpo_shipping_country->value }]
+                [{$edit->fcpotransactionstatus__fcpo_shipping_country->value}]
             </td>
         </tr>
 
@@ -375,7 +374,7 @@
                 BANKCOUNTRY
             </td>
             <td class="listitem2">
-                [{ $edit->fcpotransactionstatus__fcpo_bankcountry->value }]
+                [{$edit->fcpotransactionstatus__fcpo_bankcountry->value}]
             </td>
         </tr>
 
@@ -384,7 +383,7 @@
                 BANKACCOUNT
             </td>
             <td class="listitem">
-                [{ $edit->fcpotransactionstatus__fcpo_bankaccount->value }]
+                [{$edit->fcpotransactionstatus__fcpo_bankaccount->value}]
             </td>
         </tr>
 
@@ -393,7 +392,7 @@
                 BANKCODE
             </td>
             <td class="listitem2">
-                [{ $edit->fcpotransactionstatus__fcpo_bankcode->value }]
+                [{$edit->fcpotransactionstatus__fcpo_bankcode->value}]
             </td>
         </tr>
 
@@ -402,7 +401,7 @@
                 BANKACCOUNTHOLDER
             </td>
             <td class="listitem">
-                [{ $edit->fcpotransactionstatus__fcpo_bankaccountholder->value }]
+                [{$edit->fcpotransactionstatus__fcpo_bankaccountholder->value}]
             </td>
         </tr>
 
@@ -411,7 +410,7 @@
                 CARDEXPIREDATE
             </td>
             <td class="listitem2">
-                [{ $edit->fcpotransactionstatus__fcpo_cardexpiredate->value }]
+                [{$edit->fcpotransactionstatus__fcpo_cardexpiredate->value}]
             </td>
         </tr>
 
@@ -420,7 +419,7 @@
                 CARDTYPE
             </td>
             <td class="listitem">
-                [{ $edit->fcpotransactionstatus__fcpo_cardtype->value }]
+                [{$edit->fcpotransactionstatus__fcpo_cardtype->value}]
             </td>
         </tr>
 
@@ -429,7 +428,7 @@
                 CARDPAN
             </td>
             <td class="listitem2">
-                [{ $edit->fcpotransactionstatus__fcpo_cardpan->value }]
+                [{$edit->fcpotransactionstatus__fcpo_cardpan->value}]
             </td>
         </tr>
 
@@ -438,7 +437,7 @@
                 CUSTOMERID
             </td>
             <td class="listitem">
-                [{ $edit->fcpotransactionstatus__fcpo_customerid->value }]
+                [{$edit->fcpotransactionstatus__fcpo_customerid->value}]
             </td>
         </tr>
 
@@ -447,7 +446,7 @@
                 BALANCE
             </td>
             <td class="listitem2">
-                [{ $edit->fcpotransactionstatus__fcpo_balance->value|number_format:2:',':'' }]
+                [{$edit->fcpotransactionstatus__fcpo_balance->value|number_format:2:',':''}]
             </td>
         </tr>
 
@@ -456,11 +455,44 @@
                 RECEIVABLE
             </td>
             <td class="listitem">
-                [{ $edit->fcpotransactionstatus__fcpo_receivable->value|number_format:2:',':'' }]
+                [{$edit->fcpotransactionstatus__fcpo_receivable->value|number_format:2:',':''}]
             </td>
         </tr>
     </table>
 
+
+    [{if $edit->fcpoGetForwardRedirects()}]
+        <h3>[{oxmultilang ident="FCPO_FORWARD_REDIRECTS"}]</h3>
+        <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post">
+            [{$oViewConf->getHiddenSid()}]
+            <input type="hidden" name="cl" value="fcpayone_log">
+            <input type="hidden" name="fnc" value="fcpoTriggerForwardRedirects">
+            <input type="hidden" name="oxid" value="[{$oxid}]">
+            <table style="border: 1px solid #C8C8C8;">
+                <tr>
+                    <th>[{oxmultilang ident="FCPO_FORWARD_REDIRECT_TARGETURL"}]</th>
+                    <th>[{oxmultilang ident="FCPO_FORWARD_REDIRECT_TRIES"}]</th>
+                    <th>[{oxmultilang ident="FCPO_FORWARD_REDIRECT_LASTTRY"}]</th>
+                    <th>[{oxmultilang ident="FCPO_FORWARD_REDIRECT_FULFILLED"}]</th>
+                    <th>[{oxmultilang ident="FCPO_FORWARD_REDIRECT_DETAILS"}]</th>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <input type="submit"> [{oxmultilang ident="FCPO_FORWARD_REDIRECT_TRIGGER"}]
+                    </td>
+                </tr>
+                [{foreach from=$edit->fcpoGetForwardRedirects() item='oForwardRedirect'}]
+                    <tr>
+                        <td>[{$oForwardRedirect->targetUrl}]</td>
+                        <td>[{$oForwardRedirect->tries}]</td>
+                        <td>[{$oForwardRedirect->lastTry}]</td>
+                        <td>[{$oForwardRedirect->fulfilled}]</td>
+                        <td><textarea cols="10" rows="5">[{$oForwardRedirect->details}]</textarea></td>
+                    </tr>
+                [{/foreach}]
+            </table>
+        </form>
+    [{/if}]
 [{/if}]
 
 [{include file="bottomnaviitem.tpl"}]

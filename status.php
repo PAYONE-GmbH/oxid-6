@@ -221,19 +221,6 @@ class fcPayOneTransactionStatusHandler extends fcPayOneTransactionStatusBase
         return $sOxid;
     }
     
-    protected function _addParam($sKey, $mValue) 
-    {
-        $sParams = '';
-        if(is_array($mValue)) {
-            foreach ($mValue as $sKey2 => $mValue2) {
-                $sParams .= $this->_addParam($sKey.'['.$sKey2.']', $mValue2);
-            }
-        } else {
-            $sParams .= "&".$sKey."=".urlencode($mValue);
-        }
-        return $sParams;
-    }
-
     /**
      * Handling configured forwarding of statusmessage to other endpoints
      *
@@ -264,16 +251,18 @@ class fcPayOneTransactionStatusHandler extends fcPayOneTransactionStatusBase
      * @param void
      * @return void
      */
-    protected function _directRedirect($sTransactionId)
+    protected function _directRedirect($sStatusmessageId)
     {
+        $sKey = $this->fcGetPostParam('key');
         $sParams = '';
-        $sParams .= $this->_addParam('key', );
-        $sParams .= $this->_addParam('statusmessageid', );
+        $sParams .= $this->_addParam('key', $sKey);
+        $sParams .= $this->_addParam('statusmessageid', $sStatusmessageId);
 
         $oConfig = $this->getConfig();
         $sShopUrl = $oConfig->getShopUrl();
         $sSslShopUrl = $oConfig->getSslShopUrl();
-
+        $sConfTimeout = $oConfig->getConfigParam('sTransactionRedirectTimeout');
+        $iTimeout = ($sConfTimeout) ? (int) $sConfTimeout : 100;
         $sParams = substr($sParams,1);
         $sBaseUrl = (empty($sSslShopUrl)) ? $sShopUrl : $sSslShopUrl;
 
@@ -288,7 +277,7 @@ class fcPayOneTransactionStatusHandler extends fcPayOneTransactionStatusBase
         curl_setopt($oCurl, CURLOPT_SSL_VERIFYHOST, false);
 
         curl_setopt($oCurl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($oCurl, CURLOPT_TIMEOUT_MS, 100);
+        curl_setopt($oCurl, CURLOPT_TIMEOUT_MS, $iTimeout);
 
         curl_exec($oCurl);
         $aResult = curl_getinfo($oCurl);

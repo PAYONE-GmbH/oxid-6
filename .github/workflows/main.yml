@@ -39,6 +39,8 @@ jobs:
       run: composer -V
     - name: Check PHP Extensions
       run: php -m
+    - name: Start MySQL
+      run: sudo /etc/init.d/mysql start
 
     - name: Setup Oxid 6
       run: |

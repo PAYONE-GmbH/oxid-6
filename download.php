@@ -47,87 +47,134 @@ class fcPayOneMandateDownload extends oxUBase
         parent::__construct();
         $this->_oFcpoHelper = oxNew('fcpohelper');
     }
-    
 
-    protected function _redownloadMandate($sMandateFilename, $sOrderId, $sMode) 
+    /**
+     * Render overloading
+     *
+     * @param void
+     * @return void
+     */
+    public function render()
+    {
+        parent::render();
+        $this->_fcpoMandateDownloadAction();
+        exit();
+    }
+
+    /**
+     * Redownload existing mandate from payone platform
+     *
+     * @param $sMandateFilename
+     * @param $sOrderId
+     * @param $sPaymentId
+     */
+    protected function _redownloadMandate($sMandateFilename, $sOrderId, $sPaymentId)
     {
         $sMandateIdentification = str_replace('.pdf', '', $sMandateFilename);
+        $oPayment = oxNew('oxPayment');
+        $oPayment->load($sPaymentId);
+        $sMode = $oPayment->fcpoGetOperationMode();
 
         $oPORequest = oxNew('fcporequest');
         $oPORequest->sendRequestGetFile($sOrderId, $sMandateIdentification, $sMode);
     }
-    
-    public function render() 
-    {
-        parent::render();
-        $oDb = oxDb::getDb();
 
-        $sOrderId = $this->_oFcpoHelper->fcpoGetRequestParameter('id');
+    /**
+     * Returns user id which has been sent directly as param
+     * or fetch userid from other sources
+     *
+     * @param void
+     * @return mixed
+     */
+    protected function _fcpoGetUserId()
+    {
         $sUserId = $this->_oFcpoHelper->fcpoGetRequestParameter('uid');
-        $sPath = false;
-        
         $oUser = $this->getUser();
-        if($oUser) {
+        if ($oUser) {
             $sUserId = $oUser->getId();
         }
-        
-        if($sUserId) {
-            if($sOrderId) {
-                $sQuery = " SELECT 
-                                a.fcpo_filename,
-                                b.oxid,
-                                b.fcpomode
-                            FROM 
-                                fcpopdfmandates AS a
-                            INNER JOIN
-                                oxorder AS b ON a.oxorderid = b.oxid
-                            WHERE
-                                b.oxid = ".oxDb::getDb()->quote($sOrderId)." AND
-                                b.oxuserid = ".oxDb::getDb()->quote($sUserId)."
-                            LIMIT 1";
-            } else {
-                $sQuery = " SELECT 
-                                a.fcpo_filename,
-                                b.oxid,
-                                b.fcpomode
-                            FROM 
-                                fcpopdfmandates AS a
-                            INNER JOIN
-                                oxorder AS b ON a.oxorderid = b.oxid
-                            WHERE
-                                = ".oxDb::getDb()->quote($sUserId)."
-                            ORDER BY
-                                b.oxorderdate DESC
-                            LIMIT 1";
-            }
-            $aResult = $oDb->GetRow($sQuery);
-            if (is_array($aResult)) {
-                $sFilename = $aResult[0];
-                $sOrderId = $aResult[1];
-                $sMode = $aResult[2];
-            }
-            if($sFilename) {
-                $sPath = getShopBasePath().'modules/fc/fcpayone/mandates/'.$sFilename;
-            }
-        }
-        
-        if($sPath === false) {
-            echo 'Permission denied!';
-        } else {
-            if(!file_exists($sPath)) {
-                $this->_redownloadMandate($sFilename, $sOrderId, $sMode);
-            }
-            if(file_exists($sPath)) {
-                header("Content-Type: application/pdf");
-                header("Content-Disposition: attachment; filename=\"{$sFilename}\"");
-                readfile($sPath);
-            } else {
-                echo 'Error: File not found!';
-            }
-        }        
-        exit();
+
+        return $sUserId;
     }
-    
+
+    /**
+     * Return query for fetching mandate mandatory information
+     *
+     * @param void
+     * @return string
+     */
+    protected function _fcpoGetMandateQuery()
+    {
+        $sOrderId = $this->_oFcpoHelper->fcpoGetRequestParameter('id');
+        $sUserId = $this->_fcpoGetUserId();
+
+        $sWhere = "
+            b.oxuserid = ".oxDb::getDb()->quote($sUserId)."
+        ";
+        $sOrderBy = "
+            ORDER BY
+                b.oxorderdate DESC        
+        ";
+        if ($sOrderId) {
+            $sWhere = "
+                b.oxid = ".oxDb::getDb()->quote($sOrderId)." AND
+                b.oxuserid = ".oxDb::getDb()->quote($sUserId)."
+            ";
+            $sOrderBy = "";
+        }
+
+        $sQuery = "
+            SELECT 
+                a.fcpo_filename,
+                b.oxid,
+                b.fcpomode,
+                b.oxpaymenttype
+            FROM 
+                fcpopdfmandates AS a
+            INNER JOIN
+                oxorder AS b ON a.oxorderid = b.oxid
+            WHERE {$sWhere} {$sOrderBy} LIMIT 1        
+        ";
+
+        return $sQuery;
+    }
+
+    /**
+     * Triggers download action for mandate
+     *
+     * @param void
+     * @return void
+     */
+    protected function _fcpoMandateDownloadAction()
+    {
+        $oDb = oxDb::getDb();
+        $sQuery = $this->_fcpoGetMandateQuery();
+        $aResult = $oDb->GetRow($sQuery);
+
+        if (!is_array($aResult)) {
+            echo 'Permission denied!';
+            return;
+        }
+
+        $sFilename = (string) $aResult[0];
+        $sOrderId = (string) $aResult[1];
+        $sPaymentId = (string) $aResult[2];
+
+        $sPath = getShopBasePath().'modules/fc/fcpayone/mandates/'.$sFilename;
+
+        if(!file_exists($sPath)) {
+            $this->_redownloadMandate($sFilename, $sOrderId, $sPaymentId);
+        }
+
+        if(!file_exists($sPath)) {
+            echo 'Error: File not found!';#
+            return;
+        }
+
+        header("Content-Type: application/pdf");
+        header("Content-Disposition: attachment; filename=\"{$sFilename}\"");
+        readfile($sPath);
+    }
 }
 
 $oDownload = oxNew('fcPayOneMandateDownload');

@@ -892,7 +892,16 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
         $oTestObject->expects($this->any())->method('getCarteBleue')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcpoGetCCPaymentMetaData')->will($this->returnValue('someValue'));
 
-        $aExpect = array('someValue', 'someValue', 'someValue', 'someValue', 'someValue', 'someValue', 'someValue', 'someValue', 'someValue');
+        $aExpect = array(
+            'someValue',
+            'someValue',
+            'someValue',
+            'someValue',
+            'someValue',
+            'someValue',
+            'someValue',
+            'someValue',
+        );
         $aResponse = $oTestObject->fcpoGetCCPaymentMetaData();
 
         $this->assertEquals($aExpect, $aResponse);

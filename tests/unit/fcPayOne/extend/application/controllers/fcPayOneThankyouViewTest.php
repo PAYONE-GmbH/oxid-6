@@ -120,7 +120,20 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneThankyouView extends 
     {
         $oMockDatabase = $this->getMock('oxDb', array('Execute'));
         $oMockDatabase->expects($this->any())->method('Execute')->will($this->returnValue(true));
-        
+
+        $oMockPayment = $this->getMock('oxPayment', array(
+            'load',
+            'fcpoGetOperationMode')
+        );
+        $oMockPayment
+            ->expects($this->any())
+            ->method('load')
+            ->will($this->returnValue(true));
+        $oMockPayment
+            ->expects($this->any())
+            ->method('fcpoGetOperationMode')
+            ->will($this->returnValue('test'));
+
         $oMockConfig = $this->getMock('oxConfig', array('getConfigParam','getShopUrl'));
         $oMockConfig->expects($this->any())->method('getConfigParam')->will($this->returnValue('someConfigParam'));
         $oMockConfig->expects($this->any())->method('getShopUrl')->will($this->returnValue('http://www.someshopurl.org/'));
@@ -144,7 +157,10 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneThankyouView extends 
         $oTestObject->expects($this->any())->method('getUser')->will($this->returnValue($oMockUser));
         
         $oMockRequest = $this->getMock('fcporequest', array('sendRequestGetFile'));
-        $oMockRequest->expects($this->any())->method('sendRequestGetFile')->will($this->returnValue('http://www.someurl.org/somepdf.pdf'));
+        $oMockRequest
+            ->expects($this->any())
+            ->method('sendRequestGetFile')
+            ->will($this->returnValue('http://www.someurl.org/somepdf.pdf'));
         
         $aMockMandate = array(
             'mandate_identification'=>'someValue',
@@ -153,8 +169,24 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneThankyouView extends 
         );
         
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
-        $oHelper->expects($this->any())->method('fcpoGetSessionVariable')->will($this->onConsecutiveCalls($aMockMandate, 'someUserId'));
-        $oHelper->expects($this->any())->method('getFactoryObject')->will($this->returnValue($oMockRequest));
+        $oHelper
+            ->expects($this->any())
+            ->method('fcpoGetSessionVariable')
+            ->will(
+                $this->onConsecutiveCalls(
+                    $aMockMandate,
+                    'someUserId'
+                )
+            );
+        $oHelper
+            ->expects($this->any())
+            ->method('getFactoryObject')
+            ->will(
+                $this->onConsecutiveCalls(
+                    $oMockPayment,
+                    $oMockRequest
+                )
+            );
         
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
         $this->invokeSetAttribute($oTestObject, '_oFcpoDb', $oMockDatabase);

@@ -1894,31 +1894,6 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
     }
 
     /**
-     * Testing fcpoShowOldDebitFields for coverage
-     *
-     * @param  void
-     * @return void
-     */
-    public function test_fcpoShowOldDebitFields_Coverage()
-    {
-        $oMockConfig = $this->getMock('oxConfig', array('getConfigParam'));
-        $oMockConfig->expects($this->any())->method('getConfigParam')->will($this->returnValue(true));
-
-        $oMockUser = null;
-
-        $oTestObject = $this->getMock('fcPayOnePaymentView', array('getUser', 'fcGetBillCountry'));
-        $oTestObject->expects($this->any())->method('getUser')->will($this->returnValue($oMockUser));
-        $oTestObject->expects($this->any())->method('fcGetBillCountry')->will($this->returnValue('someCountry'));
-
-        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
-        $oHelper->expects($this->any())->method('fcpoGetConfig')->will($this->returnValue($oMockConfig));
-
-        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
-
-        $this->assertEquals(true, $oTestObject->fcpoShowOldDebitFields());
-    }
-
-    /**
      * Testing _fcCleanupSessionFragments for coverage
      *
      * @param  void

@@ -2976,20 +2976,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     }
 
     /**
-     * Decides wether old debit fiels should show up
-     * 
-     * @param  void
-     * @return bool
-     */
-    public function fcpoShowOldDebitFields() 
-    {
-        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
-        $blReturn = (bool) $oConfig->getConfigParam('blFCPODebitOldGer');
-
-        return $blReturn;
-    }
-
-    /**
      * Template getter returns formatted payment costs by offering
      * current oxpayment object
      *

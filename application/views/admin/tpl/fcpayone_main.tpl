@@ -428,10 +428,6 @@
                 <dt>[{oxmultilang ident="FCPO_CONFIG_DEBIT_GER"}]</dt>
             </dl>
             <dl style="border-top:0px;">
-                <dt>
-                    <input type="hidden" name="confbools[blFCPODebitOldGer]" value="false">
-                    <input type="checkbox" name="confbools[blFCPODebitOldGer]" value="true"  [{if ($confbools.blFCPODebitOldGer)}]checked[{/if}]>
-                </dt>
                 <dd>
                     [{oxmultilang ident="FCPO_CONFIG_DEBIT_SHOW_OLD_FIELDS"}]
                 </dd>

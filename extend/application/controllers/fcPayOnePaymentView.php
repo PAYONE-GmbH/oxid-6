@@ -2589,7 +2589,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
 
         $oSession = $this->_oFcpoHelper->fcpoGetSession();
         $oBasket = $oSession->getBasket();
-        $oBasket->setTsProductId(null);
+        // $oBasket->setTsProductId(null);
     }
 
     /**
@@ -2630,6 +2630,9 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         if ($blBoniCheckNeeded === true && $blApproval === true) {
             $blContinue = $oUser->checkAddressAndScore(false);
             $blContinue = $this->_fcpoCheckUserBoni($blContinue, $oPayment);
+        } elseif ($blBoniCheckNeeded === true && $blApproval === false) {
+            $this->_fcpoSetNotChecked($blBoniCheckNeeded, $blApproval);
+            $blContinue = false;
         } else {
             $this->_fcpoSetNotChecked($blBoniCheckNeeded, $blApproval);
             $blContinue = true;

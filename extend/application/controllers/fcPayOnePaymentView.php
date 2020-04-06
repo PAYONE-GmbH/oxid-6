@@ -3194,11 +3194,13 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     protected function _setValues(& $aPaymentList, $oBasket = null) 
     {
         parent::_setValues($aPaymentList, $oBasket);
+
         if (is_array($aPaymentList)) {
-            foreach ($aPaymentList as $oPayment) {
+            foreach ($aPaymentList as $index => $oPayment) {
                 if ($this->fcIsPayOnePaymentType($oPayment->getId()) && $this->fcShowApprovalMessage() && $oPayment->fcBoniCheckNeeded()) {
+                    $test = $oPayment->oxpayments__oxlongdesc->value;
                     $sApprovalLongdesc = '<br><table><tr><td><input type="hidden" name="fcpo_bonicheckapproved[' . $oPayment->getId() . ']" value="false"><input type="checkbox" name="fcpo_bonicheckapproved[' . $oPayment->getId() . ']" value="true" style="margin-bottom:0px;margin-right:10px;"></td><td>' . $this->fcGetApprovalText() . '</td></tr></table>';
-                    $oPayment->oxpayments__oxlongdesc->value .= $sApprovalLongdesc;
+                    $oPayment->oxpayments__oxlongdesc->rawValue .= $sApprovalLongdesc;
                 }
             }
         }

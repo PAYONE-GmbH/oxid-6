@@ -953,7 +953,7 @@
 
     <div class="groupExp">
         <div>
-            <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="FCPO_GROUP_LOGGING"}]</b></a>
+            <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="FCPO_FORWARD_REDIRECTS"}]</b></a>
             <dl>
                 <dt>
                     <select name="confstrs[sTransactionRedirectLogging]">

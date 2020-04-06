@@ -27,6 +27,65 @@ include_once dirname(__FILE__) . "/../../../bootstrap.php";
 include_once dirname(__FILE__) . "/statusbase.php";
 
 class fcPayOneTransactionStatusForwarder extends fcPayOneTransactionStatusBase {
+
+    /**
+     * Map for translating database fields to call params
+     * @var array
+     */
+    protected $_aDbFields2Params = array(
+        'FCPO_KEY'=>'key',
+        'FCPO_TXACTION'=>'txaction',
+        'FCPO_PORTALID'=>'portalid',
+        'FCPO_AID'=>'aid',
+        'FCPO_CLEARINGTYPE'=>'clearingtype',
+        'FCPO_TXTIME'=>'txtime',
+        'FCPO_CURRENCY'=>'currency',
+        'FCPO_USERID'=>'userid',
+        'FCPO_ACCESSNAME'=>'accessname',
+        'FCPO_ACCESSCODE'=>'accesscode',
+        'FCPO_PARAM'=>'param',
+        'FCPO_MODE'=>'mode',
+        'FCPO_PRICE'=>'price',
+        'FCPO_TXID'=>'txid',
+        'FCPO_REFERENCE'=>'reference',
+        'FCPO_SEQUENCENUMBER'=>'reference',
+        'FCPO_COMPANY'=>'company',
+        'FCPO_FIRSTNAME'=>'firstname',
+        'FCPO_LASTNAME'=>'lastname',
+        'FCPO_STREET'=>'street',
+        'FCPO_ZIP'=>'zip',
+        'FCPO_CITY'=>'city',
+        'FCPO_EMAIL'=>'email',
+        'FCPO_COUNTRY'=>'country',
+        'FCPO_SHIPPING_COMPANY'=>'shipping_company',
+        'FCPO_SHIPPING_FIRSTNAME'=>'shipping_firstname',
+        'FCPO_SHIPPING_LASTNAME'=>'shipping_lastname',
+        'FCPO_SHIPPING_STREET'=>'shipping_street',
+        'FCPO_SHIPPING_ZIP'=>'shipping_zip',
+        'FCPO_SHIPPING_CITY'=>'shipping_city',
+        'FCPO_SHIPPING_COUNTRY'=>'shipping_country',
+        'FCPO_BANKCOUNTRY'=>'bankcountry',
+        'FCPO_BANKACCOUNT'=>'bankaccount',
+        'FCPO_BANKCODE'=>'bankcode',
+        'FCPO_BANKACCOUNTHOLDER'=>'bankaccountholder',
+        'FCPO_CARDEXPIREDATE'=>'cardexpiredate',
+        'FCPO_CARDTYPE'=>'cardtype',
+        'FCPO_CARDPAN'=>'cardpan',
+        'FCPO_CUSTOMERID'=>'customerid',
+        'FCPO_BALANCE'=>'balance',
+        'FCPO_RECEIVABLE'=>'receivable',
+        'FCPO_CLEARING_BANKACCOUNTHOLDER'=>'clearing_bankaccountholder',
+        'FCPO_CLEARING_BANKACCOUNT'=>'clearing_bankaccount',
+        'FCPO_CLEARING_BANKCODE'=>'clearing_bankcode',
+        'FCPO_CLEARING_BANKNAME'=>'clearing_bankname',
+        'FCPO_CLEARING_BANKBIC'=>'clearing_bankbic',
+        'FCPO_CLEARING_BANKIBAN'=>'clearing_bankiban',
+        'FCPO_CLEARING_LEGALNOTE'=>'clearing_legalnote',
+        'FCPO_CLEARING_DUEDATE'=>'clearing_duedate',
+        'FCPO_CLEARING_REFERENCE'=>'clearing_reference',
+        'FCPO_CLEARING_INSTRUCTIONNOTE'=>'clearing_instructionnote',
+    );
+
     /**
      * Get requests to forward to and trigger forwarding
      *
@@ -54,12 +113,12 @@ class fcPayOneTransactionStatusForwarder extends fcPayOneTransactionStatusBase {
                 WHERE FCFULFILLED='0'
                 {$sQueryLimitStatusmessageId}
             ";
-
             $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
             $aRows = $oDb->getAll($sQuery);
+            $this->_logForwardMessage('Found requests to forward: '.print_r($aRows, true));
 
             foreach ($aRows as $aRow) {
-                $sQueueId = $aRow['FCSTATUSMESSAGEID'];
+                $sQueueId = $aRow['OXID'];
                 $sStatusmessageId = $aRow['FCSTATUSMESSAGEID'];
                 $sForwardId = $aRow['FCSTATUSFORWARDID'];
 
@@ -85,7 +144,6 @@ class fcPayOneTransactionStatusForwarder extends fcPayOneTransactionStatusBase {
             $sParams = $aParams['string'];
             $aRequest = $aParams['array'];
             $aForwardData = $this->_getForwardData($sForwardId);
-            $iTimeout = $aForwardData['timeout'];
             $sUrl = $aForwardData['url'];
             $this->_logForwardMessage('Trying to forward to url: '.$sUrl.'...');
             $this->_logForwardMessage($sParams);
@@ -96,7 +154,7 @@ class fcPayOneTransactionStatusForwarder extends fcPayOneTransactionStatusBase {
             curl_setopt($oCurl, CURLOPT_POSTFIELDS, $sParams);
             curl_setopt($oCurl, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($oCurl, CURLOPT_SSL_VERIFYHOST, false);
-            curl_setopt($oCurl, CURLOPT_TIMEOUT, $iTimeout);
+            curl_setopt($oCurl, CURLOPT_RETURNTRANSFER, true);
 
             $mResult = curl_exec($oCurl);
             $mCurlInfo = curl_getinfo($oCurl);
@@ -127,7 +185,7 @@ class fcPayOneTransactionStatusForwarder extends fcPayOneTransactionStatusBase {
             $sFulfilled = $oDb->quote($sFulfilled);
             $sRequest =$oDb->quote(print_r($aRequest, true));
             $sResponse = $oDb->quote((string) $mResult);
-            $sResponseInfo = $oDb->quote((string) $mCurlInfo);
+            $sResponseInfo = $oDb->quote((string) print_r($mCurlInfo, true));
 
             $sQuery = "
             UPDATE fcpostatusforwardqueue
@@ -140,6 +198,7 @@ class fcPayOneTransactionStatusForwarder extends fcPayOneTransactionStatusBase {
                 FCFULFILLED=".$sFulfilled."
             WHERE
                 OXID=".$oDb->quote($sQueueId);
+            $this->_logForwardMessage("Updating Request with query:\n".$sQuery."\n");
 
             $oDb->execute($sQuery);
         } catch (Exception $e) {
@@ -186,7 +245,8 @@ class fcPayOneTransactionStatusForwarder extends fcPayOneTransactionStatusBase {
     }
 
     /**
-     * Removes all empty params
+     * Removes all empty params and translate db fields to corresponding
+     * call
      *
      * @param $aParams
      * @return array
@@ -195,10 +255,15 @@ class fcPayOneTransactionStatusForwarder extends fcPayOneTransactionStatusBase {
     {
         $aCleanedParams = array();
         foreach ($aParams as $sKey=>$sValue) {
-            if (!$sValue) {
+            $blValid = (
+                isset($this->_aDbFields2Params[$sKey]) &&
+                $sValue != ''
+            );
+            if (!$blValid) {
                 continue;
             }
-            $aCleanedParams[$sKey] = $sValue;
+            $sCallKey = $this->_aDbFields2Params[$sKey];
+            $aCleanedParams[$sCallKey] = $sValue;
         }
 
         return $aCleanedParams;
@@ -242,8 +307,6 @@ class fcPayOneTransactionStatusForwarder extends fcPayOneTransactionStatusBase {
         try {
             $this->_isKeyValid();
             $this->_forwardRequests();
-
-            echo 'TSOK';
         } catch (Exception $e) {
             echo "Error occured! Please check logfile for details.";
             $this->_logException($e->getMessage());

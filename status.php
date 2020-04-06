@@ -335,7 +335,7 @@ class fcPayOneTransactionStatusHandler extends fcPayOneTransactionStatusBase
             $sOxid = $oUtilsObject->generateUId();
 
             $sQuery = "
-                INSERT INTO fcstatusforwardqueue
+                INSERT INTO fcpostatusforwardqueue
                 (
                     OXID,
                     FCSTATUSMESSAGEID,

@@ -497,6 +497,7 @@ $aLang = array(
     'FCPO_FORWARD_REDIRECT_FULFILLED_YES'           => 'Ja',
     'FCPO_FORWARD_REDIRECT_FULFILLED_NO'            => 'Nein',
     'FCPO_FORWARD_REDIRECT_DETAILS'                 => 'Details',
+    'FCPO_FORWARD_REDIRECT_TRIGGER'                 => 'Alle fehlenden/nicht erfüllten Aufrufe auslösen',
 );
 
 /*

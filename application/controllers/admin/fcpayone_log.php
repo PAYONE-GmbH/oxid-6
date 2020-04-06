@@ -150,10 +150,12 @@ class fcpayone_log extends fcpayone_admindetails
     public function fcpoTriggerForwardRedirects()
     {
         $sStatusmessageId = $this->_oFcpoHelper->fcpoGetRequestParameter("oxid");
-        if (!$sStatusmessageId || $sStatusmessageId = -1) {
+        if (!$sStatusmessageId || $sStatusmessageId == -1) {
             return;
         }
-        $sKey = $this->_oFcpoHelper->fcpoGetRequestParameter("key");
+        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+        $sPortalKey = $oConfig->getConfigParam('sFCPOPortalKey');
+        $sKey = md5($sPortalKey);
 
         $oConfig = $this->getConfig();
         $sShopUrl = $oConfig->getShopUrl();
@@ -165,7 +167,6 @@ class fcpayone_log extends fcpayone_admindetails
         $sParams = substr($sParams,1);
         $sBaseUrl = (empty($sSslShopUrl)) ? $sShopUrl : $sSslShopUrl;
         $sConfTimeout = $oConfig->getConfigParam('sTransactionRedirectTimeout');
-        $iTimeout = ($sConfTimeout) ? (int) $sConfTimeout : 100;
 
         $sForwarderUrl = $sBaseUrl . 'modules/fc/fcpayone/statusforward.php';
 
@@ -176,10 +177,9 @@ class fcpayone_log extends fcpayone_admindetails
         curl_setopt($oCurl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($oCurl, CURLOPT_SSL_VERIFYHOST, false);
 
-        curl_setopt($oCurl, CURLOPT_TIMEOUT_MS, $iTimeout);
-
         curl_exec($oCurl);
         curl_close($oCurl);
+        $this->render();
     }
 
     protected function _addParam($sKey, $mValue)

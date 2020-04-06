@@ -239,7 +239,7 @@ class fcpoTransactionStatus extends oxBase
                 "RESPONSE\n========\n".
                 $aRow['FCLASTRESPONSE']."\n\n".
                 "REQUESTINFO\n===========\n".
-                $aRow['FCLASTRESPONSE']."\n\n";
+                $aRow['FCRESPONSEINFO']."\n\n";
             $oForwardRedirect->details = $sDetails;
 
             $aForwardRedirects[] = $oForwardRedirect;

@@ -350,7 +350,7 @@ class fcpayone_events
     public static $sQueryChangeToVarchar2 = "ALTER TABLE fcpotransactionstatus CHANGE FCPO_TXID FCPO_TXID VARCHAR(32) DEFAULT '0' NOT NULL;";
     public static $sQueryChangeRefNrToVarchar = "ALTER TABLE oxorder CHANGE FCPOREFNR FCPOREFNR VARCHAR( 32 ) NOT NULL DEFAULT '0'";
     public static $sQueryAlterFcpoTransactionStatusChangeToChar = "ALTER TABLE fcpotransactionstatus CHANGE OXID OXID CHAR(32) NOT NULL;";
-    public static $sQueryAlterFcpoTransactionForwardingChangeToChar = "ALTER TABLE fcpotransactionforwarding CHANGE OXID OXID CHAR(32) NOT NULL;";
+    public static $sQueryAlterFcpoTransactionForwardingChangeToChar = "ALTER TABLE fcpostatusforwarding CHANGE OXID OXID CHAR(32) NOT NULL;";
     public static $aPaymentMethods = array(
         'fcpoinvoice' => 'Rechnung',
         'fcpopayadvance' => 'Vorauskasse',
@@ -574,7 +574,7 @@ class fcpayone_events
         self::changeColumnTypeIfWrong('fcporequestlog', 'FCPO_REFNR', 'int(11)', self::$sQueryChangeFcporequestlog);
         self::changeColumnTypeIfWrong('oxorder', 'FCPOREFNR', 'varchar(32)', self::$sQueryChangeRefNrToVarchar);
         self::changeColumnTypeIfWrong('fcpotransactionstatus', 'OXID', 'int(11)', self::$sQueryAlterFcpoTransactionStatusChangeToChar);
-        self::changeColumnTypeIfWrong('fcpotransactionforwarding', 'OXID', 'int(11)', self::$sQueryAlterFcpoTransactionForwardingChangeToChar);
+        self::changeColumnTypeIfWrong('fcpostatusforwarding', 'OXID', 'int(11)', self::$sQueryAlterFcpoTransactionForwardingChangeToChar);
 
         self::dropIndexIfExists('fcporefnr', 'FCPO_REFNR');
 

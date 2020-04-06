@@ -55,7 +55,7 @@ class fcPayOneTransactionStatusBase extends oxBase {
      * @param  string $sKey
      * @return string
      */
-    public function fcGetPostParam( $sKey )
+    public function fcGetPostParam($sKey)
     {
         $sReturn    = '';
         $mValue     = filter_input(INPUT_GET, $sKey, FILTER_SANITIZE_SPECIAL_CHARS);
@@ -112,6 +112,10 @@ class fcPayOneTransactionStatusBase extends oxBase {
      */
     protected function _isKeyValid()
     {
+        if(defined('STDIN')) {
+            return;
+        }
+
         $sKey = $this->fcGetPostParam('key');
         if (!$sKey) {
             throw new Exception('Key missing!');
@@ -121,7 +125,6 @@ class fcPayOneTransactionStatusBase extends oxBase {
             array_values($this->_getConfigParams('sFCPOPortalKey')),
             array_values($this->_getConfigParams('sFCPOSecinvoicePortalKey'))
         );
-
         $blValid = false;
         foreach ($aKeys as $i => $sConfigKey) {
             if(md5($sConfigKey) != $sKey) {

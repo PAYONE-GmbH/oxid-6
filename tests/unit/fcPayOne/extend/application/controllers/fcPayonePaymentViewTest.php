@@ -455,7 +455,6 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
                 'getJCB',
                 'getMaestroInternational',
                 'getMaestroUK',
-                'getDiscover',
                 'getCarteBleue',
                 'getSofortUeberweisung',
                 'getGiropay',
@@ -474,7 +473,6 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
         $oTestObject->expects($this->any())->method('getJCB')->will($this->returnValue(false));
         $oTestObject->expects($this->any())->method('getMaestroInternational')->will($this->returnValue(false));
         $oTestObject->expects($this->any())->method('getMaestroUK')->will($this->returnValue(false));
-        $oTestObject->expects($this->any())->method('getDiscover')->will($this->returnValue(false));
         $oTestObject->expects($this->any())->method('getCarteBleue')->will($this->returnValue(false));
         $oTestObject->expects($this->any())->method('getSofortUeberweisung')->will($this->returnValue(false));
         $oTestObject->expects($this->any())->method('getGiropay')->will($this->returnValue(false));
@@ -502,7 +500,6 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
                 'getJCB',
                 'getMaestroInternational',
                 'getMaestroUK',
-                'getDiscover',
                 'getCarteBleue',
                 'getSofortUeberweisung',
                 'getGiropay',
@@ -521,7 +518,6 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
         $oTestObject->expects($this->any())->method('getJCB')->will($this->returnValue(false));
         $oTestObject->expects($this->any())->method('getMaestroInternational')->will($this->returnValue(false));
         $oTestObject->expects($this->any())->method('getMaestroUK')->will($this->returnValue(false));
-        $oTestObject->expects($this->any())->method('getDiscover')->will($this->returnValue(false));
         $oTestObject->expects($this->any())->method('getCarteBleue')->will($this->returnValue(false));
         $oTestObject->expects($this->any())->method('getSofortUeberweisung')->will($this->returnValue(false));
         $oTestObject->expects($this->any())->method('getGiropay')->will($this->returnValue(false));
@@ -628,20 +624,6 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
         $oTestObject->expects($this->any())->method('getConfigParam')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('isPaymentMethodAvailableToUser')->will($this->returnValue(true));
         $this->assertEquals(true, $oTestObject->getMaestroUK());
-    }
-
-    /**
-     * Testing getDiscover vor Coverage
-     *
-     * @param  void
-     * @return void
-     */
-    public function test_getDiscover_Coverage()
-    {
-        $oTestObject = $this->getMock('fcPayOnePaymentView', array('getConfigParam', 'isPaymentMethodAvailableToUser'));
-        $oTestObject->expects($this->any())->method('getConfigParam')->will($this->returnValue(true));
-        $oTestObject->expects($this->any())->method('isPaymentMethodAvailableToUser')->will($this->returnValue(true));
-        $this->assertEquals(true, $oTestObject->getDiscover());
     }
 
     /**
@@ -895,7 +877,6 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
                 'getJCB',
                 'getMaestroInternational',
                 'getMaestroUK',
-                'getDiscover',
                 'getCarteBleue',
                 '_fcpoGetCCPaymentMetaData',
             )
@@ -908,11 +889,19 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
         $oTestObject->expects($this->any())->method('getJCB')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('getMaestroInternational')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('getMaestroUK')->will($this->returnValue(true));
-        $oTestObject->expects($this->any())->method('getDiscover')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('getCarteBleue')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcpoGetCCPaymentMetaData')->will($this->returnValue('someValue'));
 
-        $aExpect = array('someValue', 'someValue', 'someValue', 'someValue', 'someValue', 'someValue', 'someValue', 'someValue', 'someValue');
+        $aExpect = array(
+            'someValue',
+            'someValue',
+            'someValue',
+            'someValue',
+            'someValue',
+            'someValue',
+            'someValue',
+            'someValue',
+        );
         $aResponse = $oTestObject->fcpoGetCCPaymentMetaData();
 
         $this->assertEquals($aExpect, $aResponse);
@@ -1902,31 +1891,6 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
         $aExpect['DE'] = 'Deutschland';
 
         $this->assertEquals($aExpect, $oTestObject->fcpoGetDebitCountries());
-    }
-
-    /**
-     * Testing fcpoShowOldDebitFields for coverage
-     *
-     * @param  void
-     * @return void
-     */
-    public function test_fcpoShowOldDebitFields_Coverage()
-    {
-        $oMockConfig = $this->getMock('oxConfig', array('getConfigParam'));
-        $oMockConfig->expects($this->any())->method('getConfigParam')->will($this->returnValue(true));
-
-        $oMockUser = null;
-
-        $oTestObject = $this->getMock('fcPayOnePaymentView', array('getUser', 'fcGetBillCountry'));
-        $oTestObject->expects($this->any())->method('getUser')->will($this->returnValue($oMockUser));
-        $oTestObject->expects($this->any())->method('fcGetBillCountry')->will($this->returnValue('someCountry'));
-
-        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
-        $oHelper->expects($this->any())->method('fcpoGetConfig')->will($this->returnValue($oMockConfig));
-
-        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
-
-        $this->assertEquals(true, $oTestObject->fcpoShowOldDebitFields());
     }
 
     /**

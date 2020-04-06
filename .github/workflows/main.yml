@@ -11,10 +11,10 @@ jobs:
       matrix:
         operating-system: [ubuntu-latest]
         php-versions: ['7.1', '7.2']
-        oxid-versions: ['dev-b-6.0-ce', 'dev-b-6.1-ce', 'dev-b-6.2-rc-ce']
+        oxid-versions: ['dev-b-6.0-ce', 'dev-b-6.1-ce', 'dev-b-6.2-ce']
         exclude:
           - php-versions: '7.1'
-            oxid-versions: 'dev-b-6.2-rc-ce'    
+            oxid-versions: 'dev-b-6.2-ce'    
     name: Oxid ${{ matrix.oxid-versions }} on PHP ${{ matrix.php-versions }}
     services:
       mysql:
@@ -23,8 +23,6 @@ jobs:
           MYSQL_ROOT_PASSWORD: root
         ports:
         - 3306
-        volumes:
-        - $HOME/mysql:/var/lib/mysql
     steps:
     - name: Checkout
       uses: actions/checkout@master
@@ -39,6 +37,8 @@ jobs:
       run: composer -V
     - name: Check PHP Extensions
       run: php -m
+    - name: Start MySQL
+      run: sudo /etc/init.d/mysql start
 
     - name: Setup Oxid 6
       run: |

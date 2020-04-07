@@ -2777,15 +2777,8 @@ class fcpoRequest extends oxSuperCfg
         curl_setopt($oCurl, CURLOPT_POST, 1);
         curl_setopt($oCurl, CURLOPT_POSTFIELDS, $aUrlArray['query']);
 
-        $sCertificateFilePath = getShopBasePath() . 'modules/fcPayOne/cacert.pem';
-        if (file_exists($sCertificateFilePath) !== false) {
-            curl_setopt($oCurl, CURLOPT_CAINFO, $sCertificateFilePath);
-            curl_setopt($oCurl, CURLOPT_SSL_VERIFYPEER, true);  // force SSL certificate check
-            curl_setopt($oCurl, CURLOPT_SSL_VERIFYHOST, 2);  // check hostname in SSL certificate
-        } else {
-            curl_setopt($oCurl, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($oCurl, CURLOPT_SSL_VERIFYHOST, false);
-        }
+        curl_setopt($oCurl, CURLOPT_SSL_VERIFYPEER, true);  // force SSL certificate check
+        curl_setopt($oCurl, CURLOPT_SSL_VERIFYHOST, 2);  // check hostname in SSL certificate
 
         curl_setopt($oCurl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($oCurl, CURLOPT_TIMEOUT, 45);

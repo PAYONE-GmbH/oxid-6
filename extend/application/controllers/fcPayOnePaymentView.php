@@ -354,7 +354,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
                 $this->getJCB(),
                 $this->getMaestroInternational(),
                 $this->getMaestroUK(),
-                $this->getDiscover(),
                 $this->getCarteBleue(),
             ),
             'sb' => array(
@@ -441,16 +440,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     public function getMaestroUK() 
     {
         return ($this->getConfigParam('blFCPOMaestroUKActivated') && $this->isPaymentMethodAvailableToUser('U', 'cc'));
-    }
-
-    /**
-     * Check if sub payment method Discover is available to the user
-     * 
-     * @return bool
-     */
-    public function getDiscover() 
-    {
-        return ($this->getConfigParam('blFCPODiscoverActivated') && $this->isPaymentMethodAvailableToUser('C', 'cc'));
     }
 
     /**
@@ -650,7 +639,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         $this->_fcpoSetCCMetaData($oPayment, 'J', 'JCB');
         $this->_fcpoSetCCMetaData($oPayment, 'O', 'Maestro International');
         $this->_fcpoSetCCMetaData($oPayment, 'U', 'Maestro UK');
-        $this->_fcpoSetCCMetaData($oPayment, 'C', 'Discover');
         $this->_fcpoSetCCMetaData($oPayment, 'B', 'Carte Bleue');
 
         return $this->_aPaymentCCMetaData;
@@ -1126,7 +1114,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
             'J' => $this->getJCB(),
             'O' => $this->getMaestroInternational(),
             'U' => $this->getMaestroUK(),
-            'C' => $this->getDiscover(),
             'B' => $this->getCarteBleue(),
         );
 
@@ -2986,20 +2973,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         }
 
         return $aCountries;
-    }
-
-    /**
-     * Decides wether old debit fiels should show up
-     * 
-     * @param  void
-     * @return bool
-     */
-    public function fcpoShowOldDebitFields() 
-    {
-        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
-        $blReturn = (bool) $oConfig->getConfigParam('blFCPODebitOldGer');
-
-        return $blReturn;
     }
 
     /**

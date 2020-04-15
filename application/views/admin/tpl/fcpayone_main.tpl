@@ -238,18 +238,6 @@
                 <div class="spacer"></div>
             </dl>
             <dl>
-                <dt>Discover</dt>
-                <dd style="margin-top: 4px; margin-left: 150px;">
-                    <input type="hidden" name="confbools[blFCPODiscoverActivated]" value="false">
-                    <input type="checkbox" name="confbools[blFCPODiscoverActivated]" value="true"  [{if ($confbools.blFCPODiscoverActivated)}]checked[{/if}]>
-                    <input type="button" onclick="JavaScript:showDialog('[{$oView->fcGetAdminSeperator()}]cl=fcpayone_main&amp;aoc=1&amp;oxid=C&amp;type=cc');" class="" value="[{oxmultilang ident="GENERAL_ASSIGNCOUNTRIES"}]">
-                    [{oxinputhelp ident="FCPO_HELP_ASSIGNCOUNTRIES"}]
-                    <input type="radio" name="confbools[blFCPOCCCLive]" value="1" [{if $confbools.blFCPOCCCLive == '1'}]checked[{/if}]> <strong>Live</strong>
-                    <input type="radio" name="confbools[blFCPOCCCLive]" value="0" [{if $confbools.blFCPOCCCLive == '0' || !$confbools.blFCPOCCCLive}]checked[{/if}]> Test
-                </dd>
-                <div class="spacer"></div>
-            </dl>
-            <dl>
                 <dt>Carte Bleue</dt>
                 <dd style="margin-top: 4px; margin-left: 150px;">
                 <input type="hidden" name="confbools[blFCPOCarteBleueActivated]" value="false">
@@ -440,10 +428,6 @@
                 <dt>[{oxmultilang ident="FCPO_CONFIG_DEBIT_GER"}]</dt>
             </dl>
             <dl style="border-top:0px;">
-                <dt>
-                    <input type="hidden" name="confbools[blFCPODebitOldGer]" value="false">
-                    <input type="checkbox" name="confbools[blFCPODebitOldGer]" value="true"  [{if ($confbools.blFCPODebitOldGer)}]checked[{/if}]>
-                </dt>
                 <dd>
                     [{oxmultilang ident="FCPO_CONFIG_DEBIT_SHOW_OLD_FIELDS"}]
                 </dd>

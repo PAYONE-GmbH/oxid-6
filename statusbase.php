@@ -179,6 +179,13 @@ class fcPayOneTransactionStatusBase extends oxBase {
         fclose($oLogFile);
     }
 
+    /**
+     * Adding param
+     *
+     * @param $sKey
+     * @param $mValue
+     * @return string
+     */
     protected function _addParam($sKey, $mValue)
     {
         $sParams = '';
@@ -190,5 +197,116 @@ class fcPayOneTransactionStatusBase extends oxBase {
             $sParams .= "&".$sKey."=".urlencode($mValue);
         }
         return $sParams;
+    }
+
+    /**
+     * Method collects redirect targets and add them to statusforward queue
+     *
+     * @param $sStatusmessageId
+     * @param $sPayoneStatus
+     * @return void
+     * @throws
+     */
+    protected function _addQueueEntries($sStatusmessageId, $sPayoneStatus=null)
+    {
+        try {
+            if ($sPayoneStatus === null) {
+                $sPayoneStatus = $this->fcGetPostParam('txaction');
+            }
+
+            $sQuery = "
+            SELECT 
+                OXID
+            FROM 
+                fcpostatusforwarding 
+            WHERE 
+                fcpo_payonestatus = '{$sPayoneStatus}'";
+
+            $aRows = oxDb::getDb()->getAll($sQuery);
+
+            $this->_logForwardMessage('Add fowardings to queue: '.print_r($aRows, true));
+
+            foreach ($aRows as $aRow) {
+                $sForwardId = (string) $aRow[0];
+                $this->_addToQueue($sStatusmessageId, $sForwardId);
+            }
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * Add certain combination of transaction and forward configuration
+     * to queue
+     *
+     * @param $sStatusmessageId
+     * @param $sForwardId
+     * @throws Exception
+     */
+    protected function _addToQueue($sStatusmessageId, $sForwardId)
+    {
+        try {
+            if ($this->_queueEntryExists($sStatusmessageId, $sForwardId)) {
+                $this->_logForwardMessage(
+                    'Entry already exitsts. Skipping. StatusmessageId: '.
+                    $sStatusmessageId.
+                    ', ForwardId: '.
+                    $sForwardId
+                );
+                return;
+            }
+            $oUtilsObject = $this->_getUtilsObject();
+            $sOxid = $oUtilsObject->generateUId();
+
+            $sQuery = "
+                INSERT INTO fcpostatusforwardqueue
+                (
+                    OXID,
+                    FCSTATUSMESSAGEID,
+                    FCSTATUSFORWARDID,
+                    FCTRIES,
+                    FCLASTTRY,
+                    FCLASTREQUEST,
+                    FCLASTRESPONSE
+                )
+                VALUES
+                (
+                    '{$sOxid}',
+                    '{$sStatusmessageId}',
+                    '{$sForwardId}',
+                    '0',
+                    '0000-00-00 00:00:00',
+                    '',
+                    ''
+                )
+            ";
+
+            oxDb::getDb()->Execute($sQuery);
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * Checks if a certain combination of statusmessageid already
+     * exists
+     *
+     * @param $sStatusmessageId
+     * @param $sForwardId
+     * @return bool
+     */
+    protected function _queueEntryExists($sStatusmessageId, $sForwardId)
+    {
+        $sQuery = "
+                SELECT COUNT(*) 
+                FROM fcpostatusforwardqueue
+                WHERE
+                    FCSTATUSMESSAGEID='{$sStatusmessageId}' AND
+                    FCSTATUSFORWARDID='{$sForwardId}'
+        ";
+
+        $iRows = (int) oxDb::getDb()->getOne($sQuery);
+
+        return (bool) ($iRows > 0);
     }
 }

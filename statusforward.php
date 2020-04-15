@@ -87,6 +87,23 @@ class fcPayOneTransactionStatusForwarder extends fcPayOneTransactionStatusBase {
     );
 
     /**
+     * Central handling of forward request
+     *
+     * @param void
+     * @return void
+     */
+    public function handleForwarding() {
+        try {
+            $this->_isKeyValid();
+            $this->_forwardRequests();
+        } catch (Exception $e) {
+            echo "Error occured! Please check logfile for details.";
+            $this->_logException($e->getMessage());
+            return;
+        }
+    }
+
+    /**
      * Get requests to forward to and trigger forwarding
      *
      * @param void
@@ -100,6 +117,7 @@ class fcPayOneTransactionStatusForwarder extends fcPayOneTransactionStatusBase {
                 $this->fcGetPostParam('statusmessageid');
 
             if ($sLimitStatusmessageId) {
+                $this->_createMissingQueueEntries($sLimitStatusmessageId);
                 $sQueryLimitStatusmessageId =
                     " AND  FCSTATUSMESSAGEID='{$sLimitStatusmessageId}' ";
             }
@@ -140,10 +158,14 @@ class fcPayOneTransactionStatusForwarder extends fcPayOneTransactionStatusBase {
      */
     protected function _forwardRequest($sQueueId, $sForwardId, $sStatusmessageId) {
         try {
+            $oConfig = $this->getConfig();
+            $sConfTimeout = $oConfig->getConfigParam('sTransactionRedirectTimeout');
+            $iTimeout = ($sConfTimeout) ? (int) $sConfTimeout : 100;
             $aParams = $this->_fetchPostParams($sStatusmessageId);
             $sParams = $aParams['string'];
             $aRequest = $aParams['array'];
             $aForwardData = $this->_getForwardData($sForwardId);
+
             $sUrl = $aForwardData['url'];
             $this->_logForwardMessage('Trying to forward to url: '.$sUrl.'...');
             $this->_logForwardMessage($sParams);
@@ -155,6 +177,7 @@ class fcPayOneTransactionStatusForwarder extends fcPayOneTransactionStatusBase {
             curl_setopt($oCurl, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($oCurl, CURLOPT_SSL_VERIFYHOST, false);
             curl_setopt($oCurl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($oCurl, CURLOPT_TIMEOUT_MS, $iTimeout);
 
             $mResult = curl_exec($oCurl);
             $mCurlInfo = curl_getinfo($oCurl);
@@ -298,19 +321,21 @@ class fcPayOneTransactionStatusForwarder extends fcPayOneTransactionStatusBase {
     }
 
     /**
-     * Central handling of forward request
+     * If new redirect targets have been added for given statusmessage, create
+     * referring queue entries
      *
-     * @param void
+     * @param string $sStatusmessageId
      * @return void
+     * @throws Exception
      */
-    public function handleForwarding() {
+    protected function _createMissingQueueEntries($sStatusmessageId) {
         try {
-            $this->_isKeyValid();
-            $this->_forwardRequests();
+            $aParams = $this->_fetchPostParams($sStatusmessageId);
+            $aRequest = $aParams['array'];
+            $sPayoneStatus = $aRequest['txaction'];
+            $this->_addQueueEntries($sStatusmessageId, $sPayoneStatus);
         } catch (Exception $e) {
-            echo "Error occured! Please check logfile for details.";
-            $this->_logException($e->getMessage());
-            return;
+            throw $e;
         }
     }
 }

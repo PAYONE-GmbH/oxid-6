@@ -83,6 +83,19 @@ class fcPayOneUser extends fcPayOneUser_parent
     }
 
     /**
+     * Sets the user scorevalue to red (=100) if user declines
+     * boni check
+     *
+     * @param int $iValue
+     * @return void
+     */
+    public function fcpoSetScoreOnNonApproval($iValue=100)
+    {
+        $this->oxuser__oxboni->value = $iValue;
+        $this->save();
+    }
+
+    /**
      * Makes this Email unique to be able to handle amazon users different from standard users
      * Currently the email address simply gets a prefix
      *

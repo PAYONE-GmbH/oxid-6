@@ -2154,7 +2154,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
         $oHelper->expects($this->any())->method('getFactoryObject')->will($this->returnValue($oMockPayment));
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
 
-        $this->assertEquals(null, $oTestObject->_fcpoProcessValidation('order', 'somePaymentId'));
+        $this->assertEquals('basket', $oTestObject->_fcpoProcessValidation('order', 'somePaymentId'));
     }
 
     /**

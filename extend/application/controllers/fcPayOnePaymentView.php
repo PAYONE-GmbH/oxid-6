@@ -1311,7 +1311,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
 
             if ($blContinue !== true) {
                 $this->_fcpoSetBoniErrorValues($sPaymentId);
-                $mReturn = null;
+                $mReturn = 'basket';
             } else {
                 $this->_fcpoSetMandateParams($oPayment);
             }
@@ -2574,11 +2574,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         $this->_oFcpoHelper->fcpoSetSessionVariable('_selected_paymentid', $sPaymentId);
         $this->_oFcpoHelper->fcpoDeleteSessionVariable('stsprotection');
 
-        if ($this->_fcGetCurrentVersion() >= 4400) {
-            $oSession = $this->_oFcpoHelper->fcpoGetSession();
-            $oBasket = $oSession->getBasket();
-            $oBasket->setTsProductId(null);
-        }
+        $oSession = $this->_oFcpoHelper->fcpoGetSession();
     }
 
     /**
@@ -2619,6 +2615,10 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         if ($blBoniCheckNeeded === true && $blApproval === true) {
             $blContinue = $oUser->checkAddressAndScore(false);
             $blContinue = $this->_fcpoCheckUserBoni($blContinue, $oPayment);
+        } elseif ($blBoniCheckNeeded === true && $blApproval === false) {
+            $this->_fcpoSetNotChecked($blBoniCheckNeeded, $blApproval);
+            $oUser->fcpoSetScoreOnNonApproval();
+            $blContinue = false;
         } else {
             $this->_fcpoSetNotChecked($blBoniCheckNeeded, $blApproval);
             $blContinue = true;
@@ -3169,11 +3169,13 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     protected function _setValues(& $aPaymentList, $oBasket = null) 
     {
         parent::_setValues($aPaymentList, $oBasket);
+
         if (is_array($aPaymentList)) {
-            foreach ($aPaymentList as $oPayment) {
+            foreach ($aPaymentList as $index => $oPayment) {
                 if ($this->fcIsPayOnePaymentType($oPayment->getId()) && $this->fcShowApprovalMessage() && $oPayment->fcBoniCheckNeeded()) {
+                    $test = $oPayment->oxpayments__oxlongdesc->value;
                     $sApprovalLongdesc = '<br><table><tr><td><input type="hidden" name="fcpo_bonicheckapproved[' . $oPayment->getId() . ']" value="false"><input type="checkbox" name="fcpo_bonicheckapproved[' . $oPayment->getId() . ']" value="true" style="margin-bottom:0px;margin-right:10px;"></td><td>' . $this->fcGetApprovalText() . '</td></tr></table>';
-                    $oPayment->oxpayments__oxlongdesc->value .= $sApprovalLongdesc;
+                    $oPayment->oxpayments__oxlongdesc->rawValue .= $sApprovalLongdesc;
                 }
             }
         }

@@ -342,6 +342,7 @@ class fcpayone_events
         'fcpopaypal' => 'PayPal',
         'fcpopaypal_express' => 'PayPal Express',
         'fcpoklarna' => 'Klarna Rechnung',
+        'fcpoklarna_new' => 'Klarna NEU',
         'fcpobarzahlen' => 'Barzahlen',
         'fcpopaydirekt' => 'Paydirekt',
         'fcpopo_bill' => 'Paysafe Pay Later™ Rechnungskauf',

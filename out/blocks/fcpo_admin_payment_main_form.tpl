@@ -54,6 +54,36 @@
             </td>
         </tr>
     [{/if}]
+    [{if $edit->getId() == 'fcpoklarna_new'}]
+        [{assign var="confbools" value=$oView->fcpoGetConfBools()}]
+        <tr>
+            <td class="edittext" width="70">
+                [{oxmultilang ident="FCPO_ACTIVATE_INVOICE"}]
+            </td>
+            <td>
+                <input type=hidden name="confbools[blFCPOKlarnaActivateInvoice]" value="0">
+                <input type="checkbox" name="confbools[blFCPOKlarnaActivateInvoice]" value="1"  [{if ($confbools.blFCPOKlarnaActivateInvoice)}]checked[{/if}]>
+            </td>
+        </tr>
+        <tr>
+            <td class="edittext" width="70">
+                [{oxmultilang ident="FCPO_ACTIVATE_INSTALLMENTS"}]
+            </td>
+            <td>
+                <input type=hidden name="confbools[blFCPOKlarnaActivateInstallments]" value="0">
+                <input type="checkbox" name="confbools[blFCPOKlarnaActivateInstallments]" value="1"  [{if ($confbools.blFCPOKlarnaActivateInstallments)}]checked[{/if}]>
+            </td>
+        </tr>
+        <tr>
+            <td class="edittext" width="70">
+                [{oxmultilang ident="FCPO_ACTIVATE_DIRECT_DEBIT"}]
+            </td>
+            <td>
+                <input type=hidden name="confbools[blFCPOKlarnaActivateDirectDebit]" value="0">
+                <input type="checkbox" name="confbools[blFCPOKlarnaActivateDirectDebit]" value="1"  [{if ($confbools.blFCPOKlarnaActivateDirectDebit)}]checked[{/if}]>
+            </td>
+        </tr>
+    [{/if}]
 [{else}]
     <tr>
         <td colspan="2">

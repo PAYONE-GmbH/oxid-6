@@ -846,7 +846,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     {
         $sPaymentId = $this->_fcpoGetPaymentId();
         $this->_fcpoCheckKlarnaUpdateUser($sPaymentId);
-
+        # TODO: Update klarna new user
         $mReturn = parent::validatePayment();
 
         $mReturn = $this->_processParentReturnValue($mReturn);

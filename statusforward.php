@@ -28,6 +28,9 @@ include_once dirname(__FILE__) . "/statusbase.php";
 
 class fcPayOneTransactionStatusForwarder extends fcPayOneTransactionStatusBase {
 
+    const STATE_STARTING = 'starting';
+    const STATE_FINISHED = 'finished';
+
     /**
      * Map for translating database fields to call params
      * @var array
@@ -94,13 +97,127 @@ class fcPayOneTransactionStatusForwarder extends fcPayOneTransactionStatusBase {
      */
     public function handleForwarding() {
         try {
+            $this->_isJobAlreadyRunning();
             $this->_isKeyValid();
+            $this->_setJobState(self::STATE_STARTING);
             $this->_forwardRequests();
+            $this->_setJobState(self::STATE_FINISHED);
         } catch (Exception $e) {
             echo "Error occured! Please check logfile for details.";
             $this->_logException($e->getMessage());
             return;
         }
+    }
+
+    /**
+     * Setting current state of job
+     *
+     * @param $sState
+     * @return void
+     * @throws Exception
+     */
+    protected function _setJobState($sState)
+    {
+        try {
+            $sProcessFile = $this->_getProcessFilePath();
+            $iPid = getmypid();
+            $this->_logForwardMessage($sState.' job with PID '.$iPid);
+
+            if ($sState == self::STATE_STARTING) {
+                $oProcessFile = fopen($sProcessFile, 'w');
+                fwrite($oProcessFile, $iPid);
+                fclose($oProcessFile);
+                return;
+            }
+
+            if ($sState == self::STATE_FINISHED) {
+                unlink($sProcessFile);
+                return;
+            }
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * Checks if a forward job is currently running
+     *
+     * @param void
+     * @return void
+     * @throws Exception
+     */
+    protected function _isJobAlreadyRunning()
+    {
+        $blProcessFileExists = $this->_checkProcessFileExists();
+        if (!$blProcessFileExists) {
+            return;
+        }
+
+        try {
+            $this->_checkProcessExists();
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * Deeply checking if former process still exists. If not processfile
+     * should be cleaned up and reported so we don't run into eternal loops.
+     * Killing processes is explicitely not done here due this should be
+     * handled by OS
+     *
+     * @param void
+     * @return void
+     * @throws Exception
+     */
+    protected function _checkProcessExists()
+    {
+        $sProcessFile = $this->_getProcessFilePath();
+        $iPid = (int) file_get_contents($sProcessFile);
+
+        if ($iPid === 0) {
+            unlink($sProcessFile);
+            $sMessage =
+                'Processfile did not contain a valid PID! '.
+                'Deleted processfile for next run.';
+            throw new Exception($sMessage);
+        }
+
+        if (file_exists( "/proc/$iPid" )){
+            throw new Exception('Cronjob already running! Abort current attempt.');
+        }
+
+        unlink($sProcessFile);
+        $sMessage =
+            'Former started process no longer exists! '.
+            'Deleted processfile for next run.';
+        throw new Exception($sMessage);
+    }
+
+    /**
+     * Checking if process file exists
+     *
+     * @param void
+     * @return bool
+     */
+    protected function _checkProcessFileExists()
+    {
+        $sProcessFile = $this->_getProcessFilePath();
+        return file_exists($sProcessFile);
+    }
+
+    /**
+     * Returns path to processfile
+     *
+     * @param void
+     * @return string
+     */
+    protected function _getProcessFilePath()
+    {
+        $sTmpPath = dirname(__FILE__) . "/../../../";
+        $sFile = "poforward.txt";
+
+        return $sTmpPath.$sFile;
     }
 
     /**

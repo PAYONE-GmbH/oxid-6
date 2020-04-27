@@ -103,9 +103,9 @@ class fcPayOneTransactionStatusForwarder extends fcPayOneTransactionStatusBase {
             $this->_forwardRequests();
             $this->_setJobState(self::STATE_FINISHED);
         } catch (Exception $e) {
-            echo "Error occured! Please check logfile for details.";
+            echo "Error occured! Please check logfile for details.\n";
             $this->_logException($e->getMessage());
-            return;
+            exit(1);
         }
     }
 
@@ -189,7 +189,7 @@ class fcPayOneTransactionStatusForwarder extends fcPayOneTransactionStatusBase {
 
         unlink($sProcessFile);
         $sMessage =
-            'Former started process no longer exists! '.
+            'Former started process '.$iPid.' no longer exists! '.
             'Deleted processfile for next run.';
         throw new Exception($sMessage);
     }
@@ -214,8 +214,8 @@ class fcPayOneTransactionStatusForwarder extends fcPayOneTransactionStatusBase {
      */
     protected function _getProcessFilePath()
     {
-        $sTmpPath = dirname(__FILE__) . "/../../../";
-        $sFile = "poforward.txt";
+        $sTmpPath = dirname(__FILE__)."/";
+        $sFile = "forwardprocess.txt";
 
         return $sTmpPath.$sFile;
     }

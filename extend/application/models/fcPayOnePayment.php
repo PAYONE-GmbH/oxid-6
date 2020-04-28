@@ -74,6 +74,7 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         'fcpopaypal',
         'fcpopaypal_express',
         'fcpoklarna',
+        'fcpoklarna_new',
         'fcpopaydirekt',
     );
     

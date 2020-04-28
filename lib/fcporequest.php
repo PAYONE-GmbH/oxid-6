@@ -403,17 +403,39 @@ class fcpoRequest extends oxSuperCfg
 
     /**
      * Set payment params for klarna
-     * 
+     *
      * @param  void
      */
-    protected function _setPaymentParamsKlarna() 
+    protected function _setPaymentParamsKlarna()
     {
-        $this->addParameter('clearingtype', 'fnc'); //Payment method
-        $this->addParameter('financingtype', 'KLS');
-        $sCampaign = $this->_oFcpoHelper->fcpoGetSessionVariable('fcpo_klarna_campaign');
-        if ($sCampaign) {
+        $this->addParameter('add_paydata[action]', 'start_session');
+        $this->addParameter('clearingtype', 'fnc');
+        $this->addParameter('financingtype', $this->_fcpoGetKlarnaFinancingType());
+        if ($sCampaign = $this->_oFcpoHelper->fcpoGetSessionVariable('fcpo_klarna_campaign')) {
             $this->addParameter('add_paydata[klsid]', $sCampaign);
             $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpo_klarna_campaign');
+        }
+        # add_paydata[merchant_data], title, ip, add_paydata[shipping_title], add_paydata[shipping_telephonenumber],
+        # add_paydata[shipping_email], add_paydata[last_four_ssn], add_paydata[organization_entity_type],
+        # add_paydata[organization_registry_id]
+    }
+
+    /**
+     * @return string
+     */
+    protected function _fcpoGetKlarnaFinancingType()
+    {
+        $x=0;
+        switch ($x) {
+            case '0':
+                return 'KIS';
+                break;
+            case '1':
+                return 'KIV';
+                break;
+            case '2':
+                return 'KDD';
+                break;
         }
     }
 
@@ -489,7 +511,9 @@ class fcpoRequest extends oxSuperCfg
                 $this->addParameter('clearingtype', 'fnc'); //Payment method
                 $this->addParameter('financingtype', 'KLV');
                 break;
-                    break;
+            case 'fcpoklarna_new':
+                $blAddRedirectUrls = $this->_setPaymentParamsKlarna();
+                break;
             case 'fcpobarzahlen':
                 $this->addParameter('clearingtype', 'csh'); //Payment method
                 $this->addParameter('cashtype', 'BZN');
@@ -2957,12 +2981,12 @@ class fcpoRequest extends oxSuperCfg
             $this->addParameter('telephonenumber', $oOrder->oxorder__oxbillfon->value, $blIsUpdateUser); 
         }
 
-        if ((in_array($oOrder->oxorder__oxpaymenttype->value, array('fcpoklarna'))
+        if ((in_array($oOrder->oxorder__oxpaymenttype->value, array('fcpoklarna', 'fcpoklarna_new'))
                 && in_array($oCountry->oxcountry__oxisoalpha2->value, array('DE', 'NL', 'AT'))) || ($blIsUpdateUser || ($oUser->oxuser__oxbirthdate != '0000-00-00' && $oUser->oxuser__oxbirthdate != ''))
         ) {
             $this->addParameter('birthday', str_ireplace('-', '', $oUser->oxuser__oxbirthdate->value), $blIsUpdateUser);
         }
-        if (in_array($oOrder->oxorder__oxpaymenttype->value, array('fcpoklarna'))) {
+        if (in_array($oOrder->oxorder__oxpaymenttype->value, array('fcpoklarna', 'fcpoklarna_new'))) {
             if ($blIsUpdateUser || $oUser->oxuser__fcpopersonalid->value != '') {
                 $this->addParameter('personalid', $oUser->oxuser__fcpopersonalid->value, $blIsUpdateUser); 
             }

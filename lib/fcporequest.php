@@ -264,7 +264,7 @@ class fcpoRequest extends oxSuperCfg
 
         $sIp = $this->_fcpoGetRemoteAddress();
         if ($sIp != '') {
-            $this->addParameter('ip', $sIp); 
+            $this->addParameter('ip', $sIp);
         }
 
         $blIsWalletTypePaymentWithDelAddress = (
@@ -402,13 +402,18 @@ class fcpoRequest extends oxSuperCfg
     }
 
     /**
-     * Set payment params for klarna
+     * Set payment params for klarna.
      *
-     * @param  void
+     * @param $sPaymentId
+     * @return bool
      */
-    protected function _setPaymentParamsKlarna()
+    protected function _setPaymentParamsKlarna($sPaymentId)
     {
-        // @todo: special params to be set...
+        $sKlarnaAuthToken = $this->_oFcpoHelper->fcpoGetSessionVariable('klarna_authorization_token');
+        $this->addParameter('add_paydata[authorization_token]', $sKlarnaAuthToken);
+        $this->addParameter('clearingtype', 'fnc');
+        $this->addParameter('financingtype', $this->_fcpoGetKlarnaFinancingType($sPaymentId));
+        return true;
     }
 
     /**
@@ -506,7 +511,7 @@ class fcpoRequest extends oxSuperCfg
             case 'fcpoklarna_invoice':
             case 'fcpoklarna_installments':
             case 'fcpoklarna_directdebit':
-                $blAddRedirectUrls = $this->_setPaymentParamsKlarna();
+                $blAddRedirectUrls = $this->_setPaymentParamsKlarna($sPaymentId);
                 break;
             case 'fcpobarzahlen':
                 $this->addParameter('clearingtype', 'csh'); //Payment method

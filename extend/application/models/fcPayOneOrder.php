@@ -1057,12 +1057,18 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      */
     public function isDetailedProductInfoNeeded() 
     {
-        $blForcedByPaymentMethod = (
-            $this->oxorder__oxpaymenttype->value == 'fcpobillsafe' ||
-            $this->oxorder__oxpaymenttype->value == 'fcpoklarna' ||
-            $this->oxorder__oxpaymenttype->value == 'fcpo_secinvoice' ||
-            $this->oxorder__oxpaymenttype->value == 'fcporp_bill' ||
-            $this->oxorder__oxpaymenttype->value == 'fcpopaydirekt_express'
+        $blForcedByPaymentMethod = in_array(
+            $this->oxorder__oxpaymenttype->value,
+            array(
+                'fcpobillsafe',
+                'fcpoklarna',
+                'fcpoklarna_invoice',
+                'fcpoklarna_installments',
+                'fcpoklarna_directdebit',
+                'fcpo_secinvoice',
+                'fcporp_bill',
+                'fcpopaydirekt_express',
+            )
         );
 
         if ($blForcedByPaymentMethod) return true;

@@ -408,35 +408,27 @@ class fcpoRequest extends oxSuperCfg
      */
     protected function _setPaymentParamsKlarna()
     {
-        $this->addParameter('add_paydata[action]', 'start_session');
-        $this->addParameter('clearingtype', 'fnc');
-        $this->addParameter('financingtype', $this->_fcpoGetKlarnaFinancingType());
-        if ($sCampaign = $this->_oFcpoHelper->fcpoGetSessionVariable('fcpo_klarna_campaign')) {
-            $this->addParameter('add_paydata[klsid]', $sCampaign);
-            $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpo_klarna_campaign');
-        }
-        # add_paydata[merchant_data], title, ip, add_paydata[shipping_title], add_paydata[shipping_telephonenumber],
-        # add_paydata[shipping_email], add_paydata[last_four_ssn], add_paydata[organization_entity_type],
-        # add_paydata[organization_registry_id]
+        // @todo: special params to be set...
     }
 
     /**
+     * Returning klarna financingtype by paymentid
+     *
+     * @param string $sPaymentId
      * @return string
      */
-    protected function _fcpoGetKlarnaFinancingType()
+    protected function _fcpoGetKlarnaFinancingType($sPaymentId)
     {
-        $x=0;
-        switch ($x) {
-            case '0':
-                return 'KIS';
-                break;
-            case '1':
-                return 'KIV';
-                break;
-            case '2':
-                return 'KDD';
-                break;
-        }
+        $aMap = array(
+            'fcpoklarna_installments' => 'KIS',
+            'fcpoklarna_invoice' => 'KIV',
+            'fcpoklarna_directdebit' => 'KDD',
+        );
+
+        $sFinancingType =
+            (isset($aMap[$sPaymentId])) ? $aMap[$sPaymentId] : '';
+
+        return $sFinancingType;
     }
 
     /**
@@ -511,7 +503,9 @@ class fcpoRequest extends oxSuperCfg
                 $this->addParameter('clearingtype', 'fnc'); //Payment method
                 $this->addParameter('financingtype', 'KLV');
                 break;
-            case 'fcpoklarna_new':
+            case 'fcpoklarna_invoice':
+            case 'fcpoklarna_installments':
+            case 'fcpoklarna_directdebit':
                 $blAddRedirectUrls = $this->_setPaymentParamsKlarna();
                 break;
             case 'fcpobarzahlen':
@@ -2001,6 +1995,44 @@ class fcpoRequest extends oxSuperCfg
         $blIsPreauthorization = ($sAuthorizationType == 'preauthorization') ;
         $sType = ($blIsPreauthorization) ? 'order' : 'directsale';
         return $sType;
+    }
+
+    /**
+     * Sending start session call
+     *
+     * @param void
+     * @return array
+     */
+    public function sendRequestKlarnaStartSession()
+    {
+        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+        $oSession = $this->_oFcpoHelper->fcpoGetSession();
+        $oBasket = $oSession->getBasket();
+        $oUser = $oBasket->getUser();
+        $sPaymentId = $oBasket->getPaymentId();
+        $sShippingId = $oBasket->getShippingId();
+
+        $this->addParameter('request', 'genericpayment'); //Request method
+        $this->addParameter('mode', $this->getOperationMode($sPaymentId)); //PayOne Portal Operation Mode (live or test)
+
+        $this->addParameter('add_paydata[action]', 'start_session');
+        $this->addParameter('clearingtype', 'fnc');
+        $this->addParameter('financingtype', $this->_fcpoGetKlarnaFinancingType($sPaymentId));
+
+        $oPrice = $oBasket->getPrice();
+        $this->addParameter('amount', number_format($oPrice->getBruttoPrice(), 2, '.', '') * 100);
+        $oCurr = $oConfig->getActShopCurrencyObject();
+        $this->addParameter('currency', $oCurr->name);
+
+        $this->addAddressParamsByUser($oUser);
+        $this->_fcpoAddBasketItemsFromSession($sShippingId);
+
+        if ($sCampaign = $this->_oFcpoHelper->fcpoGetSessionVariable('fcpo_klarna_campaign')) {
+            $this->addParameter('add_paydata[klsid]', $sCampaign);
+            $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpo_klarna_campaign');
+        }
+
+        return $this->send();
     }
 
     /**

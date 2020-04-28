@@ -328,6 +328,7 @@ class fcpayone_events
     public static $sQueryAlterOxorderWorkOrderId = "ALTER TABLE oxorder ADD COLUMN FCPOWORKORDERID VARCHAR(16) DEFAULT '' NOT NULL;";
     public static $sQueryAlterOxorderClearingReference = "ALTER TABLE oxorder ADD COLUMN FCPOCLEARINGREFERENCE VARCHAR(32) DEFAULT '' NOT NULL;";
     public static $sQueryAlterOxorderProfileIdent = "ALTER TABLE oxorder ADD COLUMN FCPOPROFILEIDENT VARCHAR(32) DEFAULT '' NOT NULL;";
+    public static $sQueryAlterKlarnaCampaigns = "ALTER TABLE `fcpoklarnacampaigns` ADD `FCPAYMENTID` CHAR(32) NOT NULL AFTER `FCPO_CAMPAIGN_CURRENCY`, ADD INDEX (`FCPAYMENTID`);";
     public static $sQueryChangeToVarchar1 = "ALTER TABLE fcpotransactionstatus CHANGE FCPO_USERID FCPO_USERID VARCHAR(32) DEFAULT '0' NOT NULL;";
     public static $sQueryChangeToVarchar2 = "ALTER TABLE fcpotransactionstatus CHANGE FCPO_TXID FCPO_TXID VARCHAR(32) DEFAULT '0' NOT NULL;";
     public static $sQueryChangeRefNrToVarchar = "ALTER TABLE oxorder CHANGE FCPOREFNR FCPOREFNR VARCHAR( 32 ) NOT NULL DEFAULT '0'";
@@ -342,7 +343,9 @@ class fcpayone_events
         'fcpopaypal' => 'PayPal',
         'fcpopaypal_express' => 'PayPal Express',
         'fcpoklarna' => 'Klarna Rechnung',
-        'fcpoklarna_new' => 'Klarna',
+        'fcpoklarna_invoice' => 'Klarna Pay later',
+        'fcpoklarna_installments' => 'Klarna Slice it',
+        'fcpoklarna_directdebit' => 'Klarna Pay now',
         'fcpobarzahlen' => 'Barzahlen',
         'fcpopaydirekt' => 'Paydirekt',
         'fcpopo_bill' => 'Paysafe Pay Later™ Rechnungskauf',
@@ -521,6 +524,7 @@ class fcpayone_events
         self::addColumnIfNotExists('oxorder', 'FCPOWORKORDERID', self::$sQueryAlterOxorderWorkOrderId);
         self::addColumnIfNotExists('oxorder', 'FCPOCLEARINGREFERENCE', self::$sQueryAlterOxorderClearingReference);
         self::addColumnIfNotExists('oxorder', 'FCPOPROFILEIDENT', self::$sQueryAlterOxorderProfileIdent);
+        // self::addColumnIfNotExists('fcpoklarnacampaigns', 'FCPAYMENTID', self::$sQueryAlterKlarnaCampaigns);
 
         self::addColumnIfNotExists('oxorderarticles', 'FCPOCAPTUREDAMOUNT', self::$sQueryAlterOxorderarticlesCapturedAmount);
         self::addColumnIfNotExists('oxorderarticles', 'FCPODEBITEDAMOUNT', self::$sQueryAlterOxorderarticlesDebitedAmount);

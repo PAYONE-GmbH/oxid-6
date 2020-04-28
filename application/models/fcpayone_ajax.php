@@ -80,13 +80,37 @@ class fcpayone_ajax extends oxBase
      *
      *
      * @param $sAction
+     * @param $sParamsJson
      * @return string
      */
-    public function fcpoTriggerKlarnaAction($sAction)
+    public function fcpoTriggerKlarnaAction($sAction, $sParamsJson)
+    {
+        if ($sAction === 'start_session') {
+            return $this->fcpoTriggerKlarnaSessionStart($sParamsJson);
+        }
+    }
+
+    /**
+     *
+     *
+     * @param $sParamsJson
+     * @return string
+     */
+    public function fcpoTriggerKlarnaSessionStart($sParamsJson)
     {
         $oRequest = $this->_oFcpoHelper->getFactoryObject('fcporequest');
         $aResponse = $oRequest->sendRequestKlarnaStartSession();
 
+        $blIsValid = (
+            isset($aResponse['status'], $aResponse['client_token']) &&
+            $aResponse['status'] === 'OK'
+        );
+
+        if (!$blIsValid) {
+            // TODO: set error message into session and redirect to payment cl
+            return;
+        }
+        return $this->_fcpoGetKlarnaWidgetJS($aResponse['client_token'], $sParamsJson);
         // @todo: Check validity, fetch token from response and return js code
     }
 
@@ -128,6 +152,42 @@ class fcpayone_ajax extends oxBase
         $oSession->setVariable('fcpoAmazonReferenceId', $sAmazonReferenceId);
 
         $this->_fcpoHandleConfirmAmazonPayOrder($sAmazonReferenceId, $sToken, $sDeliveryMD5);
+    }
+
+    /**
+     * @param $sClientToken
+     * @param $sParamsJson
+     * @return false|string|string[]
+     */
+    protected function _fcpoGetKlarnaWidgetJS($sClientToken, $sParamsJson)
+    {
+        $aKlarnaWidgetSearch = array(
+            '%%TOKEN%%',
+            '%%PAYMENT_CONTAINER_ID%%',
+            '%%PAYMENT_CATEGORY%%',
+        );
+
+        $aParams = json_decode($sParamsJson);
+
+        $aKlarnaWidgetReplace = array(
+            $sClientToken,
+            $aParams['payment_container_id'],
+            $aParams['payment_category'],
+        );
+        $sKlarnaWidgetJS = file_get_contents($this->_fcpoGetKlarnaWidgetPath());
+        $sKlarnaWidgetJS = str_replace($aKlarnaWidgetSearch, $aKlarnaWidgetReplace, $sKlarnaWidgetJS);
+
+        return $sKlarnaWidgetJS;
+    }
+
+    protected function _fcpoGetKlarnaWidgetPath()
+    {
+        $oViewConf = $this->_oFcpoHelper->getFactoryObject('oxviewconfig');
+
+        $sPath =
+            $oViewConf->getModulePath('fcpayone') . '/out/snippets/fcpoKlarnaWidget.txt';
+
+        return $sPath;
     }
 
     /**
@@ -451,6 +511,6 @@ if ($sPaymentId) {
         'fcpoklarna_directdebit',
     );
     if (in_array($sPaymentId, $aKlarnaPayments)) {
-        $oPayoneAjax->fcpoTriggerKlarnaAction($sAction);
+        $oPayoneAjax->fcpoTriggerKlarnaAction($sAction, $sParamsJson);
     }
 }

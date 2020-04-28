@@ -1,0 +1,15 @@
+<script>
+window.klarnaAsyncCallback = function () {
+    Klarna.Payments.init({
+        client_token: "%%TOKEN%%"
+    });
+
+    Klarna.Payments.load({
+        container: '#%%PAYMENT_CONTAINER_ID%%',
+        payment_method_category: '%%PAYMENT_CATEGORY%%'
+    }, function (res) {
+        console.debug(res);
+    });
+};
+</script>
+<script src="https://x.klarnacdn.net/kp/lib/v1/api.js" async></script>

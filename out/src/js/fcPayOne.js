@@ -679,6 +679,10 @@ $('#fcpo_klarna_invoice_agreed').onchange(
             location.reload();
             return;
         }
+        var formParams = '{' +
+            '"payment_container_id":"klarna_widget_invoice_container", ' +
+            '"payment_category":"pay_later"' +
+            '}';
 
         $.ajax(
             {
@@ -688,7 +692,8 @@ $('#fcpo_klarna_invoice_agreed').onchange(
                 dataType: 'text',
                 data: {
                     paymentid: "fcpoklarna_invoice",
-                    action: "start_session"
+                    action: "start_session",
+                    params: formParams
                 },
                 success: function(Response) {
                     $('#klarna_invoice_js_inject').html(Response);

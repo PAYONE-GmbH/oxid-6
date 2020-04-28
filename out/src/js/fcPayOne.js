@@ -666,6 +666,40 @@ function fcSetPayoneInputFields(oForm) {
 }
 
 /**
+ * Triggers session start call via ajax
+ *
+ * @param void
+ */
+$('#fcpo_klarna_invoice_agreed').onchange(
+    function() {
+        var data_agreement_checked = $('#fcpo_klarna_invoice_agreed').checked();
+        if (!data_agreement_checked) {
+            $('#klarna_widget_invoice_container').html('');
+            $('#klarna_invoice_js_inject').html('');
+            location.reload();
+            return;
+        }
+
+        $.ajax(
+            {
+                url: payoneAjaxControllerUrl,
+                method: 'POST',
+                type: 'POST',
+                dataType: 'text',
+                data: {
+                    paymentid: "fcpoklarna_invoice",
+                    action: "start_session"
+                },
+                success: function(Response) {
+                    $('#klarna_invoice_js_inject').html(Response);
+                }
+            }
+        );
+    }
+);
+
+
+/**
  * Triggers precheck for payolution installment via ajax
  *
  * @param void

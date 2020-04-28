@@ -77,6 +77,20 @@ class fcpayone_ajax extends oxBase
     }
 
     /**
+     *
+     *
+     * @param $sAction
+     * @return string
+     */
+    public function fcpoTriggerKlarnaAction($sAction)
+    {
+        $oRequest = $this->_oFcpoHelper->getFactoryObject('fcporequest');
+        $aResponse = $oRequest->sendRequestKlarnaStartSession();
+
+        // @todo: Check validity, fetch token from response and return js code
+    }
+
+    /**
      * Triggers a call on payoneapi for handling ajax calls for referencedetails
      *
      * @param $sParamsJson
@@ -206,14 +220,14 @@ class fcpayone_ajax extends oxBase
         
         return $sReturn;
     }
-    
+
     /**
      * Performs a precheck for payolution installment
-     * 
-     * @param  type $sPaymentId
+     *
+     * @param string $sPaymentId
      * @return mixed
      */
-    public function fcpoTriggerInstallmentCalculation()
+    public function fcpoTriggerInstallmentCalculation($sPaymentId)
     {
         $oPaymentController = $this->_oFcpoHelper->getFactoryObject('payment');
 
@@ -355,7 +369,7 @@ class fcpayone_ajax extends oxBase
      */
     protected function _fcpoGetInsterestRadio($sKey, $aCurrentInstallment) 
     {
-        $sHtml .= '<input type="radio" id="payolution_installment_offer_'.$sKey.'" name="payolution_installment_selection" value="'.$sKey.'">';
+        $sHtml = '<input type="radio" id="payolution_installment_offer_'.$sKey.'" name="payolution_installment_selection" value="'.$sKey.'">';
         
         return $sHtml;
     }
@@ -411,7 +425,7 @@ if ($sPaymentId) {
     }
     
     if ($sAction == 'calculation') {
-        $mResult = $oPayoneAjax->fcpoTriggerInstallmentCalculation();
+        $mResult = $oPayoneAjax->fcpoTriggerInstallmentCalculation($sPaymentId);
         if (is_array($mResult) && count($mResult) > 0) {
             // we have got a calculation result. Parse it to needed html
             echo $oPayoneAjax->fcpoParseCalculation2Html($mResult);
@@ -429,5 +443,14 @@ if ($sPaymentId) {
     );
     if ($blConfirmAmazonOrder) {
         $oPayoneAjax->fcpoConfirmAmazonPayOrder($sParamsJson);
+    }
+
+    $aKlarnaPayments = array(
+        'fcpoklarna_invoice',
+        'fcpoklarna_installments',
+        'fcpoklarna_directdebit',
+    );
+    if (in_array($sPaymentId, $aKlarnaPayments)) {
+        $oPayoneAjax->fcpoTriggerKlarnaAction($sAction);
     }
 }

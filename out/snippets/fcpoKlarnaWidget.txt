@@ -9,6 +9,8 @@ window.klarnaAsyncCallback = function () {
         payment_method_category: '%%PAYMENT_CATEGORY%%'
     }, function (res) {
         console.debug(res);
+        if(res['show_form'] === true) {
+        }
     });
 };
 </script>

@@ -672,7 +672,7 @@ function fcSetPayoneInputFields(oForm) {
  */
 $('#fcpo_klarna_combined_agreed, #klarna_payment_selector').change(
     function() {
-        if ($('#fcpo_klarna_combined_agreed').checked) {
+        if ($('#fcpo_klarna_combined_agreed').is(':checked') == false) {
             $('#klarna_widget_combined_container').html('');
             $('#klarna_combined_js_inject').html('');
             // @todo Sucks while testing. Will even more such, if payment selector also triggers =>location.reload();
@@ -707,7 +707,7 @@ $('#fcpo_klarna_combined_agreed, #klarna_payment_selector').change(
                     params: formParams
                 },
                 success: function(Response) {
-                    $('#klarna_invoice_js_inject').html(Response);
+                    $('#klarna_combined_js_inject').html(Response);
                 }
             }
         );

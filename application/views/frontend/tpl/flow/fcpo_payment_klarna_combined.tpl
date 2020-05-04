@@ -21,7 +21,7 @@
         <input id="fcpo_klarna_combined_agreed" type="checkbox" name="dynvalue[fcpo_klarna_combined_agreed]" value="agreed">
         <label for="fcpo_klarna_combined_agreed">[{oxmultilang ident="FCPO_KLARNA_COMBINED_DATA_AGREEMENT"}]</label>
 
-        <div id="klarna_cmobined_js_inject"></div>
+        <div id="klarna_combined_js_inject"></div>
 
         <div id="klarna_widget_combined_container"></div>
 

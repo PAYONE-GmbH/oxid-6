@@ -79,30 +79,31 @@ class fcpayone_ajax extends oxBase
     /**
      *
      *
+     * @param $sPaymentId
      * @param $sAction
      * @param $sParamsJson
      * @return string
      */
-    public function fcpoTriggerKlarnaAction($sAction, $sParamsJson)
+    public function fcpoTriggerKlarnaAction($sPaymentId, $sAction, $sParamsJson)
     {
         if ($sAction === 'start_session') {
-            return $this->fcpoTriggerKlarnaSessionStart($sParamsJson);
+            return $this->fcpoTriggerKlarnaSessionStart($sPaymentId, $sParamsJson);
         }
     }
 
     /**
+     * Trigger klarna session start
      *
-     *
+     * @param $sPaymentId
      * @param $sParamsJson
      * @return string
      */
-    public function fcpoTriggerKlarnaSessionStart($sParamsJson)
+    public function fcpoTriggerKlarnaSessionStart($sPaymentId, $sParamsJson)
     {
         $oRequest = $this->_oFcpoHelper->getFactoryObject('fcporequest');
-        $aResponse = $oRequest->sendRequestKlarnaStartSession();
-
+        $aResponse = $oRequest->sendRequestKlarnaStartSession($sPaymentId);
         $blIsValid = (
-            isset($aResponse['status'], $aResponse['client_token']) &&
+            isset($aResponse['status'], $aResponse['add_paydata[client_token]']) &&
             $aResponse['status'] === 'OK'
         );
 
@@ -110,8 +111,7 @@ class fcpayone_ajax extends oxBase
             // TODO: set error message into session and redirect to payment cl
             return;
         }
-        return $this->_fcpoGetKlarnaWidgetJS($aResponse['client_token'], $sParamsJson);
-        // @todo: Check validity, fetch token from response and return js code
+        return $this->_fcpoGetKlarnaWidgetJS($aResponse['add_paydata[client_token]'], $sParamsJson);
     }
 
     /**
@@ -157,7 +157,7 @@ class fcpayone_ajax extends oxBase
     /**
      * @param $sClientToken
      * @param $sParamsJson
-     * @return false|string|string[]
+     * @return string
      */
     protected function _fcpoGetKlarnaWidgetJS($sClientToken, $sParamsJson)
     {
@@ -167,17 +167,18 @@ class fcpayone_ajax extends oxBase
             '%%PAYMENT_CATEGORY%%',
         );
 
-        $aParams = json_decode($sParamsJson);
+        $aParams = json_decode($sParamsJson, true);
 
         $aKlarnaWidgetReplace = array(
             $sClientToken,
             $aParams['payment_container_id'],
             $aParams['payment_category'],
         );
+
         $sKlarnaWidgetJS = file_get_contents($this->_fcpoGetKlarnaWidgetPath());
         $sKlarnaWidgetJS = str_replace($aKlarnaWidgetSearch, $aKlarnaWidgetReplace, $sKlarnaWidgetJS);
 
-        return $sKlarnaWidgetJS;
+        return (string) $sKlarnaWidgetJS;
     }
 
     protected function _fcpoGetKlarnaWidgetPath()
@@ -511,6 +512,6 @@ if ($sPaymentId) {
         'fcpoklarna_directdebit',
     );
     if (in_array($sPaymentId, $aKlarnaPayments)) {
-        $oPayoneAjax->fcpoTriggerKlarnaAction($sAction, $sParamsJson);
+        echo $oPayoneAjax->fcpoTriggerKlarnaAction($sPaymentId, $sAction, $sParamsJson);
     }
 }

@@ -2005,20 +2005,20 @@ class fcpoRequest extends oxSuperCfg
     /**
      * Sending start session call
      *
-     * @param void
+     * @param $sPaymentId
      * @return array
      */
-    public function sendRequestKlarnaStartSession()
+    public function sendRequestKlarnaStartSession($sPaymentId)
     {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $oSession = $this->_oFcpoHelper->fcpoGetSession();
         $oBasket = $oSession->getBasket();
         $oUser = $oBasket->getUser();
-        $sPaymentId = $oBasket->getPaymentId();
         $sShippingId = $oBasket->getShippingId();
 
         $this->addParameter('request', 'genericpayment'); //Request method
         $this->addParameter('mode', $this->getOperationMode($sPaymentId)); //PayOne Portal Operation Mode (live or test)
+        $this->addParameter('aid', $oConfig->getConfigParam('sFCPOSubAccountID')); //ID of PayOne Sub-Account
 
         $this->addParameter('add_paydata[action]', 'start_session');
         $this->addParameter('clearingtype', 'fnc');

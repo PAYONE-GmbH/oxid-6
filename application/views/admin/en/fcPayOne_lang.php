@@ -492,6 +492,21 @@ $aLang = array(
 'FCPO_EMAIL_IBAN'                               => 'IBAN:',
 'FCPO_EMAIL_CLEARING_BODY_THANKYOU'             => 'Thank you, your %SHOPNAME%-Team',
 'FCPO_EMAIL_USAGE'                              => 'Usage',
+'FCPO_TRANSACTIONREDIRECTMETHOD_DIRECT'         => 'Direct redirect (Standard)',
+'FCPO_TRANSACTIONREDIRECTMETHOD_CRONJOB'        => 'Delayed by Cronjob (Secure transaction)',
+'FCPO_HELP_TRANSACTIONREDIRECTMETHOD'           => 'Choose the method how transaction redirects will be handled. There are two choices:<br><b>Direct redirect:</b><br>Using this method will directly redirect the transaction after receiving it. This mode offers a high redirection speed and a moderate transaction security.<br><b>Delayed by Cronjob:</b><br>Instead of directly redirecting the statusmessage, this method collects incoming messages and will redirect them aftery calling a cronjob. This mode offers a very high transaction security. The speed of redirecting statusmessages depends on the setup of your server. Please visit the <a href="">manual</a> for further information for setting this up efficiantly.',
+'FCPO_TRANSACTIONREDIRECTMETHOD'                => 'Method of statusmessage redirecting',
+'FCPO_TRANSACTIONREDIRECT_TIMEOUT'              => 'Timeout for direct redirects',
+'FCPO_HELP_TRANSACTIONREDIRECT_TIMEOUT'         => 'For offering direct redirects without any interruptions, there is a need for having a timout for mode "Direct redirects". Depending on the setup of your server it can be nessessary to have a higher value then 100ms default.',
+'FCPO_FORWARD_REDIRECTS'                        => 'Transaction status redirects',
+'FCPO_FORWARD_REDIRECT_TARGETURL'               => 'Target',
+'FCPO_FORWARD_REDIRECT_TRIES'                   => 'Tries',
+'FCPO_FORWARD_REDIRECT_LASTTRY'                 => 'Last tried',
+'FCPO_FORWARD_REDIRECT_FULFILLED'               => 'Success',
+'FCPO_FORWARD_REDIRECT_FULFILLED_YES'           => 'Yes',
+'FCPO_FORWARD_REDIRECT_FULFILLED_NO'            => 'No',
+'FCPO_FORWARD_REDIRECT_DETAILS'                 => 'Details',
+'FCPO_FORWARD_REDIRECT_TRIGGER'                 => 'Trigger all missing/unfulfilled calls',
 );
 
 /*

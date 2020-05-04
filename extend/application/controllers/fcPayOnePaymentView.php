@@ -1378,6 +1378,8 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
 
             $this->_fcCleanupSessionFragments($oPayment);
 
+            $mReturn = $this->_fcpoKlarnaCombinedValidate($mReturn, $sPaymentId);
+
             $mReturn = $this->_fcpoPayolutionPreCheck($mReturn, $sPaymentId);
             if ($sPaymentId == 'fcporp_bill') {
                 $mReturn = $this->_fcpoCheckRatePayBillMandatoryUserData($mReturn, $sPaymentId);
@@ -1388,6 +1390,17 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         return $mReturn;
     }
 
+    protected function _fcpoKlarnaCombinedValidate($mReturn, $sPaymentId)
+    {
+        if ($this->fcpoIsKlarnaCombined($sPaymentId)) {
+            $aDynValues = $this->_fcpoGetDynValues();
+            if (!$aDynValues['fcpo_klarna_combined_agreed']) {
+                $this->_fcpoSetErrorMessage('FCPO_KLARNA_NOT_AGREED');
+                return null;
+            }
+        }
+        return $mReturn;
+    }
     /**
      * Determines if adult check is needed and performing it in case
      *
@@ -1700,7 +1713,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      * @param  $sLangString
      * @return void
      */
-    protected function _fcpoSetPayolutionErrorMessage($sLangString) 
+    protected function _fcpoSetPayolutionErrorMessage($sLangString)
     {
         if ($sLangString) {
             $oLang = $this->_oFcpoHelper->fcpoGetLang();
@@ -1710,6 +1723,22 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
                 $this->_oFcpoHelper->fcpoSetSessionVariable('payerror', -20);
                 $this->_oFcpoHelper->fcpoSetSessionVariable('payerrortext', $this->_sPayolutionCurrentErrorMessage);
             }
+        }
+    }
+
+    /**
+     * Sets a payolution error message into session, so it will be displayed in frontend
+     *
+     * @param  $sLangString
+     * @return void
+     */
+    protected function _fcpoSetErrorMessage($sLangString)
+    {
+        if ($sLangString) {
+            $oLang = $this->_oFcpoHelper->fcpoGetLang();
+            $sTranslatedString = $oLang->translateString($sLangString);
+            $this->_oFcpoHelper->fcpoSetSessionVariable('payerror', -20);
+            $this->_oFcpoHelper->fcpoSetSessionVariable('payerrortext', $sTranslatedString);
         }
     }
 

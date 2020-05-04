@@ -204,7 +204,8 @@ $aLang = array(
 'FCPO_EMAIL_CLEARING_BODY_THANKYOU'             => 'Vielen Dank, dein %SHOPNAME%-Team',
 'FCPO_EMAIL_USAGE'                              => 'Verwendungszweck',
 
-'FCPO_KLARNA_COMBINED_DATA_AGREEMENT'           => 'Ich stimme zu'
+'FCPO_KLARNA_COMBINED_DATA_AGREEMENT'           => 'Ich stimme zu',
+'FCPO_KLARNA_NOT_AGREED'                        => 'Sie müssen der Übermittlung ihrer Daten zustimmen, um mit Klarna zu bezahlen.'
 );
 
 /*

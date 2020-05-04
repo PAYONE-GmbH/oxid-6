@@ -672,6 +672,9 @@ function fcSetPayoneInputFields(oForm) {
  */
 $('#fcpo_klarna_combined_agreed, #klarna_payment_selector').change(
     function() {
+        var payment_id = $('#klarna_payment_selector').children("option:selected").val();
+        $('#payment_klarna_combined').val(payment_id);
+
         if ($('#fcpo_klarna_combined_agreed').is(':checked') == false) {
             $('#klarna_widget_combined_container').empty();
 
@@ -680,8 +683,6 @@ $('#fcpo_klarna_combined_agreed, #klarna_payment_selector').change(
             }
             return;
         }
-
-        var payment_id = $('#klarna_payment_selector').children("option:selected").val();
 
         let payment_category_list = {
             "fcpoklarna_invoice" : "pay_later",

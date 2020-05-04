@@ -433,7 +433,7 @@ class fcPayOnePayment extends fcPayOnePayment_parent
                 fcpo_campaign_code, 
                 fcpo_campaign_title, 
                 fcpo_campaign_language, 
-                fcpo_campaign_currency,
+                fcpo_campaign_currency
             FROM 
                  fcpoklarnacampaigns 
             ORDER BY oxid ASC";

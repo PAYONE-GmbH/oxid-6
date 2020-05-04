@@ -203,6 +203,8 @@ $aLang = array(
 'FCPO_EMAIL_CLEARING_BODY_WELCOME'              => "Hallo %NAME% %SURNAME%,\nzur Begleichung der Rechnung verwenden Sie bitte folgende Daten zur Überweisung:\n\n",
 'FCPO_EMAIL_CLEARING_BODY_THANKYOU'             => 'Vielen Dank, dein %SHOPNAME%-Team',
 'FCPO_EMAIL_USAGE'                              => 'Verwendungszweck',
+
+'FCPO_KLARNA_COMBINED_DATA_AGREEMENT'           => 'Ich stimme zu'
 );
 
 /*

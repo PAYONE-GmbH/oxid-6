@@ -673,14 +673,15 @@ function fcSetPayoneInputFields(oForm) {
 $('#fcpo_klarna_combined_agreed, #klarna_payment_selector').change(
     function() {
         if ($('#fcpo_klarna_combined_agreed').is(':checked') == false) {
-            $('#klarna_widget_combined_container').html('');
-            $('#klarna_combined_js_inject').html('');
-            // @todo Sucks while testing. Will even more such, if payment selector also triggers =>location.reload();
+            $('#klarna_widget_combined_container').empty();
+
+            if ($('#klarna_combined_js_inject').html() !== '') {
+                location.reload();
+            }
             return;
         }
 
-        var payment_id =
-            $('#klarna_payment_selector').children("option:selected"). val();
+        var payment_id = $('#klarna_payment_selector').children("option:selected").val();
 
         let payment_category_list = {
             "fcpoklarna_invoice" : "pay_later",
@@ -707,7 +708,8 @@ $('#fcpo_klarna_combined_agreed, #klarna_payment_selector').change(
                     params: formParams
                 },
                 success: function(Response) {
-                    $('#klarna_combined_js_inject').html(Response);
+                    $('#klarna_widget_combined_container').empty();
+                    $('#klarna_combined_js_inject').empty().html(Response);
                 }
             }
         );

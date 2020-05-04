@@ -670,10 +670,9 @@ function fcSetPayoneInputFields(oForm) {
  *
  * @param void
  */
-$('#fcpo_klarna_invoice_agreed').onchange(
+$('#fcpo_klarna_invoice_agreed').change(
     function() {
-        var data_agreement_checked = $('#fcpo_klarna_invoice_agreed').checked();
-        if (!data_agreement_checked) {
+        if (!this.checked) {
             $('#klarna_widget_invoice_container').html('');
             $('#klarna_invoice_js_inject').html('');
             location.reload();

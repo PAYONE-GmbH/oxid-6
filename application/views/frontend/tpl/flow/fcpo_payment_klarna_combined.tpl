@@ -7,23 +7,23 @@
     <dd class="[{if  $oView->fcpoIsKlarnaCombined($checkedPaymentId)}]activePayment[{/if}]">
         <select id="klarna_payment_selector">
             [{if $oView->fcpoPaymentActive('fcpoklarna_installments')}]
-            <option value="fcpoklarna_installments" [{if $sPaymentID == 'fcpoklarna_installments'}]selected[{/if}]>Klarna Slice it</option>
+                <option value="fcpoklarna_installments" [{if $sPaymentID == 'fcpoklarna_installments'}]selected[{/if}]>Klarna Slice it</option>
             [{/if}]
             [{if $oView->fcpoPaymentActive('fcpoklarna_directdebit')}]
-            <option value="fcpoklarna_directdebit" [{if $sPaymentID == 'fcpoklarna_directdebit'}]selected[{/if}]>Klarna Pay now</option>
+                <option value="fcpoklarna_directdebit" [{if $sPaymentID == 'fcpoklarna_directdebit'}]selected[{/if}]>Klarna Pay now</option>
             [{/if}]
             [{if $oView->fcpoPaymentActive('fcpoklarna_invoice')}]
-            <option value="fcpoklarna_invoice" [{if $sPaymentID == 'fcpoklarna_invoice'}]selected[{/if}]>Klarna Pay later</option>
+                <option value="fcpoklarna_invoice" [{if $sPaymentID == 'fcpoklarna_invoice'}]selected[{/if}]>Klarna Pay later</option>
             [{/if}]
         </select>
         <br>
 
-        <input id="fcpo_klarna_invoice_agreed" type="checkbox" name="dynvalue[fcpo_klarna_invoice_agreed]" value="agreed">
-        <label for="fcpo_klarna_invoice_agreed">[{oxmultilang ident="FCPO_KLARNA_INVOICE_DATA_AGREEMENT"}]</label>
+        <input id="fcpo_klarna_combined_agreed" type="checkbox" name="dynvalue[fcpo_klarna_combined_agreed]" value="agreed">
+        <label for="fcpo_klarna_combined_agreed">[{oxmultilang ident="FCPO_KLARNA_COMBINED_DATA_AGREEMENT"}]</label>
 
-        <div id="klarna_invoice_js_inject"></div>
+        <div id="klarna_combined_js_inject"></div>
 
-        <div id="klarna_widget_invoice_container"></div>
+        <div id="klarna_widget_combined_container"></div>
 
         <div class="clearfix"></div>
 

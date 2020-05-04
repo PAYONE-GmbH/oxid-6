@@ -670,17 +670,29 @@ function fcSetPayoneInputFields(oForm) {
  *
  * @param void
  */
-$('#fcpo_klarna_invoice_agreed').change(
+$('#fcpo_klarna_combined_agreed, #klarna_payment_selector').change(
     function() {
-        if (!this.checked) {
-            $('#klarna_widget_invoice_container').html('');
-            $('#klarna_invoice_js_inject').html('');
-            location.reload();
+        if ($('#fcpo_klarna_combined_agreed').is(':checked') == false) {
+            $('#klarna_widget_combined_container').html('');
+            $('#klarna_combined_js_inject').html('');
+            // @todo Sucks while testing. Will even more such, if payment selector also triggers =>location.reload();
             return;
         }
+
+        var payment_id =
+            $('#klarna_payment_selector').children("option:selected"). val();
+
+        let payment_category_list = {
+            "fcpoklarna_invoice" : "pay_later",
+            "fcpoklarna_directdebit" : "pay_now",
+            "fcpoklarna_installments" : "slice_it",
+        }
+
+        var payment_category = payment_category_list[payment_id];
+
         var formParams = '{' +
-            '"payment_container_id":"klarna_widget_invoice_container", ' +
-            '"payment_category":"pay_later"' +
+                '"payment_container_id":"klarna_widget_combined_container", ' +
+                '"payment_category":"' + payment_category + '"' +
             '}';
 
         $.ajax(
@@ -690,17 +702,19 @@ $('#fcpo_klarna_invoice_agreed').change(
                 type: 'POST',
                 dataType: 'text',
                 data: {
-                    paymentid: "fcpoklarna_invoice",
+                    paymentid: payment_id,
                     action: "start_session",
                     params: formParams
                 },
                 success: function(Response) {
-                    $('#klarna_invoice_js_inject').html(Response);
+                    $('#klarna_combined_js_inject').html(Response);
                 }
             }
         );
     }
 );
+
+
 
 
 /**

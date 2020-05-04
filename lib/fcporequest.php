@@ -404,15 +404,18 @@ class fcpoRequest extends oxSuperCfg
     /**
      * Set payment params for klarna.
      *
-     * @param $sPaymentId
+     * @param $oOrder
      * @return bool
      */
-    protected function _setPaymentParamsKlarna($sPaymentId)
+    protected function _setPaymentParamsKlarna($oOrder)
     {
-        $sKlarnaAuthToken = $this->_oFcpoHelper->fcpoGetSessionVariable('klarna_authorization_token');
+        $sPaymentId = $oOrder->oxorder__oxpaymenttype->value;
+        $sKlarnaAuthToken =
+            $this->_oFcpoHelper->fcpoGetSessionVariable('klarna_authorization_token');
         $this->addParameter('add_paydata[authorization_token]', $sKlarnaAuthToken);
         $this->addParameter('clearingtype', 'fnc');
         $this->addParameter('financingtype', $this->_fcpoGetKlarnaFinancingType($sPaymentId));
+
         return true;
     }
 
@@ -511,7 +514,7 @@ class fcpoRequest extends oxSuperCfg
             case 'fcpoklarna_invoice':
             case 'fcpoklarna_installments':
             case 'fcpoklarna_directdebit':
-                $blAddRedirectUrls = $this->_setPaymentParamsKlarna($sPaymentId);
+                $blAddRedirectUrls = $this->_setPaymentParamsKlarna($oOrder);
                 break;
             case 'fcpobarzahlen':
                 $this->addParameter('clearingtype', 'csh'); //Payment method

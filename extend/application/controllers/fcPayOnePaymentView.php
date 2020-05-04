@@ -1390,6 +1390,13 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         return $mReturn;
     }
 
+    /**
+     * Validating new klarna payment
+     *
+     * @param $mReturn
+     * @param $sPaymentId
+     * @return mixed
+     */
     protected function _fcpoKlarnaCombinedValidate($mReturn, $sPaymentId)
     {
         if ($this->fcpoIsKlarnaCombined($sPaymentId)) {
@@ -1399,6 +1406,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
                 return null;
             }
         }
+
         return $mReturn;
     }
     /**

@@ -108,10 +108,37 @@ class fcpayone_ajax extends oxBase
         );
 
         if (!$blIsValid) {
-            // TODO: set error message into session and redirect to payment cl
-            return;
+            $this->_oFcpoHelper->fcpoSetSessionVariable('payerror', -20);
+            $this->_oFcpoHelper->fcpoSetSessionVariable(
+                'payerrortext',
+                $aResponse['errormessage']
+            );
+            return header("HTTP/1.0 503 Service not available");
         }
+
+        $this->_fcpoSetKlarnaSessionParams($aResponse);
+
         return $this->_fcpoGetKlarnaWidgetJS($aResponse['add_paydata[client_token]'], $sParamsJson);
+    }
+
+    /**
+     * Set needed session params for later handling of Klarna payment
+     *
+     * @param $aResponse
+     * @return void
+     */
+    protected function _fcpoSetKlarnaSessionParams($aResponse)
+    {
+        $this->_oFcpoHelper->fcpoDeleteSessionVariable('klarna_authorization_token');
+        $this->_oFcpoHelper->fcpoSetSessionVariable(
+            'klarna_authorization_token',
+            $aResponse['add_paydata[session_id]']
+        );
+        $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoWorkorderId');
+        $this->_oFcpoHelper->fcpoSetSessionVariable(
+            'fcpoWorkorderId',
+            $aResponse['workorderid']
+        );
     }
 
     /**

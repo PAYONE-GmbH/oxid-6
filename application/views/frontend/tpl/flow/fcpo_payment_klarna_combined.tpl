@@ -1,9 +1,9 @@
 <dl>
+    [{assign var='checkedPaymentId' value=$oView->getCheckedPaymentId()}]
     <dt>
-        <input id="payment_klarna_combined" type="radio" name="paymentid" value="[{$sPaymentID}]" [{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]checked[{/if}]>
+        <input id="payment_klarna_combined" type="radio" name="paymentid" value="[{$sPaymentID}]" [{if $oView->fcpoIsKlarnaCombined($checkedPaymentId)}]checked[{/if}]>
         <label for="payment_klarna_combined"><b>Klarna</b></label>
     </dt>
-    [{assign var='checkedPaymentId' value=$oView->getCheckedPaymentId()}]
     <dd class="[{if  $oView->fcpoIsKlarnaCombined($checkedPaymentId)}]activePayment[{/if}]">
         <select id="klarna_payment_selector">
             [{if $oView->fcpoPaymentActive('fcpoklarna_installments')}]

@@ -9,11 +9,14 @@ window.klarnaAsyncCallback = function () {
         payment_method_category: '%%PAYMENT_CATEGORY%%'
     }, function (res) {
         console.debug(res);
+        var klarnaData = $.parseJSON('%%KLARNA_DATA%%');
+        console.log('im here');
+        console.log(klarnaData.user);
         Klarna.Payments.authorize({
             payment_method_category: '%%PAYMENT_CATEGORY%%',
         }, {
             billing_address: {
-                email: '%%EMAIL%%'
+                email: klarnaData.user.oxuser__oxusername.rawValue,
             },
         }, function (res) {
             $("#fcpo_klarna_auth_token").val(res.authorization_token);

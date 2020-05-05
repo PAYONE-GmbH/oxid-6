@@ -194,18 +194,25 @@ class fcpayone_ajax extends oxBase
         $oBasket = $oSession->getBasket();
         $oUser = $oBasket->getUser();
 
+        $oShippingAddress = $this->_fcpoGetShippingAddress();
+
+        $aKlarnaData = array(
+            'user' => (array)$oUser,
+            'shipping_address' => (array)$oShippingAddress,
+        );
+
         $aKlarnaWidgetSearch = array(
             '%%TOKEN%%',
             '%%PAYMENT_CONTAINER_ID%%',
             '%%PAYMENT_CATEGORY%%',
-            '%%EMAIL%%',
+            '%%KLARNA_DATA%%',
         );
 
         $aKlarnaWidgetReplace = array(
             $sClientToken,
             $aParams['payment_container_id'],
             $aParams['payment_category'],
-            $oUser->oxuser__oxusername->value,
+            json_encode($aKlarnaData),
         );
 
         $sKlarnaWidgetJS = file_get_contents($this->_fcpoGetKlarnaWidgetPath());
@@ -214,6 +221,30 @@ class fcpayone_ajax extends oxBase
         return (string) $sKlarnaWidgetJS;
     }
 
+    /**
+     * Returns an object with the shipping address.
+     *
+     * @return object
+     */
+    protected function _fcpoGetShippingAddress()
+    {
+        if (!($soxAddressId = $this->_oFcpoHelper->fcpoGetRequestParameter('deladrid'))) {
+            $soxAddressId = $this->_oFcpoHelper->fcpoGetSessionVariable('deladrid');
+        }
+        if ($soxAddressId) {
+            $oSession = $this->_oFcpoHelper->fcpoGetSession();
+            $sAddressId = $oSession->getVariable('deladrid');
+            $oShippingAddress = oxNew('oxaddress');
+            $oShippingAddress->load($sAddressId);
+            return $oShippingAddress;
+        }
+    }
+
+    /**
+     * Returns the path to a text file with js for the klarna widget.
+     *
+     * @return string
+     */
     protected function _fcpoGetKlarnaWidgetPath()
     {
         $oViewConf = $this->_oFcpoHelper->getFactoryObject('oxviewconfig');

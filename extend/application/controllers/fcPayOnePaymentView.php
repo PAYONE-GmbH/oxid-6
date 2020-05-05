@@ -24,7 +24,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     /**
      * Helper object for dealing with different shop versions
      *
-     * @var object
+     * @var fcpohelper
      */
     protected $_oFcpoHelper = null;
 
@@ -1404,6 +1404,12 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
             if (!$aDynValues['fcpo_klarna_combined_agreed']) {
                 $this->_fcpoSetErrorMessage('FCPO_KLARNA_NOT_AGREED');
                 return null;
+            }
+            if (empty($aDynValues['klarna_authorization_token'])) {
+                $this->_fcpoSetErrorMessage('FCPO_KLARNA_NO_AUTHORIZATION');
+                return null;
+            } else {
+                $this->_oFcpoHelper->fcpoSetSessionVariable('klarna_authorization_token', $aDynValues['klarna_authorization_token']);
             }
         }
 

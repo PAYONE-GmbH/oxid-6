@@ -4,6 +4,9 @@
         <input id="payment_klarna_combined" type="radio" name="paymentid" value="[{$sPaymentID}]" [{if $oView->fcpoIsKlarnaCombined($checkedPaymentId)}]checked[{/if}]>
         <label for="payment_klarna_combined"><b>Klarna</b></label>
     </dt>
+    <div class="hidden">
+        <input type="hidden" id="fcpo_klarna_auth_token" name="dynvalue[klarna_authorization_token]">
+    </div>
     <dd class="[{if  $oView->fcpoIsKlarnaCombined($checkedPaymentId)}]activePayment[{/if}]">
         <select id="klarna_payment_selector">
             [{if $oView->fcpoPaymentActive('fcpoklarna_installments')}]

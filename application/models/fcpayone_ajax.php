@@ -188,18 +188,24 @@ class fcpayone_ajax extends oxBase
      */
     protected function _fcpoGetKlarnaWidgetJS($sClientToken, $sParamsJson)
     {
+        $aParams = json_decode($sParamsJson, true);
+
+        $oSession = $this->_oFcpoHelper->fcpoGetSession();
+        $oBasket = $oSession->getBasket();
+        $oUser = $oBasket->getUser();
+
         $aKlarnaWidgetSearch = array(
             '%%TOKEN%%',
             '%%PAYMENT_CONTAINER_ID%%',
             '%%PAYMENT_CATEGORY%%',
+            '%%EMAIL%%',
         );
-
-        $aParams = json_decode($sParamsJson, true);
 
         $aKlarnaWidgetReplace = array(
             $sClientToken,
             $aParams['payment_container_id'],
             $aParams['payment_category'],
+            $oUser->oxuser__oxusername->value,
         );
 
         $sKlarnaWidgetJS = file_get_contents($this->_fcpoGetKlarnaWidgetPath());

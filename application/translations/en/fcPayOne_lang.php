@@ -198,6 +198,7 @@ $aLang = array(
 
 'FCPO_KLARNA_COMBINED_DATA_AGREEMENT'           => 'I agree',
 'FCPO_KLARNA_NOT_AGREED'                        => 'You have to agree to submit your data to pay with klarna.',
+'FCPO_KLARNA_NO_AUTHORIZATION'                  => 'An unexpected error occurred.',
 );
 
 /*

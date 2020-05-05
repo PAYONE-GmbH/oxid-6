@@ -205,7 +205,8 @@ $aLang = array(
 'FCPO_EMAIL_USAGE'                              => 'Verwendungszweck',
 
 'FCPO_KLARNA_COMBINED_DATA_AGREEMENT'           => 'Ich stimme zu',
-'FCPO_KLARNA_NOT_AGREED'                        => 'Sie müssen der Übermittlung ihrer Daten zustimmen, um mit Klarna zu bezahlen.'
+'FCPO_KLARNA_NOT_AGREED'                        => 'Sie müssen der Übermittlung ihrer Daten zustimmen, um mit Klarna zu bezahlen.',
+'FCPO_KLARNA_NO_AUTHORIZATION'                  => 'Es ist ein unerwarteter Fehler aufgetreten.',
 );
 
 /*

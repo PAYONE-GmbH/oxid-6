@@ -2027,6 +2027,8 @@ class fcpoRequest extends oxSuperCfg
         $this->addParameter('clearingtype', 'fnc');
         $this->addParameter('financingtype', $this->_fcpoGetKlarnaFinancingType($sPaymentId));
 
+        $oBasket->setPayment($sPaymentId);
+        $oBasket->calculateBasket(true);
         $oPrice = $oBasket->getPrice();
         $this->addParameter('amount', number_format($oPrice->getBruttoPrice(), 2, '.', '') * 100);
         $oCurr = $oConfig->getActShopCurrencyObject();

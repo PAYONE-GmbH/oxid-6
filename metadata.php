@@ -55,6 +55,7 @@ $aModule = array(
         'oxpayment'                         => 'fc/fcpayone/extend/application/models/fcPayOnePayment',
         'oxpaymentgateway'                  => 'fc/fcpayone/extend/application/models/fcPayOnePaymentgateway',
         'oxuser'                            => 'fc/fcpayone/extend/application/models/fcPayOneUser',
+        'oxaddress'                         => 'fc/fcpayone/extend/application/models/fcPayOneAddress',
         // core
         'oxviewconfig'                      => 'fc/fcpayone/extend/core/fcPayOneViewConf',
     ),

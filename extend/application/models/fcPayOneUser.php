@@ -96,6 +96,23 @@ class fcPayOneUser extends fcPayOneUser_parent
     }
 
     /**
+     * Returns country iso code of users country
+     *
+     * @param int $iVersion
+     * @return string
+     */
+    public function fcpoGetUserCountryIso($iVersion=2)
+    {
+        $oCountry = $this->_oFcpoHelper->getFactoryObject('oxCountry');
+        if(!$oCountry->load($this->oxuser__oxcountryid->value)) {
+            return '';
+        }
+        $sField = "oxcountry__oxisoalpha".$iVersion;
+
+        return $oCountry->$sField->value;
+    }
+
+    /**
      * Makes this Email unique to be able to handle amazon users different from standard users
      * Currently the email address simply gets a prefix
      *

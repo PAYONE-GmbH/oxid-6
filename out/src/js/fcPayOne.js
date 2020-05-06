@@ -710,7 +710,7 @@ $('#fcpo_klarna_combined_agreed, #klarna_payment_selector').change(
                 },
                 success: function(Response) {
                     $('#klarna_widget_combined_container').empty();
-                    $('#klarna_combined_js_inject').empty().html(Response);
+                    $('#klarna_combined_js_inject').html(Response);
                 },
                 error: function () {
                     location.reload();

@@ -189,17 +189,7 @@ class fcpayone_ajax extends oxBase
     protected function _fcpoGetKlarnaWidgetJS($sClientToken, $sParamsJson)
     {
         $aParams = json_decode($sParamsJson, true);
-
-        $oSession = $this->_oFcpoHelper->fcpoGetSession();
-        $oBasket = $oSession->getBasket();
-        $oUser = $oBasket->getUser();
-
-        $oShippingAddress = $this->_fcpoGetShippingAddress();
-
-        $aKlarnaData = array(
-            'user' => (array)$oUser,
-            'shipping_address' => (array)$oShippingAddress,
-        );
+        $aKlarnaData = $this->_fcpoGetKlarnaData();
 
         $aKlarnaWidgetSearch = array(
             '%%TOKEN%%',
@@ -222,22 +212,90 @@ class fcpayone_ajax extends oxBase
     }
 
     /**
+     * Return needed data for performing authorization
+     *
+     * @param void
+     * @return array
+     */
+    protected function _fcpoGetKlarnaData()
+    {
+        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+        $oSession = $this->_oFcpoHelper->fcpoGetSession();
+        $oBasket = $oSession->getBasket();
+        $oUser = $oBasket->getUser();
+        $oShippingAddress = $this->_fcpoGetShippingAddress();
+        $oCur = $oCur = $oConfig->getActShopCurrencyObject();
+        $blHasShipping = (!$oShippingAddress) ? false : true;
+        $sGender = ($oUser->oxuser__oxsal->value == 'MR') ? 'male' : 'female';
+
+        $aKlarnaData = array(
+            'purchase_country' => $oUser->fcpoGetUserCountryIso(),
+            'purchase_currency' => $oCur->name,
+            'billing' => array(
+                'given_name' => $oUser->oxuser__oxfname->value,
+                'family_name' => $oUser->oxuser__oxlname->value,
+                'email' => $oUser->oxuser__oxusername->value,
+                'title' => $oUser->oxuser__oxsal->value,
+                'street_address' => $oUser->oxuser__oxstreet->value." ".$oUser->oxuser__oxstreetnr->value,
+                'street_address2' => $oUser->oxuser__oxaddinfo->value,
+                'postal_code' => $oUser->oxuser__oxzip->value,
+                'city' => $oUser->oxuser__oxcity->value,
+                'phone' => $oUser->oxuser__oxfon->value,
+                'country' => $oUser->fcpoGetUserCountryIso(),
+            ),
+        );
+
+        if ($blHasShipping) {
+            $aKlarnaShippingData = array(
+                'shipping' => array(
+                    'given_name' => $oShippingAddress->oxaddress__oxfname->value,
+                    'family_name' => $oShippingAddress->oxaddress__oxlname->value,
+                    'email' => $oUser->oxuser__oxusername->value,
+                    'title' => $oShippingAddress->oxaddress__oxsal->value,
+                    'street_address' => $oShippingAddress->oxaddress__oxstreet->value." ".$oShippingAddress->oxaddress__oxstreetnr->value,
+                    'street_address2' => $oShippingAddress->oxaddress__oxaddinfo->value,
+                    'postal_code' => $oShippingAddress->oxaddress__oxzip->value,
+                    'city' => $oShippingAddress->oxaddress__oxcity->value,
+                    'phone' => $oShippingAddress->oxaddress__oxfon->value,
+                    'country' => $oShippingAddress->fcpoGetUserCountryIso(),
+                ),
+            );
+        } else {
+            $aKlarnaShippingData = array('shipping'=>$aKlarnaData['billing']);
+        }
+
+        $aKlarnaCustomer = array(
+            'customer' => array(
+                'date_of_birth' => $oUser->oxuser__oxbirthdate->value,
+                'gender' => $sGender,
+            )
+        );
+
+        $aKlarnaData = array_merge($aKlarnaData, $aKlarnaShippingData, $aKlarnaCustomer);
+
+        return $aKlarnaData;
+    }
+
+    /**
      * Returns an object with the shipping address.
      *
-     * @return object
+     * @param void
+     * @return mixed false|object
      */
     protected function _fcpoGetShippingAddress()
     {
-        if (!($soxAddressId = $this->_oFcpoHelper->fcpoGetRequestParameter('deladrid'))) {
-            $soxAddressId = $this->_oFcpoHelper->fcpoGetSessionVariable('deladrid');
+        if (!($sAddressId = $this->_oFcpoHelper->fcpoGetRequestParameter('deladrid'))) {
+            $sAddressId = $this->_oFcpoHelper->fcpoGetSessionVariable('deladrid');
         }
-        if ($soxAddressId) {
-            $oSession = $this->_oFcpoHelper->fcpoGetSession();
-            $sAddressId = $oSession->getVariable('deladrid');
-            $oShippingAddress = oxNew('oxaddress');
-            $oShippingAddress->load($sAddressId);
-            return $oShippingAddress;
+
+        if (!$sAddressId) {
+            return false;
         }
+
+        $oShippingAddress = oxNew('oxaddress');
+        $oShippingAddress->load($sAddressId);
+
+        return $oShippingAddress;
     }
 
     /**

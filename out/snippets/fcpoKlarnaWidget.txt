@@ -10,6 +10,7 @@ window.klarnaAsyncCallback = function () {
     }, function (res) {
         console.debug(res);
         var klarnaData = $.parseJSON('%%KLARNA_DATA%%');
+        var klarnaBasket = $.parseJSON('%%KLARNA_BASKET%%');
         Klarna.Payments.authorize({
             payment_method_category: '%%PAYMENT_CATEGORY%%',
         }, {
@@ -39,6 +40,9 @@ window.klarnaAsyncCallback = function () {
                 phone: klarnaData.shipping.phone,
                 country: klarnaData.shipping.country
             },
+            order_amount: klarnaBasket.order_amount,
+            order_tax_amount: klarnaBasket.order_tax_amount,
+            orderlines: %%KLARNA_ORDERLINES%%,
             customer: {
                 date_of_birth: klarnaData.customer.date_of_birth,
                 gender: klarnaData.customer.gender

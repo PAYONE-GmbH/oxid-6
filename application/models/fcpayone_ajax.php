@@ -190,12 +190,17 @@ class fcpayone_ajax extends oxBase
     {
         $aParams = json_decode($sParamsJson, true);
         $aKlarnaData = $this->_fcpoGetKlarnaData();
+        $aKlarnaOrderData = $this->_fcpoGetKlarnaOrderdata();
+        $aKlarnaBasket = $aKlarnaOrderData['basket'];
+        $aKlarnaOrderlines = $aKlarnaOrderData['orderlines'];
 
         $aKlarnaWidgetSearch = array(
             '%%TOKEN%%',
             '%%PAYMENT_CONTAINER_ID%%',
             '%%PAYMENT_CATEGORY%%',
             '%%KLARNA_DATA%%',
+            '%%KLARNA_BASKET%%',
+            '%%KLARNA_ORDERLINES%%',
         );
 
         $aKlarnaWidgetReplace = array(
@@ -203,6 +208,8 @@ class fcpayone_ajax extends oxBase
             $aParams['payment_container_id'],
             $aParams['payment_category'],
             json_encode($aKlarnaData),
+            json_encode($aKlarnaBasket),
+            json_encode($aKlarnaOrderlines),
         );
 
         $sKlarnaWidgetJS = file_get_contents($this->_fcpoGetKlarnaWidgetPath());
@@ -271,9 +278,53 @@ class fcpayone_ajax extends oxBase
             )
         );
 
-        $aKlarnaData = array_merge($aKlarnaData, $aKlarnaShippingData, $aKlarnaCustomer);
+        $aKlarnaData = array_merge(
+            $aKlarnaData,
+            $aKlarnaShippingData,
+            $aKlarnaCustomer
+        );
 
         return $aKlarnaData;
+    }
+
+    /**
+     * Returns and brings basket positions into appropriate form
+     *
+     * @param void
+     * @return array
+     */
+    protected function _fcpoGetKlarnaOrderdata()
+    {
+        $oSession = $this->_oFcpoHelper->fcpoGetSession();
+        $oBasket = $oSession->getBasket();
+
+        $dAmount = $oBasket->getPrice()->getBruttoPrice();
+        $dTaxAmount = $oBasket->getPrice()->getVat();
+        $aBasketData = array(
+            'order_amount' => $dAmount,
+            'order_tax_amount' => $dTaxAmount
+        );
+
+        $aOrderlines = array();
+        foreach ($oBasket->getContents() as $oBasketItem) {
+            $oArticle = $oBasketItem->getArticle();
+            $aOrderline = array(
+                'reference' => $oArticle->oxarticles__oxartnum->value,
+                'name' =>  $oBasketItem->getTitle(),
+                'quantity' => $oBasketItem->getAmount(),
+                'unit_price' => $oBasketItem->getUnitPrice()->getBruttoPrice(),
+                'tax_rate' => $oBasketItem->getVatPercent(),
+                'total_amount' => $oBasketItem->getPrice()->getBruttoPrice(),
+                // 'product_url' => $oBasketItem->getLink(),
+                // 'image_url' => $oBasketItem->getIconUrl(),
+            );
+            $aOrderlines[] = $aOrderline;
+        }
+
+        return array(
+            'basket' => $aBasketData,
+            'orderlines' => $aOrderlines
+        );
     }
 
     /**

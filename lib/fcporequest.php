@@ -134,6 +134,7 @@ class fcpoRequest extends oxSuperCfg
      */
     protected $_aRatePayPayments = array(
         'fcporp_bill',
+        'fcporp_debitnote',
     );
 
     /**
@@ -554,7 +555,8 @@ class fcpoRequest extends oxSuperCfg
                 $blAddRedirectUrls = $this->_fcpoAddPayolutionParameters($oOrder);
                 break;
             case 'fcporp_bill':
-                $blAddRedirectUrls = $this->_fcpoAddRatePayParameters($oOrder);
+            case 'fcporp_debitnote':
+                $blAddRedirectUrls = $this->_fcpoAddRatePayParameters($oOrder, $aDynvalue);
                 break;
             case 'fcpoamazonpay':
                 $blAddRedirectUrls = $this->_fcpoAddAmazonPayParameters($oOrder);
@@ -1169,13 +1171,13 @@ class fcpoRequest extends oxSuperCfg
      * Method adds all bunch of ratepay-params
      * 
      * @param  oxOrder $oOrder
+     * @param array $aDynvalue
      * @return false => no redirect params 
      */
-    protected function _fcpoAddRatePayParameters($oOrder) 
+    protected function _fcpoAddRatePayParameters($oOrder, $aDynvalue)
     {
         // needed objects and data
         $oConfig = $this->getConfig();
-        $oSession = $this->_oFcpoHelper->fcpoGetSession();
         $oRatePay = oxNew('fcporatepay');
         $sPaymentId = $oOrder->oxorder__oxpaymenttype->value;
         $oUser = $oOrder->getOrderUser();
@@ -1240,6 +1242,11 @@ class fcpoRequest extends oxSuperCfg
         $this->addParameter('shipping_zip', $sShippingZip);
         $this->addParameter('shipping_city', $sShippingCity);
         $this->addParameter('shipping_country', strtoupper($sShippingCountry));
+
+        if ($sPaymentId == 'fcporp_debitnote') {
+            $this->addParameter('iban', $aDynvalue['fcpo_ratepay_debitnote_iban']);
+            $this->addParameter('bic', $aDynvalue['fcpo_ratepay_debitnote_bic']);
+        }
 
         $this->_fcpoAddBasketItemsFromSession();
 
@@ -1689,6 +1696,7 @@ class fcpoRequest extends oxSuperCfg
             'fcpopo_debitnote' => 'PYD',
             'fcpopo_installment' => 'PYS',
             'fcporp_bill' => 'RPV',
+            'fcporp_debitnote' => 'RPD',
         );
 
         $blPaymentIdMatch = isset($aMap[$sPaymentId]);
@@ -2190,16 +2198,15 @@ class fcpoRequest extends oxSuperCfg
     /**
      * Adds RatePay specific parameters
      * 
-     * @param  type $oOrder
+     * @param  object $oOrder
      * @return void
+     * @todo: currently only shop id will be fetched
      */
     protected function _fcpoAddCaptureAndDebitRatePayParams($oOrder) 
     {
         $sPaymentId = $oOrder->oxorder__oxpaymenttype->value;
         if (in_array($sPaymentId, $this->_aRatePayPayments)) {
-            $oRatePay = oxNew('fcporatepay');
-            $aRatePayProfile = $oRatePay->fcpoGetProfileDataByPaymentId($sPaymentId);
-            $sRatePayShopId = $aRatePayProfile['shopid'];
+            $sRatePayShopId = $oOrder->getFcpoRatepayShopId();
             $this->addParameter('add_paydata[shop_id]', $sRatePayShopId);
         }
     }

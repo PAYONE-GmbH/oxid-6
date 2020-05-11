@@ -53,6 +53,12 @@ class fcPayOneOrder extends fcPayOneOrder_parent
     protected $_aResponse = null;
 
     /**
+     * Array with all request parameters from API order request
+     * @var array
+     */
+    protected $_aRequest = null;
+
+    /**
      * Flag for redirecting after save
      *
      * @var bool
@@ -1050,7 +1056,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
                 $this->oxorder__oxpaymenttype->value == 'fcpopayadvance' ||
                 $this->oxorder__oxpaymenttype->value == 'fcpocashondel' ||
                 $this->oxorder__oxpaymenttype->value == 'fcpoonlineueberweisung'
-                );
+        );
 
         return $blReturn;
     }
@@ -1141,6 +1147,53 @@ class fcPayOneOrder extends fcPayOneOrder_parent
     }
 
     /**
+     * Returns request array of last authorization call
+     *
+     * @return array|null
+     */
+    protected function getRequest() 
+    {
+        if ($this->_aRequest === null) {
+            $sSelect = "
+                SELECT oxid 
+                FROM fcporequestlog 
+                WHERE fcpo_refnr = '{$this->oxorder__fcporefnr->value}' 
+                AND (
+                    fcpo_requesttype = 'preauthorization' OR 
+                    fcpo_requesttype = 'authorization'
+                )
+                AND FCPO_RESPONSESTATUS = 'APPROVED'
+                ORDER BY FCPO_TIMESTAMP DESC
+            ";
+            $sOxidRequest = $this->_oFcpoDb->GetOne($sSelect);
+
+            if ($sOxidRequest) {
+                $oRequestLog = $this->_oFcpoHelper->getFactoryObject('fcporequestlog');
+                $oRequestLog->load($sOxidRequest);
+                $aRequest = $oRequestLog->getRequestArray();
+                if ($aRequest) {
+                    $this->_aRequest = $aRequest;
+                }
+            }
+        }
+
+        return $this->_aRequest;
+    }
+
+    /**
+     * @param $sParameter
+     * @return string
+     */
+    protected function getRequestParameter($sParameter)
+    {
+        $aRequest = $this->getRequest();
+        $sReturn = (isset($aRequest[$sParameter])) ?
+            $aRequest[$sParameter] : '';
+
+        return $sReturn;
+    }
+  
+    /*
      * Returns matching query for fetching response needed for current state
      *
      * @param void
@@ -1190,6 +1243,15 @@ class fcPayOneOrder extends fcPayOneOrder_parent
 
         return $mReturn;
     }
+
+    /**
+     * Returns shopid used for ratepay payment
+     */
+    public function getFcpoRatepayShopId()
+    {
+        return $this->getRequestParameter('add_paydata[shop_id]');
+    }
+
 
     /**
      * Get the bankaccount holder of this order out of the response array

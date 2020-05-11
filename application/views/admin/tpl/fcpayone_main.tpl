@@ -745,9 +745,10 @@
                         [{oxmultilang ident="FCPO_PROFILES_RATEPAY_PAYMENT"}]: 
                         <select class="edittext" name="aRatepayProfiles[[{$sOxid}]][paymentid]">
                             <option value="fcporp_bill" [{if $aRatePayProfile.OXPAYMENTID == 'fcporp_bill'}]selected[{/if}]>RatePay Rechnung</option>
+                            <option value="fcporp_debitnote" [{if $aRatePayProfile.OXPAYMENTID == 'fcporp_debitnote'}]selected[{/if}]>RatePay Lastschrift</option>
                         </select>
                         <input type="submit" class="edittext" name="aRatepayProfiles[[{$sOxid}]][delete]" value="[{oxmultilang ident="FCPO_RATEPAY_DELETE_PROFILE"}]" onClick="Javascript:document.myedit.fnc.value='save'" [{$readonly}]><br>
-                        [{if $aRatePayProfile.merchant_name =='PayONE'}]
+                        [{if $aRatePayProfile.merchant_name != ''}]
                             <input type="checkbox" value="[{$sOxid}]" onclick="Javascript:handleRatePayShowDetails(this)"> [{oxmultilang ident="FCPO_RATEPAY_PROFILE_TOGGLE_DETAILS"}]
                         [{/if}]
                     </dd>
@@ -937,7 +938,7 @@
 
     <div class="groupExp">
         <div>
-            <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="FCPO_GROUP_LOGGING"}]</b></a>
+            <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="FCPO_FORWARD_REDIRECTS"}]</b></a>
             <dl>
                 <dt>
                     <select name="confstrs[sTransactionRedirectLogging]">
@@ -951,6 +952,31 @@
                 </dd>
                 <div class="spacer"></div>
             </dl>
+            <dl>
+                <dt>
+                    <select name="confstrs[sTransactionRedirectMethod]">
+                        <option value="direct" [{if $confstrs.sTransactionRedirectMethod == "direct"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_TRANSACTIONREDIRECTMETHOD_DIRECT"}]</option>
+                        <option value="cronjob" [{if $confstrs.sTransactionRedirectMethod == "cronjob"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_TRANSACTIONREDIRECTMETHOD_CRONJOB"}]</option>
+                    </select>
+                    [{oxinputhelp ident="FCPO_HELP_TRANSACTIONREDIRECTMETHOD"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_TRANSACTIONREDIRECTMETHOD"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+            [{if $confstrs.sTransactionRedirectMethod != "cronjob"}]
+                <dl>
+                    <dt>
+                        <input type="text" class="txt" name="confstrs[sTransactionRedirectTimeout]" value="[{$confstrs.sTransactionRedirectTimeout}]" [{$readonly}]>
+                        [{oxinputhelp ident="FCPO_HELP_TRANSACTIONREDIRECT_TIMEOUT"}]
+                    </dt>
+                    <dd>
+                        [{oxmultilang ident="FCPO_TRANSACTIONREDIRECT_TIMEOUT"}]
+                    </dd>
+                    <div class="spacer"></div>
+                </dl>
+            [{/if}]
         </div>
     </div>
 

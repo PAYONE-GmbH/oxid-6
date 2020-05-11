@@ -36,7 +36,7 @@
                         <input autocomplete="off" type="text" size="5" name="editval[[{$oForwarding->sOxid}]][iForwardingTimeout]" value="[{$oForwarding->iForwardingTimeout}]">
                     </td>
                     <td>
-                        <input value="X [{ oxmultilang ident="fcpo_admin_config_delete" }]" name="editval[[{$oForwarding->sOxid}]][delete]" onclick="if(!confirm('[{ oxmultilang ident="fcpo_admin_config_delete_confirm" }]')) {return false;}" type="submit">
+                        <input value="X [{oxmultilang ident="fcpo_admin_config_delete"}]" name="editval[[{$oForwarding->sOxid}]][delete]" onclick="if(!confirm('[{ oxmultilang ident="fcpo_admin_config_delete_confirm" }]')) {return false;}" type="submit">
                     </td>
                 </tr>
             [{/foreach}]

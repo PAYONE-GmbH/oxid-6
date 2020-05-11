@@ -157,7 +157,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
             'somePaymentId' => 'someProfile'
         );
 
-        $this->invokeSetAttribute($oTestObject, '_aRatePayBillProfileIds', $aMockProfileIds);
+        $this->invokeSetAttribute($oTestObject, '_aRatePayProfileIds', $aMockProfileIds);
         $this->assertEquals('someProfile', $oTestObject->fcpoGetRatePayMatchedProfile('somePaymentId'));
     }
 
@@ -1308,13 +1308,35 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
      */
     public function test__fcpoCheckRatePayProfileMatch_Coverage()
     {
-        $oTestObject = $this->getMock('fcPayOnePaymentView', array('fcpoGetBasketSum'));
-        $oTestObject->expects($this->any())->method('fcpoGetBasketSum')->will($this->returnValue(10));
+        $oTestObject = $this->getMock('fcPayOnePaymentView', array(
+            'fcpoGetBasketSum',
+            'fcGetBillCountry',
+            'getActCurrency'
+        ));
+
+        $oMockCur = new stdClass();
+        $oMockCur->name = "EUR";
+        $oMockCur->sign = "€";
+
+        $oTestObject
+            ->expects($this->any())
+            ->method('fcpoGetBasketSum')
+            ->will($this->returnValue(10));
+        $oTestObject
+            ->expects($this->any())
+            ->method('fcGetBillCountry')
+            ->will($this->returnValue('DE'));
+        $oTestObject
+            ->expects($this->any())
+            ->method('getActCurrency')
+            ->will($this->returnValue($oMockCur));
 
         $aMockData = array(
             'activation_status' => '2',
             'basketvalue_max' => 15,
             'basketvalue_min' => 5,
+            'country_code_billing' => 'DE',
+            'currency' => 'EUR',
         );
 
         $this->assertEquals(true, $oTestObject->_fcpoCheckRatePayProfileMatch($aMockData));

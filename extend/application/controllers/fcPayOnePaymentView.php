@@ -366,9 +366,12 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     public function fcpoShowKlarnaCombined($sPaymentId)
     {
         $blIsKlarnaCombined = $this->fcpoIsKlarnaCombined($sPaymentId);
-
+        $blIsCountryAllowedForKlarna = $this->_fcpoIsCountryAllowedForKlarna();
+        $blIsCurrencyAllowedForKlarna = $this->_fcpoIsCurrencyAllowedForKlarna();
         if (
             $blIsKlarnaCombined &&
+            $blIsCountryAllowedForKlarna &&
+            $blIsCurrencyAllowedForKlarna &&
             $this->_blKlarnaCombinedIsPresent === false
         ) {
             $this->_blKlarnaCombinedIsPresent = true;
@@ -927,6 +930,44 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     public function fcpoGetInstallments() 
     {
         return $this->_aInstallmentCalculation;
+    }
+
+    /**
+     * Checks if the active currency is allowed to pay with klarna.
+     *
+     * @return bool
+     */
+    protected function _fcpoIsCurrencyAllowedForKlarna()
+    {
+        $oConfig = $this->_oFcpoHelper->getConfig();
+        $oActCurrency = $oConfig->getActShopCurrencyObject();
+        return (
+        in_array($oActCurrency->name, array(
+            'EUR',
+            'DKK',
+            'NOK',
+            'SEK',
+            'CHF',
+        ))
+        );
+    }
+
+    /**
+     * Checks if the country is allowed to pay with klarna.
+     *
+     * @return bool
+     */
+    protected function _fcpoIsCountryAllowedForKlarna()
+    {
+        $oConfig = $this->_oFcpoHelper->getCoun();
+        $oActCountry = $oConfig->getShopCurrency();
+        return (
+        in_array($oConfig->getActShopCurrencyObject(), array(
+            'fcpoklarna_invoice',
+            'fcpoklarna_directdebit',
+            'fcpoklarna_installments',
+        ))
+        );
     }
 
     /**

@@ -20,9 +20,7 @@ window.klarnaAsyncCallback = function () {
                 given_name: klarnaData.billing.given_name,
                 family_name: klarnaData.billing.family_name,
                 email: klarnaData.billing.email,
-                title: klarnaData.billing.title,
                 street_address: klarnaData.billing.street_address,
-                street_address2: klarnaData.billing.street_address2,
                 postal_code: klarnaData.billing.postal_code,
                 city: klarnaData.billing.city,
                 region: TODO,
@@ -33,9 +31,7 @@ window.klarnaAsyncCallback = function () {
                 given_name: klarnaData.shipping.given_name,
                 family_name: klarnaData.shipping.family_name,
                 email: klarnaData.shipping.email,
-                title: klarnaData.shipping.title,
                 street_address: klarnaData.shipping.street_address,
-                street_address2: klarnaData.shipping.street_address2,
                 postal_code: klarnaData.shipping.postal_code,
                 city: klarnaData.shipping.city,
                 region: TODO,
@@ -46,7 +42,7 @@ window.klarnaAsyncCallback = function () {
             order_tax_amount: klarnaBasket.order_tax_amount,
             orderlines: %%KLARNA_ORDERLINES%%,
             customer: {
-                date_of_birth: klarnaData.customer.date_of_birth,
+                national_identification_number: TODO,
                 gender: klarnaData.customer.gender
             }
         }, function (res) {

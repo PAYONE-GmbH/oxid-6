@@ -247,6 +247,7 @@ class fcpayone_ajax extends oxBase
                 'street_address2' => $oUser->oxuser__oxaddinfo->value,
                 'postal_code' => $oUser->oxuser__oxzip->value,
                 'city' => $oUser->oxuser__oxcity->value,
+                'region' => $oUser->getStateTitle(),
                 'phone' => $oUser->oxuser__oxfon->value,
                 'country' => $oUser->fcpoGetUserCountryIso(),
             ),
@@ -263,12 +264,15 @@ class fcpayone_ajax extends oxBase
                     'street_address2' => $oShippingAddress->oxaddress__oxaddinfo->value,
                     'postal_code' => $oShippingAddress->oxaddress__oxzip->value,
                     'city' => $oShippingAddress->oxaddress__oxcity->value,
+                    'region' => $oUser->getStateTitle(),
                     'phone' => $oShippingAddress->oxaddress__oxfon->value,
                     'country' => $oShippingAddress->fcpoGetUserCountryIso(),
                 ),
             );
         } else {
-            $aKlarnaShippingData = array('shipping'=>$aKlarnaData['billing']);
+            $aKlarnaShippingData = array(
+                'shipping' => $aKlarnaData['billing']
+            );
         }
 
         $aKlarnaCustomer = array(

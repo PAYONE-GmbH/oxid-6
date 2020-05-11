@@ -361,15 +361,27 @@ class Unit_fcPayOne_Application_Models_fcpayone_ajax extends OxidTestCase
     public function test_fcpoTriggerInstallmentCalculation_Coverage() 
     {
         $oTestObject = oxNew('fcpayone_ajax');
-        $oMockPayment = $this->getMock('payment', array('fcpoPerformInstallmentCalculation', 'fcpoGetInstallments'));
-        $oMockPayment->expects($this->any())->method('fcpoPerformInstallmentCalculation')->will($this->returnValue(null));
-        $oMockPayment->expects($this->any())->method('fcpoGetInstallments')->will($this->returnValue(array('someResult')));
+        $oMockPayment = $this->getMock('payment', array(
+            'fcpoPerformInstallmentCalculation',
+            'fcpoGetInstallments'
+        ));
+        $oMockPayment
+            ->expects($this->any())
+            ->method('fcpoPerformInstallmentCalculation')
+            ->will($this->returnValue(null));
+        $oMockPayment
+            ->expects($this->any())
+            ->method('fcpoGetInstallments')
+            ->will($this->returnValue(array('someResult')));
 
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
-        $oHelper->expects($this->any())->method('getFactoryObject')->will($this->returnValue($oMockPayment));
+        $oHelper
+            ->expects($this->any())
+            ->method('getFactoryObject')
+            ->will($this->returnValue($oMockPayment));
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
 
-        $this->assertEquals(array('someResult'), $oTestObject->fcpoTriggerInstallmentCalculation());
+        $this->assertEquals(array('someResult'), $oTestObject->fcpoTriggerInstallmentCalculation('somePaymentId'));
     }
 
     /**

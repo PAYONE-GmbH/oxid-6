@@ -357,9 +357,15 @@ class fcpayone_ajax extends oxBase
     protected function _fcpoGetKlarnaWidgetPath()
     {
         $oViewConf = $this->_oFcpoHelper->getFactoryObject('oxviewconfig');
+        $oSession = $this->_oFcpoHelper->fcpoGetSession();
+        $oBasket = $oSession->getBasket();
+        $oUser = $oBasket->getUser();
+        $sCountryIso2 = $oUser->fcpoGetUserCountryIso();
+
+        $sFileName = "fcpoKlarnaWidget_".$sCountryIso2.".txt";
 
         $sPath =
-            $oViewConf->getModulePath('fcpayone') . '/out/snippets/fcpoKlarnaWidget.txt';
+            $oViewConf->getModulePath('fcpayone') . '/out/snippets/'.$sFileName;
 
         return $sPath;
     }

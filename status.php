@@ -65,88 +65,11 @@ if(array_search($sRemoteIp, $aWhitelist) === false) {
 }
 
 include_once dirname(__FILE__) . "/../../../bootstrap.php";
+include_once dirname(__FILE__) . "/statusbase.php";
 
-class fcPayOneTransactionStatusHandler extends oxBase
+class fcPayOneTransactionStatusHandler extends fcPayOneTransactionStatusBase
 {
-
-    protected $_aShopList = null;
-
-    protected $_sLogFile = 'log/fcpo_message_forwarding.log';
-
-    
-    /**
-     * Check and return post parameter
-     * 
-     * @param  string $sKey
-     * @return string
-     */
-    public function fcGetPostParam( $sKey ) 
-    {
-        $sReturn    = '';
-        $mValue     = filter_input(INPUT_GET, $sKey, FILTER_SANITIZE_SPECIAL_CHARS);
-        if (!$mValue) {
-            $mValue = filter_input(INPUT_POST, $sKey, FILTER_SANITIZE_SPECIAL_CHARS);
-        }
-        if ($mValue ) {
-            if($this->getConfig()->isUtf() ) {
-                $mValue = utf8_encode($mValue);
-            }
-            $sReturn = $mValue;
-        }
-        
-        return $sReturn;
-    }
-    
-    protected function _getShopList() 
-    {
-        if($this->_aShopList === null) {
-            $aShops = array();
-            
-            $sQuery = "SELECT oxid FROM oxshops";
-            $aRows = oxDb::getDb()->getAll($sQuery);
-
-            foreach ($aRows as $aRow) {
-                $aShops[] = $aRow[0];
-            }
-
-            $this->_aShopList = $aShops;
-        }
-        return $this->_aShopList;
-    }
-    
-    protected function _getConfigParams($sParam) 
-    {
-        $aShops = $this->_getShopList();
-        $aParams = array();
-        foreach ($aShops as $sShop) {
-            $mValue = $this->getConfig()->getShopConfVar($sParam, $sShop);
-            if($mValue) {
-                $aParams[$sShop] = $mValue;
-            }
-        }
-
-        return $aParams;
-    }
-    
-    protected function _isKeyValid() 
-    {
-        $sKey = $this->fcGetPostParam('key');
-        if($sKey) {
-            $aKeys = array_merge(
-                array_values($this->_getConfigParams('sFCPOPortalKey')),
-                array_values($this->_getConfigParams('sFCPOSecinvoicePortalKey')) // OXID-228: Check also SecInvoice key
-            );
-
-            foreach ($aKeys as $i => $sConfigKey) {
-                if(md5($sConfigKey) == $sKey) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    
-    protected function _getOrderNr() 
+    protected function _getOrderNr()
     {
         $oDb = oxDb::getDb();
         $sTxid = $this->fcGetPostParam('txid');
@@ -160,17 +83,27 @@ class fcPayOneTransactionStatusHandler extends oxBase
                 fcpotxid = ". $oDb->quote($sTxid) ."
             LIMIT 1
         ";
+
         $iOrderNr = (int) $oDb->GetOne($sQuery);
 
         return $iOrderNr;
     }
-    
+
+    /**
+     * Log incoming entry and return its ID
+     *
+     * @return mixed
+     * @throws Exception
+     */
     public function log() 
     {
+        $oUtilsObject = $this->_getUtilsObject();
+        $sOxid = $oUtilsObject->generateUId();
         $iOrderNr = $this->_getOrderNr();
 
         $sQuery = "
             INSERT INTO fcpotransactionstatus (
+                OXID,
                 FCPO_ORDERNR,
                 FCPO_KEY,
                 FCPO_TXACTION,
@@ -224,6 +157,7 @@ class fcPayOneTransactionStatusHandler extends oxBase
                 FCPO_CLEARING_REFERENCE,
                 FCPO_CLEARING_INSTRUCTIONNOTE
             ) VALUES (
+                '{$sOxid}',
                 '{$iOrderNr}',
                 '".$this->fcGetPostParam('key')."',
                 '".$this->fcGetPostParam('txaction')."',
@@ -277,37 +211,63 @@ class fcPayOneTransactionStatusHandler extends oxBase
                 '".$this->fcGetPostParam('clearing_reference')."',
                 '".$this->fcGetPostParam('clearing_instructionnote')."'
             )";
-        oxDb::getDb()->Execute($sQuery);
+
+        try {
+            oxDb::getDb()->Execute($sQuery);
+        } catch (Exception $e) {
+            throw $e;
+        }
+
+        return $sOxid;
     }
     
-    protected function _addParam($sKey, $mValue) 
-    {
-        $sParams = '';
-        if(is_array($mValue)) {
-            foreach ($mValue as $sKey2 => $mValue2) {
-                $sParams .= $this->_addParam($sKey.'['.$sKey2.']', $mValue2);
-            }
-        } else {
-            $sParams .= "&".$sKey."=".urlencode($mValue);
+    /**
+     * Handling configured forwarding of statusmessage to other endpoints
+     *
+     * @param $sStatusmessageId
+     * @return void
+     * @throws
+     */
+    protected function _handleForwarding($sStatusmessageId) {
+        $this->_logForwardMessage('Handle forwarding for statusmessage id: '.$sStatusmessageId);
+        try {
+            $this->_addQueueEntries($sStatusmessageId);
+        } catch (Exception $e) {
+            throw $e;
         }
-        return $sParams;
+
+        $oConfig = $this->getConfig();
+        $sTransactionForwardMethod =
+            $oConfig->getConfigParam('sTransactionRedirectMethod');
+
+        if ($sTransactionForwardMethod != 'cronjob') {
+            $this->_directRedirect($sStatusmessageId);
+        }
     }
 
-    protected function _handleForwarding() {
+    /**
+     * Method directly redirects to statusforwardcontroller
+     *
+     * @param void
+     * @return void
+     */
+    protected function _directRedirect($sStatusmessageId)
+    {
+        $sKey = $this->fcGetPostParam('key');
         $sParams = '';
-        foreach($_POST as $sKey => $mValue) {
-            $sParams .= $this->_addParam($sKey, $mValue);
-        }
+        $sParams .= $this->_addParam('key', $sKey);
+        $sParams .= $this->_addParam('statusmessageid', $sStatusmessageId);
 
         $oConfig = $this->getConfig();
         $sShopUrl = $oConfig->getShopUrl();
         $sSslShopUrl = $oConfig->getSslShopUrl();
-
+        $sConfTimeout = $oConfig->getConfigParam('sTransactionRedirectTimeout');
+        $iTimeout = ($sConfTimeout) ? (int) $sConfTimeout : 100;
         $sParams = substr($sParams,1);
         $sBaseUrl = (empty($sSslShopUrl)) ? $sShopUrl : $sSslShopUrl;
 
         $sForwarderUrl = $sBaseUrl . 'modules/fc/fcpayone/statusforward.php';
-        $this->_logForwardMessage('Forward transaction message to own controller:'.$sForwarderUrl.'...');
+        $this->_logForwardMessage('Forward transaction id to own controller:'.$sForwarderUrl.'...');
 
         $oCurl = curl_init($sForwarderUrl);
         curl_setopt($oCurl, CURLOPT_POST, 1);
@@ -317,84 +277,134 @@ class fcPayOneTransactionStatusHandler extends oxBase
         curl_setopt($oCurl, CURLOPT_SSL_VERIFYHOST, false);
 
         curl_setopt($oCurl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($oCurl, CURLOPT_TIMEOUT_MS, 100);
+        curl_setopt($oCurl, CURLOPT_TIMEOUT_MS, $iTimeout);
 
         curl_exec($oCurl);
         $aResult = curl_getinfo($oCurl);
         $this->_logForwardMessage('Triggered forward! Result: '.print_r($aResult, true));
 
         curl_close($oCurl);
+
     }
 
     /**
-     * Logs given message if logging is activated
-     *
-     * @param $sMessage
-     * @return void
-     */
-    protected function _logForwardMessage($sMessage)
-    {
-        $blLoggingAllowed = $this->_fcCheckLoggingAllowed();
-        if (!$blLoggingAllowed) return;
-
-        $sBasePath = dirname(__FILE__) . "/../../../";
-        $sLogFilePath = $sBasePath.$this->_sLogFile;
-        $sPrefix = "[".date('Y-m-d H:i:s')."] ";
-        $sFullMessage = $sPrefix.$sMessage."\n";
-
-        $oLogFile = fopen($sLogFilePath, 'a');
-        fwrite($oLogFile, $sFullMessage);
-        fclose($oLogFile);
-    }
-
-    /**
-     * Check if logging is activated by configuration
+     * Handles shop order status folder by configured mapping
+     * (e. g. PENDING to NEW)
      *
      * @param void
-     * @return bool
+     * @return void
+     * @throws
      */
-    protected function _fcCheckLoggingAllowed()
+    protected function _handleMapping()
     {
-        $oConfig = $this->getConfig();
-        $sLogMethod =
-            $oConfig->getConfigParam('sTransactionRedirectLogging');
-
-        $blLoggingAllowed = $sLogMethod == 'all';
-
-        return $blLoggingAllowed;
-    }
-
-    protected function _handleMapping($oOrder) 
-    {
+        $sTxid = $this->fcGetPostParam('txid');
         $sPayoneStatus = $this->fcGetPostParam('txaction');
-        $sPaymentId = oxDb::getDb()->quote($oOrder->oxorder__oxpaymenttype->value);
+        $blCheckMapping = ($sTxid && $sPayoneStatus);
+        if (!$blCheckMapping) {
+            return;
+        }
+
+        $oDb = oxDb::getDb();
+        $oOrder = $this->_getOrder($sTxid);
+        $sPaymentId = $oDb->quote($oOrder->oxorder__oxpaymenttype->value);
         
-        $sQuery = "SELECT fcpo_folder FROM fcpostatusmapping WHERE fcpo_payonestatus = '{$sPayoneStatus}' AND fcpo_paymentid = {$sPaymentId} ORDER BY oxid ASC LIMIT 1";
-        $sFolder = oxDb::getDb()->GetOne($sQuery);
-        if(!empty($sFolder)) {
-            $sQuery = "UPDATE oxorder SET oxfolder = '{$sFolder}' WHERE oxid = '{$oOrder->getId()}'";
-            oxDb::getDb()->Execute($sQuery);
+        $sQuery = "
+            SELECT fcpo_folder 
+            FROM fcpostatusmapping 
+            WHERE 
+                  fcpo_payonestatus = '{$sPayoneStatus}' AND 
+                  fcpo_paymentid = {$sPaymentId} 
+            ORDER BY oxid ASC 
+            LIMIT 1
+        ";
+        $sFolder = $oDb->GetOne($sQuery);
+        if(empty($sFolder)) {
+           return;
+        }
+
+        try {
+            $sQuery = "
+                UPDATE oxorder 
+                SET oxfolder = '{$sFolder}' 
+                WHERE oxid = '{$oOrder->getId()}'
+            ";
+            $oDb->Execute($sQuery);
+        } catch (Exception $e) {
+            throw $e;
         }
     }
-    
+
+    /**
+     * Central point for handling an incoming status message call
+     *
+     * @param void
+     * @return void
+     */
     public function handle() 
     {
-        if($this->_isKeyValid()) {
-            $this->log();
-            $sTxid = $this->fcGetPostParam('txid');
-            $sOrderId = oxDb::getDb()->GetOne("SELECT oxid FROM oxorder WHERE fcpotxid = '".$sTxid."'");
-            if($sOrderId) {
-                $oOrder = oxNew('oxorder');
-                $oOrder->load($sOrderId);
-                if($this->_allowDebit($sTxid)) {
-                    $query = "UPDATE oxorder SET oxpaid = NOW() WHERE oxid = '{$sOrderId}'";
-                    oxDb::getDb()->Execute($query);
-                }
-                if($this->fcGetPostParam('txaction') == 'paid') {
-                    $oLang = oxNew('oxLang');
-                    $sReplacement = $oLang->translateString('FCPO_REMARK_APPOINTED_MISSING');
+        try {
+            $this->_isKeyValid();
+            $sStatusmessageId = $this->log();
+            $this->_allowDebit();
+            $this->_handlePaid();
+            $this->_handleMapping();
+            $this->_handleForwarding($sStatusmessageId);
 
-                    $query = "
+            echo 'TSOK';
+        } catch (Exception $e) {
+            echo "Error occured! Please check logfile for details.";
+            $this->_logException($e->getMessage());
+            return;
+        }
+    }
+
+    /**
+     * Returns order by posted or given txid
+     *
+     * @param null $sTxid
+     * @return |null
+     */
+    protected function _getOrder($sTxid=null) {
+        if ($this->_oFcOrder === null) {
+            if ($sTxid === null) {
+                $sTxid = $this->fcGetPostParam('txid');
+            }
+
+            $oDb = oxDb::getDb();
+            $sQuery = "SELECT oxid FROM oxorder WHERE fcpotxid = '".$sTxid."'";
+            $sOrderId = $oDb->GetOne($sQuery);
+
+            $oOrder = oxNew('oxorder');
+            $oOrder->load($sOrderId);
+
+            $this->_oFcOrder = $oOrder;
+        }
+
+        return $this->_oFcOrder;
+
+    }
+
+    /**
+     * Check if paid signal has been posted and handle it
+     *
+     * @param void
+     * @return void
+     * @throws
+     */
+    protected function _handlePaid()
+    {
+        if($this->fcGetPostParam('txaction') != 'paid') {
+            return;
+        }
+
+        try {
+            $oOrder = $this->_getOrder();
+            $sOrderId = $oOrder->getId();
+            $oLang = oxNew('oxLang');
+
+            $sReplacement = $oLang->translateString('FCPO_REMARK_APPOINTED_MISSING');
+
+            $sQuery = "
                         UPDATE 
                             oxorder 
                         SET 
@@ -405,18 +415,14 @@ class fcPayOneTransactionStatusHandler extends oxBase
                             oxid = '{$sOrderId}' AND 
                             oxtransstatus IN ('INCOMPLETE', 'ERROR') AND 
                             oxfolder = 'ORDERFOLDER_PROBLEMS'
-                    ";
-                    oxDb::getDb()->Execute($query);
-                }
+            ";
 
-                $this->_handleMapping($oOrder);
-            }
-            $this->_handleForwarding();
-
-            echo 'TSOK';
-        } else {
-            echo 'Key wrong or missing!';
+            oxDb::getDb()->Execute($sQuery);
+        } catch (Exception $e) {
+            throw $e;
         }
+
+
     }
     
     /**
@@ -424,10 +430,13 @@ class fcPayOneTransactionStatusHandler extends oxBase
      * the debit request is available for this order at the moment.
      * 
      * @param  void
-     * @return bool
+     * @return void
+     * @throws
      */
-    protected function _allowDebit($sTxid) 
+    protected function _allowDebit()
     {
+        $sTxid = $this->fcGetPostParam('txid');
+
         $blReturn = false;
         $sAuthMode = oxDb::getDb()->GetOne("SELECT fcpoauthmode FROM oxorder WHERE fcpotxid = '".$sTxid."'");
         if ($sAuthMode == 'authorization') {
@@ -438,7 +447,20 @@ class fcPayOneTransactionStatusHandler extends oxBase
                 $blReturn = true;
             }
         }
-        return $blReturn;
+
+        if (!$blReturn) {
+            return;
+        }
+
+        $oOrder = $this->_getOrder();
+        $sOrderId = $oOrder->getId();
+        $sQuery = "UPDATE oxorder SET oxpaid = NOW() WHERE oxid = '{$sOrderId}'";
+        try {
+            oxDb::getDb()->Execute($sQuery);
+
+        } catch (Exception $e){
+            throw $e;
+        }
     }
     
 

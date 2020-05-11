@@ -187,7 +187,12 @@ $aLang = array(
 'FCPO_SECINVOICE_NO_COMPANY'                    => 'Not a company? Click <a href="index.php?cl=account_user" style="color:green;">here</a> for changing your address.',
 'FCPO_NOT_ADULT'                                => 'Due to your age you are not allowed to use this payment. Please select another payment method',
 'FCPO_BIRTHDATE_INVALID'                        => 'Your birthdate has been entered incorrect.',
-
+'FCPO_RATEPAY_AGREE'                            => '<p>Within the order process, we will be sending your data to RatePAY GmbH for the purpose of verifying your identity and creditworthiness as well as the performance of the contract. The <a href="//ratepay.com/legal/" title="Legal - RatePAY" target="_blank">Additional Terms and Conditions and Data Protection Notice of RatePAY GmbH</a> apply.</p>',
+'FCPO_RATEPAY_NOT_AGREED'                       => 'You did not agree to send your data to RatePAY.',
+'FCPO_RATEPAY_SEPA_NOT_AGREED'                  => 'You did not authorized RatePAY to collect payments from your account.',
+'FCPO_RATEPAY_SEPA_AGREE'                       => '<p>I hereby authorise RatePAY GmbH to collect payments from my account by direct debit. At the same time, I authorise my bank to debit my account in accordance with the instructions from RatePAY GmbH.</p><p>Note: As part of my rights, I am entitled to a refund from my ibank under the terms and conditions of my agreement with my bank.	A refund must be claimed within 8 weeks starting from the date on which my account was debited. My rights are explained in a statement that I can obtain from my bank.</p>',
+'FCPO_RATEPAY_ACCOUNTHOLDER'                    => 'Accountholder',
+'FCPO_RATEPAY_MANDATE_IDENTIFICATION'           => '<p>RatePAY GmbH, Franklinstraße 28-29, D-10587 Berlin, Germany<br> Creditor ID: DE39RPY00000568463<br> Mandate Reference: WILL BE COMMUNICATED SEPARATELY</p>',
 'FCPO_CC_HOSTED_ERROR_CARDTYPE'                 => 'Please select a cardtype',
 'FCPO_CC_HOSTED_ERROR_CVC'                      => 'Please check CVC',
 'FCPO_CC_HOSTED_ERROR_INCOMPLETE'               => 'Input incomplete',

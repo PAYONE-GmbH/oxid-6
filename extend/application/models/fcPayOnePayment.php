@@ -66,6 +66,7 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         'fcpo_ideal',
         'fcpo_p24',
         'fcpo_bancontact',
+        'fcporp_debitnote',
     );
     
     protected static $_aRedirectPayments = array(
@@ -86,6 +87,7 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         'fcpopo_bill',
         'fcpopo_debitnote',
         'fcporp_bill',
+        'fcporp_debitnote',
     );
 
     /**

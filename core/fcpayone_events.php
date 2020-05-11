@@ -379,6 +379,7 @@ class fcpayone_events
         'fcpo_ideal' => 'iDeal',
         'fcpo_p24' => 'P24',
         'fcpo_bancontact' => 'Bancontact',
+        'fcporp_debitnote' => 'Ratepay Lastschrift',
     );
 
     /**

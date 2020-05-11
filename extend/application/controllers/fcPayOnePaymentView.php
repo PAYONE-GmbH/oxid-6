@@ -106,11 +106,14 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     protected $_aAjaxPayolutionParams = array();
 
     /**
-     * Contains profile which matched for ratepay invoice payment
+     * Contains profile which matched for ratepay payment
      *
      * @var string
      */
-    protected $_aRatePayBillProfileIds = array('fcporp_bill' => null);
+    protected $_aRatePayProfileIds = array(
+        'fcporp_bill' => null,
+        'fcporp_debitnote' => null
+    );
 
     /**
      * List of countries that need a telephone number for payolution bill payment
@@ -216,7 +219,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      */
     public function fcpoGetRatePayMatchedProfile($sPaymentId) 
     {
-        return $this->_aRatePayBillProfileIds[$sPaymentId];
+        return $this->_aRatePayProfileIds[$sPaymentId];
     }
 
     /**
@@ -330,7 +333,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         }
 
         if ($blReturn === true) {
-            $this->_aRatePayBillProfileIds[$sPaymentId] = $aMatchingRatePayProfile['OXID'];
+            $this->_aRatePayProfileIds[$sPaymentId] = $aMatchingRatePayProfile['OXID'];
         }
 
         return $blReturn;
@@ -885,6 +888,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      * 
      * @param  string $sPaymentId
      * @return array
+     * @todo: The whole process of matching a profile should be moved into ratepay-model
      */
     protected function _fcpoGetMatchingProfile($sPaymentId) 
     {
@@ -900,11 +904,15 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
                 $dProfileBasketValueMax = (double) $aCurrentRatePayProfile[$sProfileBasketMaxIndex];
                 $dProfileBasketValueMin = (double) $aCurrentRatePayProfile[$sProfileBasketMinIndex];
                 $sProfileActivationStatus = $aCurrentRatePayProfile[$sProfileActivationStatusIndex];
+                $sProfileCountryBilling = $aCurrentRatePayProfile['country_code_billing'];
+                $sProfileCurrency = $aCurrentRatePayProfile['currency'];
 
                 $aRatepayMatchData = array(
                     'basketvalue_max' => $dProfileBasketValueMax,
                     'basketvalue_min' => $dProfileBasketValueMin,
                     'activation_status' => $sProfileActivationStatus,
+                    'country_code_billing' => $sProfileCountryBilling,
+                    'currency' => $sProfileCurrency,
                 );
 
                 $blProfileMatches = $this->_fcpoCheckRatePayProfileMatch($aRatepayMatchData);
@@ -926,16 +934,36 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      */
     protected function _fcpoCheckRatePayProfileMatch($aRatepayMatchData) 
     {
-        $blReturn = false;
-        if ($aRatepayMatchData['activation_status'] == '2') {
-            $dBasketValue = $this->fcpoGetBasketSum();
-
-            if ($dBasketValue <= $aRatepayMatchData['basketvalue_max'] && $dBasketValue >= $aRatepayMatchData['basketvalue_min']) {
-                $blReturn = true;
-            }
+        if ($aRatepayMatchData['activation_status'] != '2') {
+            return false;
         }
 
-        return $blReturn;
+        $dBasketValue = $this->fcpoGetBasketSum();
+        $blBasketValueMatches = (
+            $dBasketValue <= $aRatepayMatchData['basketvalue_max'] &&
+            $dBasketValue >= $aRatepayMatchData['basketvalue_min']
+        );
+        if (!$blBasketValueMatches) {
+            return false;
+        }
+
+        $sBillCountry = $this->fcGetBillCountry();
+        $blCountryMatches = (
+            $sBillCountry == $aRatepayMatchData['country_code_billing']
+        );
+        if (!$blCountryMatches) {
+            return false;
+        }
+
+        $oCur = $this->getActCurrency();
+        $blCurrencyMatches = (
+            $oCur->name == $aRatepayMatchData['currency']
+        );
+        if (!$blCurrencyMatches) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -948,6 +976,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     {
         $aMap = array(
             'fcporp_bill' => 'invoice',
+            'fcporp_debitnote' => 'elv',
         );
 
         $sReturn = '';
@@ -1319,7 +1348,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
             $this->_fcCleanupSessionFragments($oPayment);
 
             $mReturn = $this->_fcpoPayolutionPreCheck($mReturn, $sPaymentId);
-            if ($sPaymentId == 'fcporp_bill') {
+            if (in_array($sPaymentId, array('fcporp_bill', 'fcporp_debitnote'))) {
                 $mReturn = $this->_fcpoCheckRatePayBillMandatoryUserData($mReturn, $sPaymentId);
             }
             $mReturn = $this->_fcpoAdultCheck($mReturn, $sPaymentId);
@@ -1492,7 +1521,8 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $oLang = $this->_oFcpoHelper->fcpoGetLang();
-        // mayme user entered values, save them so maybe check will be ok
+        $aRequestedValues = $this->_oFcpoHelper->fcpoGetRequestParameter('dynvalue');
+
         $this->_fcpoRatePaySaveRequestedValues($sPaymentId);
         
         $blB2b2Mode = $oConfig->getConfigParam('blFCPORatePayB2BMode');
@@ -1514,6 +1544,26 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
                 $this->_oFcpoHelper->fcpoSetSessionVariable('payerror', -20);
                 $this->_oFcpoHelper->fcpoSetSessionVariable('payerrortext', $sMessage);
             }
+        }
+
+
+        $blSepaAndDataUsageAgreed = (
+            $sPaymentId != 'fcporp_debitnote' ||
+            (
+                $aRequestedValues['fcpo_ratepay_debitnote_agreed'] == 'agreed' &&
+                $aRequestedValues['fcpo_ratepay_debitnote_sepa_agreed'] == 'agreed'
+            )
+        );
+
+        if (!$blSepaAndDataUsageAgreed) {
+            $mReturn = false;
+            $sErrorTranslateString =
+                ($aRequestedValues['fcpo_ratepay_debitnote_sepa_agreed'] != 'agreed') ?
+                    'FCPO_RATEPAY_SEPA_NOT_AGREED' :
+                    'FCPO_RATEPAY_NOT_AGREED';
+            $sMessage = $oLang->translateString($sErrorTranslateString);
+            $this->_oFcpoHelper->fcpoSetSessionVariable('payerror', -20);
+            $this->_oFcpoHelper->fcpoSetSessionVariable('payerrortext', $sMessage);
         }
 
         return $mReturn;

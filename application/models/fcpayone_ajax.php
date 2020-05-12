@@ -243,7 +243,7 @@ class fcpayone_ajax extends oxBase
                 'family_name' => $oUser->oxuser__oxlname->value,
                 'email' => $oUser->oxuser__oxusername->value,
                 'title' => $oUser->oxuser__oxsal->value,
-                'street_address' => $oUser->oxuser__oxstreet->value." ".$oUser->oxuser__oxstreetnr->value,
+                'street_address' => $oUser->oxuser__oxstreet->value . " " . $oUser->oxuser__oxstreetnr->value,
                 'street_address2' => $oUser->oxuser__oxaddinfo->value,
                 'postal_code' => $oUser->oxuser__oxzip->value,
                 'city' => $oUser->oxuser__oxcity->value,
@@ -260,7 +260,7 @@ class fcpayone_ajax extends oxBase
                     'family_name' => $oShippingAddress->oxaddress__oxlname->value,
                     'email' => $oUser->oxuser__oxusername->value,
                     'title' => $oShippingAddress->oxaddress__oxsal->value,
-                    'street_address' => $oShippingAddress->oxaddress__oxstreet->value." ".$oShippingAddress->oxaddress__oxstreetnr->value,
+                    'street_address' => $oShippingAddress->oxaddress__oxstreet->value . " " . $oShippingAddress->oxaddress__oxstreetnr->value,
                     'street_address2' => $oShippingAddress->oxaddress__oxaddinfo->value,
                     'postal_code' => $oShippingAddress->oxaddress__oxzip->value,
                     'city' => $oShippingAddress->oxaddress__oxcity->value,
@@ -277,7 +277,7 @@ class fcpayone_ajax extends oxBase
 
         $aKlarnaCustomer = array(
             'customer' => array(
-                'date_of_birth' => $oUser->oxuser__oxbirthdate->value,
+                'date_of_birth' => ($oUser->oxuser__oxbirthdate->value === '0000-00-00') ? '' : $oUser->oxuser__oxbirthdate->value,
                 'gender' => $sGender,
             )
         );

@@ -8,7 +8,7 @@
         <input type="hidden" id="fcpo_klarna_auth_token" name="dynvalue[klarna_authorization_token]">
     </div>
     <dd class="[{if  $oView->fcpoIsKlarnaCombined($checkedPaymentId)}]activePayment[{/if}]">
-        <select id="klarna_payment_selector">
+        <select id="klarna_payment_selector" class="form-control selectpicker bs-select-hidden">
             [{if $oView->fcpoPaymentActive('fcpoklarna_installments')}]
                 <option value="fcpoklarna_installments" [{if $sPaymentID == 'fcpoklarna_installments'}]selected[{/if}]>Klarna Slice it</option>
             [{/if}]

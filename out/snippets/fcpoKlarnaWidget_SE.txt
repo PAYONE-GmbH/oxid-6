@@ -42,7 +42,6 @@ window.klarnaAsyncCallback = function () {
             order_tax_amount: klarnaBasket.order_tax_amount,
             orderlines: %%KLARNA_ORDERLINES%%,
             customer: {
-                national_identification_number: TODO,
                 gender: klarnaData.customer.gender
             }
         }, function (res) {

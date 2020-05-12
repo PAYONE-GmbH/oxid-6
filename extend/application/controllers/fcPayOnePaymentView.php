@@ -357,8 +357,9 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     }
 
     /**
-     * Method decides if certain paymentid is of newer klarna type and
-     * the combined widget already has been displayed
+     * Method decides if certain paymentid is of newer klarna type,
+     * the currency and country is supported and
+     * the combined widget already has been displayed.
      *
      * @param $sPaymentId
      * @return bool
@@ -366,12 +367,12 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     public function fcpoShowKlarnaCombined($sPaymentId)
     {
         $blIsKlarnaCombined = $this->fcpoIsKlarnaCombined($sPaymentId);
-        $blIsCountryAllowedForKlarna = $this->_fcpoIsCountryAllowedForKlarna();
-        $blIsCurrencyAllowedForKlarna = $this->_fcpoIsCurrencyAllowedForKlarna();
+        $blIsCountrySupportedFromKlarna = $this->_fcpoIsCountrySupportedFromKlarna();
+        $blIsCurrencySupportedFromKlarna = $this->_fcpoIsCurrencySupportedFromKlarna();
         if (
             $blIsKlarnaCombined &&
-            $blIsCountryAllowedForKlarna &&
-            $blIsCurrencyAllowedForKlarna &&
+            $blIsCountrySupportedFromKlarna &&
+            $blIsCurrencySupportedFromKlarna &&
             $this->_blKlarnaCombinedIsPresent === false
         ) {
             $this->_blKlarnaCombinedIsPresent = true;
@@ -933,40 +934,47 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     }
 
     /**
-     * Checks if the active currency is allowed to pay with klarna.
+     * Checks if klarna support the user's billing country for payments.
      *
      * @return bool
      */
-    protected function _fcpoIsCurrencyAllowedForKlarna()
+    protected function _fcpoIsCountrySupportedFromKlarna()
     {
-        $oConfig = $this->_oFcpoHelper->getConfig();
-        $oActCurrency = $oConfig->getActShopCurrencyObject();
+        $oSession = $this->_oFcpoHelper->fcpoGetSession();
+        $oBasket = $oSession->getBasket();
+        $oUser = $oBasket->getUser();
+
         return (
-        in_array($oActCurrency->name, array(
-            'EUR',
-            'DKK',
-            'NOK',
-            'SEK',
-            'CHF',
+        in_array($oUser->fcpoGetUserCountryIso(), array(
+            'AT',
+            'DK',
+            'FI',
+            'DE',
+            'NL',
+            'NO',
+            'SE',
+            'CH',
         ))
         );
     }
 
     /**
-     * Checks if the country is allowed to pay with klarna.
+     * Checks if klarna supports the active shop currency for payments.
      *
      * @return bool
      */
-    protected function _fcpoIsCountryAllowedForKlarna()
+    protected function _fcpoIsCurrencySupportedFromKlarna()
     {
-        $oConfig = $this->_oFcpoHelper->getCoun();
-        $oActCountry = $oConfig->getShopCurrency();
+        $oConfig = $this->_oFcpoHelper->getConfig();
+        $oActCurrency = $oConfig->getActShopCurrencyObject();
         return (
-        in_array($oConfig->getActShopCurrencyObject(), array(
-            'fcpoklarna_invoice',
-            'fcpoklarna_directdebit',
-            'fcpoklarna_installments',
-        ))
+            in_array($oActCurrency->name, array(
+                'EUR',
+                'DKK',
+                'NOK',
+                'SEK',
+                'CHF',
+            ))
         );
     }
 

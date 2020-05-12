@@ -25,7 +25,7 @@ window.klarnaAsyncCallback = function () {
                 street_address2: klarnaData.billing.street_address2,
                 postal_code: klarnaData.billing.postal_code,
                 city: klarnaData.billing.city,
-                region: TODO,
+                klarnaData.billing.region,
                 phone: klarnaData.billing.phone,
                 country: klarnaData.billing.country
             },
@@ -38,7 +38,7 @@ window.klarnaAsyncCallback = function () {
                 street_address2: klarnaData.shipping.street_address2,
                 postal_code: klarnaData.shipping.postal_code,
                 city: klarnaData.shipping.city,
-                region: TODO,
+                klarnaData.shipping.region,
                 phone: klarnaData.shipping.phone,
                 country: klarnaData.shipping.country
             },

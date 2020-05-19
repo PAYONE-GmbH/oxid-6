@@ -1291,12 +1291,14 @@ class fcpoRequest extends oxSuperCfg
 
         $sDeliveryCosts =
             $this->_fcpoFetchDeliveryCostsFromBasket($oBasket);
-        $dDelveryCosts = (double) str_replace(',', '.', $sDeliveryCosts);
-        $this->addParameter('it[' . (string) $iIndex . ']', 'shipment');
-        $this->addParameter('id[' . (string) $iIndex . ']', 'Standard Versand');
-        $this->addParameter('pr[' . (string) $iIndex . ']', $this->_fcpoGetCentPrice($dDelveryCosts));
-        $this->addParameter('no[' . (string) $iIndex . ']', '1');
-        $this->addParameter('de[' . (string) $iIndex . ']', 'Standard Versand');
+        $sDeliveryCosts = (double) str_replace(',', '.', $sDeliveryCosts);
+        if ($sDeliveryCosts > 0) {
+            $this->addParameter('it[' . (string) $iIndex . ']', 'shipment');
+            $this->addParameter('id[' . (string) $iIndex . ']', 'Standard Versand');
+            $this->addParameter('pr[' . (string) $iIndex . ']', $this->_fcpoGetCentPrice($sDeliveryCosts));
+            $this->addParameter('no[' . (string) $iIndex . ']', '1');
+            $this->addParameter('de[' . (string) $iIndex . ']', 'Standard Versand');
+        }
 
         return $oBasket;
     }
@@ -1311,8 +1313,8 @@ class fcpoRequest extends oxSuperCfg
     {
         $oDelivery = $oBasket->getCosts('oxdelivery');
         if ($oDelivery === null) return 0.0;
-        $sDeliveryCosts = $oDelivery->getBruttoPrice();
-        return $sDeliveryCosts;
+
+        return $oDelivery->getBruttoPrice();
     }
 
     /**

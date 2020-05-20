@@ -27,11 +27,14 @@ window.klarnaAsyncCallback = function () {
                 city: klarnaData.billing.city,
                 region: klarnaData.billing.region,
                 phone: klarnaData.billing.phone,
-                country: klarnaData.billing.country
+                country: klarnaData.billing.country,
+                organization_name: klarnaData.billing.organization_name
             },
             customer: {
                 date_of_birth: klarnaData.customer.date_of_birth,
-                gender: klarnaData.customer.gender
+                gender: klarnaData.customer.gender,
+                organization_entity_type: klarnaData.customer.organization_entity_type,
+                organization_registration_id: klarnaData.customer.organization_registration_id
             }
         }, function (res) {
             $("#fcpo_klarna_auth_token").val(res.authorization_token);

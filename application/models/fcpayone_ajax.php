@@ -250,6 +250,7 @@ class fcpayone_ajax extends oxBase
                 'region' => $oUser->getStateTitle(),
                 'phone' => $oUser->oxuser__oxfon->value,
                 'country' => $oUser->fcpoGetUserCountryIso(),
+                'organization_name' => $oUser->oxuser__oxcompany->value,
             ),
         );
 
@@ -267,6 +268,7 @@ class fcpayone_ajax extends oxBase
                     'region' => $oUser->getStateTitle(),
                     'phone' => $oShippingAddress->oxaddress__oxfon->value,
                     'country' => $oShippingAddress->fcpoGetUserCountryIso(),
+                    'organization_name' => $oUser->oxaddress__oxcompany->value,
                 ),
             );
         } else {
@@ -279,8 +281,14 @@ class fcpayone_ajax extends oxBase
             'customer' => array(
                 'date_of_birth' => ($oUser->oxuser__oxbirthdate->value === '0000-00-00') ? '' : $oUser->oxuser__oxbirthdate->value,
                 'gender' => $sGender,
+                'organization_entity_type' => '',
+                'organization_registration_id' => $oUser->oxuser__oxustid->value,
             )
         );
+
+        if ($oUser->oxuser__oxcompany->value) {
+            $aKlarnaCustomer['customer']['organization_entity_type'] = 'OTHER';
+        }
 
         $aKlarnaData = array_merge(
             $aKlarnaData,

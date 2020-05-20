@@ -419,6 +419,14 @@ class fcpoRequest extends oxSuperCfg
 
         $this->addKlarnaShippingParams($sPaymentId, $oOrder);
 
+        if ($oOrder->oxorder__oxbillcompany->value) {
+            $this->addParameter(
+                'add_paydata[organization_registry_id]',
+                $oOrder->oxorder__oxustid->value
+            );
+            $this->addParameter('add_paydata[organization_entity_type]', 'OTHER');
+        }
+
         return true;
     }
 
@@ -2114,7 +2122,7 @@ class fcpoRequest extends oxSuperCfg
 
         if ($oOrder) {
             $this->addParameter('add_paydata[shipping_title]', $oOrder->oxorder__oxdelsal->value);
-            $this->addParameter('add_paydata[shipping_telephonenumber]', $oOrder->oxorder__oxdelsal->value);
+            $this->addParameter('add_paydata[shipping_telephonenumber]', $oOrder->oxorder__oxdelfon->value);
             $this->addParameter('add_paydata[shipping_email]', $oOrder->oxorder__oxbillemail->value);
             return;
         }
@@ -2129,7 +2137,7 @@ class fcpoRequest extends oxSuperCfg
         $oBasket = $oSession->getBasket();
         $oUser = $oBasket->getUser();
         $this->addParameter('add_paydata[shipping_title]', $oAddress->oxaddress__oxsal->value);
-        $this->addParameter('add_paydata[shipping_telephonenumber]', $oAddress->oxaddress__oxsal->value);
+        $this->addParameter('add_paydata[shipping_telephonenumber]', $oAddress->oxaddress__oxfon->value);
         $this->addParameter('add_paydata[shipping_email]', $oUser->oxuser__oxusername->value);
     }
 
@@ -2444,6 +2452,8 @@ class fcpoRequest extends oxSuperCfg
 
         if ($oUser->oxuser__oxcompany->value != '') {
             $this->addParameter('company', $oUser->oxuser__oxcompany->value);
+            $this->addParameter('add_paydata[organization_entity_type]', 'OTHER');
+            $this->addParameter('add_paydata[organization_registry_id]', $oUser->oxuser__oxustid->value);
         }
         $this->addParameter('street', trim($oUser->oxuser__oxstreet->value . ' ' . $oUser->oxuser__oxstreetnr->value));
         $this->addParameter('zip', $oUser->oxuser__oxzip->value);

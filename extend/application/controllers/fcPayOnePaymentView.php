@@ -648,11 +648,10 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     public function fcGetLangId() 
     {
         $oLang = $this->_oFcpoHelper->fcpoGetLang();
-        $iLang = ( $iLang === null && isAdmin() ) ? $oLang->getTplLanguage() : $iLang;
-        if (!isset($iLang)) {
-            $iLang = $oLang->getBaseLanguage();
+        if (!$oLang) {
+            return 0;
         }
-        return $iLang;
+        return (int)$oLang->getTplLanguage();
     }
 
     /**

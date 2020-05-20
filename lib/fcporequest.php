@@ -2121,9 +2121,6 @@ class fcpoRequest extends oxSuperCfg
         }
 
         if ($oOrder) {
-            $this->addParameter('add_paydata[shipping_title]', $oOrder->oxorder__oxdelsal->value);
-            $this->addParameter('add_paydata[shipping_telephonenumber]', $oOrder->oxorder__oxdelfon->value);
-            $this->addParameter('add_paydata[shipping_email]', $oOrder->oxorder__oxbillemail->value);
             return;
         }
 
@@ -2132,13 +2129,6 @@ class fcpoRequest extends oxSuperCfg
         if (!$oAddress->load($sDelAddressId)) {
             return;
         }
-
-        $oSession = $this->_oFcpoHelper->fcpoGetSession();
-        $oBasket = $oSession->getBasket();
-        $oUser = $oBasket->getUser();
-        $this->addParameter('add_paydata[shipping_title]', $oAddress->oxaddress__oxsal->value);
-        $this->addParameter('add_paydata[shipping_telephonenumber]', $oAddress->oxaddress__oxfon->value);
-        $this->addParameter('add_paydata[shipping_email]', $oUser->oxuser__oxusername->value);
     }
 
     /**

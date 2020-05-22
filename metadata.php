@@ -98,6 +98,7 @@ $aModule = array(
         // libs
         'fcpohelper'                        => 'fc/fcpayone/lib/fcpohelper.php',
         'fcporequest'                       => 'fc/fcpayone/lib/fcporequest.php',
+        'fcpoparamsparser'                  => 'fc/fcpayone/lib/fcpoparamsparser.php',
         // core
         'fcpayone_events'                   => 'fc/fcpayone/core/fcpayone_events.php',
     ),

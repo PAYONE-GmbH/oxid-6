@@ -417,7 +417,7 @@ class fcpoRequest extends oxSuperCfg
         $this->addParameter('clearingtype', 'fnc');
         $this->addParameter('financingtype', $this->_fcpoGetKlarnaFinancingType($sPaymentId));
 
-        $this->addKlarnaShippingParams($sPaymentId, $oOrder);
+        $this->addKlarnaShippingParams($oOrder);
 
         if ($oOrder->oxorder__oxbillcompany->value) {
             $this->addParameter(
@@ -2077,16 +2077,13 @@ class fcpoRequest extends oxSuperCfg
 
         $oDelCountry = $this->_oFcpoHelper->getFactoryObject('oxcountry');
         $oDelCountry->load($oAddress->oxorder__oxcountryid->value);
-
         $this->addParameter('shipping_firstname', $oAddress->oxaddress__oxfname->value);
         $this->addParameter('shipping_lastname', $oAddress->oxaddress__oxlname->value);
+        # TODO: may be the reason why doesnt work
         if ($oAddress->oxaddress__oxcompany->value) {
             $this->addParameter('shipping_company', $oAddress->oxaddress__oxcompany->value);
         }
         $this->addParameter('shipping_street', trim($oAddress->oxaddress__oxstreet->value . ' ' . $oAddress->oxaddress__oxstreetnr->value));
-        if ($oAddress->oxaddress__oxaddinfo->value) {
-            $this->addParameter('shipping_addressaddition', $oAddress->oxaddress__oxaddinfo->value);
-        }
         $this->addParameter('shipping_zip', $oAddress->oxaddress__oxzip->value);
         $this->addParameter('shipping_city', $oAddress->oxaddress__oxcity->value);
         $this->addParameter('shipping_country', $oDelCountry->oxcountry__oxisoalpha2->value);
@@ -2097,38 +2094,25 @@ class fcpoRequest extends oxSuperCfg
             );
         }
 
-        $this->addKlarnaShippingParams($sPaymentId);
+        $oSession = $this->_oFcpoHelper->fcpoGetSession();
+        $oBasket = $oSession->getBasket();
+        $oUser = $oBasket->getUser();
+        $this->addParameter('add_paydata[shipping_title]', $oAddress->oxaddress__oxsal->value);
+        $this->addParameter('add_paydata[shipping_telephonenumber]', $oAddress->oxaddress__oxfon->value);
+        $this->addParameter('add_paydata[shipping_email]', $oUser->oxuser__oxusername->value);
     }
 
     /**
      * Adding special klarna shipping params
      *
-     * @param string $sPaymentId
      * @param object $oOrder
      */
-    public function addKlarnaShippingParams($sPaymentId, $oOrder=null)
+    public function addKlarnaShippingParams($oOrder)
     {
-        $blIsKlarna = in_array(
-            (string)$sPaymentId,
-            array(
-                'fcpoklarna_invoice',
-                'fcpoklarna_directdebit',
-                'fcpoklarna_installments'
-            )
-        );
-        if(!$blIsKlarna) {
-            return;
-        }
-
-        if ($oOrder) {
-            return;
-        }
-
-        $sDelAddressId = $this->_oFcpoHelper->fcpoGetSessionVariable('deladrid');
-        $oAddress = $this->_oFcpoHelper->getFactoryObject('oxAddress');
-        if (!$oAddress->load($sDelAddressId)) {
-            return;
-        }
+        $this->addParameter('add_paydata[shipping_title]', $oOrder->oxorder__oxdelsal->value);
+        $this->addParameter('add_paydata[shipping_telephonenumber]', $oOrder->oxorder__oxdelfon->value);
+        $this->addParameter('add_paydata[shipping_email]', $oOrder->oxorder__oxbillemail->value);
+        $this->removeParameter('shipping_addressaddition');
     }
 
     /**

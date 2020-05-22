@@ -358,7 +358,6 @@ class fcpayone_events
         'fcpodebitnote' => 'Bankeinzug/Lastschrift',
         'fcpocashondel' => 'Nachnahme',
         'fcpocreditcard' => 'Kreditkarte',
-        'fcpoonlineueberweisung' => 'Online-Ueberweisung',
         'fcpopaypal' => 'PayPal',
         'fcpopaypal_express' => 'PayPal Express',
         'fcpoklarna' => 'Klarna Rechnung',

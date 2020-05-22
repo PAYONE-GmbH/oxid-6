@@ -270,49 +270,6 @@ function getCleanedNumberIBAN(sDirtyNumber) {
     return sCleanedNumber;
 }
 
-function checkOnlineUeberweisung() {
-    resetErrorContainers();
-    var oForm = getPaymentForm();
-    var fcpoSofoShowIban = $('#fcpoSofoShowIban').val();
-    if((oForm['dynvalue[fcpo_sotype]'].value == 'PNT' || oForm['dynvalue[fcpo_sotype]'].value == 'GPY') && fcpoSofoShowIban == 'true') {
-        if(oForm['dynvalue[fcpo_sotype]'].value == 'PNT' && oForm.fcpo_bill_country.value != 'DE' && oForm.fcpo_bill_country.value != 'AT' && oForm.fcpo_bill_country.value != 'CH' && oForm.fcpo_bill_country.value != 'NL') {
-            document.getElementById('fcpo_ou_error_content').innerHTML = 'Zahlart ist nur in Deutschland, &Ouml;sterreich, Niederlande und der Schweiz verf&uuml;gbar.';
-            document.getElementById('fcpo_ou_error').style.display = 'block';
-            return false;
-        }
-        if(oForm['dynvalue[fcpo_sotype]'].value == 'GPY' && oForm.fcpo_bill_country.value != 'DE') {
-            document.getElementById('fcpo_ou_error_content').innerHTML = 'Zahlart ist nur in Deutschland verf&uuml;gbar.';
-            document.getElementById('fcpo_ou_error').style.display = 'block';
-            return false;
-        }
-        if(oForm['dynvalue[fcpo_sotype]'].value == 'PNT' && oForm.fcpo_bill_country.value == 'CH' && oForm.fcpo_currency.value == 'CHF') {
-            oForm['dynvalue[fcpo_ou_blz]'].value = getCleanedNumber(oForm['dynvalue[fcpo_ou_blz]'].value);
-            if(oForm['dynvalue[fcpo_ou_blz]'].value == '' || oForm['dynvalue[fcpo_ou_blz]'].value.length != 8) {
-                document.getElementById('fcpo_ou_blz_invalid').style.display = 'block';
-                return false;
-            }
-            oForm['dynvalue[fcpo_ou_ktonr]'].value = getCleanedNumber(oForm['dynvalue[fcpo_ou_ktonr]'].value);
-            if(oForm['dynvalue[fcpo_ou_ktonr]'].value == '') {
-                document.getElementById('fcpo_ou_ktonr_invalid').style.display = 'block';
-                return false;
-            }
-        } else {
-            oForm['dynvalue[fcpo_ou_iban]'].value = getCleanedNumberIBAN(oForm['dynvalue[fcpo_ou_iban]'].value);
-            if(oForm['dynvalue[fcpo_ou_iban]'].value == '' || oForm['dynvalue[fcpo_ou_iban]'].value.length > 34) {
-                document.getElementById('fcpo_ou_iban_invalid').style.display = 'block';
-                return false;
-            }
-
-            oForm['dynvalue[fcpo_ou_bic]'].value = getCleanedNumberIBAN(oForm['dynvalue[fcpo_ou_bic]'].value);
-            if(oForm['dynvalue[fcpo_ou_bic]'].value == '' || oForm['dynvalue[fcpo_ou_bic]'].value.length > 11) {
-                document.getElementById('fcpo_ou_bic_invalid').style.display = 'block';
-                return false;
-            }
-        }
-    }
-    return true;
-}
-
 function checkKlarna() {
     resetErrorContainers();
     var oForm = getPaymentForm();
@@ -487,8 +444,6 @@ function fcCheckPaymentSelection() {
             return startCCRequest();
         } else if(sCheckedValue == 'fcpodebitnote') {
             return startELVRequest(true);
-        } else if(sCheckedValue == 'fcpoonlineueberweisung') {
-            return checkOnlineUeberweisung();
         } else if(sCheckedValue == 'fcpoklarna') {
             return checkKlarna();
         }

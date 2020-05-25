@@ -120,7 +120,10 @@ class fcpayone_ajax extends oxBase
 
         $oParamsParser = $this->_oFcpoHelper->getFactoryObject('fcpoparamsparser');
         $sKlarnaWidgetJS =
-            $oParamsParser->_fcpoGetKlarnaWidgetJS($aResponse['add_paydata[client_token]'], $sParamsJson);
+            $oParamsParser->fcpoGetKlarnaWidgetJS(
+                $aResponse['add_paydata[client_token]'],
+                $sParamsJson
+            );
 
         return $sKlarnaWidgetJS;
     }

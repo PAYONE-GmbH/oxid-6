@@ -2076,7 +2076,7 @@ class fcpoRequest extends oxSuperCfg
         }
 
         $oDelCountry = $this->_oFcpoHelper->getFactoryObject('oxcountry');
-        $oDelCountry->load($oAddress->oxorder__oxcountryid->value);
+        $oDelCountry->load($oAddress->oxaddress__oxcountryid->value);
         $this->addParameter('shipping_firstname', $oAddress->oxaddress__oxfname->value);
         $this->addParameter('shipping_lastname', $oAddress->oxaddress__oxlname->value);
         # TODO: may be the reason why doesnt work
@@ -2109,6 +2109,14 @@ class fcpoRequest extends oxSuperCfg
      */
     public function addKlarnaShippingParams($oOrder)
     {
+        $blValid = (
+            $oOrder->oxorder__oxdelsal->value &&
+            $oOrder->oxorder__oxdelfon->value
+        );
+        if (!$blValid) {
+            return;
+        }
+
         $this->addParameter('add_paydata[shipping_title]', $oOrder->oxorder__oxdelsal->value);
         $this->addParameter('add_paydata[shipping_telephonenumber]', $oOrder->oxorder__oxdelfon->value);
         $this->addParameter('add_paydata[shipping_email]', $oOrder->oxorder__oxbillemail->value);

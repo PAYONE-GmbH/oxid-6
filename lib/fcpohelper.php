@@ -559,6 +559,31 @@ class fcpohelper extends oxBase
     }
 
     /**
+     * Item price in smallest available unit
+     *
+     * @param  oxBasketItem/double $mValue
+     * @return int
+     */
+    public function fcpoGetCentPrice($mValue)
+    {
+        $oConfig = $this->getConfig();
+        $dBruttoPrice = 0.00;
+        if ($mValue instanceof oxBasketItem) {
+            $oPrice = $mValue->getPrice();
+            $dBruttoPricePosSum = $oPrice->getBruttoPrice();
+            $dAmount = $mValue->getAmount();
+            $dBruttoPrice = round($dBruttoPricePosSum/$dAmount, 2);
+        } else if (is_float($mValue)) {
+            $dBruttoPrice = $mValue;
+        }
+
+        $oCur = $oConfig->getActShopCurrencyObject();
+        $dFactor = (double) pow(10, $oCur->decimal);
+
+        return ($dBruttoPrice * $dFactor);
+    }
+
+    /**
      * Returns if deprecated instation should be used
      * 
      * @param  void

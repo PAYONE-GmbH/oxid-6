@@ -12,7 +12,7 @@ window.klarnaAsyncCallback = function () {
         Klarna.Payments.authorize({
             payment_method_category: '%%PAYMENT_CATEGORY%%',
         },
-            $.parseJSON('%%KLARNA_DATA%%')
+        %%KLARNA_DATA%%
         , function (res) {
             $("#fcpo_klarna_auth_token").val(res.authorization_token);
             console.debug(res);

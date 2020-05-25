@@ -84,7 +84,7 @@ $aModule = array(
         // controllers
         'fcpayoneiframe'                    => 'fc/fcpayone/application/controllers/fcpayoneiframe.php',
         // models
-	'fcpouserflag'                      => 'fc/fcpayone/application/models/fcpouserflag.php',
+	    'fcpouserflag'                      => 'fc/fcpayone/application/models/fcpouserflag.php',
         'fcporequestlog'                    => 'fc/fcpayone/application/models/fcporequestlog.php',
         'fcpotransactionstatus'             => 'fc/fcpayone/application/models/fcpotransactionstatus.php',
         'fcpomapping'                       => 'fc/fcpayone/application/models/fcpomapping.php',

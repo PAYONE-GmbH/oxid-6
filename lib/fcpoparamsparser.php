@@ -31,6 +31,11 @@ class fcpoparamsparser
     protected $_oFcpoHelper;
 
     /**
+     * @var null
+     */
+    protected $_oUser = null;
+
+    /**
      * Class constructor, sets all required parameters for requests.
      */
     public function __construct()
@@ -43,11 +48,11 @@ class fcpoparamsparser
      * @param $sParamsJson
      * @return string
      */
-    public function _fcpoGetKlarnaWidgetJS($sClientToken, $sParamsJson)
+    public function fcpoGetKlarnaWidgetJS($sClientToken, $sParamsJson)
     {
         $aParams = json_decode($sParamsJson, true);
         $aKlarnaData = $this->_fcpoGetKlarnaData();
-        $aKlarnaData = $this->_fcpoRemoveKlarnaDataForCountry($aKlarnaData);
+        // $aKlarnaData = $this->_fcpoRemoveKlarnaDataForCountry($aKlarnaData);
 
         $aKlarnaWidgetSearch = array(
             '%%TOKEN%%',
@@ -60,13 +65,38 @@ class fcpoparamsparser
             $sClientToken,
             $aParams['payment_container_id'],
             $aParams['payment_category'],
-            json_encode($aKlarnaData),
+            json_encode($aKlarnaData, JSON_UNESCAPED_UNICODE),
         );
 
         $sKlarnaWidgetJS = file_get_contents($this->_fcpoGetKlarnaWidgetPath());
         $sKlarnaWidgetJS = str_replace($aKlarnaWidgetSearch, $aKlarnaWidgetReplace, $sKlarnaWidgetJS);
 
         return (string) $sKlarnaWidgetJS;
+    }
+
+    /**
+     * Returns country specific title by given salutation
+     *
+     * @param $sSalutation
+     * @return string
+     */
+    protected function _fcpoGetTitle($sSalutation) {
+        $oUser = $this->_fcpoGetUser();
+        $sCountryIso = $oUser->fcpoGetUserCountryIso();
+
+        $aMap = array(
+            'DE' => array('MR' => 'Herr', 'MRS' => 'Frau'),
+            'AT' => array('MR' => 'Herr', 'MRS' => 'Frau'),
+            'CH' => array('MR' => 'Herr', 'MRS' => 'Frau'),
+            'UK' => array('MR' => 'Mr', 'MRS' => 'Mrs'),
+            'NL' => array('MR' => 'Dhr.', 'MRS' => 'Mevr.'),
+        );
+
+        if (!isset($aMap[$sCountryIso][$sSalutation])) {
+            return $sSalutation;
+        }
+
+        return $aMap[$sCountryIso][$sSalutation];
     }
 
     /**
@@ -78,10 +108,11 @@ class fcpoparamsparser
     protected function _fcpoGetKlarnaData()
     {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
-        $oUser = $this->_fcpogetUser();
+        $oUser = $this->_fcpoGetUser();
         $oShippingAddress = $this->_fcpoGetShippingAddress();
         $oCur = $oCur = $oConfig->getActShopCurrencyObject();
         $blHasShipping = (!$oShippingAddress) ? false : true;
+        $sBillTitle = $this->_fcpoGetTitle($oUser->oxuser__oxsal->value);
         $sGender = ($oUser->oxuser__oxsal->value == 'MR') ? 'male' : 'female';
 
         $aKlarnaData = array(
@@ -91,7 +122,7 @@ class fcpoparamsparser
                 'given_name' => $oUser->oxuser__oxfname->value,
                 'family_name' => $oUser->oxuser__oxlname->value,
                 'email' => $oUser->oxuser__oxusername->value,
-                'title' => $oUser->oxuser__oxsal->value,
+                'title' => $sBillTitle,
                 'street_address' => $oUser->oxuser__oxstreet->value . " " . $oUser->oxuser__oxstreetnr->value,
                 'street_address2' => $oUser->oxuser__oxaddinfo->value,
                 'postal_code' => $oUser->oxuser__oxzip->value,
@@ -99,16 +130,17 @@ class fcpoparamsparser
                 'region' => $oUser->getStateTitle(),
                 'phone' => $oUser->oxuser__oxfon->value,
                 'country' => $oUser->fcpoGetUserCountryIso(),
-                'organization_name' => $oUser->oxuser__oxcompany->value,
             ),
         );
 
         if ($blHasShipping) {
+            $sShippingTitle =
+                $this->_fcpoGetTitle($oShippingAddress->oxaddress__oxsal->value);
             $aKlarnaData['shipping_address'] = array(
                 'given_name' => $oShippingAddress->oxaddress__oxfname->value,
                 'family_name' => $oShippingAddress->oxaddress__oxlname->value,
                 'email' => $oUser->oxuser__oxusername->value,
-                'title' => $oShippingAddress->oxaddress__oxsal->value,
+                'title' => $sShippingTitle,
                 'street_address' => $oShippingAddress->oxaddress__oxstreet->value . " " . $oShippingAddress->oxaddress__oxstreetnr->value,
                 'street_address2' => $oShippingAddress->oxaddress__oxaddinfo->value,
                 'postal_code' => $oShippingAddress->oxaddress__oxzip->value,
@@ -116,8 +148,11 @@ class fcpoparamsparser
                 'region' => $oUser->getStateTitle(),
                 'phone' => $oShippingAddress->oxaddress__oxfon->value,
                 'country' => $oShippingAddress->fcpoGetUserCountryIso(),
-                'organization_name' => $oUser->oxaddress__oxcompany->value,
             );
+            if ($oShippingAddress->oxaddress__oxcompany->value) {
+                $aKlarnaData['shipping_address']['organization_name'] =
+                    $oShippingAddress->oxaddress__oxcompany->value;
+            }
         } else {
             $aKlarnaData['shipping_address'] = $aKlarnaData['billing_address'];
         }
@@ -125,11 +160,14 @@ class fcpoparamsparser
         $aKlarnaData['customer'] = array(
             'date_of_birth' => ($oUser->oxuser__oxbirthdate->value === '0000-00-00') ? '' : $oUser->oxuser__oxbirthdate->value,
             'gender' => $sGender,
-            'organization_registration_id' => $oUser->oxuser__oxustid->value,
         );
 
         if ($oUser->oxuser__oxcompany->value) {
             $aKlarnaData['customer']['organization_entity_type'] = 'OTHER';
+            $aKlarnaData['customer']['organization_registration_id'] =
+                $oUser->oxuser__oxustid->value;
+            $aKlarnaData['billing_address']['organization_name'] =
+                $oUser->oxuser__oxcompany->value;
         }
 
         $aOrderData = $this->_fcpoGetKlarnaOrderdata();
@@ -140,12 +178,20 @@ class fcpoparamsparser
         );
     }
 
-    protected function _fcpogetUser()
+    /**
+     * Returns user object of current logged in user
+     *
+     * @return mixed
+     */
+    protected function _fcpoGetUser()
     {
-        $oSession = $this->_oFcpoHelper->fcpoGetSession();
-        $oBasket = $oSession->getBasket();
-        $oUser = $oBasket->getUser();
-        return $oUser;
+        if ($this->_oUser === null) {
+            $oSession = $this->_oFcpoHelper->fcpoGetSession();
+            $oBasket = $oSession->getBasket();
+            $this->_oUser = $oBasket->getUser();
+        }
+
+        return $this->_oUser;
     }
 
     /**
@@ -180,13 +226,7 @@ class fcpoparamsparser
     {
         $oSession = $this->_oFcpoHelper->fcpoGetSession();
         $oBasket = $oSession->getBasket();
-
-        $dAmount = $oBasket->getPrice()->getBruttoPrice();
-        $dTaxAmount = $oBasket->getPrice()->getVat();
-        $aOrderData = array(
-            'order_amount' => $dAmount,
-            'order_tax_amount' => $dTaxAmount
-        );
+        $aOrderData = array();
 
         foreach ($oBasket->getContents() as $oBasketItem) {
             $oArticle = $oBasketItem->getArticle();
@@ -202,6 +242,14 @@ class fcpoparamsparser
             );
         }
 
+        $dAmount = $oBasket->getPrice()->getBruttoPrice();
+        $dTaxAmount = $oBasket->getPrice()->getVat();
+
+        $aOrderData['order_amount'] =
+            $this->_oFcpoHelper->fcpoGetCentPrice($dAmount);
+        $aOrderData['order_tax_amount'] =
+            $this->_oFcpoHelper->fcpoGetCentPrice($dTaxAmount);
+
         return $aOrderData;
     }
 
@@ -212,16 +260,13 @@ class fcpoparamsparser
      */
     protected function _fcpoRemoveKlarnaDataForCountry($aKlarnaData)
     {
-        $oUser = $this->_fcpogetUser();
+        $oUser = $this->_fcpoGetUser();
         $sCountryIso2 = $oUser->fcpoGetUserCountryIso();
         switch ($sCountryIso2) {
             case 'AT':
             case 'DE':
                 unset(
-                    $aKlarnaData['shipping_address'],
-                    $aKlarnaData['order_amount'],
-                    $aKlarnaData['order_tax_amount'],
-                    $aKlarnaData['orderlines']
+                    $aKlarnaData['order_tax_amount']
                 );
                 break;
             case 'DK':

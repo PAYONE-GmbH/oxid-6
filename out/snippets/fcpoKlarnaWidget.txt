@@ -9,11 +9,40 @@ window.klarnaAsyncCallback = function () {
         payment_method_category: '%%PAYMENT_CATEGORY%%'
     }, function (res) {
         console.debug(res);
+        var customer = $.parseJSON('%%KLARNA_CUSTOMER%%');
+        var billing = $.parseJSON('%%KLARNA_BILLING%%');
+        var shipping = $.parseJSON('%%KLARNA_SHIPPING%%');
+        var purchase = $.parseJSON('%%KLARNA_PURCHASE%%');
+        var orderlines = $.parseJSON('%%KLARNA_ORDERLINES%%');
+        var order = $.parseJSON('%%KLARNA_ORDER%%');
+        console.log('customer:');
+        console.log(customer);
+        console.log('billing:');
+        console.log(billing);
+        console.log('shipping:');
+        console.log(shipping);
+        console.log('purchase:');
+        console.log(purchase);
+        console.log('orderlines:');
+        console.log(orderlines);
+        console.log('order:');
+        console.log(order);
+        console.log(order.order_amount);
+        console.log(purchase.purchase_country);
+        console.log(purchase.purchase_currency);
+
         Klarna.Payments.authorize({
             payment_method_category: '%%PAYMENT_CATEGORY%%',
-        },
-        %%KLARNA_DATA%%
-        , function (res) {
+        }, {
+            // order_amount: order.order_amount,
+            order_tax_amount: order.order_tax_amount,
+            purchase_country: purchase.purchase_country,
+            purchase_currency: purchase.purchase_currency,
+            customer: %%KLARNA_CUSTOMER%%,
+            billing_address: %%KLARNA_BILLING%%,
+            shipping_address: %%KLARNA_SHIPPING%%,
+            orderlines: %%KLARNA_ORDERLINES%%,
+        }, function (res) {
             $("#fcpo_klarna_auth_token").val(res.authorization_token);
             console.debug(res);
         });

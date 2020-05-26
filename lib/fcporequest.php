@@ -416,8 +416,7 @@ class fcpoRequest extends oxSuperCfg
         $this->addParameter('add_paydata[authorization_token]', $sKlarnaAuthToken);
         $this->addParameter('clearingtype', 'fnc');
         $this->addParameter('financingtype', $this->_fcpoGetKlarnaFinancingType($sPaymentId));
-
-        $this->addKlarnaShippingParams($oOrder);
+        $this->addDeliveryAddressParams(true);
 
         if ($oOrder->oxorder__oxbillcompany->value) {
             $this->addParameter(
@@ -2055,7 +2054,7 @@ class fcpoRequest extends oxSuperCfg
         $this->addParameter('currency', $oCurr->name);
 
         $this->addAddressParamsByUser($oUser);
-        $this->addDeliveryAddressParams($sPaymentId);
+        $this->addDeliveryAddressParams(true);
         $this->_fcpoAddBasketItemsFromSession($sShippingId);
 
         return $this->send();
@@ -2067,60 +2066,98 @@ class fcpoRequest extends oxSuperCfg
      * @param string $sPaymentId optional payment id
      * @return void
      */
-    public function addDeliveryAddressParams($sPaymentId=null)
+    public function addDeliveryAddressParams($blFallbackBillAddress=false)
     {
         $sDelAddressId = $this->_oFcpoHelper->fcpoGetSessionVariable('deladrid');
         $oAddress = $this->_oFcpoHelper->getFactoryObject('oxAddress');
+        $sKey = 'shipping';
+        $oSession = $this->_oFcpoHelper->fcpoGetSession();
+        $oBasket = $oSession->getBasket();
+        $oUser = $oBasket->getUser();
+        $oParamsParser = $this->_oFcpoHelper->getFactoryObject('fcpoparamsparser');
+
         if (!$oAddress->load($sDelAddressId)) {
-            return;
+            if (!$blFallbackBillAddress) {
+                return;
+            }
+
+            $oAddress = $oUser;
+            $sKey = 'bill';
         }
 
+        $aMap = array(
+            'countryid' => array(
+                'bill' => 'oxuser__oxcountryid',
+                'shipping' => 'oxaddress__oxcountryid',
+            ),
+            'shipping_firstname' =>  array(
+                'bill' => 'oxuser__oxfname',
+                'shipping' => 'oxaddress__oxfname',
+            ),
+            'shipping_lastname' =>  array(
+                'bill' => 'oxuser__oxlname',
+                'shipping' => 'oxaddress__oxlname',
+            ),
+            'shipping_company' =>  array(
+                'bill' => 'oxuser__oxcompany',
+                'shipping' => 'oxaddress__oxcompany',
+            ),
+            'shipping_street' =>  array(
+                'bill' => 'oxuser__oxstreet',
+                'shipping' => 'oxaddress__oxstreet',
+            ),
+            'shipping_streetnr' =>  array(
+                'bill' => 'oxuser__oxstreetnr',
+                'shipping' => 'oxaddress__oxstreetnr',
+            ),
+            'shipping_zip' =>  array(
+                'bill' => 'oxuser__oxzip',
+                'shipping' => 'oxaddress__oxzip',
+            ),
+            'shipping_city' =>  array(
+                'bill' => 'oxuser__oxcity',
+                'shipping' => 'oxaddress__oxcity',
+            ),
+            'stateid' =>  array(
+                'bill' => 'oxuser__oxstateid',
+                'shipping' => 'oxaddress__oxstateid',
+            ),
+            'shipping_title' =>  array(
+                'bill' => 'oxuser__oxsal',
+                'shipping' => 'oxaddress__oxsal',
+            ),
+            'shipping_telephonenumber' =>  array(
+                'bill' => 'oxuser__oxfon',
+                'shipping' => 'oxaddress__oxfon',
+            ),
+
+        );
+
         $oDelCountry = $this->_oFcpoHelper->getFactoryObject('oxcountry');
-        $oDelCountry->load($oAddress->oxaddress__oxcountryid->value);
-        $this->addParameter('shipping_firstname', $oAddress->oxaddress__oxfname->value);
-        $this->addParameter('shipping_lastname', $oAddress->oxaddress__oxlname->value);
+        $oDelCountry->load($oAddress->{$aMap['countryid'][$sKey]}->value);
+        $this->addParameter('shipping_firstname', $oAddress->{$aMap['shipping_firstname'][$sKey]}->value);
+        $this->addParameter('shipping_lastname', $oAddress->{$aMap['shipping_lastname'][$sKey]}->value);
         # TODO: may be the reason why doesnt work
         if ($oAddress->oxaddress__oxcompany->value) {
-            $this->addParameter('shipping_company', $oAddress->oxaddress__oxcompany->value);
+            $this->addParameter('shipping_company', $oAddress->{$aMap['shipping_company'][$sKey]}->value);
         }
-        $this->addParameter('shipping_street', trim($oAddress->oxaddress__oxstreet->value . ' ' . $oAddress->oxaddress__oxstreetnr->value));
-        $this->addParameter('shipping_zip', $oAddress->oxaddress__oxzip->value);
-        $this->addParameter('shipping_city', $oAddress->oxaddress__oxcity->value);
+        $this->addParameter('shipping_street', trim($oAddress->{$aMap['shipping_street'][$sKey]}->value . ' ' . $oAddress->oxaddress__oxstreetnr->value));
+        $this->addParameter('shipping_zip', $oAddress->{$aMap['shipping_zip'][$sKey]}->value);
+        $this->addParameter('shipping_city', $oAddress->{$aMap['shipping_city'][$sKey]}->value);
         $this->addParameter('shipping_country', $oDelCountry->oxcountry__oxisoalpha2->value);
         if ($this->_stateNeeded($oDelCountry->oxcountry__oxisoalpha2->value)) {
             $this->addParameter(
                 'shipping_state',
-                $this->_getShortState($oAddress->oxaddress__oxstateid->value)
+                $this->_getShortState($oAddress->{$aMap['stateid'][$sKey]}->value)
             );
         }
 
-        $oSession = $this->_oFcpoHelper->fcpoGetSession();
-        $oBasket = $oSession->getBasket();
-        $oUser = $oBasket->getUser();
-        $this->addParameter('add_paydata[shipping_title]', $oAddress->oxaddress__oxsal->value);
-        $this->addParameter('add_paydata[shipping_telephonenumber]', $oAddress->oxaddress__oxfon->value);
+        $sShippingTitle =
+            $oParamsParser->fcpoGetTitle($oAddress->{$aMap['shipping_title'][$sKey]}->value);
+
+        $this->addParameter('add_paydata[shipping_title]', $sShippingTitle);
+        $this->addParameter('add_paydata[shipping_telephonenumber]', $oAddress->{$aMap['shipping_telephonenumber'][$sKey]}->value);
         $this->addParameter('add_paydata[shipping_email]', $oUser->oxuser__oxusername->value);
-    }
-
-    /**
-     * Adding special klarna shipping params
-     *
-     * @param object $oOrder
-     */
-    public function addKlarnaShippingParams($oOrder)
-    {
-        $blValid = (
-            $oOrder->oxorder__oxdelsal->value &&
-            $oOrder->oxorder__oxdelfon->value
-        );
-        if (!$blValid) {
-            return;
-        }
-
-        $this->addParameter('add_paydata[shipping_title]', $oOrder->oxorder__oxdelsal->value);
-        $this->addParameter('add_paydata[shipping_telephonenumber]', $oOrder->oxorder__oxdelfon->value);
-        $this->addParameter('add_paydata[shipping_email]', $oOrder->oxorder__oxbillemail->value);
-        $this->removeParameter('shipping_addressaddition');
     }
 
     /**

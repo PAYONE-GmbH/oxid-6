@@ -180,7 +180,7 @@
                                 </tr>                                   
                                 <tr>
                                     <td colspan="2">
-                                        <table border="1" cellpadding="5" callspacing="5">
+                                        <table border="0" cellpadding="5" callspacing="5">
                                             <tr>
                                                 <th>[{oxmultilang ident="FCPO_PRODUCT_CAPTURE"}]</th>
                                                 <th>[{oxmultilang ident="FCPO_PRODUCT_AMOUNT"}]</th>
@@ -314,7 +314,7 @@
                                 <tr><td colspan="2">&nbsp;</td></tr>                                 
                                 <tr>
                                     <td colspan="2">
-                                        <table border="1" cellpadding="5" callspacing="5">
+                                        <table border="0" cellpadding="5" callspacing="5">
                                             <tr>
                                                 <th>[{oxmultilang ident="FCPO_PRODUCT_CAPTURE"}]</th>
                                                 <th>[{oxmultilang ident="FCPO_PRODUCT_AMOUNT"}]</th>

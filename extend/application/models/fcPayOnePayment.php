@@ -68,13 +68,35 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         'fcpo_bancontact',
         'fcporp_debitnote',
     );
-    
+
     protected static $_aRedirectPayments = array(
-        'fcpoonlineueberweisung',
         'fcpopaypal',
         'fcpopaypal_express',
         'fcpoklarna',
         'fcpopaydirekt',
+        'fcpo_sofort',
+        'fcpo_giropay',
+        'fcpo_eps',
+        'fcpo_pf_finance',
+        'fcpo_pf_card',
+        'fcpo_ideal',
+        'fcpo_p24',
+        'fcpo_bancontact',
+    );
+
+    /**
+     * Array of online payments
+     * @var string[]
+     */
+    protected static $_aOnlinePayments = array(
+        'fcpo_sofort',
+        'fcpo_giropay',
+        'fcpo_eps',
+        'fcpo_pf_finance',
+        'fcpo_pf_card',
+        'fcpo_ideal',
+        'fcpo_p24',
+        'fcpo_bancontact',
     );
     
     protected static $_aIframePaymentTypes = array(
@@ -115,7 +137,13 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         $this->_oFcpoDb = oxDb::getDb();
     }
 
-    public static function fcIsPayOnePaymentType($sPaymentId) 
+    public static function fcIsPayOneOnlinePaymentType($sPaymentId)
+    {
+        return in_array($sPaymentId, self::$_aOnlinePayments);
+    }
+
+
+    public static function fcIsPayOnePaymentType($sPaymentId)
     {
         $blReturn = (array_search($sPaymentId, self::$_aPaymentTypes) !== false) ? true : false;
         return $blReturn;
@@ -186,7 +214,6 @@ class fcPayOnePayment extends fcPayOnePayment_parent
 
             $aMap = array(
                 'fcpocreditcard' => $oConfig->getConfigParam('blFCPOCC' . $sType . 'Live'),
-                'fcpoonlineueberweisung' => $oConfig->getConfigParam('blFCPOSB' . $sType . 'Live'),
             );
 
             if (in_array($sPaymentId, array_keys($aMap))) {

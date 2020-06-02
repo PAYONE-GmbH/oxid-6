@@ -367,12 +367,10 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     public function fcpoShowKlarnaCombined($sPaymentId)
     {
         $blIsKlarnaCombined = $this->fcpoIsKlarnaCombined($sPaymentId);
-        $blIsCountrySupportedFromKlarna = $this->_fcpoIsCountrySupportedFromKlarna();
-        $blIsCurrencySupportedFromKlarna = $this->_fcpoIsCurrencySupportedFromKlarna();
+        $blIsCountryCurrencyAllowedByKlarna = $this->_fcpoIsCountryCurrencyAllowedByKlarna();
         if (
             $blIsKlarnaCombined &&
-            $blIsCountrySupportedFromKlarna &&
-            $blIsCurrencySupportedFromKlarna &&
+            $blIsCountryCurrencyAllowedByKlarna &&
             $this->_blKlarnaCombinedIsPresent === false
         ) {
             $this->_blKlarnaCombinedIsPresent = true;
@@ -933,48 +931,33 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     }
 
     /**
-     * Checks if klarna support the user's billing country for payments.
+     * Checks if klarna support the user's billing country with the active shop currency for payments.
      *
      * @return bool
      */
-    protected function _fcpoIsCountrySupportedFromKlarna()
+    protected function _fcpoIsCountryCurrencyAllowedByKlarna()
     {
         $oSession = $this->_oFcpoHelper->fcpoGetSession();
         $oBasket = $oSession->getBasket();
         $oUser = $oBasket->getUser();
+        $sCountryIso = $oUser->fcpoGetUserCountryIso();
 
-        return (
-        in_array($oUser->fcpoGetUserCountryIso(), array(
-            'AT',
-            'DK',
-            'FI',
-            'DE',
-            'NL',
-            'NO',
-            'SE',
-            'CH',
-        ))
-        );
-    }
-
-    /**
-     * Checks if klarna supports the active shop currency for payments.
-     *
-     * @return bool
-     */
-    protected function _fcpoIsCurrencySupportedFromKlarna()
-    {
         $oConfig = $this->_oFcpoHelper->getConfig();
         $oActCurrency = $oConfig->getActShopCurrencyObject();
-        return (
-            in_array($oActCurrency->name, array(
-                'EUR',
-                'DKK',
-                'NOK',
-                'SEK',
-                'CHF',
-            ))
+        $sCurrencyName = $oActCurrency->name;
+
+        $aAllowedCountryCurrencies = array(
+            'AT' => 'EUR',
+            'DK' => 'DKK',
+            'FI' => 'EUR',
+            'DE' => 'EUR',
+            'NL' => 'EUR',
+            'NO' => 'NOK',
+            'SE' => 'SEK',
+            'CH' => 'CHF',
         );
+
+        return ($aAllowedCountryCurrencies[$sCountryIso] === $sCurrencyName);
     }
 
     /**

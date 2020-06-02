@@ -189,7 +189,6 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
         return $blReturn;
     }
     
-    
     /**
      * Get userid by given username
      * 
@@ -201,7 +200,49 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
         $oOrder = $this->_oFcpoHelper->getFactoryObject('oxOrder');
         return $oOrder->fcpoGetIdByUserName($sUserName);
     }
-    
+
+    /**
+     * Returns target controller if user hits the edit button
+     * of billing or shipping address
+     *
+     * @param void
+     * @return string
+     */
+    public function fcpoGetEditAddressTargetController() {
+        $sPaymentId = $this->_oFcpoHelper->fcpoGetSessionVariable('paymentid');
+
+        $aMap = array(
+            'fcpopaypal_express'=>'basket'
+        );
+
+        $sReturn = (isset($aMap[$sPaymentId])) ?
+            $aMap[$sPaymentId] :
+            'user';
+
+        return $sReturn;
+    }
+
+    /**
+     * Returns target controller action if user hits the edit
+     * button of billing or shipping address
+     *
+     * @param void
+     * @return string
+     */
+    public function fcpoGetEditAddressTargetAction()
+    {
+        $sPaymentId = $this->_oFcpoHelper->fcpoGetSessionVariable('paymentid');
+
+        $aMap = array(
+            'fcpopaypal_express'=>'fcpoUsePayPalExpress'
+        );
+
+        $sReturn = (isset($aMap[$sPaymentId])) ?
+            $aMap[$sPaymentId] :
+            '';
+
+        return $sReturn;
+    }
     
     /**
      * Get CountryID by countrycode

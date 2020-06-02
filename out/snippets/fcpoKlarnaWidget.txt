@@ -43,8 +43,16 @@ window.klarnaAsyncCallback = function () {
             shipping_address: %%KLARNA_SHIPPING%%,
             orderlines: %%KLARNA_ORDERLINES%%,
         }, function (res) {
-            $("#fcpo_klarna_auth_token").val(res.authorization_token);
             console.debug(res);
+            console.log(res);
+            $("#fcpo_klarna_auth_token").val(res.authorization_token);
+            if (res.show_form === false) {
+                $('#klarna_widget_combined_container').empty();
+                $('#fcpo_klarna_combined_agreed').prop('checked', false).trigger('change');
+            }
+            if (typeof(res.error) !== 'undefined' || res.approved == false) {
+                $('#fcpo_klarna_combined_agreed').prop('checked', false).trigger('change');
+            }
         });
     });
 };

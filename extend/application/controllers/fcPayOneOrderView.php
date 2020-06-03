@@ -212,7 +212,8 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
         $sPaymentId = $this->_oFcpoHelper->fcpoGetSessionVariable('paymentid');
 
         $aMap = array(
-            'fcpopaypal_express'=>'basket'
+            'fcpopaypal_express'=>'basket',
+            'fcpopaydirekt_express'=>'basket',
         );
 
         $sReturn = (isset($aMap[$sPaymentId])) ?
@@ -234,7 +235,8 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
         $sPaymentId = $this->_oFcpoHelper->fcpoGetSessionVariable('paymentid');
 
         $aMap = array(
-            'fcpopaypal_express'=>'fcpoUsePayPalExpress'
+            'fcpopaypal_express'=>'fcpoUsePayPalExpress',
+            'fcpopaydirekt_express'=>'fcpoUsePaydirektExpress'
         );
 
         $sReturn = (isset($aMap[$sPaymentId])) ?

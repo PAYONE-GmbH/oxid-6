@@ -6,8 +6,8 @@
         <form action="[{$oViewConf->getSslSelfLink()}]" method="post">
             <div class="hidden">
                 [{$oViewConf->getHiddenSid()}]
-                <input type="hidden" name="cl" value="user">
-                <input type="hidden" name="fnc" value="">
+                <input type="hidden" name="cl" value="[{$oView->fcpoGetEditAddressTargetController()}]">
+                <input type="hidden" name="fnc" value="[{$oView->fcpoGetEditAddressTargetAction()}]">
             </div>
 
             <div class="panel panel-default">
@@ -29,8 +29,8 @@
         <form action="[{$oViewConf->getSslSelfLink()}]" method="post">
             <div class="hidden">
                 [{$oViewConf->getHiddenSid()}]
-                <input type="hidden" name="cl" value="user">
-                <input type="hidden" name="fnc" value="">
+                <input type="hidden" name="cl" value="[{$oView->fcpoGetEditAddressTargetController()}]">
+                <input type="hidden" name="fnc" value="[{$oView->fcpoGetEditAddressTargetAction()}]">
             </div>
 
             <div class="panel panel-default">

@@ -673,7 +673,7 @@ class fcpayone_events
             WHERE FIELD = '{$sColumnName}' 
             AND TYPE = '{$sExpectedType}'
         ";
-        if (oxDb::getDb()->getOne($sCheckQuery)) {
+        if (!oxDb::getDb()->getOne($sCheckQuery)) {
             oxDb::getDb()->Execute($sQuery);
             return true;
         }

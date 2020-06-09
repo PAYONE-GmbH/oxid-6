@@ -36,6 +36,7 @@ $aLang = array(
 'FCPO_CC_CVC2_INVALID'                          => 'Please enter a valid check digit.',
 'fcpo_so_ktonr'                                 => 'Bank account number',
 'fcpo_so_blz'                                   => 'Bank identification number',
+'FCPO_BANK_GER_OLD'                             => 'or pay by using your usual bank account number and bank code<br>(only supported for german accounts).',
 'FCPO_MANIPULATION'                             => 'suspicion of fraudulent manipulation',
 'FCPO_REMARK_APPOINTED_MISSING'                 => 'The shop did not receive the APPOINTED transactionstatus. Please check this payment carefully!',
 'FCPO_THANKYOU_APPOINTED_ERROR'                 => 'An error occured during the payment-process. We will check the order and contact you if necessary.',

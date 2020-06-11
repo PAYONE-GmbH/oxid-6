@@ -761,15 +761,16 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
     protected function _fcpoSplitAddress($sPayPalStreet) 
     {
         $sStreetNr = '';
-        $aSplit = explode(' ', $sPayPalStreet);
-        if(is_array($aSplit) && count($aSplit) == 2) {
-            $sPayPalStreet = $aSplit[0];
-            $sStreetNr = $aSplit[1];
+        if(preg_match('/\s\d/', $sPayPalStreet, $match)) {
+            $iEndOfStreetPos = strpos($sPayPalStreet, $match[0]);
+            $iStartOfStreetNrPos = $iEndOfStreetPos +1; // skip space between street and street nr
+            $sStreetNr = substr($sPayPalStreet, $iStartOfStreetNrPos);
+            $sPayPalStreet = substr($sPayPalStreet, 0, $iEndOfStreetPos);
         }
-        
+
         return array($sPayPalStreet, $sStreetNr);
     }
-    
+
     
     /**
      * Searches an existing addressid by extracting response of payone

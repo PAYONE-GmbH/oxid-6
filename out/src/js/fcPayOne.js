@@ -1031,9 +1031,22 @@ $( document).ready(function() {
 
     //check cvc, check if cardtype is selected, progress request, output errors
     paymentForm.on('submit', function(e) {
+        var klarna_auth_done = $('#fcpo_klarna_auth_done').val();
+        var klarna_paymentid = $('#payment_klarna_combined').val();
+        var klarna_combined_checked = $('#payment_klarna_combined').is(':checked');
+
         hideCCHostedErrorsAtSubmit();
         validateCardTypeCCHosted(e);
         validateInputCCHosted(e);
+        if (klarna_combined_checked && klarna_paymentid) {
+            if (klarna_auth_done === 'false') {
+                e.preventDefault();
+                if ($('#fcpo_klarna_combined_agreed').is(':checked') == true) {
+                    // defined in snippets/fcpoKlarnaWidget.txt
+                    klarnaAuthorize(e);
+                }
+            }
+        }
     });
 
     $('#cardtype').on('change', function(e) {

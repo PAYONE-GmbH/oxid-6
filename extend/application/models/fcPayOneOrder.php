@@ -1473,6 +1473,10 @@ class fcPayOneOrder extends fcPayOneOrder_parent
     public function fcHandleAuthorization($blReturnRedirectUrl = false, $oPayGateway = null) 
     {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+        $aDynvalueForm = $this->_oFcpoHelper->fcpoGetRequestParameter('dynvalue');
+        if ($this->oxorder__oxpaymenttype->value === 'fcpoklarna_directdebit' && $this->_oFcpoHelper->fcpoGetSessionVariable('klarna_authorization_token') === '' ) {
+            $this->_oFcpoHelper->fcpoSetSessionVariable('klarna_authorization_token', $aDynvalueForm['klarna_authorization_token']);
+        }
         $aDynvalue = $this->_oFcpoHelper->fcpoGetSessionVariable('dynvalue');
         $aDynvalue = $aDynvalue ? $aDynvalue : $this->_oFcpoHelper->fcpoGetRequestParameter('dynvalue');
 

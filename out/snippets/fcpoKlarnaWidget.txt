@@ -8,52 +8,39 @@ window.klarnaAsyncCallback = function () {
         container: '#%%PAYMENT_CONTAINER_ID%%',
         payment_method_category: '%%PAYMENT_CATEGORY%%'
     }, function (res) {
-        console.debug(res);
-        var customer = $.parseJSON('%%KLARNA_CUSTOMER%%');
-        var billing = $.parseJSON('%%KLARNA_BILLING%%');
-        var shipping = $.parseJSON('%%KLARNA_SHIPPING%%');
-        var purchase = $.parseJSON('%%KLARNA_PURCHASE%%');
-        var orderlines = $.parseJSON('%%KLARNA_ORDERLINES%%');
-        var order = $.parseJSON('%%KLARNA_ORDER%%');
-        console.log('customer:');
-        console.log(customer);
-        console.log('billing:');
-        console.log(billing);
-        console.log('shipping:');
-        console.log(shipping);
-        console.log('purchase:');
-        console.log(purchase);
-        console.log('orderlines:');
-        console.log(orderlines);
-        console.log('order:');
-        console.log(order);
-        console.log(order.order_amount);
-        console.log(purchase.purchase_country);
-        console.log(purchase.purchase_currency);
+    });
 
-        Klarna.Payments.authorize({
-            payment_method_category: '%%PAYMENT_CATEGORY%%',
-        }, {
-            // order_amount: order.order_amount,
-            order_tax_amount: order.order_tax_amount,
-            purchase_country: purchase.purchase_country,
-            purchase_currency: purchase.purchase_currency,
-            customer: %%KLARNA_CUSTOMER%%,
-            billing_address: %%KLARNA_BILLING%%,
-            shipping_address: %%KLARNA_SHIPPING%%,
-            orderlines: %%KLARNA_ORDERLINES%%,
-        }, function (res) {
-            console.debug(res);
-            console.log(res);
-            $("#fcpo_klarna_auth_token").val(res.authorization_token);
-            if (res.show_form === false) {
-                $('#klarna_widget_combined_container').empty();
-                $('#fcpo_klarna_combined_agreed').prop('checked', false).trigger('change');
-            }
-            if (typeof(res.error) !== 'undefined' || res.approved == false) {
-                $('#fcpo_klarna_combined_agreed').prop('checked', false).trigger('change');
-            }
-        });
+function klarnaAuthorize(e) {
+    var customer = $.parseJSON('%%KLARNA_CUSTOMER%%');
+    var billing = $.parseJSON('%%KLARNA_BILLING%%');
+    var shipping = $.parseJSON('%%KLARNA_SHIPPING%%');
+    var purchase = $.parseJSON('%%KLARNA_PURCHASE%%');
+    var orderlines = $.parseJSON('%%KLARNA_ORDERLINES%%');
+    var order = $.parseJSON('%%KLARNA_ORDER%%');
+    var payment_category = '%%PAYMENT_CATEGORY%%';
+    var auto_finalize = (payment_category === 'pay_now') ? false : true;
+
+    Klarna.Payments.authorize({
+        payment_method_category: payment_category,
+        auto_finalize: auto_finalize
+    }, {
+        // order_amount: order.order_amount,
+        order_tax_amount: order.order_tax_amount,
+        purchase_country: purchase.purchase_country,
+        purchase_currency: purchase.purchase_currency,
+        customer: %%KLARNA_CUSTOMER%%,
+        billing_address: %%KLARNA_BILLING%%,
+        shipping_address: %%KLARNA_SHIPPING%%,
+        orderlines: %%KLARNA_ORDERLINES%%,
+    }, function (res) {
+        var paymentForm = $('#payment');
+        $("#fcpo_klarna_auth_token").val(res.authorization_token);
+        $("#fcpo_klarna_auth_done").val(true);
+        // reset agreement box on errors
+        if (typeof(res.error) !== 'undefined' || res.approved == false) {
+            $('#fcpo_klarna_combined_agreed').prop('checked', false);
+        }
+        paymentForm.submit();
     });
 };
 </script>

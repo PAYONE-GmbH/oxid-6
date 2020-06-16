@@ -6,6 +6,7 @@
     </dt>
     <div class="hidden">
         <input type="hidden" id="fcpo_klarna_auth_token" name="dynvalue[klarna_authorization_token]">
+        <input type="hidden" id="fcpo_klarna_auth_done" name="dynvalue[fcpo_klarna_auth_done]" value="false">
     </div>
     <dd class="[{if  $oView->fcpoIsKlarnaCombined($checkedPaymentId)}]activePayment[{/if}]">
         <select id="klarna_payment_selector" class="form-control">

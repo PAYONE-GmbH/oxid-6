@@ -9,8 +9,9 @@ window.klarnaAsyncCallback = function () {
         payment_method_category: '%%PAYMENT_CATEGORY%%'
     }, function (res) {
     });
+};
 
-function klarnaAuthorize(e) {
+function klarnaAuthorize (e) {
     var customer = $.parseJSON('%%KLARNA_CUSTOMER%%');
     var billing = $.parseJSON('%%KLARNA_BILLING%%');
     var shipping = $.parseJSON('%%KLARNA_SHIPPING%%');

@@ -137,9 +137,10 @@ class fcpayone_ajax extends oxBase
     protected function _fcpoSetKlarnaSessionParams($aResponse)
     {
         $this->_oFcpoHelper->fcpoDeleteSessionVariable('klarna_authorization_token');
+        $this->_oFcpoHelper->fcpoDeleteSessionVariable('klarna_client_token');
         $this->_oFcpoHelper->fcpoSetSessionVariable(
             'klarna_client_token',
-            $aResponse['add_paydata[session_id]']
+            $aResponse['add_paydata[client_token]']
         );
         $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoWorkorderId');
         $this->_oFcpoHelper->fcpoSetSessionVariable(

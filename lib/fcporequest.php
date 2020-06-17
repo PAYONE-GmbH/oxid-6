@@ -134,6 +134,7 @@ class fcpoRequest extends oxSuperCfg
      */
     protected $_aRatePayPayments = array(
         'fcporp_bill',
+        'fcporp_debitnote',
     );
 
     /**
@@ -528,7 +529,8 @@ class fcpoRequest extends oxSuperCfg
                 $blAddRedirectUrls = $this->_fcpoAddPayolutionParameters($oOrder);
                 break;
             case 'fcporp_bill':
-                $blAddRedirectUrls = $this->_fcpoAddRatePayParameters($oOrder);
+            case 'fcporp_debitnote':
+                $blAddRedirectUrls = $this->_fcpoAddRatePayParameters($oOrder, $aDynvalue);
                 break;
             case 'fcpoamazonpay':
                 $blAddRedirectUrls = $this->_fcpoAddAmazonPayParameters($oOrder);
@@ -1143,13 +1145,13 @@ class fcpoRequest extends oxSuperCfg
      * Method adds all bunch of ratepay-params
      * 
      * @param  oxOrder $oOrder
+     * @param array $aDynvalue
      * @return false => no redirect params 
      */
-    protected function _fcpoAddRatePayParameters($oOrder) 
+    protected function _fcpoAddRatePayParameters($oOrder, $aDynvalue)
     {
         // needed objects and data
         $oConfig = $this->getConfig();
-        $oSession = $this->_oFcpoHelper->fcpoGetSession();
         $oRatePay = oxNew('fcporatepay');
         $sPaymentId = $oOrder->oxorder__oxpaymenttype->value;
         $oUser = $oOrder->getOrderUser();
@@ -1214,6 +1216,11 @@ class fcpoRequest extends oxSuperCfg
         $this->addParameter('shipping_zip', $sShippingZip);
         $this->addParameter('shipping_city', $sShippingCity);
         $this->addParameter('shipping_country', strtoupper($sShippingCountry));
+
+        if ($sPaymentId == 'fcporp_debitnote') {
+            $this->addParameter('iban', $aDynvalue['fcpo_ratepay_debitnote_iban']);
+            $this->addParameter('bic', $aDynvalue['fcpo_ratepay_debitnote_bic']);
+        }
 
         $this->_fcpoAddBasketItemsFromSession();
 
@@ -1663,6 +1670,7 @@ class fcpoRequest extends oxSuperCfg
             'fcpopo_debitnote' => 'PYD',
             'fcpopo_installment' => 'PYS',
             'fcporp_bill' => 'RPV',
+            'fcporp_debitnote' => 'RPD',
         );
 
         $blPaymentIdMatch = isset($aMap[$sPaymentId]);
@@ -2124,16 +2132,15 @@ class fcpoRequest extends oxSuperCfg
     /**
      * Adds RatePay specific parameters
      * 
-     * @param  type $oOrder
+     * @param  object $oOrder
      * @return void
+     * @todo: currently only shop id will be fetched
      */
     protected function _fcpoAddCaptureAndDebitRatePayParams($oOrder) 
     {
         $sPaymentId = $oOrder->oxorder__oxpaymenttype->value;
         if (in_array($sPaymentId, $this->_aRatePayPayments)) {
-            $oRatePay = oxNew('fcporatepay');
-            $aRatePayProfile = $oRatePay->fcpoGetProfileDataByPaymentId($sPaymentId);
-            $sRatePayShopId = $aRatePayProfile['shopid'];
+            $sRatePayShopId = $oOrder->getFcpoRatepayShopId();
             $this->addParameter('add_paydata[shop_id]', $sRatePayShopId);
         }
     }
@@ -2777,15 +2784,8 @@ class fcpoRequest extends oxSuperCfg
         curl_setopt($oCurl, CURLOPT_POST, 1);
         curl_setopt($oCurl, CURLOPT_POSTFIELDS, $aUrlArray['query']);
 
-        $sCertificateFilePath = getShopBasePath() . 'modules/fcPayOne/cacert.pem';
-        if (file_exists($sCertificateFilePath) !== false) {
-            curl_setopt($oCurl, CURLOPT_CAINFO, $sCertificateFilePath);
-            curl_setopt($oCurl, CURLOPT_SSL_VERIFYPEER, true);  // force SSL certificate check
-            curl_setopt($oCurl, CURLOPT_SSL_VERIFYHOST, 2);  // check hostname in SSL certificate
-        } else {
-            curl_setopt($oCurl, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($oCurl, CURLOPT_SSL_VERIFYHOST, false);
-        }
+        curl_setopt($oCurl, CURLOPT_SSL_VERIFYPEER, true);  // force SSL certificate check
+        curl_setopt($oCurl, CURLOPT_SSL_VERIFYHOST, 2);  // check hostname in SSL certificate
 
         curl_setopt($oCurl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($oCurl, CURLOPT_TIMEOUT, 45);
@@ -3006,12 +3006,10 @@ class fcpoRequest extends oxSuperCfg
         $this->addParameter('email', $oUser->oxuser__oxusername->value);
         $this->addParameter('language', $this->_oFcpoHelper->fcpoGetLang()->getLanguageAbbr());
         $this->addParameter('bankcountry', $aDynvalue['fcpo_elv_country']);
-        if (isset($aDynvalue['fcpo_elv_iban']) && $aDynvalue['fcpo_elv_iban'] != '' && isset($aDynvalue['fcpo_elv_bic']) && $aDynvalue['fcpo_elv_bic'] != '') {
+        if ($this->_fcpoAddIban($aDynvalue)) {
             $this->addParameter('iban', $aDynvalue['fcpo_elv_iban']);
-            $this->addParameter('bic', $aDynvalue['fcpo_elv_bic']);
-        } elseif (isset($aDynvalue['fcpo_elv_ktonr']) && $aDynvalue['fcpo_elv_ktonr'] != '' && isset($aDynvalue['fcpo_elv_blz']) && $aDynvalue['fcpo_elv_blz'] != '') {
-            $this->addParameter('bankaccount', $aDynvalue['fcpo_elv_ktonr']);
-            $this->addParameter('bankcode', $aDynvalue['fcpo_elv_blz']);
+            $sBic = (isset($aDynvalue['fcpo_elv_bic'])) ? $aDynvalue['fcpo_elv_bic'] : '';
+            $this->addParameter('bic', $sBic);
         }
 
         $oCur = $oConfig->getActShopCurrencyObject();
@@ -3023,6 +3021,24 @@ class fcpoRequest extends oxSuperCfg
         }
 
         return $aResponse;
+    }
+
+    /**
+     * Method checks if iban can be added
+     *
+     * @param array $aDynvalue
+     * @return bool
+     */
+    protected function _fcpoAddIban($aDynvalue)
+    {
+        $blAddIban = (
+            (
+                isset($aDynvalue['fcpo_elv_iban']) &&
+                $aDynvalue['fcpo_elv_iban'] != ''
+            )
+        );
+
+        return $blAddIban;
     }
 
     /**
@@ -3054,7 +3070,7 @@ class fcpoRequest extends oxSuperCfg
             $this->removeParameter('solution_version');
         }
 
-        $sPath = 'modules/fcPayOne/mandates/' . $sMandateIdentification . '.pdf';
+        $sPath = 'modules/fc/fcpayone/mandates/' . $sMandateIdentification . '.pdf';
         $sDestinationFile = getShopBasePath() . $sPath;
 
         $aOptions = array(
@@ -3072,11 +3088,11 @@ class fcpoRequest extends oxSuperCfg
             if (file_exists($sDestinationFile)) {
                 $sExists = $oDb->GetOne("SELECT oxorderid FROM fcpopdfmandates WHERE oxorderid = " . $oDb->quote($sOrderId) . " LIMIT 1");
                 if (!$sExists) {
-                    $sQuery = "INSERT INTO fcpopdfmandates VALUES (" . $oDb->quote($sOrderId) . ", " . $oDb->quote(basename($sDestinationFile)) . ")";
+                    $sQuery = "INSERT INTO fcpopdfmandates (OXORDERID, FCPO_FILENAME) VALUES (" . $oDb->quote($sOrderId) . ", " . $oDb->quote(basename($sDestinationFile)) . ")";
                     $oDb->Execute($sQuery);
                 }
 
-                $sReturn = $this->getConfig()->getShopUrl() . "modules/fcPayOne/download.php?id=" . $sOrderId;
+                $sReturn = $this->getConfig()->getShopUrl() . "modules/fc/fcpayone/download.php?id=" . $sOrderId;
                 $sStatus = 'SUCCESS';
 
                 $aOutput = array(

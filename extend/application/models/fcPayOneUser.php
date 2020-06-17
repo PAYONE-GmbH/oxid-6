@@ -58,6 +58,166 @@ class fcPayOneUser extends fcPayOneUser_parent
     }
 
     /**
+     * Overwriting load method for directly setting user flags onload
+     *
+     * @param $sOXID
+     * @return mixed
+     */
+    public function load($sOXID) {
+        $mReturn = parent::load($sOXID);
+        if ($mReturn !== false) {
+            $this->_fcpoSetUserFlags();
+        }
+
+        return $mReturn;
+    }
+
+    /**
+     * Returns current userflags
+     *
+     * @return array
+     */
+    public function fcpoGetFlagsOfUser() {
+        if ($this->_aUserFlags === null) {
+            $this->_fcpoSetUserFlags();
+        }
+        return $this->_aUserFlags;
+    }
+
+    /**
+     * Returns if given payment is allowed by flags
+     *
+     * @param $sPaymentId
+     * @return bool
+     */
+    public function fcpoPaymentCurrentlyAllowedByFlags($sPaymentId) {
+        $aForbiddenPayments = $this->fcpoGetForbiddenPaymentIds();
+        $blReturn = (in_array($sPaymentId, $aForbiddenPayments)) ? false : true;
+
+        return $blReturn;
+    }
+
+    /**
+     * Returns an array of forbidden paymentids
+     *
+     * @param void
+     * @return array
+     */
+    public function fcpoGetForbiddenPaymentIds() {
+        $this->_fcpoAddForbiddenByUserFlags();
+
+        return $this->_aForbiddenPaymentIds;
+    }
+
+    /**
+     * Adds (or refreshes) a payone user flag
+     *
+     * @param $oUserFlag
+     * @return void
+     */
+    public function fcpoAddPayoneUserFlag($oUserFlag) {
+        $oDb = $this->_oFcpoHelper->fcpoGetDb();
+        $oUtilsObject = $this->_oFcpoHelper->getFactoryObject('oxUtilsObject');
+        $sUserFlagId = $oUserFlag->fcpouserflags__oxid->value;
+        $sUserId = $this->getId();
+        $sNewOxid = $oUtilsObject->generateUId();
+
+        $sQuery = "
+          REPLACE INTO fcpouser2flag
+          (
+            OXID,
+            OXUSERID,
+            FCPOUSERFLAGID,
+            FCPOTIMESTAMP
+          )
+          VALUES
+          (
+            ".$oDb->quote($sNewOxid).",
+            ".$oDb->quote($sUserId).",
+            ".$oDb->quote($sUserFlagId).",
+            NOW()
+          )
+        ";
+
+        $oDb->Execute($sQuery);
+    }
+
+    /**
+     * Adds assigned payone userflags to user
+     *
+     * @param $aForbiddenPayments
+     * @return void
+     */
+    protected function _fcpoAddForbiddenByUserFlags() {
+        $aUserFlags = $this->fcpoGetFlagsOfUser();
+        foreach ($aUserFlags as $oUserFlag) {
+            $aPaymentsNotAllowedByFlag = $oUserFlag->fcpoGetBlockedPaymentIds();
+            $this->_aForbiddenPaymentIds = array_merge($this->_aForbiddenPaymentIds, $aPaymentsNotAllowedByFlag);
+        }
+    }
+
+    /**
+     * Sets current flags of user
+     *
+     * @param void
+     * @return array
+     */
+    protected function _fcpoSetUserFlags() {
+        $this->_aUserFlags = array();
+        $aUserFlagInfos = $this->_fcpoGetUserFlagInfos();
+        foreach ($aUserFlagInfos as $oUserFlagInfo) {
+            $sOxid = $oUserFlagInfo->sOxid;
+            $sUserFlagId = $oUserFlagInfo->sUserFlagId;
+            $sTimeStamp = $oUserFlagInfo->sTimeStamp;
+
+
+
+            $oUserFlag = oxNew('fcpouserflag');
+            if ($oUserFlag->load($sUserFlagId)) {
+                $oUserFlag->fcpoSetAssignId($sOxid);
+                $oUserFlag->fcpoSetTimeStamp($sTimeStamp);
+                $this->_aUserFlags[$sUserFlagId] = $oUserFlag;
+            }
+        }
+    }
+
+    /**
+     * Returns an array of userflag infos mandatory for
+     * determing effects
+     *
+     * @param void
+     * @return array
+     */
+    protected function _fcpoGetUserFlagInfos() {
+        $aUserFlagInfos = array();
+        $oDb = $this->_oFcpoHelper->fcpoGetDb(true);
+        $sUserId = $this->getId();
+        $sQuery = "
+          SELECT
+            OXID, 
+            FCPOUSERFLAGID,
+            FCPODISPLAYMESSAGE,
+            FCPOTIMESTAMP
+          FROM 
+            fcpouser2flag 
+          WHERE
+            OXUSERID=".$oDb->quote($sUserId)."
+        ";
+        $aRows = $oDb->getAll($sQuery);
+
+        foreach ($aRows as $aRow) {
+            $oUserFlag = new stdClass();
+            $oUserFlag->sOxid = $aRow['OXID'];
+            $oUserFlag->sUserFlagId = $aRow['FCPOUSERFLAGID'];
+            $oUserFlag->sTimeStamp = $aRow['FCPOTIMESTAMP'];
+            $oUserFlag->sDisplayMessage = $aRow['FCPODISPLAYMESSAGE'];
+            $aUserFlagInfos[] = $oUserFlag;
+        }
+
+        return $aUserFlagInfos;
+    }
+
+    /**
      * Logs user into session
      *
      * @param void
@@ -80,6 +240,19 @@ class fcPayOneUser extends fcPayOneUser_parent
         $sAmazonEmailAddress = $this->_fcpoAmazonEmailEncode($aResponse['add_paydata[email]']);
         $aResponse['add_paydata[email]'] = $sAmazonEmailAddress;
         $this->_fcpoAddOrUpdateAmazonUser($aResponse);
+    }
+
+    /**
+     * Sets the user scorevalue to red (=100) if user declines
+     * boni check
+     *
+     * @param int $iValue
+     * @return void
+     */
+    public function fcpoSetScoreOnNonApproval($iValue=100)
+    {
+        $this->oxuser__oxboni->value = $iValue;
+        $this->save();
     }
 
     /**

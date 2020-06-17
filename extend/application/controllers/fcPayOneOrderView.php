@@ -188,8 +188,7 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
 
         return $blReturn;
     }
-    
-    
+
     /**
      * Get userid by given username
      * 
@@ -201,8 +200,52 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
         $oOrder = $this->_oFcpoHelper->getFactoryObject('oxOrder');
         return $oOrder->fcpoGetIdByUserName($sUserName);
     }
-    
-    
+
+    /**
+     * Returns target controller if user hits the edit button
+     * of billing or shipping address
+     *
+     * @param void
+     * @return string
+     */
+    public function fcpoGetEditAddressTargetController() {
+        $sPaymentId = $this->_oFcpoHelper->fcpoGetSessionVariable('paymentid');
+
+        $aMap = array(
+            'fcpopaypal_express'=>'basket',
+            'fcpopaydirekt_express'=>'basket',
+        );
+
+        $sReturn = (isset($aMap[$sPaymentId])) ?
+            $aMap[$sPaymentId] :
+            'user';
+
+        return $sReturn;
+    }
+
+    /**
+     * Returns target controller action if user hits the edit
+     * button of billing or shipping address
+     *
+     * @param void
+     * @return string
+     */
+    public function fcpoGetEditAddressTargetAction()
+    {
+        $sPaymentId = $this->_oFcpoHelper->fcpoGetSessionVariable('paymentid');
+
+        $aMap = array(
+            'fcpopaypal_express'=>'fcpoUsePayPalExpress',
+            'fcpopaydirekt_express'=>'fcpoUsePaydirektExpress'
+        );
+
+        $sReturn = (isset($aMap[$sPaymentId])) ?
+            $aMap[$sPaymentId] :
+            '';
+
+        return $sReturn;
+    }
+
     /**
      * Get CountryID by countrycode
      * 
@@ -718,15 +761,16 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
     protected function _fcpoSplitAddress($sPayPalStreet) 
     {
         $sStreetNr = '';
-        $aSplit = explode(' ', $sPayPalStreet);
-        if(is_array($aSplit) && count($aSplit) == 2) {
-            $sPayPalStreet = $aSplit[0];
-            $sStreetNr = $aSplit[1];
+        if(preg_match('/\s\d/', $sPayPalStreet, $match)) {
+            $iEndOfStreetPos = strpos($sPayPalStreet, $match[0]);
+            $iStartOfStreetNrPos = $iEndOfStreetPos +1; // skip space between street and street nr
+            $sStreetNr = substr($sPayPalStreet, $iStartOfStreetNrPos);
+            $sPayPalStreet = substr($sPayPalStreet, 0, $iEndOfStreetPos);
         }
-        
+
         return array($sPayPalStreet, $sStreetNr);
     }
-    
+
     
     /**
      * Searches an existing addressid by extracting response of payone

@@ -106,11 +106,14 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     protected $_aAjaxPayolutionParams = array();
 
     /**
-     * Contains profile which matched for ratepay invoice payment
+     * Contains profile which matched for ratepay payment
      *
      * @var string
      */
-    protected $_aRatePayBillProfileIds = array('fcporp_bill' => null);
+    protected $_aRatePayProfileIds = array(
+        'fcporp_bill' => null,
+        'fcporp_debitnote' => null
+    );
 
     /**
      * List of countries that need a telephone number for payolution bill payment
@@ -216,7 +219,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      */
     public function fcpoGetRatePayMatchedProfile($sPaymentId) 
     {
-        return $this->_aRatePayBillProfileIds[$sPaymentId];
+        return $this->_aRatePayProfileIds[$sPaymentId];
     }
 
     /**
@@ -330,7 +333,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         }
 
         if ($blReturn === true) {
-            $this->_aRatePayBillProfileIds[$sPaymentId] = $aMatchingRatePayProfile['OXID'];
+            $this->_aRatePayProfileIds[$sPaymentId] = $aMatchingRatePayProfile['OXID'];
         }
 
         return $blReturn;
@@ -354,7 +357,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
                 $this->getJCB(),
                 $this->getMaestroInternational(),
                 $this->getMaestroUK(),
-                $this->getDiscover(),
                 $this->getCarteBleue(),
             ),
             'sb' => array(
@@ -441,16 +443,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     public function getMaestroUK() 
     {
         return ($this->getConfigParam('blFCPOMaestroUKActivated') && $this->isPaymentMethodAvailableToUser('U', 'cc'));
-    }
-
-    /**
-     * Check if sub payment method Discover is available to the user
-     * 
-     * @return bool
-     */
-    public function getDiscover() 
-    {
-        return ($this->getConfigParam('blFCPODiscoverActivated') && $this->isPaymentMethodAvailableToUser('C', 'cc'));
     }
 
     /**
@@ -650,7 +642,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         $this->_fcpoSetCCMetaData($oPayment, 'J', 'JCB');
         $this->_fcpoSetCCMetaData($oPayment, 'O', 'Maestro International');
         $this->_fcpoSetCCMetaData($oPayment, 'U', 'Maestro UK');
-        $this->_fcpoSetCCMetaData($oPayment, 'C', 'Discover');
         $this->_fcpoSetCCMetaData($oPayment, 'B', 'Carte Bleue');
 
         return $this->_aPaymentCCMetaData;
@@ -772,6 +763,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
             if ($blContinue === true) {
                 parent::getPaymentList();
                 $this->_fcpoCheckPaypalExpressRemoval();
+                $this->_fcpoRemoveForbiddenPaymentsByUser();
             } else {
                 $oUtils = $this->_oFcpoHelper->fcpoGetUtils();
                 $oUtils->redirect($this->_oFcpoHelper->fcpoGetConfig()->getShopHomeURL() . 'cl=user', false);
@@ -879,6 +871,28 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     }
 
     /**
+     * Template getter for current userflag messages
+     *
+     * @param void
+     * @return array
+     */
+    public function fcpoGetUserFlagMessages() {
+        $aMessages = array();
+        $oUser = $this->getUser();
+        $aUserFlags = $oUser->fcpoGetFlagsOfUser();
+        foreach ($aUserFlags as $oUserFlag) {
+            if (!$oUserFlag->fcpoGetIsActive()) continue;
+            $sCustomerMessage = $this->getPaymentErrorText();
+            $sMessage = $oUserFlag->fcpoGetTranslatedMessage($sCustomerMessage);
+            if ($sMessage) {
+                $aMessages[] = $sMessage;
+            }
+        }
+
+        return $aMessages;
+    }
+
+    /**
      * Get configured operation mode ( live or test ) for creditcard
      * 
      * @param string $sType sub payment type PAYONE
@@ -897,6 +911,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      * 
      * @param  string $sPaymentId
      * @return array
+     * @todo: The whole process of matching a profile should be moved into ratepay-model
      */
     protected function _fcpoGetMatchingProfile($sPaymentId) 
     {
@@ -912,11 +927,15 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
                 $dProfileBasketValueMax = (double) $aCurrentRatePayProfile[$sProfileBasketMaxIndex];
                 $dProfileBasketValueMin = (double) $aCurrentRatePayProfile[$sProfileBasketMinIndex];
                 $sProfileActivationStatus = $aCurrentRatePayProfile[$sProfileActivationStatusIndex];
+                $sProfileCountryBilling = $aCurrentRatePayProfile['country_code_billing'];
+                $sProfileCurrency = $aCurrentRatePayProfile['currency'];
 
                 $aRatepayMatchData = array(
                     'basketvalue_max' => $dProfileBasketValueMax,
                     'basketvalue_min' => $dProfileBasketValueMin,
                     'activation_status' => $sProfileActivationStatus,
+                    'country_code_billing' => $sProfileCountryBilling,
+                    'currency' => $sProfileCurrency,
                 );
 
                 $blProfileMatches = $this->_fcpoCheckRatePayProfileMatch($aRatepayMatchData);
@@ -938,16 +957,36 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      */
     protected function _fcpoCheckRatePayProfileMatch($aRatepayMatchData) 
     {
-        $blReturn = false;
-        if ($aRatepayMatchData['activation_status'] == '2') {
-            $dBasketValue = $this->fcpoGetBasketSum();
-
-            if ($dBasketValue <= $aRatepayMatchData['basketvalue_max'] && $dBasketValue >= $aRatepayMatchData['basketvalue_min']) {
-                $blReturn = true;
-            }
+        if ($aRatepayMatchData['activation_status'] != '2') {
+            return false;
         }
 
-        return $blReturn;
+        $dBasketValue = $this->fcpoGetBasketSum();
+        $blBasketValueMatches = (
+            $dBasketValue <= $aRatepayMatchData['basketvalue_max'] &&
+            $dBasketValue >= $aRatepayMatchData['basketvalue_min']
+        );
+        if (!$blBasketValueMatches) {
+            return false;
+        }
+
+        $sBillCountry = $this->fcGetBillCountry();
+        $blCountryMatches = (
+            $sBillCountry == $aRatepayMatchData['country_code_billing']
+        );
+        if (!$blCountryMatches) {
+            return false;
+        }
+
+        $oCur = $this->getActCurrency();
+        $blCurrencyMatches = (
+            $oCur->name == $aRatepayMatchData['currency']
+        );
+        if (!$blCurrencyMatches) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -960,6 +999,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     {
         $aMap = array(
             'fcporp_bill' => 'invoice',
+            'fcporp_debitnote' => 'elv',
         );
 
         $sReturn = '';
@@ -1126,7 +1166,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
             'J' => $this->getJCB(),
             'O' => $this->getMaestroInternational(),
             'U' => $this->getMaestroUK(),
-            'C' => $this->getDiscover(),
             'B' => $this->getCarteBleue(),
         );
 
@@ -1214,9 +1253,34 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      */
     protected function _fcpoCheckPaypalExpressRemoval() 
     {
+        $this->_fcpoRemovePaymentFromFrontend('fcpopaypal_express');
         //&& !$this->_oFcpoHelper->fcpoGetSessionVariable('fcpoWorkorderId')
-        if (array_key_exists('fcpopaypal_express', $this->_oPaymentList) !== false) {
-            unset($this->_oPaymentList['fcpopaypal_express']);
+    }
+
+    /**
+     * Removes payments that are forbidden by user
+     *
+     * @param void
+     * @return void
+     */
+    protected function _fcpoRemoveForbiddenPaymentsByUser() {
+        $oUser = $this->getUser();
+        $aForbiddenPaymentIds = $oUser->fcpoGetForbiddenPaymentIds();
+        foreach ($aForbiddenPaymentIds as $sForbiddenPaymentId) {
+            $this->_fcpoRemovePaymentFromFrontend($sForbiddenPaymentId);
+        }
+    }
+
+    /**
+     * Removes payment from frontend
+     *
+     * @param $sPaymentId
+     * @return void
+     */
+    protected function _fcpoRemovePaymentFromFrontend($sPaymentId) {
+        if (array_key_exists($sPaymentId, $this->_oPaymentList) !== false) {
+            unset($this->_oPaymentList[$sPaymentId]);
+
         }
     }
 
@@ -1324,7 +1388,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
 
             if ($blContinue !== true) {
                 $this->_fcpoSetBoniErrorValues($sPaymentId);
-                $mReturn = null;
+                $mReturn = 'basket';
             } else {
                 $this->_fcpoSetMandateParams($oPayment);
             }
@@ -1332,7 +1396,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
             $this->_fcCleanupSessionFragments($oPayment);
 
             $mReturn = $this->_fcpoPayolutionPreCheck($mReturn, $sPaymentId);
-            if ($sPaymentId == 'fcporp_bill') {
+            if (in_array($sPaymentId, array('fcporp_bill', 'fcporp_debitnote'))) {
                 $mReturn = $this->_fcpoCheckRatePayBillMandatoryUserData($mReturn, $sPaymentId);
             }
             $mReturn = $this->_fcpoAdultCheck($mReturn, $sPaymentId);
@@ -1505,7 +1569,8 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $oLang = $this->_oFcpoHelper->fcpoGetLang();
-        // mayme user entered values, save them so maybe check will be ok
+        $aRequestedValues = $this->_oFcpoHelper->fcpoGetRequestParameter('dynvalue');
+
         $this->_fcpoRatePaySaveRequestedValues($sPaymentId);
         
         $blB2b2Mode = $oConfig->getConfigParam('blFCPORatePayB2BMode');
@@ -1527,6 +1592,26 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
                 $this->_oFcpoHelper->fcpoSetSessionVariable('payerror', -20);
                 $this->_oFcpoHelper->fcpoSetSessionVariable('payerrortext', $sMessage);
             }
+        }
+
+
+        $blSepaAndDataUsageAgreed = (
+            $sPaymentId != 'fcporp_debitnote' ||
+            (
+                $aRequestedValues['fcpo_ratepay_debitnote_agreed'] == 'agreed' &&
+                $aRequestedValues['fcpo_ratepay_debitnote_sepa_agreed'] == 'agreed'
+            )
+        );
+
+        if (!$blSepaAndDataUsageAgreed) {
+            $mReturn = false;
+            $sErrorTranslateString =
+                ($aRequestedValues['fcpo_ratepay_debitnote_sepa_agreed'] != 'agreed') ?
+                    'FCPO_RATEPAY_SEPA_NOT_AGREED' :
+                    'FCPO_RATEPAY_NOT_AGREED';
+            $sMessage = $oLang->translateString($sErrorTranslateString);
+            $this->_oFcpoHelper->fcpoSetSessionVariable('payerror', -20);
+            $this->_oFcpoHelper->fcpoSetSessionVariable('payerrortext', $sMessage);
         }
 
         return $mReturn;
@@ -2587,11 +2672,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         $this->_oFcpoHelper->fcpoSetSessionVariable('_selected_paymentid', $sPaymentId);
         $this->_oFcpoHelper->fcpoDeleteSessionVariable('stsprotection');
 
-        if ($this->_fcGetCurrentVersion() >= 4400) {
-            $oSession = $this->_oFcpoHelper->fcpoGetSession();
-            $oBasket = $oSession->getBasket();
-            $oBasket->setTsProductId(null);
-        }
+        $oSession = $this->_oFcpoHelper->fcpoGetSession();
     }
 
     /**
@@ -2632,6 +2713,10 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         if ($blBoniCheckNeeded === true && $blApproval === true) {
             $blContinue = $oUser->checkAddressAndScore(false);
             $blContinue = $this->_fcpoCheckUserBoni($blContinue, $oPayment);
+        } elseif ($blBoniCheckNeeded === true && $blApproval === false) {
+            $this->_fcpoSetNotChecked($blBoniCheckNeeded, $blApproval);
+            $oUser->fcpoSetScoreOnNonApproval();
+            $blContinue = false;
         } else {
             $this->_fcpoSetNotChecked($blBoniCheckNeeded, $blApproval);
             $blContinue = true;
@@ -2989,20 +3074,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     }
 
     /**
-     * Decides wether old debit fiels should show up
-     * 
-     * @param  void
-     * @return bool
-     */
-    public function fcpoShowOldDebitFields() 
-    {
-        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
-        $blReturn = (bool) $oConfig->getConfigParam('blFCPODebitOldGer');
-
-        return $blReturn;
-    }
-
-    /**
      * Template getter returns formatted payment costs by offering
      * current oxpayment object
      *
@@ -3196,11 +3267,13 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     protected function _setValues(& $aPaymentList, $oBasket = null) 
     {
         parent::_setValues($aPaymentList, $oBasket);
+
         if (is_array($aPaymentList)) {
-            foreach ($aPaymentList as $oPayment) {
+            foreach ($aPaymentList as $index => $oPayment) {
                 if ($this->fcIsPayOnePaymentType($oPayment->getId()) && $this->fcShowApprovalMessage() && $oPayment->fcBoniCheckNeeded()) {
+                    $test = $oPayment->oxpayments__oxlongdesc->value;
                     $sApprovalLongdesc = '<br><table><tr><td><input type="hidden" name="fcpo_bonicheckapproved[' . $oPayment->getId() . ']" value="false"><input type="checkbox" name="fcpo_bonicheckapproved[' . $oPayment->getId() . ']" value="true" style="margin-bottom:0px;margin-right:10px;"></td><td>' . $this->fcGetApprovalText() . '</td></tr></table>';
-                    $oPayment->oxpayments__oxlongdesc->value .= $sApprovalLongdesc;
+                    $oPayment->oxpayments__oxlongdesc->rawValue .= $sApprovalLongdesc;
                 }
             }
         }

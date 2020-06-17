@@ -58,7 +58,6 @@ class fcpoforwarding extends oxBase
 
         $sQuery = "SELECT oxid, fcpo_payonestatus, fcpo_url, fcpo_timeout FROM fcpostatusforwarding ORDER BY oxid ASC";
         $aRows = $oDb->getAll($sQuery);
-
         foreach ($aRows as $aRow) {
             // collect values
             $sOxid = $aRow['oxid'];
@@ -114,7 +113,7 @@ class fcpoforwarding extends oxBase
         if (array_key_exists('delete', $aData) !== false) {
             $sQuery = "DELETE FROM fcpostatusforwarding WHERE oxid = {$sOxid}";
         } else {
-            $sQuery = $this->_fcpoGetUpdateQuery($sForwardingId, $sPayoneStatus, $sUrl, $iTimeout, $sOxid);
+            $sQuery = $this->_fcpoGetUpdateQuery($sForwardingId, $sPayoneStatus, $sUrl, $iTimeout);
         }
 
         return $sQuery;
@@ -127,29 +126,30 @@ class fcpoforwarding extends oxBase
      * @param  string $sPayoneStatus
      * @param  string $sUrl
      * @param  string $iTimeout
-     * @param  string $sOxid
      * @return string
      */
-    protected function _fcpoGetUpdateQuery($sForwardingId, $sPayoneStatus, $sUrl, $iTimeout, $sOxid) 
+    protected function _fcpoGetUpdateQuery($sForwardingId, $sPayoneStatus, $sUrl, $iTimeout)
     {
-        $blValidNewEntry = $this->_fcpoIsValidNewEntry($sForwardingId, $sPayoneStatus, $sUrl, $iTimeout);
+        $blValidNewEntry = $this->_fcpoIsValidNewEntry($sForwardingId, $sPayoneStatus, $sUrl);
         
         if ($blValidNewEntry) {
             $oUtilsObject = $this->_oFcpoHelper->fcpoGetUtilsObject();
             $sOxid = $oUtilsObject->generateUID();
             $sQuery = " INSERT INTO fcpostatusforwarding (
-                                fcpo_payonestatus,  fcpo_url,   fcpo_timeout
+                                oxid, fcpo_payonestatus,  fcpo_url,   fcpo_timeout
                             ) VALUES (
-                                {$sPayoneStatus}, {$sUrl},  {$iTimeout}
+                                '{$sOxid}', {$sPayoneStatus}, {$sUrl},  {$iTimeout}
                             )";
         } else {
+            $oDb = oxDb::getDb();
+            $sForwardingId = $oDb->quote($sForwardingId);
             $sQuery = " UPDATE fcpostatusforwarding
                             SET
                                 fcpo_payonestatus = {$sPayoneStatus},
                                 fcpo_url = {$sUrl},
                                 fcpo_timeout = {$iTimeout}
                             WHERE
-                                oxid = {$sOxid}";
+                                oxid = {$sForwardingId}";
         }
 
         return $sQuery;
@@ -161,12 +161,11 @@ class fcpoforwarding extends oxBase
      * @param  string $sForwardingId
      * @param  string $sPayoneStatus
      * @param  string $sUrl
-     * @param  string $iTimeout
      * @return bool
      */
-    protected function _fcpoIsValidNewEntry($sForwardingId, $sPayoneStatus, $sUrl, $iTimeout) 
+    protected function _fcpoIsValidNewEntry($sForwardingId, $sPayoneStatus, $sUrl)
     {
-        $blComplete = (!empty($sPayoneStatus) || !empty($sUrl) || !empty($iTimeout));
+        $blComplete = (!empty($sPayoneStatus) || !empty($sUrl));
         $blValid = ($sForwardingId == 'new' && $blComplete) ? true : false;
 
         return $blValid;

@@ -16,7 +16,7 @@
             <input type="hidden" name="fcpo_mode_[{$sPaymentID}]" value="[{$paymentmethod->fcpoGetOperationMode()}]">
             <ul class="form">
                 <li>
-                    <label for="cardtypeInput">[{oxmultilang ident="FCPO_CREDITCARD"}]</label>
+                    <label for="cardtypeInput">[{oxmultilang ident="FCPO_CREDITCARD"}]:</label>
                     <select id="cardtype" name="dynvalue[fcpo_kktype]">
                         <option value="V" data-cardtype="none">[{oxmultilang ident="FCPO_CREDITCARD_CHOOSE"}]</option>
                         [{foreach from=$aFcPoCCPaymentMetaData item="oFcPoCCPaymentMetaData"}]
@@ -25,28 +25,28 @@
                     </select>
                 </li>
                 <li>
-                    <label for="cardpanInput">[{oxmultilang ident="FCPO_NUMBER"}]</label>
+                    <label for="cardpanInput">[{oxmultilang ident="FCPO_NUMBER"}]:</label>
                     <span class="inputIframe" id="cardpan"></span>
                 </li>
                 [{if $oView->fcpoUseCVC()}]
                     <li>
-                        <label for="cvcInput">[{oxmultilang ident="FCPO_CARD_SECURITY_CODE"}]</label>
+                        <label for="cvcInput">[{oxmultilang ident="FCPO_CARD_SECURITY_CODE"}]:</label>
                         <span id="cardcvc2" class="inputIframe"></span>
                     </li>
                 [{/if}]
                 <li>
-                    <label for="expireInput">[{oxmultilang ident="FCPO_VALID_UNTIL"}]</label>
+                    <label for="expireInput">[{oxmultilang ident="FCPO_VALID_UNTIL"}]:</label>
                     <span id="expireInput" class="inputIframe">
                         <span id="cardexpiremonth"></span>
                         <span id="cardexpireyear"></span>
                     </span>
                 </li>
                 <li>
-                    <label for="firstname">[{oxmultilang ident="FCPO_FIRSTNAME"}]</label>
+                    <label for="firstname">[{oxmultilang ident="FCPO_FIRSTNAME"}]:</label>
                     <input placeholder="[{oxmultilang ident="FCPO_FIRSTNAME"}]" autocomplete="off" id="firstname" type="text" name="firstname" value="">
                 </li>
                 <li>
-                    <label for="lastname">[{oxmultilang ident="FCPO_LASTNAME"}]</label>
+                    <label for="lastname">[{oxmultilang ident="FCPO_LASTNAME"}]:</label>
                     <input placeholder="[{oxmultilang ident="FCPO_LASTNAME"}]" autocomplete="off" id="lastname" type="text" name="lastname" value="">
                 </li>
                 <li>

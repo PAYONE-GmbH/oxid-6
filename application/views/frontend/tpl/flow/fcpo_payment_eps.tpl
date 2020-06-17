@@ -5,7 +5,7 @@
     </dt>
     <dd>
         <div class="form-group" id="fcpo_ou_eps">
-            <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANKGROUPTYPE"}]</label>
+            <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANKGROUPTYPE"}]:</label>
             <div class="col-lg-9">
                 <select name="dynvalue[fcpo_so_bankgrouptype_eps]" class="form-control selectpicker">
                     <option value="ARZ_OVB" [{if $dynvalue.fcpo_so_bankgrouptype_eps == "ARZ_OVB"}]selected[{/if}]>Volksbanken</option>

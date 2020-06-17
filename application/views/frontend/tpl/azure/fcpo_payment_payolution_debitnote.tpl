@@ -16,7 +16,7 @@
             </li>
             [{if $oView->fcpoShowPayolutionB2C()}]
                 <li>
-                    <label>[{oxmultilang ident="FCPO_PAYOLUTION_BIRTHDATE"}]</label>
+                    <label>[{oxmultilang ident="FCPO_PAYOLUTION_BIRTHDATE"}]:</label>
                     <select name="dynvalue[fcpo_payolution_debitnote_birthdate_day]">
                         [{foreach from=$oView->fcpoGetDayRange() item='sDay'}]
                             <option value="[{$sDay}]" [{if $sDay == $oView->fcpoGetBirthdayField('day')}]selected[{/if}]>[{$sDay}]</option>
@@ -37,11 +37,11 @@
                 </li>
             [{/if}]
             <li>
-                <label>[{oxmultilang ident="FCPO_PAYOLUTION_ACCOUNTHOLDER"}]</label>
+                <label>[{oxmultilang ident="FCPO_PAYOLUTION_ACCOUNTHOLDER"}]:</label>
                 <input placeholder="[{oxmultilang ident="FCPO_PAYOLUTION_ACCOUNTHOLDER"}]" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_payolution_debitnote_accountholder]" value="[{$dynvalue.fcpo_payolution_debitnote_accountholder}]" onkeyup="fcHandleDebitInputs();return false;">
             </li>
             <li>
-                <label>[{oxmultilang ident="FCPO_BANK_IBAN"}]</label>
+                <label>[{oxmultilang ident="FCPO_BANK_IBAN"}]:</label>
                 <input placeholder="[{oxmultilang ident="FCPO_BANK_IBAN"}]" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_payolution_debitnote_iban]" value="[{$dynvalue.fcpo_payolution_debitnote_iban}]" onkeyup="fcHandleDebitInputs();return false;">
                 <div id="fcpo_payolution_iban_invalid" class="fcpo_check_error">
                     <p class="oxValidateError" style="display: block;">
@@ -50,7 +50,7 @@
                 </div>
             </li>
             <li>
-                <label>[{oxmultilang ident="FCPO_BANK_BIC"}]</label>
+                <label>[{oxmultilang ident="FCPO_BANK_BIC"}]:</label>
                 <input placeholder="[{oxmultilang ident="FCPO_BANK_BIC"}]" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_payolution_debitnote_bic]" value="[{$dynvalue.fcpo_payolution_debitnote_bic}]" onkeyup="fcHandleDebitInputs();return false;">
                 <div id="fcpo_payolution_bic_invalid" class="fcpo_check_error">
                     <p class="oxValidateError" style="display: block;">

@@ -346,10 +346,6 @@ $aLang = array(
 
 'FCPO_SHOW_SOFO_IBAN_FIELDS'                => 'Display IBAN/BIC',
 
-'FCPO_ACTIVATE_INVOICE'                     => 'Activate invoice',
-'FCPO_ACTIVATE_INSTALLMENTS'                => 'Activate installments',
-'FCPO_ACTIVATE_DIRECT_DEBIT'                => 'Activate direct debit',
-
 'FCPO_SAVEBANKDATA'                         => 'Store bank account data',
 'FCPO_HELP_SAVEBANKDATA'                    => 'Data will be stored encrypted (OXID default) and will be available to select next time',
 

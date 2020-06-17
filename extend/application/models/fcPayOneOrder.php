@@ -1036,9 +1036,9 @@ class fcPayOneOrder extends fcPayOneOrder_parent
     public function allowAccountSettlement() 
     {
         $blReturn = (
-                $this->oxorder__oxpaymenttype->value == 'fcpopayadvance' ||
-                $this->oxorder__oxpaymenttype->value == 'fcpoonlineueberweisung'
-                );
+            $this->oxorder__oxpaymenttype->value == 'fcpopayadvance' ||
+            fcPayOnePayment::fcIsPayOneOnlinePaymentType($this->oxorder__oxpaymenttype->value)
+        );
 
         return $blReturn;
     }
@@ -1052,10 +1052,10 @@ class fcPayOneOrder extends fcPayOneOrder_parent
     public function debitNeedsBankData() 
     {
         $blReturn = (
-                $this->oxorder__oxpaymenttype->value == 'fcpoinvoice' ||
-                $this->oxorder__oxpaymenttype->value == 'fcpopayadvance' ||
-                $this->oxorder__oxpaymenttype->value == 'fcpocashondel' ||
-                $this->oxorder__oxpaymenttype->value == 'fcpoonlineueberweisung'
+            $this->oxorder__oxpaymenttype->value == 'fcpoinvoice' ||
+            $this->oxorder__oxpaymenttype->value == 'fcpopayadvance' ||
+            $this->oxorder__oxpaymenttype->value == 'fcpocashondel' ||
+            fcPayOnePayment::fcIsPayOneOnlinePaymentType($this->oxorder__oxpaymenttype->value)
         );
 
         return $blReturn;

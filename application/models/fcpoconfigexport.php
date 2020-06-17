@@ -514,7 +514,6 @@ class fcpoconfigexport extends oxBase
             'fcpodebitnote' => 'elv',
             'fcpopayadvance' => 'vor',
             'fcpoinvoice' => 'rec',
-            'fcpoonlineueberweisung' => 'sb',
             'fcpopaypal' => 'wlt',
             'fcpopaypal_express' => 'wlt',
             'fcpoklarna' => 'fnc',

@@ -13,13 +13,13 @@
                 <input type="hidden" name="dynvalue[fcporp_bill_profileid]" value="[{$oView->fcpoGetRatePayMatchedProfile('fcporp_bill')}]">
                 [{if $oView->fcpoRatePayShowUstid()}]
                     <li>
-                        <label>[{oxmultilang ident="FCPO_RATEPAY_USTID"}]</label>
+                        <label>[{oxmultilang ident="FCPO_RATEPAY_USTID"}]:</label>
                         <input placeholder="[{oxmultilang ident="FCPO_RATEPAY_USTID"}]" type='text' name="dynvalue[fcporp_bill_ustid]" value="[{$oView->fcpoGetUserValue('oxustid')}]">
                     </li>
                 [{/if}]
                 [{if $oView->fcpoRatePayShowBirthdate()}]
                     <li>
-                        <label>[{oxmultilang ident="FCPO_RATEPAY_BIRTHDATE"}]</label>
+                        <label>[{oxmultilang ident="FCPO_RATEPAY_BIRTHDATE"}]:</label>
                         <select name="dynvalue[fcporp_bill_birthdate_day]">
                             [{foreach from=$oView->fcpoGetDayRange() item='sDay'}]
                                 <option value="[{$sDay}]" [{if $sDay == $oView->fcpoGetBirthdayField('day')}]selected[{/if}]>[{$sDay}]</option>
@@ -41,7 +41,7 @@
                 [{/if}]
                 [{if $oView->fcpoRatePayShowFon()}]
                     <li>
-                        <label>[{oxmultilang ident="FCPO_RATEPAY_FON"}]</label>
+                        <label>[{oxmultilang ident="FCPO_RATEPAY_FON"}]:</label>
                         <input placeholder="[{oxmultilang ident="FCPO_RATEPAY_FON"}]" type='text' name="dynvalue[fcporp_bill_fon]" value="[{$oView->fcpoGetUserValue('oxfon')}]">
                     </li>
                 [{/if}]

@@ -6,7 +6,7 @@
     <dd class="[{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]activePayment[{/if}]">
 
         <div class="form-group" id="fcpo_ou_idl">
-            <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANKGROUPTYPE"}]</label>
+            <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANKGROUPTYPE"}]:</label>
             <div class="col-lg-9">
                 <select name="dynvalue[fcpo_so_bankgrouptype_idl]" class="form-control selectpicker">
                     <option value="ABN_AMRO_BANK" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "ABN_AMRO_BANK"}]selected[{/if}]>ABN Amro</option>

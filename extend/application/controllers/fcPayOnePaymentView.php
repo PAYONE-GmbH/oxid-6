@@ -824,6 +824,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
             if ($blContinue === true) {
                 parent::getPaymentList();
                 $this->_fcpoCheckPaypalExpressRemoval();
+                $this->_fcpoRemoveForbiddenPaymentsByUser();
             } else {
                 $oUtils = $this->_oFcpoHelper->fcpoGetUtils();
                 $oUtils->redirect($this->_oFcpoHelper->fcpoGetConfig()->getShopHomeURL() . 'cl=user', false);
@@ -910,7 +911,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     {
         $sPaymentId = $this->_fcpoGetPaymentId();
         $this->_fcpoCheckKlarnaUpdateUser($sPaymentId);
-        # TODO: Update klarna new user
+
         $mReturn = parent::validatePayment();
 
         $mReturn = $this->_processParentReturnValue($mReturn);
@@ -958,6 +959,28 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         );
 
         return ($aAllowedCountryCurrencies[$sCountryIso] === $sCurrencyName);
+    }
+
+    /**
+     * Template getter for current userflag messages
+     *
+     * @param void
+     * @return array
+     */
+    public function fcpoGetUserFlagMessages() {
+        $aMessages = array();
+        $oUser = $this->getUser();
+        $aUserFlags = $oUser->fcpoGetFlagsOfUser();
+        foreach ($aUserFlags as $oUserFlag) {
+            if (!$oUserFlag->fcpoGetIsActive()) continue;
+            $sCustomerMessage = $this->getPaymentErrorText();
+            $sMessage = $oUserFlag->fcpoGetTranslatedMessage($sCustomerMessage);
+            if ($sMessage) {
+                $aMessages[] = $sMessage;
+            }
+        }
+
+        return $aMessages;
     }
 
     /**
@@ -1321,9 +1344,34 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      */
     protected function _fcpoCheckPaypalExpressRemoval() 
     {
+        $this->_fcpoRemovePaymentFromFrontend('fcpopaypal_express');
         //&& !$this->_oFcpoHelper->fcpoGetSessionVariable('fcpoWorkorderId')
-        if (array_key_exists('fcpopaypal_express', $this->_oPaymentList) !== false) {
-            unset($this->_oPaymentList['fcpopaypal_express']);
+    }
+
+    /**
+     * Removes payments that are forbidden by user
+     *
+     * @param void
+     * @return void
+     */
+    protected function _fcpoRemoveForbiddenPaymentsByUser() {
+        $oUser = $this->getUser();
+        $aForbiddenPaymentIds = $oUser->fcpoGetForbiddenPaymentIds();
+        foreach ($aForbiddenPaymentIds as $sForbiddenPaymentId) {
+            $this->_fcpoRemovePaymentFromFrontend($sForbiddenPaymentId);
+        }
+    }
+
+    /**
+     * Removes payment from frontend
+     *
+     * @param $sPaymentId
+     * @return void
+     */
+    protected function _fcpoRemovePaymentFromFrontend($sPaymentId) {
+        if (array_key_exists($sPaymentId, $this->_oPaymentList) !== false) {
+            unset($this->_oPaymentList[$sPaymentId]);
+
         }
     }
 

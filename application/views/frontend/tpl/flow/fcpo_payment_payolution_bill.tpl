@@ -17,7 +17,7 @@
             </div>
         [{elseif $oView->fcpoShowPayolutionB2C()}]
             <div class="form-group fcpo_payolution_bill_birthdate">
-                <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_PAYOLUTION_BIRTHDATE"}]</label>
+                <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_PAYOLUTION_BIRTHDATE"}]:</label>
                 <div class="col-lg-9">
                     <select name="dynvalue[fcpo_payolution_bill_birthdate_day]">
                         [{foreach from=$oView->fcpoGetDayRange() item='sDay'}]
@@ -41,9 +41,9 @@
         [{/if}]
         [{if $oView->fcpoPayolutionBillTelephoneRequired()}]
             <div class="form-group fcpo_payolution_bill_oxfon">
-                <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_PAYOLUTION_PHONE"}]</label>
+                <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_PAYOLUTION_PHONE"}]:</label>
                 <div class="col-lg-9">
-                    <input class="form-control" type="text" size="20" maxlength="64" name="dynvalue[fcpo_payolution_bill_oxfon]" value="[{$oView->fcpoGetUserValue('oxfon')}]">
+                    <input placeholder="[{oxmultilang ident="FCPO_PAYOLUTION_PHONE"}]" class="form-control" type="text" size="20" maxlength="64" name="dynvalue[fcpo_payolution_bill_oxfon]" value="[{$oView->fcpoGetUserValue('oxfon')}]">
                 </div>
             </div>
         [{/if}]

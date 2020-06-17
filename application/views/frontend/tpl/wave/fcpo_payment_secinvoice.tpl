@@ -5,10 +5,10 @@
     </dt>
     <dd class="[{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]activePayment[{/if}]">
         <input type="hidden" name="fcpo_mode_[{$sPaymentID}]" value="[{$paymentmethod->fcpoGetOperationMode()}]">
-        [{if $oView->fcpoIsB2C()}]
-            <ul class="form">
-                <li>
-                    <label>[{oxmultilang ident="FCPO_PAYOLUTION_BIRTHDATE"}]:</label>
+        [{if ! $oView->fcpoIsB2BPov()}]
+            <div class="form-group">
+                <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_SECINVOICE_BIRTHDATE"}]</label>
+                <div class="col-lg-9">
                     <select name="dynvalue[fcpo_secinvoice_birthdate_day]">
                         [{foreach from=$oView->fcpoGetDayRange() item='sDay'}]
                             <option value="[{$sDay}]" [{if $sDay == $oView->fcpoGetBirthdayField('day')}]selected[{/if}]>[{$sDay}]</option>
@@ -26,15 +26,29 @@
                             <option value="[{$sYear}]" [{if $sYear == $oView->fcpoGetBirthdayField('year')}]selected[{/if}]>[{$sYear}]</option>
                         [{/foreach}]
                     </select>
-                </li>
-            </ul>
+                </div>
+            </div>
+        [{else}]
+            [{if ! $oView->fcpoGetUserValue('oxustid')}]
+            <div class="form-group">
+                <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_SECINVOICE_USTID"}]</label>
+                <div class="col-lg-7">
+                    <input class="form-control" type="text" size="20" maxlength="64" name="dynvalue[fcpo_secinvoice_ustid]" value="[{$oView->fcpoGetUserValue('oxustid')}]">
+                </div>
+                <label class="req col-lg-12" style="padding-left: 25px">
+                    [{oxmultilang ident="FCPO_SECINVOICE_NO_COMPANY"}]
+                </label>
+
+            </div>
+            [{/if}]
         [{/if}]
         [{block name="checkout_payment_longdesc"}]
             [{if $paymentmethod->oxpayments__oxlongdesc->value}]
-                <div class="desc">
-                    [{$paymentmethod->oxpayments__oxlongdesc->getRawValue()}]
-                </div>
+            <div class="alert alert-info col-lg-offset-3 desc">
+                [{$paymentmethod->oxpayments__oxlongdesc->getRawValue()}]
+            </div>
             [{/if}]
         [{/block}]
     </dd>
 </dl>
+

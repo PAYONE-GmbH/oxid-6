@@ -265,7 +265,7 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent
      * @return bool
      */
     public function fcpoGetClientToken() {
-        return  $this->_oFcpoHelper->fcpoGetSessionVariable('klarna_client_token');
+        return $this->_oFcpoHelper->fcpoGetSessionVariable('klarna_client_token');
     }
 
     /**
@@ -275,7 +275,7 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent
      * @return bool
      */
     public function fcpoGetKlarnaAuthToken() {
-        return  $this->_oFcpoHelper->fcpoGetSessionVariable('klarna_authorization_token');
+        return $this->_oFcpoHelper->fcpoGetSessionVariable('klarna_authorization_token');
     }
 
     /**

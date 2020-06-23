@@ -628,7 +628,7 @@ function fcSetPayoneInputFields(oForm) {
 $('#fcpo_klarna_combined_agreed, #klarna_payment_selector').change(
     function() {
         var payment_id = $('#klarna_payment_selector').children("option:selected").val();
-        $('#payment_klarna_combined').val(payment_id);
+        var oForm = getPaymentForm();
 
         if ($('#fcpo_klarna_combined_agreed').is(':checked') == false) {
             $('#klarna_widget_combined_container').empty();
@@ -637,6 +637,16 @@ $('#fcpo_klarna_combined_agreed, #klarna_payment_selector').change(
                 location.reload();
             }
             return;
+        } else {
+            if (typeof(oForm['dynvalue[fcpo_klarna_birthday][year]']) !== 'undefined') {
+                var birthday = oForm['dynvalue[fcpo_klarna_birthday][year]'].value + '-'+ oForm['dynvalue[fcpo_klarna_birthday][month]'].value + '-' + oForm['dynvalue[fcpo_klarna_birthday][day]'].value;
+            }
+            if (typeof(oForm['dynvalue[fcpo_klarna_telephone]']) !== 'undefined') {
+                var telephone = oForm['dynvalue[fcpo_klarna_telephone]'].value;
+            }
+            if (typeof(oForm['dynvalue[fcpo_klarna_personalid]']) !== 'undefined') {
+                var personalid = oForm['dynvalue[fcpo_klarna_personalid]'].value;
+            }
         }
 
         let payment_category_list = {
@@ -648,9 +658,12 @@ $('#fcpo_klarna_combined_agreed, #klarna_payment_selector').change(
         var payment_category = payment_category_list[payment_id];
 
         var formParams = '{' +
-                '"payment_container_id":"klarna_widget_combined_container", ' +
-                '"payment_category":"' + payment_category + '"' +
-            '}';
+            '"payment_container_id":"klarna_widget_combined_container", ' +
+            '"payment_category":"' + payment_category + '",' +
+            '"birthday":"' + birthday + '",' +
+            '"personalid":"' + personalid + '",' +
+            '"telephone":"' + telephone + '"' +
+        '}';
 
         $.ajax(
             {
@@ -661,11 +674,13 @@ $('#fcpo_klarna_combined_agreed, #klarna_payment_selector').change(
                 data: {
                     paymentid: payment_id,
                     action: "start_session",
-                    params: formParams
+                    params: formParams,
+                    birthday: birthday,
                 },
                 success: function(Response) {
                     $('#klarna_widget_combined_container').empty();
-                    $('#klarna_combined_js_inject').html(Response);
+                    $('#klarna_combined_js_inject').empty().html(Response);
+                    $('#payment_klarna_combined').val(payment_id);
                 },
                 error: function () {
                     location.reload();
@@ -979,8 +994,8 @@ function resetCardTypeCCHosted() {
 /**
  * handles form submission if method is credit card hosted iframe
  */
-$( document).ready(function() {
-    var paymentForm = $( '#payment' );
+$(document).ready(function() {
+    var paymentForm = $('#payment');
 
     resetCardTypeCCHosted();
 

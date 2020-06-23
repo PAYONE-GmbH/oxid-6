@@ -2468,6 +2468,7 @@ class fcpoRequest extends oxSuperCfg
 
         $this->addParameter('firstname', $oUser->oxuser__oxfname->value);
         $this->addParameter('lastname', $oUser->oxuser__oxlname->value);
+        $this->addParameter('title', $this->_fcpoGetKlarnaTitleParam());
 
         if ($oUser->oxuser__oxcompany->value != '') {
             $this->addParameter('company', $oUser->oxuser__oxcompany->value);
@@ -2482,9 +2483,47 @@ class fcpoRequest extends oxSuperCfg
             $this->addParameter('state', $this->_getShortState($oUser->oxuser__oxstateid->value));
         }
 
-        if ($oUser->oxuser__oxfon->value != '') {
-            $this->addParameter('telephonenumber', $oUser->oxuser__oxfon->value);
+        $this->addParameter('telephonenumber', $oUser->oxuser__oxfon->value);
+
+        if ($oUser->oxuser__fcpopersonalid->value != '' && $oUser->oxuser__oxcompany->value != '') {
+            $this->addParameter('personalid', $oUser->oxuser__fcpopersonalid->value);
         }
+    }
+
+    /**
+     * Returns title param for klarna widget
+     *
+     * @param void
+     * @return string
+     */
+    protected function _fcpoGetKlarnaTitleParam()
+    {
+        $oSession = $this->_oFcpoHelper->fcpoGetSession();
+        $oBasket = $oSession->getBasket();
+        $oUser = $oBasket->getUser();
+        $sGender = ($oUser->oxuser__oxsal->value == 'MR') ? 'male' : 'female';
+        $sCountryIso2 = $oUser->fcpoGetUserCountryIso();
+        switch ($sCountryIso2) {
+            case 'AT':
+            case 'DE':
+                $sTitle = ($sGender === 'male') ? 'Herr' : 'Frau';
+                break;
+            case 'CH':
+                $sTitle = ($sGender === 'male') ? 'Herr' : 'Frau';
+                break;
+            case 'GB':
+            case 'US':
+                $sTitle = ($sGender === 'male') ? 'Mr' : 'Ms';
+                break;
+            case 'DK':
+            case 'FI':
+            case 'SE':
+            case 'NL':
+            case 'NO':
+                $sTitle = ($sGender === 'male') ? 'Dhr.' : 'Mevr.';
+                break;
+        }
+        return $sTitle;
     }
 
     /**
@@ -3139,12 +3178,12 @@ class fcpoRequest extends oxSuperCfg
             $this->addParameter('telephonenumber', $oOrder->oxorder__oxbillfon->value, $blIsUpdateUser); 
         }
 
-        if ((in_array($oOrder->oxorder__oxpaymenttype->value, array('fcpoklarna', 'fcpoklarna_new'))
+        if ((in_array($oOrder->oxorder__oxpaymenttype->value, array('fcpoklarna', 'fcpoklarna_invoice', 'fcpoklarna_installments', 'fcpoklarna_directdebit'))
                 && in_array($oCountry->oxcountry__oxisoalpha2->value, array('DE', 'NL', 'AT'))) || ($blIsUpdateUser || ($oUser->oxuser__oxbirthdate != '0000-00-00' && $oUser->oxuser__oxbirthdate != ''))
         ) {
             $this->addParameter('birthday', str_ireplace('-', '', $oUser->oxuser__oxbirthdate->value), $blIsUpdateUser);
         }
-        if (in_array($oOrder->oxorder__oxpaymenttype->value, array('fcpoklarna', 'fcpoklarna_new'))) {
+        if (in_array($oOrder->oxorder__oxpaymenttype->value, array('fcpoklarna', 'fcpoklarna_invoice', 'fcpoklarna_installments', 'fcpoklarna_directdebit'))) {
             if ($blIsUpdateUser || $oUser->oxuser__fcpopersonalid->value != '') {
                 $this->addParameter('personalid', $oUser->oxuser__fcpopersonalid->value, $blIsUpdateUser); 
             }

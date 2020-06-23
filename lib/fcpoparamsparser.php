@@ -101,28 +101,37 @@ class fcpoparamsparser
     }
 
     /**
-     * Returns country specific title by given salutation
+     * Returns country specific title.
      *
-     * @param $sSalutation
      * @return string
      */
-    public function fcpoGetTitle($sSalutation) {
-        $oUser = $this->_fcpoGetUser();
-        $sCountryIso = $oUser->fcpoGetUserCountryIso();
-
-        $aMap = array(
-            'DE' => array('MR' => 'Herr', 'MRS' => 'Frau'),
-            'AT' => array('MR' => 'Herr', 'MRS' => 'Frau'),
-            'CH' => array('MR' => 'Herr', 'MRS' => 'Frau'),
-            'UK' => array('MR' => 'Mr', 'MRS' => 'Mrs'),
-            'NL' => array('MR' => 'Dhr.', 'MRS' => 'Mevr.'),
-        );
-
-        if (!isset($aMap[$sCountryIso][$sSalutation])) {
-            return $sSalutation;
+    public function fcpoGetTitle() {
+        $oSession = $this->_oFcpoHelper->fcpoGetSession();
+        $oBasket = $oSession->getBasket();
+        $oUser = $oBasket->getUser();
+        $sGender = ($oUser->oxuser__oxsal->value == 'MR') ? 'male' : 'female';
+        $sCountryIso2 = $oUser->fcpoGetUserCountryIso();
+        switch ($sCountryIso2) {
+            case 'AT':
+            case 'DE':
+                $sTitle = ($sGender === 'male') ? 'Herr' : 'Frau';
+                break;
+            case 'CH':
+                $sTitle = ($sGender === 'male') ? 'Herr' : 'Frau';
+                break;
+            case 'GB':
+            case 'US':
+                $sTitle = ($sGender === 'male') ? 'Mr' : 'Ms';
+                break;
+            case 'DK':
+            case 'FI':
+            case 'SE':
+            case 'NL':
+            case 'NO':
+                $sTitle = ($sGender === 'male') ? 'Dhr.' : 'Mevr.';
+                break;
         }
-
-        return $aMap[$sCountryIso][$sSalutation];
+        return $sTitle;
     }
 
     /**
@@ -248,7 +257,7 @@ class fcpoparamsparser
                 'given_name' => $oShippingAddress->oxaddress__oxfname->value,
                 'family_name' => $oShippingAddress->oxaddress__oxlname->value,
                 'email' => $oUser->oxuser__oxusername->value,
-                'title' => $this->fcpoGetTitle($oUser->oxuser__oxsal->value),
+                'title' => $this->fcpoGetTitle(),
                 'street_address' => $oShippingAddress->oxaddress__oxstreet->value . " " . $oShippingAddress->oxaddress__oxstreetnr->value,
                 'street_address2' => $oShippingAddress->oxaddress__oxaddinfo->value,
                 'postal_code' => $oShippingAddress->oxaddress__oxzip->value,
@@ -277,7 +286,7 @@ class fcpoparamsparser
             'given_name' => $oUser->oxuser__oxfname->value,
             'family_name' => $oUser->oxuser__oxlname->value,
             'email' => $oUser->oxuser__oxusername->value,
-            'title' => $this->fcpoGetTitle($oUser->oxuser__oxsal->value),
+            'title' => $this->fcpoGetTitle(),
             'street_address' => $oUser->oxuser__oxstreet->value . " " . $oUser->oxuser__oxstreetnr->value,
             'street_address2' => $oUser->oxuser__oxaddinfo->value,
             'postal_code' => $oUser->oxuser__oxzip->value,
@@ -303,6 +312,7 @@ class fcpoparamsparser
         return array(
             'date_of_birth' => ($oUser->oxuser__oxbirthdate->value === '0000-00-00') ? '' : $oUser->oxuser__oxbirthdate->value,
             'gender' => $sGender,
+            'national_identification_number' => $oUser->oxuser__fcpopersonalid->value,
         );
     }
 

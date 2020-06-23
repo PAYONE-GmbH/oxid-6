@@ -98,7 +98,15 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      *
      * @var array
      */
-    protected $_aPaymentsClearingReferenceSave = array('fcporp_bill', 'fcpopo_bill', 'fcpopo_debitnote', 'fcpopo_installment');
+    protected $_aPaymentsClearingReferenceSave = array(
+        'fcporp_bill',
+        'fcpopo_bill',
+        'fcpopo_debitnote',
+        'fcpopo_installment',
+        'fcpoklarna_invoice',
+        'fcpoklarna_directdebit',
+        'fcpoklarna_installments',
+    );
 
     /**
      * List of Payment IDs which are foreseen for saving external shopid
@@ -1722,6 +1730,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
                 $this->oxorder__fcpoworkorderid = new oxField($sWorkorderId, oxField::T_RAW);
                 $this->_oFcpoHelper->fcpoDeleteSessionVariable('payolution_workorderid');
                 $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoWorkorderId');
+                $this->_oFcpoHelper->fcpoDeleteSessionVariable('klarna_workorderid');
             }
         }
     }

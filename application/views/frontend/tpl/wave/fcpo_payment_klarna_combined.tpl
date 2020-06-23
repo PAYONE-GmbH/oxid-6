@@ -9,6 +9,40 @@
         <input type="hidden" id="fcpo_klarna_auth_done" name="dynvalue[fcpo_klarna_auth_done]" value="false">
     </div>
     <dd class="[{if  $oView->fcpoIsKlarnaCombined($checkedPaymentId)}]activePayment[{/if}]">
+
+        [{if $oView->fcpoKlarnaIsBirthdayNeeded()}]
+        <div class="form-group">
+            <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_KLV_BIRTHDAY"}]</label>
+            <div class="col-lg-3">
+                <input class="form-control" placeholder="DD" autocomplete="off" type="text" size="3" maxlength="2" name="dynvalue[fcpo_klarna_birthday][day]">
+            </div>
+            <div class="col-lg-3">
+                <input class="form-control" placeholder="MM" autocomplete="off" type="text" size="3" maxlength="2" name="dynvalue[fcpo_klarna_birthday][month]">
+            </div>
+            <div class="col-lg-3">
+                <input class="form-control" placeholder="YYYY" autocomplete="off" type="text" size="8" maxlength="4" name="dynvalue[fcpo_klarna_birthday][year]">
+            </div>
+        </div>
+        [{/if}]
+
+        [{if $oView->fcpoKlarnaIsTelephoneNumberNeeded()}]
+        <div class="form-group">
+            <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_KLV_TELEPHONENUMBER"}]</label>
+            <div class="col-lg-9">
+                <input class="form-control" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_klarna_telephone]">
+            </div>
+        </div>
+        [{/if}]
+
+        [{if $oView->fcpoKlarnaIsPersonalIdNeeded()}]
+        <div class="form-group">
+            <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_KLV_PERSONALID"}]</label>
+            <div class="col-lg-9">
+                <input class="form-control" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_klarna_personalid]">
+            </div>
+        </div>
+        [{/if}]
+
         <select id="klarna_payment_selector" class="form-control">
             [{if $oView->fcpoPaymentActive('fcpoklarna_installments')}]
                 <option value="fcpoklarna_installments" [{if $sPaymentID == 'fcpoklarna_installments'}]selected[{/if}]>Klarna Slice it</option>

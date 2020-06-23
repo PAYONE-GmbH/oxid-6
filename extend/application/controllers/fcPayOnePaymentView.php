@@ -61,7 +61,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      *
      * @var array
      */
-    protected $_aKlarnaBirthdayNeededCountries = array('DE', 'NL', 'AT');
+    protected $_aKlarnaBirthdayNeededCountries = array('DE', 'NL', 'AT', 'CH');
 
     /**
      * Datacontainer for all cc payment meta data
@@ -325,6 +325,19 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     }
 
     /**
+     * checks if chosen payment method is allowed according to
+     * consumer score setting
+     *
+     * @param $oPayment
+     * @return bool
+     */
+    public function isPaymentMethodAllowedByBoniCheck($oPayment)
+    {
+        $oUser = $this->_fcpoGetUserFromSession();
+        return ((int)$oPayment->oxpayments__oxfromboni->value <= (int)$oUser->oxuser__oxboni->value);
+    }
+
+    /**
      * Returns if given paymentid represents an active payment
      *
      * @param $sPaymentId
@@ -334,8 +347,9 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     {
         $oPayment = $this->_oFcpoHelper->getFactoryObject('oxPayment');
         $oPayment->load($sPaymentId);
-
-        return (bool) ($oPayment->oxpayments__oxactive->value);
+        $blPaymentActive = (bool) ($oPayment->oxpayments__oxactive->value);
+        $blPaymentAllowed = $this->isPaymentMethodAllowedByBoniCheck($oPayment);
+        return ($blPaymentActive && $blPaymentAllowed );
     }
 
     /**
@@ -3065,8 +3079,9 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     public function fcpoKlarnaIsTelephoneNumberNeeded() 
     {
         $oUser = $this->getUser();
-        $blReturn = ($oUser->oxuser__oxfon->value) ? false : true;
-
+        $sBillCountryIso2 = strtolower($this->fcGetBillCountry());
+        $blCountryNeedsPhone = (array_search($sBillCountryIso2, array('no', 'se', 'dk')) !== false);
+        $blReturn = $blCountryNeedsPhone && $oUser->oxuser__oxfon->value == '';
         return $blReturn;
     }
 
@@ -3648,7 +3663,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     }
 
     /**
-     * Method saves a single value to a cerrtain field of user table
+     * Method saves a single value to a certain field of user table
      *
      * @param $sField
      * @param $sValue

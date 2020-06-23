@@ -22,6 +22,9 @@
 /*
  * load OXID Framework
  */
+
+use OxidEsales\Eshop\Core\Field;
+
 if (!function_exists('getShopBasePath')) {
     function getShopBasePath()
     {
@@ -29,8 +32,8 @@ if (!function_exists('getShopBasePath')) {
     }
 }
 
-if (file_exists(getShopBasePath() . "/bootstrap.php") ) {
-    include_once getShopBasePath() . "/bootstrap.php";
+if (file_exists(getShopBasePath() . "bootstrap.php") ) {
+    include_once getShopBasePath() . "bootstrap.php";
 }
 else {
     // global variables which are important for older OXID.
@@ -100,6 +103,7 @@ class fcpayone_ajax extends oxBase
      */
     public function fcpoTriggerKlarnaSessionStart($sPaymentId, $sParamsJson)
     {
+        $this->_fcpoUpdateUser($sParamsJson);
         $oRequest = $this->_oFcpoHelper->getFactoryObject('fcporequest');
         $aResponse = $oRequest->sendRequestKlarnaStartSession($sPaymentId);
         $blIsValid = (
@@ -126,6 +130,31 @@ class fcpayone_ajax extends oxBase
             );
 
         return $sKlarnaWidgetJS;
+    }
+
+    /**
+     *
+     *
+     * @param $sParamsJson
+     * @return string
+     */
+    public function _fcpoUpdateUser($sParamsJson)
+    {
+        $aParams = json_decode($sParamsJson, true);
+        $oSession = $this->_oFcpoHelper->fcpoGetSession();
+        $oBasket = $oSession->getBasket();
+        $oUser = $oBasket->getUser();
+        /** @var oxUser $oUser value */
+        if ($aParams['birthday'] !== 'undefined') {
+            $oUser->oxuser__oxbirthdate = new Field($aParams['birthday']);
+        }
+        if ($aParams['telephone'] !== 'undefined') {
+            $oUser->oxuser__oxfon = new Field($aParams['telephone']);
+        }
+        if ($aParams['personalid'] !== 'undefined') {
+            $oUser->oxuser__fcpopersonalid = new Field($aParams['personalid']);
+        }
+        $oUser->save();
     }
 
     /**

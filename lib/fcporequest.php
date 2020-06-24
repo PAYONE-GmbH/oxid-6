@@ -1307,6 +1307,7 @@ class fcpoRequest extends oxSuperCfg
             $this->addParameter('pr[' . (string) $iIndex . ']', $this->_fcpoGetCentPrice($sDeliveryCosts));
             $this->addParameter('no[' . (string) $iIndex . ']', '1');
             $this->addParameter('de[' . (string) $iIndex . ']', 'Standard Versand');
+            $this->addParameter('va[' . (string) $iIndex . ']', $this->_fcpoGetCentPrice($oDeliveryCosts->getVat()));
         }
 
         return $oBasket;
@@ -2046,16 +2047,17 @@ class fcpoRequest extends oxSuperCfg
         $this->addParameter('clearingtype', 'fnc');
         $this->addParameter('financingtype', $this->_fcpoGetKlarnaFinancingType($sPaymentId));
 
-        $oBasket->setPayment($sPaymentId);
-        $oBasket->calculateBasket(true);
-        $oPrice = $oBasket->getPrice();
-        $this->addParameter('amount', number_format($oPrice->getBruttoPrice(), 2, '.', '') * 100);
+        #$oBasket->setPayment($sPaymentId);
+        #$oBasket->calculateBasket(true);
+        #$oPrice = $oBasket->getPrice();
         $oCurr = $oConfig->getActShopCurrencyObject();
         $this->addParameter('currency', $oCurr->name);
 
         $this->addAddressParamsByUser($oUser);
         $this->addDeliveryAddressParams(true);
         $this->_fcpoAddBasketItemsFromSession($sShippingId);
+        $oPrice = $oBasket->getPrice();
+        $this->addParameter('amount', number_format($oPrice->getBruttoPrice(), 2, '.', '') * 100);
 
         return $this->send();
     }

@@ -170,7 +170,7 @@ class fcpayone_events
         CREATE TABLE fcpopdfmandates (
           OXORDERID char(32) COLLATE latin1_general_ci NOT NULL,
           FCPO_FILENAME varchar(32) NOT NULL DEFAULT '',
-          OXTIMESTAMP TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          OXTIMESTAMP DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
           PRIMARY KEY (OXORDERID)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
     public static $sQueryTableFcpoklarnacampaigns = "
@@ -285,7 +285,7 @@ class fcpayone_events
           `OXUSERID` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
           `FCPOUSERFLAGID` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
           `FCPODISPLAYMESSAGE` text COLLATE utf8_unicode_ci NOT NULL,
-          `FCPOTIMESTAMP` TIMESTAMP NOT NULL,
+          `FCPOTIMESTAMP` DATETIME NOT NULL,
           PRIMARY KEY (`OXID`),
           KEY `OXUSERID` (`OXUSERID`,`FCPOUSERFLAGID`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;    
@@ -297,7 +297,7 @@ class fcpayone_events
           `FCSTATUSMESSAGEID` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
           `FCSTATUSFORWARDID` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
           `FCTRIES` int(11) NOT NULL,
-          `FCLASTTRY` TIMESTAMP NOT NULL,
+          `FCLASTTRY` DATETIME NOT NULL,
           `FCLASTREQUEST` text NOT NULL,
           `FCLASTRESPONSE` text NOT NULL,
           `FCRESPONSEINFO` text NOT NULL,
@@ -331,7 +331,7 @@ class fcpayone_events
     public static $sQueryChangeFcporequestlog = "ALTER TABLE fcporequestlog CHANGE FCPO_REFNR FCPO_REFNR VARCHAR(32) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '' NOT NULL;";
     public static $sQueryAlterCampaign1 = "ALTER TABLE fcpoklarnacampaigns ADD FCPO_CAMPAIGN_LANGUAGE VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '';";
     public static $sQueryAlterCampaign2 = "ALTER TABLE fcpoklarnacampaigns ADD FCPO_CAMPAIGN_CURRENCY VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '';";
-    public static $sQueryAlterOxuser = "ALTER TABLE oxuser ADD COLUMN FCPOBONICHECKDATE TIMESTAMP DEFAULT '0000-00-00 00:00:00' NOT NULL;";
+    public static $sQueryAlterOxuser = "ALTER TABLE oxuser ADD COLUMN FCPOBONICHECKDATE DATETIME DEFAULT '0000-00-00 00:00:00' NOT NULL;";
     public static $sQueryAlterOxpaymentsLiveMode = "ALTER TABLE oxpayments ADD COLUMN FCPOLIVEMODE TINYINT(1) DEFAULT '0' NOT NULL;";
     public static $sQueryAlterOxpaymentsIsPayone = "ALTER TABLE oxpayments ADD COLUMN FCPOISPAYONE TINYINT(1) DEFAULT '0' NOT NULL;";
     public static $sQueryAlterOxorderarticlesCapturedAmount = "ALTER TABLE oxorderarticles ADD COLUMN FCPOCAPTUREDAMOUNT INT(11) DEFAULT '0' NOT NULL;";
@@ -352,7 +352,7 @@ class fcpayone_events
     public static $sQueryChangeRefNrToVarchar = "ALTER TABLE oxorder CHANGE FCPOREFNR FCPOREFNR VARCHAR( 32 ) NOT NULL DEFAULT '0'";
     public static $sQueryAlterFcpoTransactionStatusChangeToChar = "ALTER TABLE fcpotransactionstatus CHANGE OXID OXID CHAR(32) NOT NULL;";
     public static $sQueryAlterFcpoTransactionForwardingChangeToChar = "ALTER TABLE fcpostatusforwarding CHANGE OXID OXID CHAR(32) NOT NULL;";
-    public static $sQueryChangeManTIMESTAMPstamp = "ALTER TABLE fcpopdfmandates CHANGE OXTIMESTAMP OXTIMESTAMP TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP";
+    public static $sQueryChangeMandateTimestamp = "ALTER TABLE fcpopdfmandates CHANGE OXTIMESTAMP OXTIMESTAMP DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP";
     public static $aPaymentMethods = array(
         'fcpoinvoice' => 'Rechnung',
         'fcpopayadvance' => 'Vorauskasse',
@@ -581,7 +581,7 @@ class fcpayone_events
         self::changeColumnTypeIfWrong('oxorder', 'FCPOREFNR', 'varchar(32)', self::$sQueryChangeRefNrToVarchar);
         self::changeColumnTypeIfWrong('fcpotransactionstatus', 'OXID', 'int(11)', self::$sQueryAlterFcpoTransactionStatusChangeToChar);
         self::changeColumnTypeIfWrong('fcpostatusforwarding', 'OXID', 'int(11)', self::$sQueryAlterFcpoTransactionForwardingChangeToChar);
-        self::changeColumnTypeIfWrong('fcpopdfmandates', 'OXTIMESTAMP', 'TIMESTAMP', self::$sQueryChangeManTIMESTAMPstamp);
+        self::changeColumnTypeIfWrong('fcpopdfmandates', 'OXTIMESTAMP', 'DATETIME', self::$sQueryChangeMandateTimestamp);
 
         self::dropIndexIfExists('fcporefnr', 'FCPO_REFNR');
 

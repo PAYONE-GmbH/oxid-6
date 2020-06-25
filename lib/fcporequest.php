@@ -1307,7 +1307,6 @@ class fcpoRequest extends oxSuperCfg
             $this->addParameter('pr[' . (string) $iIndex . ']', $this->_fcpoGetCentPrice($sDeliveryCosts));
             $this->addParameter('no[' . (string) $iIndex . ']', '1');
             $this->addParameter('de[' . (string) $iIndex . ']', 'Standard Versand');
-            $this->addParameter('va[' . (string) $iIndex . ']', $this->_fcpoGetCentPrice($oDeliveryCosts->getVat()));
         }
 
         return $oBasket;

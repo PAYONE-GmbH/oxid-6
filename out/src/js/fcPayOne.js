@@ -651,7 +651,7 @@ $('#fcpo_klarna_combined_agreed, #klarna_payment_selector').change(
 
         let payment_category_list = {
             "fcpoklarna_invoice" : "pay_later",
-            "fcpoklarna_directdebit" : "pay_now",
+            "fcpoklarna_directdebit" : "direct_debit",
             "fcpoklarna_installments" : "pay_over_time",
         }
 

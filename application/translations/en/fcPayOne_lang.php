@@ -206,6 +206,10 @@ $aLang = array(
 'FCPO_EMAIL_CLEARING_BODY_WELCOME'              => "Hello %NAME% %SURNAME%,\nfor clearing your invoice, please use the following data:\n\n",
 'FCPO_EMAIL_CLEARING_BODY_THANKYOU'             => 'Thank you, your %SHOPNAME%-Team',
 'FCPO_EMAIL_USAGE'                              => 'Usage',
+
+'FCPO_KLARNA_COMBINED_DATA_AGREEMENT'           => 'I agree, sending my personal data to Klarna GmbH for the purpose of processing the payment.',
+'FCPO_KLARNA_NOT_AGREED'                        => 'You have to agree to submit your data to pay with klarna.',
+'FCPO_KLARNA_NO_AUTHORIZATION'                  => 'An unexpected error occurred.',
 );
 
 /*

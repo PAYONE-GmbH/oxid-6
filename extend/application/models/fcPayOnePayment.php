@@ -49,6 +49,9 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         'fcpopaypal',
         'fcpopaypal_express',
         'fcpoklarna',
+        'fcpoklarna_invoice',
+        'fcpoklarna_installments',
+        'fcpoklarna_directdebit',
         'fcpobarzahlen',
         'fcpopaydirekt',
         'fcpopo_bill',
@@ -73,6 +76,9 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         'fcpopaypal',
         'fcpopaypal_express',
         'fcpoklarna',
+        'fcpoklarna_invoice',
+        'fcpoklarna_installments',
+        'fcpoklarna_directdebit',
         'fcpopaydirekt',
         'fcpo_sofort',
         'fcpo_giropay',
@@ -450,7 +456,17 @@ class fcPayOnePayment extends fcPayOnePayment_parent
     {
         $aStoreIds = array();
 
-        $sQuery = "SELECT oxid, fcpo_campaign_code, fcpo_campaign_title, fcpo_campaign_language, fcpo_campaign_currency FROM fcpoklarnacampaigns ORDER BY oxid ASC";
+        $sQuery = "
+            SELECT 
+                oxid, 
+                fcpo_campaign_code, 
+                fcpo_campaign_title, 
+                fcpo_campaign_language, 
+                fcpo_campaign_currency
+            FROM 
+                 fcpoklarnacampaigns 
+            ORDER BY oxid ASC";
+
         $aRows = $this->_oFcpoDb->getAll($sQuery);
         foreach ($aRows as $aRow) {
             $aCampaign = $this->_fcpoGetKlarnaCampaignArray($aRow);

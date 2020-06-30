@@ -668,9 +668,10 @@ class fcpayone_main extends fcpayone_admindetails
      */
     public function fcpoIsCampaignAdded() 
     {
-        $blCampaignAdded = ( isset($this->_aAdminMessages["blCampaignAdded"]) && $this->_aAdminMessages["blCampaignAdded"] === true ) ? true : false;
-
-        return $blCampaignAdded;
+        return  (
+            isset($this->_aAdminMessages["blCampaignAdded"]) &&
+            $this->_aAdminMessages["blCampaignAdded"] === true
+        );
     }
 
     /**
@@ -758,6 +759,7 @@ class fcpayone_main extends fcpayone_admindetails
             'fcpopaypal' => 'wlt',
             'fcpopaypal_express' => 'wlt',
             'fcpoklarna' => 'fnc',
+            'fcpoklarna_new' => 'fnc',
             'fcpobarzahlen' => 'csh',
             'fcpopaydirekt' => 'wlt',
             'fcpo_sofort' => 'sb',

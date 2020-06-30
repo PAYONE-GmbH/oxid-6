@@ -84,14 +84,29 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      *
      * @var array
      */
-    protected $_aPaymentsWorkorderIdSave = array('fcpopo_bill', 'fcpopo_debitnote', 'fcpopo_installment');
+    protected $_aPaymentsWorkorderIdSave = array(
+        'fcpopo_bill',
+        'fcpopo_debitnote',
+        'fcpopo_installment',
+        'fcpoklarna_invoice',
+        'fcpoklarna_directdebit',
+        'fcpoklarna_installments',
+    );
 
     /**
      * List of Payment IDs which are foreseen for saving clearing reference
      *
      * @var array
      */
-    protected $_aPaymentsClearingReferenceSave = array('fcporp_bill', 'fcpopo_bill', 'fcpopo_debitnote', 'fcpopo_installment');
+    protected $_aPaymentsClearingReferenceSave = array(
+        'fcporp_bill',
+        'fcpopo_bill',
+        'fcpopo_debitnote',
+        'fcpopo_installment',
+        'fcpoklarna_invoice',
+        'fcpoklarna_directdebit',
+        'fcpoklarna_installments',
+    );
 
     /**
      * List of Payment IDs which are foreseen for saving external shopid
@@ -1063,13 +1078,18 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      */
     public function isDetailedProductInfoNeeded() 
     {
-        $blForcedByPaymentMethod = (
-            $this->oxorder__oxpaymenttype->value == 'fcpobillsafe' ||
-            $this->oxorder__oxpaymenttype->value == 'fcpoklarna' ||
-            $this->oxorder__oxpaymenttype->value == 'fcpo_secinvoice' ||
-            $this->oxorder__oxpaymenttype->value == 'fcporp_bill' ||
-            $this->oxorder__oxpaymenttype->value == 'fcporp_debitnote' ||
-            $this->oxorder__oxpaymenttype->value == 'fcpopaydirekt_express'
+        $blForcedByPaymentMethod = in_array(
+            $this->oxorder__oxpaymenttype->value,
+            array(
+                'fcpobillsafe',
+                'fcpoklarna',
+                'fcpoklarna_invoice',
+                'fcpoklarna_installments',
+                'fcpoklarna_directdebit',
+                'fcpo_secinvoice',
+                'fcporp_bill',
+                'fcpopaydirekt_express',
+            )
         );
 
         if ($blForcedByPaymentMethod) return true;
@@ -1461,6 +1481,10 @@ class fcPayOneOrder extends fcPayOneOrder_parent
     public function fcHandleAuthorization($blReturnRedirectUrl = false, $oPayGateway = null) 
     {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+        $aDynvalueForm = $this->_oFcpoHelper->fcpoGetRequestParameter('dynvalue');
+        if ($this->oxorder__oxpaymenttype->value === 'fcpoklarna_directdebit' && $this->_oFcpoHelper->fcpoGetSessionVariable('klarna_authorization_token') === '' ) {
+            $this->_oFcpoHelper->fcpoSetSessionVariable('klarna_authorization_token', $aDynvalueForm['klarna_authorization_token']);
+        }
         $aDynvalue = $this->_oFcpoHelper->fcpoGetSessionVariable('dynvalue');
         $aDynvalue = $aDynvalue ? $aDynvalue : $this->_oFcpoHelper->fcpoGetRequestParameter('dynvalue');
 
@@ -1697,10 +1721,16 @@ class fcPayOneOrder extends fcPayOneOrder_parent
     protected function _fcpoSaveWorkorderId($sPaymentId, $aResponse) 
     {
         if (in_array($sPaymentId, $this->_aPaymentsWorkorderIdSave)) {
-            $sWorkorderId = (isset($aResponse['add_paydata[workorderid]'])) ? $aResponse['add_paydata[workorderid]'] : false; // 
+            $sWorkorderId = (
+                isset($aResponse['add_paydata[workorderid]'])) ?
+                $aResponse['add_paydata[workorderid]'] :
+                $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoWorkorderId');
+
             if ($sWorkorderId) {
                 $this->oxorder__fcpoworkorderid = new oxField($sWorkorderId, oxField::T_RAW);
                 $this->_oFcpoHelper->fcpoDeleteSessionVariable('payolution_workorderid');
+                $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoWorkorderId');
+                $this->_oFcpoHelper->fcpoDeleteSessionVariable('klarna_workorderid');
             }
         }
     }

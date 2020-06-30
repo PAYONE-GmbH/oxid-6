@@ -199,6 +199,9 @@ $aLang = array(
     'FCPO_EMAIL_CLEARING_BODY_WELCOME'                    => "Hallo %NAME% %SURNAME%,\nzur Begleichung der Rechnung verwenden Sie bitte folgende Daten zur Überweisung:\n\n",
     'FCPO_EMAIL_CLEARING_BODY_THANKYOU'                   => 'Vielen Dank, dein %SHOPNAME%-Team',
     'FCPO_EMAIL_USAGE'                                    => 'Verwendungszweck',
+    'FCPO_KLARNA_COMBINED_DATA_AGREEMENT'                 => 'Ich stimme zu, dass meine persönlichen Daten zur Durchführung der Zahlung der Klarna GmbH gesendet werden dürfen.',
+    'FCPO_KLARNA_NOT_AGREED'                              => 'Sie müssen der Übermittlung ihrer Daten zustimmen, um mit Klarna zu bezahlen.',
+    'FCPO_KLARNA_NO_AUTHORIZATION'                        => 'Es ist ein unerwarteter Fehler aufgetreten.',
 );
 
 /*

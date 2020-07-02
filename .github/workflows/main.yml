@@ -39,6 +39,10 @@ jobs:
       run: php -m
     - name: Start MySQL
       run: sudo /etc/init.d/mysql start
+    - name: PHP Syntax Checker (Lint)
+      uses: StephaneBour/actions-php-lint@7.4
+      with:
+        dir: '.'
 
     - name: Setup Oxid 6
       run: |

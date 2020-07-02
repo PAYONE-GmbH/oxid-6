@@ -40,7 +40,7 @@ jobs:
     - name: Start MySQL
       run: sudo /etc/init.d/mysql start
     - name: PHP Syntax Checker (Lint)
-      uses: StephaneBour/actions-php-lint@7.4
+      uses: StephaneBour/actions-php-lint@${{ matrix.php-versions }}
       with:
         dir: '.'
 

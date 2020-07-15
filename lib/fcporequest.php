@@ -3137,7 +3137,7 @@ class fcpoRequest extends oxSuperCfg
                     WHERE 
                         fcpo_customerid = '{$sCustNr}' 
                     ORDER BY 
-                        fcpo_timestamp DESC 
+                        oxtimestamp DESC 
                     LIMIT 1";
         $sPayOneUserId = oxDb::getDb()->GetOne($sQuery);
         return $sPayOneUserId;

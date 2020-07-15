@@ -58,7 +58,6 @@ class fcpayone_events
     public static $sQueryTableFcporequestlog = "
         CREATE TABLE fcporequestlog (
           OXID int(11) NOT NULL AUTO_INCREMENT,
-          FCPO_TIMESTAMP timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
           FCPO_REFNR int(11) NOT NULL DEFAULT '0',
           FCPO_REQUESTTYPE varchar(32) NOT NULL DEFAULT '',
           FCPO_RESPONSESTATUS varchar(32) NOT NULL DEFAULT '',
@@ -72,7 +71,6 @@ class fcpayone_events
     public static $sQueryTableFcpotransactionstatus = "
         CREATE TABLE fcpotransactionstatus (
           OXID char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
-          FCPO_TIMESTAMP timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
           FCPO_ORDERNR int(11) DEFAULT '0',
           FCPO_KEY varchar(32) NOT NULL DEFAULT '',
           FCPO_TXACTION varchar(32) NOT NULL DEFAULT '',

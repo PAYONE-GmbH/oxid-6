@@ -942,7 +942,7 @@
 
                                 [{if $last_receivable != $receivable || ($last_receivable == $receivable && $last_payment == $payment)}]
                                     <tr>
-                                        <td class="[{$listclass}]" style="padding-left: 5px;"><a href="Javascript:editThisStatus('[{$stat->fcpotransactionstatus__oxid->value}]', '[{$oxid}]');">[{$stat->fcpotransactionstatus__fcpo_timestamp->value}]</a>&nbsp;</td>
+                                        <td class="[{$listclass}]" style="padding-left: 5px;"><a href="Javascript:editThisStatus('[{$stat->fcpotransactionstatus__oxid->value}]', '[{$oxid}]');">[{$stat->fcpotransactionstatus__oxtimestamp->value}]</a>&nbsp;</td>
                                         <td class="[{$listclass}]" style="padding-left: 5px;">[{$stat->getDisplayNameReceivable($receivable-$last_receivable)}]&nbsp;</td>
                                         <td class="[{$listclass}]" style="padding-left: 5px; [{if $receivable-$last_receivable < 0}]color: red;[{/if}]">[{$receivable-$last_receivable|number_format:2:',':''}]&nbsp;[{$stat->fcpotransactionstatus__fcpo_currency->value}]</td>
                                         <td class="[{$listclass}]" style="padding-left: 5px;"></td>
@@ -956,7 +956,7 @@
 
                                 [{if $last_payment != $payment}]
                                     <tr>
-                                        <td class="[{$listclass}]" style="padding-left: 5px;"><a href="Javascript:editThisStatus('[{$stat->fcpotransactionstatus__oxid->value}]', '[{$oxid}]');">[{$stat->fcpotransactionstatus__fcpo_timestamp->value}]</a>&nbsp;</td>
+                                        <td class="[{$listclass}]" style="padding-left: 5px;"><a href="Javascript:editThisStatus('[{$stat->fcpotransactionstatus__oxid->value}]', '[{$oxid}]');">[{$stat->fcpotransactionstatus__oxtimestamp->value}]</a>&nbsp;</td>
                                         <td class="[{$listclass}]" style="padding-left: 5px;">[{$stat->getDisplayNamePayment($payment-$last_payment)}]&nbsp;</td>
                                         <td class="[{$listclass}]" style="padding-left: 5px;">&nbsp;</td>
                                         <td class="[{$listclass}]" style="padding-left: 5px; [{if $payment-$last_payment < 0}]color: red;[{/if}]">[{$payment-$last_payment|number_format:2:',':''}]&nbsp;[{$stat->fcpotransactionstatus__fcpo_currency->value}]</td>

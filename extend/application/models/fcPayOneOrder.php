@@ -1121,7 +1121,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      */
     public function getLastStatus() 
     {
-        $sOxid = $this->_oFcpoDb->GetOne("SELECT * FROM fcpotransactionstatus WHERE fcpo_txid = '{$this->oxorder__fcpotxid->value}' ORDER BY fcpo_sequencenumber DESC, fcpo_timestamp DESC");
+        $sOxid = $this->_oFcpoDb->GetOne("SELECT * FROM fcpotransactionstatus WHERE fcpo_txid = '{$this->oxorder__fcpotxid->value}' ORDER BY fcpo_sequencenumber DESC, oxtimestamp DESC");
         if ($sOxid) {
             $oStatus = $this->_oFcpoHelper->getFactoryObject('fcpotransactionstatus');
             $oStatus->load($sOxid);
@@ -1171,7 +1171,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
                     fcpo_requesttype = 'authorization'
                 )
                 AND FCPO_RESPONSESTATUS = 'APPROVED'
-                ORDER BY FCPO_TIMESTAMP DESC
+                ORDER BY oxtimestamp DESC
             ";
             $sOxidRequest = $this->_oFcpoDb->GetOne($sSelect);
 

@@ -35,7 +35,7 @@ window.onload = function ()
             <tr class="listitem">
                 <td valign="top" class="listfilter">
                     <div class="r1"><div class="b1">
-                        <input class="listedit" type="text" size="30" maxlength="128" name="[{$oView->fcGetInputName('fcporequestlog', 'fcpo_timestamp')}]" value="[{$oView->fcGetWhereValue('fcporequestlog', 'fcpo_timestamp')}]">
+                        <input class="listedit" type="text" size="30" maxlength="128" name="[{$oView->fcGetInputName('fcporequestlog', 'oxtimestamp')}]" value="[{$oView->fcGetWhereValue('fcporequestlog', 'oxtimestamp')}]">
                     </div></div>
                 </td>
                 <td valign="top" class="listfilter">
@@ -56,7 +56,7 @@ window.onload = function ()
                 </td>
             </tr>
             <tr>
-                <td class="listheader first" height="15">&nbsp;<a href="[{$oView->fcGetSortingJavascript('fcporequestlog', 'fcpo_timestamp')}]" class="listheader">[{ oxmultilang ident="FCPO_LIST_HEADER_TIMESTAMP" }]</a></td>
+                <td class="listheader first" height="15">&nbsp;<a href="[{$oView->fcGetSortingJavascript('fcporequestlog', 'oxtimestamp')}]" class="listheader">[{ oxmultilang ident="FCPO_LIST_HEADER_TIMESTAMP" }]</a></td>
                 <td class="listheader">[{ oxmultilang ident="FCPO_CHANNEL" }]</td>
                 <td class="listheader"><a href="[{$oView->fcGetSortingJavascript('fcporequestlog', 'fcpo_requesttype')}]" class="listheader">[{ oxmultilang ident="FCPO_LIST_HEADER_REQUEST" }]</a></td>
                 <td class="listheader" colspan="2"><a href="[{$oView->fcGetSortingJavascript('fcporequestlog', 'fcpo_responsestatus')}]" class="listheader">[{ oxmultilang ident="FCPO_LIST_HEADER_RESPONSE" }]</a></td>
@@ -75,7 +75,7 @@ window.onload = function ()
                     [{ if $listitem->getId() == $oxid }]
                         [{assign var="listclass" value=listitem4 }]
                     [{ /if}]
-                    <td valign="top" class="[{ $listclass}]" height="15"><div class="listitemfloating">&nbsp;<a href="Javascript:top.oxid.admin.editThis('[{ $listitem->fcporequestlog__oxid->value}]');" class="[{ $listclass}]">[{ $listitem->fcporequestlog__fcpo_timestamp->value }]</a></div></td>
+                    <td valign="top" class="[{ $listclass}]" height="15"><div class="listitemfloating">&nbsp;<a href="Javascript:top.oxid.admin.editThis('[{ $listitem->fcporequestlog__oxid->value}]');" class="[{ $listclass}]">[{ $listitem->fcporequestlog__oxtimestamp->value }]</a></div></td>
                     <td valign="top" class="[{ $listclass}]"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{ $listitem->fcporequestlog__oxid->value }]');" class="[{ $listclass}]">Serverapi</a></div></td>
                     <td valign="top" class="[{ $listclass}]"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{ $listitem->fcporequestlog__oxid->value }]');" class="[{ $listclass}]">[{ $listitem->fcporequestlog__fcpo_requesttype->value }]</a></div></td>
                     <td valign="top" class="[{ $listclass}]"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{ $listitem->fcporequestlog__oxid->value }]');" class="[{ $listclass}]">[{ $listitem->fcporequestlog__fcpo_responsestatus->value }]</a></div></td>

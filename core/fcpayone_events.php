@@ -58,7 +58,7 @@ class fcpayone_events
     public static $sQueryTableFcporequestlog = "
         CREATE TABLE fcporequestlog (
           OXID int(11) NOT NULL AUTO_INCREMENT,
-          FCPO_REFNR int(11) NOT NULL DEFAULT '0',
+          FCPO_REFNR varchar(32) NOT NULL DEFAULT '0',
           FCPO_REQUESTTYPE varchar(32) NOT NULL DEFAULT '',
           FCPO_RESPONSESTATUS varchar(32) NOT NULL DEFAULT '',
           FCPO_REQUEST text NOT NULL,
@@ -575,7 +575,7 @@ class fcpayone_events
 
         self::changeColumnTypeIfWrong('fcpotransactionstatus', 'FCPO_USERID', 'varchar(32)', self::$sQueryChangeToVarchar1);
         self::changeColumnTypeIfWrong('fcpotransactionstatus', 'FCPO_TXID', 'varchar(32)', self::$sQueryChangeToVarchar2);
-        self::changeColumnTypeIfWrong('fcporequestlog', 'FCPO_REFNR', 'int(11)', self::$sQueryChangeFcporequestlog);
+        self::changeColumnTypeIfWrong('fcporequestlog', 'FCPO_REFNR', 'varchar(32)', self::$sQueryChangeFcporequestlog);
         self::changeColumnTypeIfWrong('oxorder', 'FCPOREFNR', 'varchar(32)', self::$sQueryChangeRefNrToVarchar);
         self::changeColumnTypeIfWrong('fcpotransactionstatus', 'OXID', 'int(11)', self::$sQueryAlterFcpoTransactionStatusChangeToChar);
         self::changeColumnTypeIfWrong('fcpostatusforwarding', 'OXID', 'int(11)', self::$sQueryAlterFcpoTransactionForwardingChangeToChar);

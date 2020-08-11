@@ -11,6 +11,7 @@ Maintenance
 * Added PAYONE Secure Invoice to Wave theme
 * Removed old unused Sofort code
 * Support address changes with PayPal Express
+* Fixed mapping issues in TX-Status Forwarding which might lead to problems connecting downstream systems like pixi*
  
 Warning(s)
  

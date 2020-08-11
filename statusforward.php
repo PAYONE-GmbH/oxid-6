@@ -51,7 +51,7 @@ class fcPayOneTransactionStatusForwarder extends fcPayOneTransactionStatusBase {
         'FCPO_PRICE'=>'price',
         'FCPO_TXID'=>'txid',
         'FCPO_REFERENCE'=>'reference',
-        'FCPO_SEQUENCENUMBER'=>'reference',
+        'FCPO_SEQUENCENUMBER'=>'sequencenumber',
         'FCPO_COMPANY'=>'company',
         'FCPO_FIRSTNAME'=>'firstname',
         'FCPO_LASTNAME'=>'lastname',
@@ -294,7 +294,7 @@ class fcPayOneTransactionStatusForwarder extends fcPayOneTransactionStatusBase {
             curl_setopt($oCurl, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($oCurl, CURLOPT_SSL_VERIFYHOST, false);
             curl_setopt($oCurl, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($oCurl, CURLOPT_TIMEOUT_MS, $iTimeout);
+            curl_setopt($oCurl, CURLOPT_TIMEOUT, $iTimeout);
 
             $mResult = curl_exec($oCurl);
             $mCurlInfo = curl_getinfo($oCurl);
@@ -394,13 +394,16 @@ class fcPayOneTransactionStatusForwarder extends fcPayOneTransactionStatusBase {
     protected function _cleanParams($aParams)
     {
         $aCleanedParams = array();
-        foreach ($aParams as $sKey=>$sValue) {
+        foreach ($aParams as $sKey => $sValue) {
             $blValid = (
                 isset($this->_aDbFields2Params[$sKey]) &&
                 $sValue != ''
             );
             if (!$blValid) {
                 continue;
+            }
+            if ($sKey === 'FCPO_TXTIME') {
+                $sValue = strtotime($sValue);
             }
             $sCallKey = $this->_aDbFields2Params[$sKey];
             $aCleanedParams[$sCallKey] = $sValue;

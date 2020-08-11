@@ -58,7 +58,7 @@ class fcpayone_events
     public static $sQueryTableFcporequestlog = "
         CREATE TABLE fcporequestlog (
           OXID int(11) NOT NULL AUTO_INCREMENT,
-          FCPO_REFNR int(11) NOT NULL DEFAULT '0',
+          FCPO_REFNR varchar(32) NOT NULL DEFAULT '0',
           FCPO_REQUESTTYPE varchar(32) NOT NULL DEFAULT '',
           FCPO_RESPONSESTATUS varchar(32) NOT NULL DEFAULT '',
           FCPO_REQUEST text NOT NULL,
@@ -86,7 +86,7 @@ class fcpayone_events
           FCPO_MODE varchar(8) NOT NULL DEFAULT '',
           FCPO_PRICE double NOT NULL DEFAULT '0',
           FCPO_TXID int(11) NOT NULL DEFAULT '0',
-          FCPO_REFERENCE int(11) NOT NULL DEFAULT '0',
+          FCPO_REFERENCE varchar(32) NOT NULL DEFAULT '0',
           FCPO_SEQUENCENUMBER int(11) NOT NULL DEFAULT '0',
           FCPO_COMPANY varchar(255) NOT NULL DEFAULT '',
           FCPO_FIRSTNAME varchar(255) NOT NULL DEFAULT '',
@@ -347,6 +347,7 @@ class fcpayone_events
     public static $sQueryAlterKlarnaCampaigns = "ALTER TABLE `fcpoklarnacampaigns` ADD `FCPAYMENTID` CHAR(32) NOT NULL AFTER `FCPO_CAMPAIGN_CURRENCY`, ADD INDEX (`FCPAYMENTID`);";
     public static $sQueryChangeToVarchar1 = "ALTER TABLE fcpotransactionstatus CHANGE FCPO_USERID FCPO_USERID VARCHAR(32) DEFAULT '0' NOT NULL;";
     public static $sQueryChangeToVarchar2 = "ALTER TABLE fcpotransactionstatus CHANGE FCPO_TXID FCPO_TXID VARCHAR(32) DEFAULT '0' NOT NULL;";
+    public static $sQueryChangeToVarchar3 = "ALTER TABLE oxorder fcpotransactionstatus FCPO_REFERENCE FCPO_REFERENCE VARCHAR( 32 ) NOT NULL DEFAULT '0'";
     public static $sQueryChangeRefNrToVarchar = "ALTER TABLE oxorder CHANGE FCPOREFNR FCPOREFNR VARCHAR( 32 ) NOT NULL DEFAULT '0'";
     public static $sQueryAlterFcpoTransactionStatusChangeToChar = "ALTER TABLE fcpotransactionstatus CHANGE OXID OXID CHAR(32) NOT NULL;";
     public static $sQueryAlterFcpoTransactionForwardingChangeToChar = "ALTER TABLE fcpostatusforwarding CHANGE OXID OXID CHAR(32) NOT NULL;";
@@ -575,7 +576,8 @@ class fcpayone_events
 
         self::changeColumnTypeIfWrong('fcpotransactionstatus', 'FCPO_USERID', 'varchar(32)', self::$sQueryChangeToVarchar1);
         self::changeColumnTypeIfWrong('fcpotransactionstatus', 'FCPO_TXID', 'varchar(32)', self::$sQueryChangeToVarchar2);
-        self::changeColumnTypeIfWrong('fcporequestlog', 'FCPO_REFNR', 'int(11)', self::$sQueryChangeFcporequestlog);
+        self::changeColumnTypeIfWrong('fcpotransactionstatus', 'FCPO_REFERENCE', 'varchar(32)', self::$sQueryChangeToVarchar3);
+        self::changeColumnTypeIfWrong('fcporequestlog', 'FCPO_REFNR', 'varchar(32)', self::$sQueryChangeFcporequestlog);
         self::changeColumnTypeIfWrong('oxorder', 'FCPOREFNR', 'varchar(32)', self::$sQueryChangeRefNrToVarchar);
         self::changeColumnTypeIfWrong('fcpotransactionstatus', 'OXID', 'int(11)', self::$sQueryAlterFcpoTransactionStatusChangeToChar);
         self::changeColumnTypeIfWrong('fcpostatusforwarding', 'OXID', 'int(11)', self::$sQueryAlterFcpoTransactionForwardingChangeToChar);

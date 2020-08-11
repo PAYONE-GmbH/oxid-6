@@ -1,3 +1,21 @@
+==1.4.0==
+New Feature(s)
+ 
+* New Klarna implementation, now supporting Klarna Debit, Invoice and Installment
+
+Maintenance
+ 
+* remove DISCOVER
+* Fix various translation issues
+* Harmonized UI for Captures & Refunds
+* Added PAYONE Secure Invoice to Wave theme
+* Removed old unused Sofort code
+* Support address changes with PayPal Express
+ 
+Warning(s)
+ 
+* Klarna legacy will be shut down by the end of Sep 2020. Only upgrade if you are either not using Klarna or have been set up with the new Klarna Connector on the PAYONE platform
+
 ==1.3.2==
 New Features
 

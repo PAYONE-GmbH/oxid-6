@@ -1,3 +1,9 @@
+[{foreach from=$oxcmp_lang item=_lng}]
+    [{if $_lng->selected}]
+        [{assign var="activeLng" value=$_lng->abbr}]
+    [{/if}]
+[{/foreach}]
+
 <script>
     var request, config;
     config = {
@@ -76,13 +82,13 @@
         },
         [{if $oView->getConfigParam('blFCPOCCErrorsActive')}]
             error: "errorOutput", // area to display error-messages (optional)
-            [{if $oView->getConfigParam('sFCPOCCErrorsLang') == "de"}]
-                language: Payone.ClientApi.Language.de // Language to display error-messages
-            [{else}]
-                language: Payone.ClientApi.Language.en
-            [{/if}]
+            language: Payone.ClientApi.Language.en
         [{/if}]
     };
+    [{* use the translation available for the current shop language, if available *}]
+    if(Payone.ClientApi.Language.hasOwnProperty('[{$activeLng}]')) {
+        config.language = Payone.ClientApi.Language['[{$activeLng}]'];
+    }
     [{capture name="fcpoCCIframes"}]
         [{foreach from=$oViewConf->fcpoGetIframeMappings() item='oMapping'}]
             [{assign var='sLangId' value=$oMapping->sLangId}]

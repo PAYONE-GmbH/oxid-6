@@ -347,7 +347,7 @@ class fcpayone_events
     public static $sQueryAlterKlarnaCampaigns = "ALTER TABLE `fcpoklarnacampaigns` ADD `FCPAYMENTID` CHAR(32) NOT NULL AFTER `FCPO_CAMPAIGN_CURRENCY`, ADD INDEX (`FCPAYMENTID`);";
     public static $sQueryChangeToVarchar1 = "ALTER TABLE fcpotransactionstatus CHANGE FCPO_USERID FCPO_USERID VARCHAR(32) DEFAULT '0' NOT NULL;";
     public static $sQueryChangeToVarchar2 = "ALTER TABLE fcpotransactionstatus CHANGE FCPO_TXID FCPO_TXID VARCHAR(32) DEFAULT '0' NOT NULL;";
-    public static $sQueryChangeToVarchar3 = "ALTER TABLE oxorder fcpotransactionstatus FCPO_REFERENCE FCPO_REFERENCE VARCHAR( 32 ) NOT NULL DEFAULT '0'";
+    public static $sQueryChangeToVarchar3 = "ALTER TABLE fcpotransactionstatus CHANGE FCPO_REFERENCE FCPO_REFERENCE VARCHAR( 32 ) NOT NULL DEFAULT '0'";
     public static $sQueryChangeRefNrToVarchar = "ALTER TABLE oxorder CHANGE FCPOREFNR FCPOREFNR VARCHAR( 32 ) NOT NULL DEFAULT '0'";
     public static $sQueryAlterFcpoTransactionStatusChangeToChar = "ALTER TABLE fcpotransactionstatus CHANGE OXID OXID CHAR(32) NOT NULL;";
     public static $sQueryAlterFcpoTransactionForwardingChangeToChar = "ALTER TABLE fcpostatusforwarding CHANGE OXID OXID CHAR(32) NOT NULL;";

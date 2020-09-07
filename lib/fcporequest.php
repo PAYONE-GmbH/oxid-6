@@ -916,7 +916,8 @@ class fcpoRequest extends oxSuperCfg
                 $this->addParameter('it[' . $i . ']', 'goods');
                 $this->addParameter('no[' . $i . ']', 1);
                 $this->addParameter('de[' . $i . ']', $oLang->translateString('FCPO_WRAPPING', null, false));
-                $this->addParameter('va[' . $i . ']', number_format($oOrder->oxorder__oxwrapvat->value * 100, 0, '.', ''));
+                // Workaround for wrong vat: oxid saves 18.95... in Db use order vat instead
+                $this->addParameter('va[' . $i . ']', number_format($oOrder->oxorder__oxartvat1->value * 100, 0, '.', ''));
                 $i++;
             }
             if ($oOrder->oxorder__oxgiftcardcost->value != 0 && ($aPositions === false || ($blDebit === false || array_key_exists('oxgiftcardcost', $aPositions) !== false))) {
@@ -1298,14 +1299,16 @@ class fcpoRequest extends oxSuperCfg
             $oBasket->setCost('oxdelivery', $oDeliveryCosts);
         }
 
+        $oLang = $this->_oFcpoHelper->fcpoGetLang();
+
         $sDeliveryCosts = $this->_fcpoFetchCostsFromBasket($oBasket, 'oxdelivery');
         $sDeliveryCosts = (double) str_replace(',', '.', $sDeliveryCosts);
         if ($sDeliveryCosts > 0) {
             $this->addParameter('it[' . $iIndex . ']', 'shipment');
-            $this->addParameter('id[' . $iIndex . ']', 'Standard Versand');
+            $this->addParameter('id[' . $iIndex . ']', 'delivery');
             $this->addParameter('pr[' . $iIndex . ']', $this->_fcpoGetCentPrice($sDeliveryCosts));
             $this->addParameter('no[' . $iIndex . ']', '1');
-            $this->addParameter('de[' . $iIndex . ']', 'Standard Versand');
+            $this->addParameter('de[' . $iIndex . ']', $oLang->translateString('FCPO_SHIPPINGCOST', null, false));
             $iIndex++;
         }
 
@@ -1313,45 +1316,50 @@ class fcpoRequest extends oxSuperCfg
         $sWrappingCosts = (double) str_replace(',', '.', $sWrappingCosts);
         if ($sWrappingCosts > 0) {
             $this->addParameter('it[' . $iIndex . ']', 'goods');
-            $this->addParameter('id[' . $iIndex . ']', 'Geschenkverpackung');
+            $this->addParameter('id[' . $iIndex . ']', 'wrapping');
             $this->addParameter('pr[' . $iIndex . ']', $this->_fcpoGetCentPrice($sWrappingCosts));
             $this->addParameter('no[' . $iIndex . ']', '1');
-            $this->addParameter('de[' . $iIndex . ']', 'Geschenkverpackung');
+            $this->addParameter('de[' . $iIndex . ']', $oLang->translateString('FCPO_WRAPPING', null, false));
             $iIndex++;
         }
 
-        $sGiftcardCosts = $this->_fcpoFetchCostsFromBasket($oBasket, 'oxgiftcard');
-        $sGiftcardCosts = (double) str_replace(',', '.', $sGiftcardCosts);
-        if ($sGiftcardCosts > 0) {
+        $sWrappingCosts = $this->_fcpoFetchCostsFromBasket($oBasket, 'oxgiftcard');
+        $sWrappingCosts = (double) str_replace(',', '.', $sWrappingCosts);
+        if ($sWrappingCosts > 0) {
             $this->addParameter('it[' . $iIndex . ']', 'goods');
-            $this->addParameter('id[' . $iIndex . ']', 'Grußkarte');
-            $this->addParameter('pr[' . $iIndex . ']', $this->_fcpoGetCentPrice($sGiftcardCosts));
+            $this->addParameter('id[' . $iIndex . ']', 'giftcard');
+            $this->addParameter('pr[' . $iIndex . ']', $this->_fcpoGetCentPrice($sWrappingCosts));
             $this->addParameter('no[' . $iIndex . ']', '1');
-            $this->addParameter('de[' . $iIndex . ']', 'Grußkarte');
+            $this->addParameter('de[' . $iIndex . ']', $oLang->translateString('FCPO_GIFTCARD', null, false));
             $iIndex++;
         }
 
-        /*$sPaymentCosts = $this->_fcpoFetchCostsFromBasket($oBasket, 'oxpayment');
+        $sPaymentCosts = $this->_fcpoFetchCostsFromBasket($oBasket, 'oxpayment');
         $sPaymentCosts = (double) str_replace(',', '.', $sPaymentCosts);
-        if ($sGiftcardCosts > 0) {
-            $this->addParameter('it[' . $iIndex . ']', 'goods');
-            $this->addParameter('id[' . $iIndex . ']', 'Zahlungsart Preisauf-/abschlag');
+        if ($sPaymentCosts != 0) {
+            $sPayDesc = '';
+            if ($sPaymentCosts > 0) {
+                $sPayDesc .= $oLang->translateString('FCPO_SURCHARGE', null, false);
+            } else {
+                $sPayDesc .= $oLang->translateString('FCPO_DEDUCTION', null, false);
+            }
+            $sPayDesc .= ' ' . str_replace(':', '', $oLang->translateString('FCPO_PAYMENTTYPE', null, false));
+            $this->addParameter('it[' . $iIndex . ']', 'handling');
+            $this->addParameter('id[' . $iIndex . ']', 'payment');
             $this->addParameter('pr[' . $iIndex . ']', $this->_fcpoGetCentPrice($sPaymentCosts));
             $this->addParameter('no[' . $iIndex . ']', '1');
-            $this->addParameter('de[' . $iIndex . ']', 'Zahlungsart Preisauf-/abschlag');
+            $this->addParameter('de[' . $iIndex . ']', $sPayDesc);
             $iIndex++;
-        }*/
-
-        /*$sVoucherValue = $oBasket->getVoucherDiscValue();
-        $sVoucherValue = (double) str_replace(',', '.', $sVoucherValue);
-        if ($sGiftcardCosts > 0) {
-            $this->addParameter('it[' . $iIndex . ']', 'voucher');
-            $this->addParameter('id[' . $iIndex . ']', 'Gutschein');
-            $this->addParameter('pr[' . $iIndex . ']', $this->_fcpoGetCentPrice($sVoucherValue));
-            $this->addParameter('no[' . $iIndex . ']', '1');
-            $this->addParameter('de[' . $iIndex . ']', 'Gutschein');
         }
-        $iIndex++;*/
+
+        foreach ($oBasket->getVouchers() AS $oVoucher) {
+            $this->addParameter('it[' . (string) $iIndex . ']', 'voucher');
+            $this->addParameter('id[' . (string) $iIndex . ']', $oVoucher->sVoucherNr);
+            $this->addParameter('pr[' . (string) $iIndex . ']', $this->_fcpoGetCentPrice($oVoucher->dVoucherdiscount * -1));
+            $this->addParameter('no[' . (string) $iIndex . ']', '1');
+            $this->addParameter('de[' . (string) $iIndex . ']', $oLang->translateString('FCPO_VOUCHER', null, false));
+            $iIndex++;
+        }
 
         return $oBasket;
     }

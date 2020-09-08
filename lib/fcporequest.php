@@ -254,7 +254,7 @@ class fcpoRequest extends oxSuperCfg
      */
     protected function setAuthorizationParameters($oOrder, $oUser, $aDynvalue, $sRefNr, $blIsPreauthorization = false)
     {
-        $oConfig = $this->getConfig();
+        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
 
         $this->addParameter('aid', $oConfig->getConfigParam('sFCPOSubAccountID')); //ID of PayOne Sub-Account
         $this->addParameter('reference', $sRefNr);
@@ -916,8 +916,8 @@ class fcpoRequest extends oxSuperCfg
                 $this->addParameter('it[' . $i . ']', 'goods');
                 $this->addParameter('no[' . $i . ']', 1);
                 $this->addParameter('de[' . $i . ']', $oLang->translateString('FCPO_WRAPPING', null, false));
-                // Workaround for wrong vat: oxid saves 18.95... in Db use order vat instead
-                $this->addParameter('va[' . $i . ']', number_format($oOrder->oxorder__oxartvat1->value * 100, 0, '.', ''));
+                // Workaround for wrong vat: oxid saves 18.95... use 0 instead
+                $this->addParameter('va[' . $i . ']', '0');
                 $i++;
             }
             if ($oOrder->oxorder__oxgiftcardcost->value != 0 && ($aPositions === false || ($blDebit === false || array_key_exists('oxgiftcardcost', $aPositions) !== false))) {
@@ -930,7 +930,19 @@ class fcpoRequest extends oxSuperCfg
                 $this->addParameter('va[' . $i . ']', number_format($oOrder->oxorder__oxgiftcardvat->value * 100, 0, '.', ''));
                 $i++;
             }
-            if ($oOrder->oxorder__oxvoucherdiscount->value != 0 && ($aPositions === false || ($blDebit === false || array_key_exists('oxvoucherdiscount', $aPositions) !== false))) {
+            $oSession = $this->getSession();
+            $oBasket = $oSession->getBasket();
+            if ($oBasket) {
+                foreach ($oBasket->getVouchers() AS $oVoucher) {
+                    $this->addParameter('it[' . $i . ']', 'voucher');
+                    $this->addParameter('id[' . $i . ']', $oVoucher->sVoucherNr);
+                    $this->addParameter('pr[' . $i . ']', $this->_fcpoGetCentPrice($oVoucher->dVoucherdiscount * -1));
+                    $this->addParameter('no[' . $i . ']', '1');
+                    $this->addParameter('de[' . $i . ']',  $oLang->translateString('FCPO_VOUCHER', null, false));
+                    $this->addParameter('va[' . $i . ']', '0');
+                    $i++;
+                }
+            } elseif ($oOrder->oxorder__oxvoucherdiscount->value != 0 && ($aPositions === false || ($blDebit === false || array_key_exists('oxvoucherdiscount', $aPositions) !== false))) {
                 $this->addParameter('id[' . $i . ']', 'voucher');
                 $this->addParameter('pr[' . $i . ']', $oOrder->oxorder__oxvoucherdiscount->value * -100);
                 $dAmount += ($oOrder->oxorder__oxvoucherdiscount->value * -1);
@@ -965,7 +977,6 @@ class fcpoRequest extends oxSuperCfg
      */
     public function sendRequestAuthorization($sType, $oOrder, $oUser, $aDynvalue, $sRefNr)
     {
-        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $this->addParameter('request', $sType); //Request method
         $this->addParameter('mode', $this->getOperationMode($oOrder->oxorder__oxpaymenttype->value)); //PayOne Portal Operation Mode (live or test)
 
@@ -1321,7 +1332,7 @@ class fcpoRequest extends oxSuperCfg
             $this->addParameter('pr[' . $iIndex . ']', $this->_fcpoGetCentPrice($sWrappingCosts));
             $this->addParameter('no[' . $iIndex . ']', '1');
             $this->addParameter('de[' . $iIndex . ']', $oLang->translateString('FCPO_WRAPPING', null, false));
-            $this->addParameter('va[' . $iIndex . ']', $this->_fcpoFetchVatCostsFromBasket($oBasket, 'oxwrapping'));
+            $this->addParameter('va[' . $iIndex . ']', '0');
             $iIndex++;
         }
 
@@ -1333,7 +1344,7 @@ class fcpoRequest extends oxSuperCfg
             $this->addParameter('pr[' . $iIndex . ']', $this->_fcpoGetCentPrice($sWrappingCosts));
             $this->addParameter('no[' . $iIndex . ']', '1');
             $this->addParameter('de[' . $iIndex . ']', $oLang->translateString('FCPO_GIFTCARD', null, false));
-            $this->addParameter('va[' . $iIndex . ']', $this->_fcpoFetchVatCostsFromBasket($oBasket, 'oxgiftcard'));
+            $this->addParameter('va[' . $iIndex . ']', $this->_fcpoFetchVatCostsFromBasket($oBasket, 'oxgiftcard') * 100);
             $iIndex++;
         }
 
@@ -1362,7 +1373,7 @@ class fcpoRequest extends oxSuperCfg
             $this->addParameter('pr[' . $iIndex . ']', $this->_fcpoGetCentPrice($oVoucher->dVoucherdiscount * -1));
             $this->addParameter('no[' . $iIndex . ']', '1');
             $this->addParameter('de[' . $iIndex . ']', $oLang->translateString('FCPO_VOUCHER', null, false));
-            $this->addParameter('va[' . $iIndex . ']', $oBasket->getPrice()->getVat() * 100);
+            $this->addParameter('va[' . $iIndex . ']', '0');
             $iIndex++;
         }
 

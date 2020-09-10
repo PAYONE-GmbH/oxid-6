@@ -348,6 +348,8 @@ class fcpayone_events
     public static $sQueryChangeToVarchar1 = "ALTER TABLE fcpotransactionstatus CHANGE FCPO_USERID FCPO_USERID VARCHAR(32) DEFAULT '0' NOT NULL;";
     public static $sQueryChangeToVarchar2 = "ALTER TABLE fcpotransactionstatus CHANGE FCPO_TXID FCPO_TXID VARCHAR(32) DEFAULT '0' NOT NULL;";
     public static $sQueryChangeToVarchar3 = "ALTER TABLE fcpotransactionstatus CHANGE FCPO_REFERENCE FCPO_REFERENCE VARCHAR( 32 ) NOT NULL DEFAULT '0'";
+    public static $sQueryAlterFcpoTransactionStatusForwardState= "ALTER TABLE fcpotransactionstatus ADD COLUMN `FCPO_FORWARD_STATE` VARCHAR(32)";
+    public static $sQueryAlterFcpoTransactionStatusForwardTries = "ALTER TABLE fcpotransactionstatus ADD COLUMN `FCPO_FORWARD_TRIES` int(11) NOT NULL DEFAULT 0";
     public static $sQueryChangeRefNrToVarchar = "ALTER TABLE oxorder CHANGE FCPOREFNR FCPOREFNR VARCHAR( 32 ) NOT NULL DEFAULT '0'";
     public static $sQueryAlterFcpoTransactionStatusChangeToChar = "ALTER TABLE fcpotransactionstatus CHANGE OXID OXID CHAR(32) NOT NULL;";
     public static $sQueryAlterFcpoTransactionForwardingChangeToChar = "ALTER TABLE fcpostatusforwarding CHANGE OXID OXID CHAR(32) NOT NULL;";
@@ -570,6 +572,8 @@ class fcpayone_events
         self::addColumnIfNotExists('fcpotransactionstatus', 'FCPO_CLEARING_DUEDATE', self::$sQueryAlterTxStatusClearing8);
         self::addColumnIfNotExists('fcpotransactionstatus', 'FCPO_CLEARING_REFERENCE', self::$sQueryAlterTxStatusClearing9);
         self::addColumnIfNotExists('fcpotransactionstatus', 'FCPO_CLEARING_INSTRUCTIONNOTE', self::$sQueryAlterTxStatusClearing10);
+        self::addColumnIfNotExists('fcpotransactionstatus', 'FCPO_FORWARD_STATE', self::$sQueryAlterFcpoTransactionStatusForwardState);
+        self::addColumnIfNotExists('fcpotransactionstatus', 'FCPO_FORWARD_TRIES', self::$sQueryAlterFcpoTransactionStatusForwardTries);
 
         self::addColumnIfNotExists('fcpoklarnacampaigns', 'FCPO_CAMPAIGN_LANGUAGE', self::$sQueryAlterCampaign1);
         self::addColumnIfNotExists('fcpoklarnacampaigns', 'FCPO_CAMPAIGN_CURRENCY', self::$sQueryAlterCampaign2);

@@ -18,12 +18,12 @@
  * @version   OXID eShop CE
  */
  
-$sLangName  = "Deutsch";
+$sLangName  = "English";
 // -------------------------------
 // RESOURCE IDENTITFIER = STRING
 // -------------------------------
 $aLang = array(
-'charset'                                       => 'ISO-8859-15',
+'charset'                                       => 'UTF-8',
 'FCPO_IBAN_INVALID'                             => 'Please enter a valid IBAN.',
 'FCPO_BIC_INVALID'                              => 'Please enter a valid BIC.',
 'FCPO_BLZ_INVALID'                              => 'Please enter a valid bank identification number.',

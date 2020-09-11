@@ -341,6 +341,21 @@ class fcPayOneTransactionStatusForwarder extends fcPayOneTransactionStatusBase {
             $this->_logForwardMessage("Updating Request with query:\n".$sQuery."\n");
 
             $oDb->execute($sQuery);
+
+            // update entry in transactionlog table for filtering tries and status
+            $sForwardState = ($blValidResult) ? 'OK' : 'ERROR';
+
+            $sQueryUpdateTransactionlog = "
+            UPDATE fcpotransactionstatus
+            SET 
+                FCPO_FORWARD_TRIES=FCPO_FORWARD_TRIES+1,
+                FCPO_FORWARD_STATE='".$sForwardState."'
+            WHERE
+                FCPO_TXID='".$aRequest['txid']."' AND FCPO_TXACTION = '".$aRequest['txaction']."'";
+
+            $this->_logForwardMessage("Updating transaction log with query:\n".$sQueryUpdateTransactionlog."\n");
+            $oDb->execute($sQueryUpdateTransactionlog);
+
         } catch (Exception $e) {
             throw $e;
         }

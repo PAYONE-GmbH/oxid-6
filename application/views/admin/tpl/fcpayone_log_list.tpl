@@ -81,18 +81,18 @@ function editThisStatus( sOxid ) {
                 </td>
                 <td valign="top" class="listfilter" nowrap>
                     <div class="r1"><div class="b1">
-                        <div class="find"><input class="listedit" type="submit" name="submitit" value="[{ oxmultilang ident="GENERAL_SEARCH" }]"></div>
-                    <input class="listedit" type="text" size="5" maxlength="128" name="[{$oView->fcGetInputName('fcpotransactionstatus', 'fcpo_txaction')}]" value="[{$oView->fcGetWhereValue('fcpotransactionstatus', 'fcpo_txaction')}]">
+                        <input class="listedit" type="text" size="5" maxlength="128" name="[{$oView->fcGetInputName('fcpotransactionstatus', 'fcpo_txaction')}]" value="[{$oView->fcGetWhereValue('fcpotransactionstatus', 'fcpo_txaction')}]">
                     </div></div>
                 </td>
                 <td valign="top" class="listfilter">
                     <div class="r1"><div class="b1">
-                            <input class="listedit" type="text" size="15" maxlength="128" name="[{$oView->fcGetInputName('fcpotransactionstatus', 'fcpo_forward_state')}]" value="[{$oView->fcGetWhereValue('fcpotransactionstatus', 'fcpo_forward_state')}]">
+                        <input class="listedit" type="text" size="15" maxlength="128" name="[{$oView->fcGetInputName('fcpotransactionstatus', 'fcpo_forward_state')}]" value="[{$oView->fcGetWhereValue('fcpotransactionstatus', 'fcpo_forward_state')}]">
                         </div></div>
                 </td>
-                <td valign="top" class="listfilter">
+                <td valign="top" class="listfilter" colspan="2">
                     <div class="r1"><div class="b1">
-                            <input class="listedit" type="text" size="15" maxlength="128" name="[{$oView->fcGetInputName('fcpotransactionstatus', 'fcpo_forward_tries')}]" value="[{$oView->fcGetWhereValue('fcpotransactionstatus', 'fcpo_forward_tries')}]">
+                            <div class="find"><input class="listedit" type="submit" name="submitit" value="[{ oxmultilang ident="GENERAL_SEARCH" }]"></div>
+                        <input class="listedit" type="text" size="15" maxlength="128" name="[{$oView->fcGetInputName('fcpotransactionstatus', 'fcpo_forward_tries')}]" value="[{$oView->fcGetWhereValue('fcpotransactionstatus', 'fcpo_forward_tries')}]">
                         </div></div>
                 </td>
             </tr>

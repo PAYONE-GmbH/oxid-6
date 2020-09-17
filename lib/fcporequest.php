@@ -932,7 +932,7 @@ class fcpoRequest extends oxSuperCfg
             }
             $oSession = $this->getSession();
             $oBasket = $oSession->getBasket();
-            if ($oBasket) {
+            if ($oBasket && count($oBasket->getVouchers()) > 0) {
                 foreach ($oBasket->getVouchers() AS $oVoucher) {
                     $this->addParameter('it[' . $i . ']', 'voucher');
                     $this->addParameter('id[' . $i . ']', $oVoucher->sVoucherNr);
@@ -1376,6 +1376,16 @@ class fcpoRequest extends oxSuperCfg
             $this->addParameter('va[' . $iIndex . ']', '0');
             $iIndex++;
         }
+        // discounts
+        foreach ($oBasket->getDiscounts() AS $oDiscount) {
+            $this->addParameter('it[' . $iIndex . ']', 'voucher');
+            $this->addParameter('id[' . $iIndex . ']', 'discount');
+            $this->addParameter('pr[' . $iIndex . ']', $this->_fcpoGetCentPrice($oDiscount->dDiscount * -1));
+            $this->addParameter('no[' . $iIndex . ']', '1');
+            $this->addParameter('de[' . $iIndex . ']',  $oLang->translateString('FCPO_DISCOUNT', null, false));
+            $this->addParameter('va[' . $iIndex . ']', '0');
+            $iIndex++;
+        }
 
         return $oBasket;
     }
@@ -1430,7 +1440,7 @@ class fcpoRequest extends oxSuperCfg
             $dAmount = $mValue->getAmount();
             $dBruttoPrice = round($dBruttoPricePosSum/$dAmount, 2);
         } else if (is_float($mValue)) {
-            $dBruttoPrice = $mValue;
+            $dBruttoPrice = round($mValue, 2);
         }
         if (isset($dBruttoPrice)) {
             $oCur = $oConfig->getActShopCurrencyObject();
@@ -1439,7 +1449,7 @@ class fcpoRequest extends oxSuperCfg
             $dReturnPrice = $dBruttoPrice * $dFactor;
         }
 
-        return $dReturnPrice;
+        return (int)$dReturnPrice;
     }
 
     protected function _fcpoAddAmazonPayParameters($oOrder) {

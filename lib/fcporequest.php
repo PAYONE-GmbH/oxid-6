@@ -959,7 +959,7 @@ class fcpoRequest extends oxSuperCfg
                 $this->addParameter('it[' . $i . ']', 'voucher');
                 $this->addParameter('no[' . $i . ']', 1);
                 $this->addParameter('de[' . $i . ']', $oLang->translateString('FCPO_DISCOUNT', null, false));
-                $this->addParameter('va[' . $i . ']', number_format($oOrder->oxorder__oxartvat1->value * 100, 0, '.', ''));
+                $this->addParameter('va[' . $i . ']', '0');
             }
         }
         return $dAmount;

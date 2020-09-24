@@ -148,9 +148,9 @@ class fcpoparamsparser
         $dTaxAmount = $oBasket->getPrice()->getVat();
 
         return array(
-            'order_amount' => $dAmount *100,
+            'order_amount' => $dAmount * 100,
             'order_tax_amount' => $dTaxAmount
-        );;
+        );
     }
 
     /**
@@ -172,7 +172,7 @@ class fcpoparamsparser
                 'reference' => $oArticle->oxarticles__oxartnum->value,
                 'name' =>  $oBasketItem->getTitle(),
                 'quantity' => $oBasketItem->getAmount(),
-                'unit_price' => $oBasketItem->getUnitPrice()->getBruttoPrice() *100,
+                'unit_price' => $oBasketItem->getUnitPrice()->getBruttoPrice() * 100,
                 'tax_rate' => $oBasketItem->getVatPercent() * 100,
                 'total_amount' => $oBasketItem->getPrice()->getBruttoPrice() * 100 * $oBasketItem->getAmount(),
                 // 'product_url' => $oBasketItem->getLink(),

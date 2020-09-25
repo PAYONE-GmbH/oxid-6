@@ -11,7 +11,6 @@
             <script language="JavaScript">
                 var di = { t: '[{$oView->fcpoGetRatePayDeviceFingerprint()}]', v: '[{$oView->fcpoGetRatePayDeviceFingerprintSnippetId()}]', l: 'Checkout'};
             </script>
-
             <script type="text/javascript"
                     src="//d.ratepay.com/[{$oView->fcpoGetRatePayDeviceFingerprintSnippetId()}]/di.js"></script>
             <noscript><link rel="stylesheet" type="text/css"

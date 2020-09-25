@@ -262,7 +262,7 @@ function loadLang(obj) {
                 [{ oxmultilang ident="FCPO_BANKACCOUNTCHECK"}]
             </td>
             <td class="edittext">
-                <input type="radio" name="confstrs[sFCPOPOSCheck]" value="-1" [{if $confstrs.sFCPOPOSCheck == '-1'}]checked[{/if}]> [{ oxmultilang ident="FCPO_DEACTIVATED" }]<br>
+                <input type="radio" name="confstrs[sFCPOPOSCheck]" value="-1" [{if !isset($confstrs.sFCPOPOSCheck) || $confstrs.sFCPOPOSCheck == '-1'}]checked[{/if}]> [{ oxmultilang ident="FCPO_DEACTIVATED" }]<br>
                 <input type="radio" name="confstrs[sFCPOPOSCheck]" value="0" [{if $confstrs.sFCPOPOSCheck == '0'}]checked[{/if}]> [{ oxmultilang ident="FCPO_ACTIVATED" }]<br>
                 <input type="radio" name="confstrs[sFCPOPOSCheck]" value="1" [{if $confstrs.sFCPOPOSCheck == '1'}]checked[{/if}]> [{ oxmultilang ident="FCPO_ACTIVATEDWITHPOS" }]
             </td>

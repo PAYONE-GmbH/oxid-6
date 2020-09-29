@@ -634,13 +634,13 @@ class fcpoconfigexport extends oxBase
         $aExistingMappings = $oMapping->fcpoGetExistingMappings();
 
         foreach ($aExistingMappings as $oCurrentMapping) {
-            $sAbbr = $this->_getPaymentAbbreviation($oCurrentMapping->sOxid);
+            $sAbbr = $this->_getPaymentAbbreviation($oCurrentMapping->sPaymentType);
             if (array_key_exists($sAbbr, $aMappings) === false) {
                 $aMappings[$sAbbr] = array();
             }
             $aMappings[$sAbbr][] = array(
                 'from' => $oCurrentMapping->sPayoneStatusId,
-                'to' => $oCurrentMapping->sFolder,
+                'to' => $oCurrentMapping->sShopStatusId,
             );
         }
 

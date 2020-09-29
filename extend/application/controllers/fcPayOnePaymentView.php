@@ -1750,6 +1750,31 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     }
 
     /**
+     * Returns link for displaying legal terms for Ratepay
+     *
+     * @param void
+     * @return string
+     */
+    public function fcpoGetRatepayAgreementLink() {
+
+        $sLink = 'https://www.ratepay.com/legal-payment-terms';
+
+        return $sLink;
+    }
+
+    /**
+     * Returns link for displaying data privacy statement for Ratepay
+     *
+     * @param void
+     * @return string
+     */
+    public function fcpoGetRatepayPrivacyLink() {
+        $sLink = 'https://www.ratepay.com/legal-payment-dataprivacy';
+
+        return $sLink;
+    }
+
+    /**
      * Wether precheck has been called via ajax or not we probably need to echo an error message into frontend
      *
      * @param  $mReturn

@@ -725,6 +725,15 @@
                 <div class="spacer"></div>
             </dl>
             <dl>
+                <dt>
+                    <input type="text" class="txt" name="confstrs[sFCPORatePaySnippetID]" [{if $confstrs.sFCPORatePaySnippetID == '' || $confstrs.sFCPORatePaySnippetID == 'ratepay'  }] value="ratepay" [{else}]  value="[{$confstrs.sFCPORatePaySnippetID}]" [{/if}]>
+                </dt>
+                <dd>
+                    Ratepay Snippet ID
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+            <dl>
                 <dt></dt>
                 <dd>
                     <h3>[{oxmultilang ident="FCPO_PROFILES_RATEPAY"}]</h3>

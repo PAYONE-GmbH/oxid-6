@@ -51,7 +51,7 @@ function editThisStatus( sOxid ) {
             <tr class="listitem">
                 <td valign="top" class="listfilter first" height="20">
                     <div class="r1"><div class="b1">
-                        <input class="listedit" type="text" size="20" maxlength="128" name="[{$oView->fcGetInputName('fcpotransactionstatus', 'fcpo_timestamp')}]" value="[{$oView->fcGetWhereValue('fcpotransactionstatus', 'fcpo_timestamp')}]">
+                        <input class="listedit" type="text" size="20" maxlength="128" name="[{$oView->fcGetInputName('fcpotransactionstatus', 'oxtimestamp')}]" value="[{$oView->fcGetWhereValue('fcpotransactionstatus', 'oxtimestamp')}]">
                     </div></div>
                 </td>
                 <td valign="top" class="listfilter">
@@ -79,21 +79,33 @@ function editThisStatus( sOxid ) {
                         <input class="listedit" type="text" size="15" maxlength="128" name="[{$oView->fcGetInputName('fcpotransactionstatus', 'fcpo_price')}]" value="[{$oView->fcGetWhereValue('fcpotransactionstatus', 'fcpo_price')}]">
                     </div></div>
                 </td>
-                <td valign="top" class="listfilter" colspan="2" nowrap>
+                <td valign="top" class="listfilter" nowrap>
                     <div class="r1"><div class="b1">
-                        <div class="find"><input class="listedit" type="submit" name="submitit" value="[{ oxmultilang ident="GENERAL_SEARCH" }]"></div>
-                    <input class="listedit" type="text" size="5" maxlength="128" name="[{$oView->fcGetInputName('fcpotransactionstatus', 'fcpo_txaction')}]" value="[{$oView->fcGetWhereValue('fcpotransactionstatus', 'fcpo_txaction')}]">
+                        <input class="listedit" type="text" size="5" maxlength="128" name="[{$oView->fcGetInputName('fcpotransactionstatus', 'fcpo_txaction')}]" value="[{$oView->fcGetWhereValue('fcpotransactionstatus', 'fcpo_txaction')}]">
                     </div></div>
+                </td>
+                <td valign="top" class="listfilter">
+                    <div class="r1"><div class="b1">
+                        <input class="listedit" type="text" size="15" maxlength="128" name="[{$oView->fcGetInputName('fcpotransactionstatus', 'fcpo_forward_state')}]" value="[{$oView->fcGetWhereValue('fcpotransactionstatus', 'fcpo_forward_state')}]">
+                        </div></div>
+                </td>
+                <td valign="top" class="listfilter" colspan="2">
+                    <div class="r1"><div class="b1">
+                            <div class="find"><input class="listedit" type="submit" name="submitit" value="[{ oxmultilang ident="GENERAL_SEARCH" }]"></div>
+                        <input class="listedit" type="text" size="15" maxlength="128" name="[{$oView->fcGetInputName('fcpotransactionstatus', 'fcpo_forward_tries')}]" value="[{$oView->fcGetWhereValue('fcpotransactionstatus', 'fcpo_forward_tries')}]">
+                        </div></div>
                 </td>
             </tr>
             <tr>
-                <td class="listheader first" height="15">&nbsp;<a href="[{$oView->fcGetSortingJavascript('fcpotransactionstatus', 'fcpo_timestamp')}]" class="listheader">[{ oxmultilang ident="FCPO_LIST_HEADER_TXTIME" }]</a></td>
+                <td class="listheader first" height="15">&nbsp;<a href="[{$oView->fcGetSortingJavascript('fcpotransactionstatus', 'oxtimestamp')}]" class="listheader">[{ oxmultilang ident="FCPO_LIST_HEADER_TXTIME" }]</a></td>
                 <td class="listheader"><a href="[{$oView->fcGetSortingJavascript('fcpotransactionstatus', 'fcpo_ordernr')}]" class="listheader">[{ oxmultilang ident="FCPO_LIST_HEADER_ORDERNR" }]</a></td>
                 <td class="listheader"><a href="[{$oView->fcGetSortingJavascript('fcpotransactionstatus', 'fcpo_txid')}]" class="listheader">[{ oxmultilang ident="FCPO_LIST_HEADER_TXID" }]</a></td>
                 <td class="listheader"><a href="[{$oView->fcGetSortingJavascript('fcpotransactionstatus', 'fcpo_clearingtype')}]" class="listheader">[{ oxmultilang ident="FCPO_LIST_HEADER_CLEARINGTYPE" }]</a></td>
                 <td class="listheader"><a href="[{$oView->fcGetSortingJavascript('fcpotransactionstatus', 'fcpo_email')}]" class="listheader">[{ oxmultilang ident="FCPO_LIST_HEADER_EMAIL" }]</a></td>
                 <td class="listheader"><a href="[{$oView->fcGetSortingJavascript('fcpotransactionstatus', 'fcpo_price')}]" class="listheader">[{ oxmultilang ident="FCPO_LIST_HEADER_PRICE" }]</a></td>
-                <td class="listheader" colspan="2"><a href="[{$oView->fcGetSortingJavascript('fcpotransactionstatus', 'fcpo_txaction')}]" class="listheader">[{ oxmultilang ident="FCPO_LIST_HEADER_TXACTION" }]</a></td>
+                <td class="listheader"><a href="[{$oView->fcGetSortingJavascript('fcpotransactionstatus', 'fcpo_txaction')}]" class="listheader">[{ oxmultilang ident="FCPO_LIST_HEADER_TXACTION" }]</a></td>
+                <td class="listheader"><a href="[{$oView->fcGetSortingJavascript('fcpotransactionstatus', 'fcpo_forward_state')}]" class="listheader">[{ oxmultilang ident="FCPO_LIST_HEADER_FORWARD_STATE" }]</a></td>
+                <td class="listheader"><a href="[{$oView->fcGetSortingJavascript('fcpotransactionstatus', 'fcpo_forward_tries')}]" class="listheader">[{ oxmultilang ident="FCPO_LIST_HEADER_FORWARD_TRIES" }]</a></td>
             </tr>
 
             [{assign var="blWhite" value=""}]
@@ -109,13 +121,15 @@ function editThisStatus( sOxid ) {
                     [{ if $listitem->getId() == $oxid }]
                         [{assign var="listclass" value=listitem4 }]
                     [{ /if}]
-                    <td valign="top" class="[{ $listclass}]" height="15"><div class="listitemfloating">&nbsp;<a href="Javascript:top.oxid.admin.editThis('[{ $listitem->fcpotransactionstatus__oxid->value}]');" class="[{ $listclass}]">[{ $listitem->fcpotransactionstatus__fcpo_timestamp->value }]</a></div></td>
+                    <td valign="top" class="[{ $listclass}]" height="15"><div class="listitemfloating">&nbsp;<a href="Javascript:top.oxid.admin.editThis('[{ $listitem->fcpotransactionstatus__oxid->value}]');" class="[{ $listclass}]">[{ $listitem->fcpotransactionstatus__oxtimestamp->value }]</a></div></td>
                     <td valign="top" class="[{ $listclass}]"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{ $listitem->fcpotransactionstatus__oxid->value }]');" class="[{ $listclass}]">[{ $listitem->fcpotransactionstatus__fcpo_ordernr->value }]</a></div></td>
                     <td valign="top" class="[{ $listclass}]"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{ $listitem->fcpotransactionstatus__oxid->value }]');" class="[{ $listclass}]">[{ $listitem->fcpotransactionstatus__fcpo_txid->value }]</a></div></td>
                     <td valign="top" class="[{ $listclass}]"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{ $listitem->fcpotransactionstatus__oxid->value }]');" class="[{ $listclass}]">[{ $listitem->fcpotransactionstatus__fcpo_clearingtype->value }]</a></div></td>
                     <td valign="top" class="[{ $listclass}]"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{ $listitem->fcpotransactionstatus__oxid->value }]');" class="[{ $listclass}]">[{ $listitem->fcpotransactionstatus__fcpo_email->value }]</a></div></td>
                     <td valign="top" class="[{ $listclass}]"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{ $listitem->fcpotransactionstatus__oxid->value }]');" class="[{ $listclass}]">[{ $listitem->fcpotransactionstatus__fcpo_price->value|number_format:2:',':'' }] [{$listitem->fcpotransactionstatus__fcpo_currency->value}]</a></div></td>
                     <td valign="top" class="[{ $listclass}]"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{ $listitem->fcpotransactionstatus__oxid->value }]');" class="[{ $listclass}]">[{ $listitem->fcpotransactionstatus__fcpo_txaction->value }]</a></div></td>
+                    <td valign="top" class="[{ $listclass}]"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{ $listitem->fcpotransactionstatus__oxid->value }]');" class="[{ $listclass}]">[{ $listitem->fcpotransactionstatus__fcpo_forward_state->value }]</a></div></td>
+                    <td valign="top" class="[{ $listclass}]"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{ $listitem->fcpotransactionstatus__oxid->value }]');" class="[{ $listclass}]">[{ $listitem->fcpotransactionstatus__fcpo_forward_tries->value }]</a></div></td>
                     <td class="[{ $listclass}]"></td>
                 </tr>
                 [{if $blWhite == "2"}]

@@ -16,7 +16,7 @@
                     <input type="hidden" name="[{$oFcPoCCPaymentMetaData->sOperationModeName}]" value="[{$oFcPoCCPaymentMetaData->sOperationModeValue}]">
                 [{/foreach}]
                 <div class="form-group fcpo_kktype">
-                    <label for="cardtype" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_CREDITCARD"}]</label>
+                    <label for="cardtype" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_CREDITCARD"}]:</label>
                     <div class="col-lg-9">
                         <select id="cardtype" name="dynvalue[fcpo_kktype]"  class="form-control selectpicker" required="required">
                             <option value="V" data-cardtype="none">[{oxmultilang ident="FCPO_CREDITCARD_CHOOSE"}]</option>
@@ -27,7 +27,7 @@
                     </div>
                 </div>
                 <div class="form-group fcpo_kknumber">
-                    <label for="cardpanInput" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_NUMBER"}]</label>
+                    <label for="cardpanInput" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_NUMBER"}]:</label>
                     <div class="col-lg-9">
                         <span class="inputIframe" id="cardpan"></span>
                     </div>
@@ -35,14 +35,14 @@
 
                 [{if $oView->fcpoUseCVC()}]
                     <div class="form-group fcpo_kkpruef">
-                        <label for="cvcInput" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_CARD_SECURITY_CODE"}]</label>
+                        <label for="cvcInput" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_CARD_SECURITY_CODE"}]:</label>
                         <div class="col-lg-9">
                             <span id="cardcvc2" class="inputIframe"></span>
                         </div>
                     </div>        
                 [{/if}]
                 <div class="form-group fcpo_kkexpire">
-                    <label for="expireInput" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_VALID_UNTIL"}]</label>
+                    <label for="expireInput" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_VALID_UNTIL"}]:</label>
                     <div class="col-lg-9">
                         <span id="expireInput" class="inputIframe">
                             <span id="cardexpiremonth"></span>
@@ -51,13 +51,13 @@
                     </div>
                 </div>
                 <div class="form-group fcpo_kkfirstname">
-                    <label for="firstname" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_FIRSTNAME"}]</label>
+                    <label for="firstname" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_FIRSTNAME"}]:</label>
                     <div class="col-lg-9">
                         <input placeholder="[{oxmultilang ident="FCPO_FIRSTNAME"}]" class="form-control" autocomplete="off" id="firstname" type="text" name="firstname" value="">
                     </div>
                 </div>
                 <div class="form-group fcpo_kklastname">
-                    <label for="lastname" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_LASTNAME"}]</label>
+                    <label for="lastname" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_LASTNAME"}]:</label>
                     <div class="col-lg-9">
                         <input placeholder="[{oxmultilang ident="FCPO_LASTNAME"}]" class="form-control" autocomplete="off" id="lastname" type="text" name="lastname" value="">
                     </div>

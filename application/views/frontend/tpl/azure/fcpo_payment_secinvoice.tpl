@@ -8,7 +8,7 @@
         [{if $oView->fcpoIsB2C()}]
             <ul class="form">
                 <li>
-                    <label>[{oxmultilang ident="FCPO_PAYOLUTION_BIRTHDATE"}]</label>
+                    <label>[{oxmultilang ident="FCPO_PAYOLUTION_BIRTHDATE"}]:</label>
                     <select name="dynvalue[fcpo_secinvoice_birthdate_day]">
                         [{foreach from=$oView->fcpoGetDayRange() item='sDay'}]
                             <option value="[{$sDay}]" [{if $sDay == $oView->fcpoGetBirthdayField('day')}]selected[{/if}]>[{$sDay}]</option>

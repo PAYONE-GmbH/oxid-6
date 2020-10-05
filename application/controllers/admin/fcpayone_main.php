@@ -65,6 +65,12 @@ class fcpayone_main extends fcpayone_admindetails
     protected $_aCountryList = array();
 
     /**
+     * List of config errors encountered
+     * @var array
+     */
+    protected $_aConfErrors = null;
+
+    /**
      * Set of default config strings
      *
      * @var array 
@@ -309,6 +315,12 @@ class fcpayone_main extends fcpayone_admindetails
      */
     public function save() 
     {
+        $blValid = $this->_fcpoValidateData();
+
+        if (!$blValid) {
+            return;
+        }
+
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $aConfBools = $this->_oFcpoHelper->fcpoGetRequestParameter("confbools");
         $aConfStrs = $this->_oFcpoHelper->fcpoGetRequestParameter("confstrs");
@@ -357,6 +369,66 @@ class fcpayone_main extends fcpayone_admindetails
         //reload config after saving
         $sOxid = $oConfig->getShopId();
         $this->_fcpoLoadConfigs($sOxid);
+    }
+
+    /**
+     * Returns collected errors
+     *
+     * @param void
+     * @return mixed array|false
+     */
+    public function fcpoGetConfigErrors()
+    {
+        if (!is_array($this->_aConfErrors)) {
+            return false;
+        }
+
+        return $this->_aConfErrors;
+    }
+
+    /**
+     * Validation of entered configuration values
+     *
+     * @param void
+     * @return bool
+     */
+    protected function _fcpoValidateData()
+    {
+        $blValidAccountData = $this->_fcpoValidateAccountData();
+
+        $blValid = (
+            $blValidAccountData
+        );
+
+        return $blValid;
+    }
+
+    /**
+     * Checks accountdata section on errors
+     *
+     * @param void
+     * @return bool
+     */
+    protected function _fcpoValidateAccountData()
+    {
+        return true;
+    }
+
+    /**
+     * Adding a detected configuration error
+     *
+     * @param $sTranslationString
+     * @return void
+     */
+    protected function _fcpoAddConfigError($sTranslationString)
+    {
+        $oLang = $this->_oFcpoHelper->fcpoGetLang();
+        $sMessage = $oLang->translateString($sTranslationString);
+
+        if (!is_array($this->_aConfErrors)) {
+            $this->_aConfErrors = array();
+        }
+        $this->_aConfErrors[] = $sMessage;
     }
 
     /**
@@ -596,9 +668,10 @@ class fcpayone_main extends fcpayone_admindetails
      */
     public function fcpoIsCampaignAdded() 
     {
-        $blCampaignAdded = ( isset($this->_aAdminMessages["blCampaignAdded"]) && $this->_aAdminMessages["blCampaignAdded"] === true ) ? true : false;
-
-        return $blCampaignAdded;
+        return  (
+            isset($this->_aAdminMessages["blCampaignAdded"]) &&
+            $this->_aAdminMessages["blCampaignAdded"] === true
+        );
     }
 
     /**
@@ -686,6 +759,7 @@ class fcpayone_main extends fcpayone_admindetails
             'fcpopaypal' => 'wlt',
             'fcpopaypal_express' => 'wlt',
             'fcpoklarna' => 'fnc',
+            'fcpoklarna_new' => 'fnc',
             'fcpobarzahlen' => 'csh',
             'fcpopaydirekt' => 'wlt',
             'fcpo_sofort' => 'sb',

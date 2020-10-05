@@ -34,7 +34,7 @@ class fcpayone_apilog_list extends fcpayone_adminlist
      *
      * @var string
      */
-    protected $_sDefSort = "fcporequestlog.fcpo_timestamp desc";
+    protected $_sDefSort = "fcporequestlog.oxtimestamp desc";
 
     /**
      * Current class template name

@@ -7,7 +7,7 @@
         <input type="hidden" name="fcpo_mode_[{$sPaymentID}]" value="[{$paymentmethod->fcpoGetOperationMode()}]">
         [{if ! $oView->fcpoIsB2BPov()}]
             <div class="form-group">
-                <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_SECINVOICE_BIRTHDATE"}]</label>
+                <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_SECINVOICE_BIRTHDATE"}]:</label>
                 <div class="col-lg-9">
                     <select name="dynvalue[fcpo_secinvoice_birthdate_day]">
                         [{foreach from=$oView->fcpoGetDayRange() item='sDay'}]
@@ -31,9 +31,9 @@
         [{else}]
             [{if ! $oView->fcpoGetUserValue('oxustid')}]
             <div class="form-group">
-                <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_SECINVOICE_USTID"}]</label>
+                <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_SECINVOICE_USTID"}]:</label>
                 <div class="col-lg-7">
-                    <input class="form-control" type="text" size="20" maxlength="64" name="dynvalue[fcpo_secinvoice_ustid]" value="[{$oView->fcpoGetUserValue('oxustid')}]">
+                    <input placeholder="[{oxmultilang ident="FCPO_SECINVOICE_USTID"}]" class="form-control" type="text" size="20" maxlength="64" name="dynvalue[fcpo_secinvoice_ustid]" value="[{$oView->fcpoGetUserValue('oxustid')}]">
                 </div>
                 <label class="req col-lg-12" style="padding-left: 25px">
                     [{oxmultilang ident="FCPO_SECINVOICE_NO_COMPANY"}]

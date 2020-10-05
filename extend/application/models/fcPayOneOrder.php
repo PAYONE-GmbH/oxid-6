@@ -53,6 +53,12 @@ class fcPayOneOrder extends fcPayOneOrder_parent
     protected $_aResponse = null;
 
     /**
+     * Array with all request parameters from API order request
+     * @var array
+     */
+    protected $_aRequest = null;
+
+    /**
      * Flag for redirecting after save
      *
      * @var bool
@@ -78,14 +84,29 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      *
      * @var array
      */
-    protected $_aPaymentsWorkorderIdSave = array('fcpopo_bill', 'fcpopo_debitnote', 'fcpopo_installment');
+    protected $_aPaymentsWorkorderIdSave = array(
+        'fcpopo_bill',
+        'fcpopo_debitnote',
+        'fcpopo_installment',
+        'fcpoklarna_invoice',
+        'fcpoklarna_directdebit',
+        'fcpoklarna_installments',
+    );
 
     /**
      * List of Payment IDs which are foreseen for saving clearing reference
      *
      * @var array
      */
-    protected $_aPaymentsClearingReferenceSave = array('fcporp_bill', 'fcpopo_bill', 'fcpopo_debitnote', 'fcpopo_installment');
+    protected $_aPaymentsClearingReferenceSave = array(
+        'fcporp_bill',
+        'fcpopo_bill',
+        'fcpopo_debitnote',
+        'fcpopo_installment',
+        'fcpoklarna_invoice',
+        'fcpoklarna_directdebit',
+        'fcpoklarna_installments',
+    );
 
     /**
      * List of Payment IDs which are foreseen for saving external shopid
@@ -612,6 +633,80 @@ class fcPayOneOrder extends fcPayOneOrder_parent
     }
 
     /**
+     * Sends clearing data mail to customer after a capture.
+     * This currently is only for payment fcpoinvoice
+     *
+     *
+     */
+    public function fcpoSendClearingDataAfterCapture()
+    {
+        $sPaymentId = $this->oxorder__oxpaymenttype->value;
+        $sAuthMode = $this->oxorder__fcpoauthmode->value;
+
+        $blSendMail = (
+            in_array($sPaymentId, array('fcpoinvoice','fcpopayadvance')) &&
+            $sAuthMode == 'preauthorization'
+        );
+
+        if (!$blSendMail) {
+            return;
+        };
+
+        $sTo = $this->oxorder__oxbillemail->value;
+        $sSubject = $this->_fcpoGetClearingDataEmailSubject();
+        $sBody = $this->_fcpoGetClearingDataEmailBody();
+
+        $oEmail = $this->_oFcpoHelper->getFactoryObject('oxEmail');
+        $oEmail->sendEmail($sTo, $sSubject, $sBody);
+    }
+
+    /**
+     * Returns translated subject for clearing mail
+     *
+     * @param void
+     * @return string
+     */
+    protected function _fcpoGetClearingDataEmailSubject()
+    {
+        $oLang = $this->_oFcpoHelper->getFactoryObject('oxLang');
+        $oShop = $this->_oFcpoHelper->getFactoryObject('oxShop');
+        $oShop->load($this->oxorder__oxshopid->value);
+        $sSubject = $oShop->oxshops__oxname->value." - ";
+        $sSubject .= $oLang->translateString('FCPO_EMAIL_CLEARING_SUBJECT')." ";
+        $sSubject .= $this->oxorder__oxordernr->value;
+
+        return $sSubject;
+    }
+
+    /**
+     * Returns translated body content for clearing mail
+     *
+     * @param void
+     * @return string
+     */
+    protected function _fcpoGetClearingDataEmailBody()
+    {
+        $oLang = $this->_oFcpoHelper->getFactoryObject('oxLang');
+        $oShop = $this->_oFcpoHelper->getFactoryObject('oxShop');
+        $oShop->load($this->oxorder__oxshopid->value);
+        $sBody = $oLang->translateString('FCPO_EMAIL_CLEARING_BODY_WELCOME');
+        $sBody = str_replace('%NAME%', $this->oxorder__oxbillfname->value, $sBody);
+        $sBody = str_replace('%SURNAME%', $this->oxorder__oxbilllname->value, $sBody);
+        $sBody .= $oLang->translateString("FCPO_BANKACCOUNTHOLDER").": ".$this->getFcpoBankaccountholder()."\n";
+        $sBody .= $oLang->translateString("FCPO_EMAIL_BANK")." ".$this->getFcpoBankname()."\n";
+        $sBody .= $oLang->translateString("FCPO_EMAIL_ROUTINGNUMBER")." ".$this->getFcpoBankcode()."\n";
+        $sBody .= $oLang->translateString("FCPO_EMAIL_ACCOUNTNUMBER")." ".$this->getFcpoBanknumber()."\n";
+        $sBody .= $oLang->translateString("FCPO_EMAIL_BIC")." ".$this->getFcpoBiccode()."\n";
+        $sBody .= $oLang->translateString("FCPO_EMAIL_IBAN")." ".$this->getFcpoIbannumber()."\n";
+        $sBody .= $oLang->translateString("FCPO_EMAIL_USAGE").": ".$this->oxorder__fcpotxid->value."\n";
+        $sBody .= "\n\n";
+        $sThankyou = $oLang->translateString('FCPO_EMAIL_CLEARING_BODY_THANKYOU');
+        $sBody .= str_replace('%SHOPNAME%', $oShop->oxshops__oxname->value, $sThankyou);
+
+        return $sBody;
+    }
+
+    /**
      * Handles basket loading into order
      * 
      * @param  bool     $blSaveAfterRedirect
@@ -949,9 +1044,9 @@ class fcPayOneOrder extends fcPayOneOrder_parent
     public function allowAccountSettlement() 
     {
         $blReturn = (
-                $this->oxorder__oxpaymenttype->value == 'fcpopayadvance' ||
-                $this->oxorder__oxpaymenttype->value == 'fcpoonlineueberweisung'
-                );
+            $this->oxorder__oxpaymenttype->value == 'fcpopayadvance' ||
+            fcPayOnePayment::fcIsPayOneOnlinePaymentType($this->oxorder__oxpaymenttype->value)
+        );
 
         return $blReturn;
     }
@@ -965,11 +1060,11 @@ class fcPayOneOrder extends fcPayOneOrder_parent
     public function debitNeedsBankData() 
     {
         $blReturn = (
-                $this->oxorder__oxpaymenttype->value == 'fcpoinvoice' ||
-                $this->oxorder__oxpaymenttype->value == 'fcpopayadvance' ||
-                $this->oxorder__oxpaymenttype->value == 'fcpocashondel' ||
-                $this->oxorder__oxpaymenttype->value == 'fcpoonlineueberweisung'
-                );
+            $this->oxorder__oxpaymenttype->value == 'fcpoinvoice' ||
+            $this->oxorder__oxpaymenttype->value == 'fcpopayadvance' ||
+            $this->oxorder__oxpaymenttype->value == 'fcpocashondel' ||
+            fcPayOnePayment::fcIsPayOneOnlinePaymentType($this->oxorder__oxpaymenttype->value)
+        );
 
         return $blReturn;
     }
@@ -983,12 +1078,18 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      */
     public function isDetailedProductInfoNeeded() 
     {
-        $blForcedByPaymentMethod = (
-            $this->oxorder__oxpaymenttype->value == 'fcpobillsafe' ||
-            $this->oxorder__oxpaymenttype->value == 'fcpoklarna' ||
-            $this->oxorder__oxpaymenttype->value == 'fcpo_secinvoice' ||
-            $this->oxorder__oxpaymenttype->value == 'fcporp_bill' ||
-            $this->oxorder__oxpaymenttype->value == 'fcpopaydirekt_express'
+        $blForcedByPaymentMethod = in_array(
+            $this->oxorder__oxpaymenttype->value,
+            array(
+                'fcpobillsafe',
+                'fcpoklarna',
+                'fcpoklarna_invoice',
+                'fcpoklarna_installments',
+                'fcpoklarna_directdebit',
+                'fcpo_secinvoice',
+                'fcporp_bill',
+                'fcpopaydirekt_express',
+            )
         );
 
         if ($blForcedByPaymentMethod) return true;
@@ -1020,7 +1121,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      */
     public function getLastStatus() 
     {
-        $sOxid = $this->_oFcpoDb->GetOne("SELECT * FROM fcpotransactionstatus WHERE fcpo_txid = '{$this->oxorder__fcpotxid->value}' ORDER BY fcpo_sequencenumber DESC, fcpo_timestamp DESC");
+        $sOxid = $this->_oFcpoDb->GetOne("SELECT * FROM fcpotransactionstatus WHERE fcpo_txid = '{$this->oxorder__fcpotxid->value}' ORDER BY fcpo_sequencenumber DESC, oxtimestamp DESC");
         if ($sOxid) {
             $oStatus = $this->_oFcpoHelper->getFactoryObject('fcpotransactionstatus');
             $oStatus->load($sOxid);
@@ -1039,7 +1140,8 @@ class fcPayOneOrder extends fcPayOneOrder_parent
     protected function getResponse() 
     {
         if ($this->_aResponse === null) {
-            $sOxidRequest = $this->_oFcpoDb->GetOne("SELECT oxid FROM fcporequestlog WHERE fcpo_refnr = '{$this->oxorder__fcporefnr->value}' AND (fcpo_requesttype = 'preauthorization' OR fcpo_requesttype = 'authorization')");
+            $sQuery = $this->_fcpoGetResponseQuery();
+            $sOxidRequest = $this->_oFcpoDb->GetOne($sQuery);
             if ($sOxidRequest) {
                 $oRequestLog = $this->_oFcpoHelper->getFactoryObject('fcporequestlog');
                 $oRequestLog->load($sOxidRequest);
@@ -1050,6 +1152,91 @@ class fcPayOneOrder extends fcPayOneOrder_parent
             }
         }
         return $this->_aResponse;
+    }
+
+    /**
+     * Returns request array of last authorization call
+     *
+     * @return array|null
+     */
+    protected function getRequest() 
+    {
+        if ($this->_aRequest === null) {
+            $sSelect = "
+                SELECT oxid 
+                FROM fcporequestlog 
+                WHERE fcpo_refnr = '{$this->oxorder__fcporefnr->value}' 
+                AND (
+                    fcpo_requesttype = 'preauthorization' OR 
+                    fcpo_requesttype = 'authorization'
+                )
+                AND FCPO_RESPONSESTATUS = 'APPROVED'
+                ORDER BY oxtimestamp DESC
+            ";
+            $sOxidRequest = $this->_oFcpoDb->GetOne($sSelect);
+
+            if ($sOxidRequest) {
+                $oRequestLog = $this->_oFcpoHelper->getFactoryObject('fcporequestlog');
+                $oRequestLog->load($sOxidRequest);
+                $aRequest = $oRequestLog->getRequestArray();
+                if ($aRequest) {
+                    $this->_aRequest = $aRequest;
+                }
+            }
+        }
+
+        return $this->_aRequest;
+    }
+
+    /**
+     * @param $sParameter
+     * @return string
+     */
+    protected function getRequestParameter($sParameter)
+    {
+        $aRequest = $this->getRequest();
+        $sReturn = (isset($aRequest[$sParameter])) ?
+            $aRequest[$sParameter] : '';
+
+        return $sReturn;
+    }
+  
+    /*
+     * Returns matching query for fetching response needed for current state
+     *
+     * @param void
+     * @return string
+     */
+    protected function _fcpoGetResponseQuery()
+    {
+        $blFetchCaptureResponse = (
+            $this->oxorder__fcpoauthmode == 'preauthorization' &&
+            $this->oxorder__oxpaymenttype == 'fcpoinvoice'
+        );
+
+        if ($blFetchCaptureResponse) {
+            $sWhere = "fcpo_request LIKE '%".$this->oxorder__fcpotxid->value."%'";
+            $sAnd = "
+                fcpo_requesttype = 'capture'
+            ";
+        } else {
+            $sWhere = "fcpo_refnr = '{$this->oxorder__fcporefnr->value}' ";
+            $sAnd = "
+                fcpo_requesttype = 'preauthorization' OR 
+                fcpo_requesttype = 'authorization'
+            ";
+        }
+
+        $sQuery = "
+            SELECT oxid 
+            FROM fcporequestlog 
+            WHERE {$sWhere}
+            AND (
+                {$sAnd}
+            )
+        ";
+
+        return $sQuery;
     }
 
     /**
@@ -1064,6 +1251,15 @@ class fcPayOneOrder extends fcPayOneOrder_parent
 
         return $mReturn;
     }
+
+    /**
+     * Returns shopid used for ratepay payment
+     */
+    public function getFcpoRatepayShopId()
+    {
+        return $this->getRequestParameter('add_paydata[shop_id]');
+    }
+
 
     /**
      * Get the bankaccount holder of this order out of the response array
@@ -1285,6 +1481,10 @@ class fcPayOneOrder extends fcPayOneOrder_parent
     public function fcHandleAuthorization($blReturnRedirectUrl = false, $oPayGateway = null) 
     {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+        $aDynvalueForm = $this->_oFcpoHelper->fcpoGetRequestParameter('dynvalue');
+        if ($this->oxorder__oxpaymenttype->value === 'fcpoklarna_directdebit' && $this->_oFcpoHelper->fcpoGetSessionVariable('klarna_authorization_token') === '' ) {
+            $this->_oFcpoHelper->fcpoSetSessionVariable('klarna_authorization_token', $aDynvalueForm['klarna_authorization_token']);
+        }
         $aDynvalue = $this->_oFcpoHelper->fcpoGetSessionVariable('dynvalue');
         $aDynvalue = $aDynvalue ? $aDynvalue : $this->_oFcpoHelper->fcpoGetRequestParameter('dynvalue');
 
@@ -1306,6 +1506,26 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         $mResult = $this->_fcpoHandleAuthorizationResponse($aResponse, $oPayGateway, $sRefNr, $sMode, $sAuthorizationType, $blReturnRedirectUrl);
 
         return $mResult;
+    }
+
+    /**
+     * Method will be usually called at the end of an order and decides wether
+     * clearingdata should be offered or not
+     *
+     * @param $oOrder
+     * @return bool
+     */
+    public function fcpoShowClearingData()
+    {
+        $sPaymentId = $this->oxorder__oxpaymenttype->value;
+
+        $blShow = (
+        ($this->oxorder__fcpoauthmode == 'authorization' && $sPaymentId == 'fcpoinvoice') ||
+        ($sPaymentId === 'fcpopayadvance')
+
+        );
+
+        return $blShow;
     }
 
     /**
@@ -1502,10 +1722,16 @@ class fcPayOneOrder extends fcPayOneOrder_parent
     protected function _fcpoSaveWorkorderId($sPaymentId, $aResponse) 
     {
         if (in_array($sPaymentId, $this->_aPaymentsWorkorderIdSave)) {
-            $sWorkorderId = (isset($aResponse['add_paydata[workorderid]'])) ? $aResponse['add_paydata[workorderid]'] : false; // 
+            $sWorkorderId = (
+                isset($aResponse['add_paydata[workorderid]'])) ?
+                $aResponse['add_paydata[workorderid]'] :
+                $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoWorkorderId');
+
             if ($sWorkorderId) {
                 $this->oxorder__fcpoworkorderid = new oxField($sWorkorderId, oxField::T_RAW);
                 $this->_oFcpoHelper->fcpoDeleteSessionVariable('payolution_workorderid');
+                $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoWorkorderId');
+                $this->_oFcpoHelper->fcpoDeleteSessionVariable('klarna_workorderid');
             }
         }
     }

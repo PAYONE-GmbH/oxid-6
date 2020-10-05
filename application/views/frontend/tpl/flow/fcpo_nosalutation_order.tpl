@@ -6,14 +6,17 @@
         <form action="[{$oViewConf->getSslSelfLink()}]" method="post">
             <div class="hidden">
                 [{$oViewConf->getHiddenSid()}]
-                <input type="hidden" name="cl" value="user">
-                <input type="hidden" name="fnc" value="">
+                <input type="hidden" name="cl" value="[{$oView->fcpoGetEditAddressTargetController()}]">
+                <input type="hidden" name="fnc" value="[{$oView->fcpoGetEditAddressTargetAction()}]">
             </div>
 
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">
                         [{oxmultilang ident="BILLING_ADDRESS"}]
+                        <button type="submit" class="btn btn-xs btn-warning pull-right submitButton largeButton" title="[{oxmultilang ident="EDIT"}]">
+                            <i class="fa fa-pencil"></i>
+                        </button>
                     </h3>
                 </div>
                 <div class="panel-body">
@@ -26,8 +29,8 @@
         <form action="[{$oViewConf->getSslSelfLink()}]" method="post">
             <div class="hidden">
                 [{$oViewConf->getHiddenSid()}]
-                <input type="hidden" name="cl" value="user">
-                <input type="hidden" name="fnc" value="">
+                <input type="hidden" name="cl" value="[{$oView->fcpoGetEditAddressTargetController()}]">
+                <input type="hidden" name="fnc" value="[{$oView->fcpoGetEditAddressTargetAction()}]">
             </div>
 
             <div class="panel panel-default">

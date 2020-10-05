@@ -514,10 +514,12 @@ class fcpoconfigexport extends oxBase
             'fcpodebitnote' => 'elv',
             'fcpopayadvance' => 'vor',
             'fcpoinvoice' => 'rec',
-            'fcpoonlineueberweisung' => 'sb',
             'fcpopaypal' => 'wlt',
             'fcpopaypal_express' => 'wlt',
             'fcpoklarna' => 'fnc',
+            'fcpoklarna_invoice' => 'fnc',
+            'fcpoklarna_directdebit' => 'fnc',
+            'fcpoklarna_installments' => 'fnc',
             'fcpobarzahlen' => 'csh',
             'fcpopaydirekt' => 'wlt',
             'fcpopo_bill' => 'fnc',
@@ -537,6 +539,7 @@ class fcpoconfigexport extends oxBase
             'fcpo_ideal' => 'sb',
             'fcpo_p24' => 'sb',
             'fcpo_bancontact' => 'sb',
+            'fcporp_debitnote' => 'fnc',
         );
 
         if (isset($aAbbreviations[$sPaymentId])) {

@@ -34,7 +34,7 @@ $aModule = array(
                             https://www.payone.de
                         </a>',
     'thumbnail'     => 'picture.gif',
-    'version'       => '1.2.1',
+    'version'       => '1.4.0',
     'author'        => 'FATCHIP GmbH',
     'email'         => 'kontakt@fatchip.de',
     'url'           => 'https://wiki.fatchip.de/public/faqpayone',
@@ -55,6 +55,7 @@ $aModule = array(
         'oxpayment'                         => 'fc/fcpayone/extend/application/models/fcPayOnePayment',
         'oxpaymentgateway'                  => 'fc/fcpayone/extend/application/models/fcPayOnePaymentgateway',
         'oxuser'                            => 'fc/fcpayone/extend/application/models/fcPayOneUser',
+        'oxaddress'                         => 'fc/fcpayone/extend/application/models/fcPayOneAddress',
         // core
         'oxviewconfig'                      => 'fc/fcpayone/extend/core/fcPayOneViewConf',
     ),
@@ -83,7 +84,7 @@ $aModule = array(
         // controllers
         'fcpayoneiframe'                    => 'fc/fcpayone/application/controllers/fcpayoneiframe.php',
         // models
-	'fcpouserflag'                      => 'fc/fcpayone/application/models/fcpouserflag.php',
+	    'fcpouserflag'                      => 'fc/fcpayone/application/models/fcpouserflag.php',
         'fcporequestlog'                    => 'fc/fcpayone/application/models/fcporequestlog.php',
         'fcpotransactionstatus'             => 'fc/fcpayone/application/models/fcpotransactionstatus.php',
         'fcpomapping'                       => 'fc/fcpayone/application/models/fcpomapping.php',
@@ -97,6 +98,7 @@ $aModule = array(
         // libs
         'fcpohelper'                        => 'fc/fcpayone/lib/fcpohelper.php',
         'fcporequest'                       => 'fc/fcpayone/lib/fcporequest.php',
+        'fcpoparamsparser'                  => 'fc/fcpayone/lib/fcpoparamsparser.php',
         // core
         'fcpayone_events'                   => 'fc/fcpayone/core/fcpayone_events.php',
     ),

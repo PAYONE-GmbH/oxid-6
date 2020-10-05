@@ -248,7 +248,7 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent
         $oUser = $oBasket->getBasketUser();
         $oAddress = $oUser->getSelectedAddress();
         $sSalutation = $oUser->oxuser__oxsal->value;
-        $sSalutationDelAddress = $oAddress->oxaddress__oxsal->value;
+        $sSalutationDelAddress = is_null($oAddress) ? $sSalutation : $oAddress->oxaddress__oxsal->value;
 
         $blHasSalutation = (
             $sSalutation &&
@@ -256,6 +256,55 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent
         );
 
         return $blHasSalutation;
+    }
+
+    /**
+     * Returns session variable
+     *
+     * @param void
+     * @return bool
+     */
+    public function fcpoGetClientToken() {
+        return $this->_oFcpoHelper->fcpoGetSessionVariable('klarna_client_token');
+    }
+
+    /**
+     * Returns session variable
+     *
+     * @param void
+     * @return bool
+     */
+    public function fcpoGetKlarnaAuthToken() {
+        return $this->_oFcpoHelper->fcpoGetSessionVariable('klarna_authorization_token');
+    }
+
+    /**
+     * Returns cancel url for klarna payments
+     *
+     * @param void
+     * @return bool
+     */
+    public function fcpoGetKlarnaCancelUrl() {
+        $oConfig = $this->getConfig();
+        $sShopURL = $oConfig->getCurrentShopUrl();
+        $oLang = $this->_oFcpoHelper->fcpoGetLang();
+        $sPaymentErrorTextParam =  "&payerrortext=".urlencode($oLang->translateString('FCPO_PAY_ERROR_REDIRECT', null, false));
+        $sPaymentErrorParam = '&payerror=-20'; // see source/modules/fc/fcpayone/out/blocks/fcpo_payment_errors.tpl
+        $sErrorUrl = $sShopURL . 'index.php?type=error&cl=payment' . $sPaymentErrorParam . $sPaymentErrorTextParam;
+        return  $sErrorUrl;
+    }
+
+    /**
+     * Checks if selected payment method is pay now
+     *
+     * @return bool
+     */
+    public function fcpoIsKlarnaPaynow()
+    {
+        $oSession = $this->_oFcpoHelper->fcpoGetSession();
+        /** @var oxBasket $oBasket */
+        $oBasket = $oSession->getBasket();
+        return ($oBasket->getPaymentId() === 'fcpoklarna_directdebit');
     }
 
     /**

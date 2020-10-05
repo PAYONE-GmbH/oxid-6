@@ -270,49 +270,6 @@ function getCleanedNumberIBAN(sDirtyNumber) {
     return sCleanedNumber;
 }
 
-function checkOnlineUeberweisung() {
-    resetErrorContainers();
-    var oForm = getPaymentForm();
-    var fcpoSofoShowIban = $('#fcpoSofoShowIban').val();
-    if((oForm['dynvalue[fcpo_sotype]'].value == 'PNT' || oForm['dynvalue[fcpo_sotype]'].value == 'GPY') && fcpoSofoShowIban == 'true') {
-        if(oForm['dynvalue[fcpo_sotype]'].value == 'PNT' && oForm.fcpo_bill_country.value != 'DE' && oForm.fcpo_bill_country.value != 'AT' && oForm.fcpo_bill_country.value != 'CH' && oForm.fcpo_bill_country.value != 'NL') {
-            document.getElementById('fcpo_ou_error_content').innerHTML = 'Zahlart ist nur in Deutschland, &Ouml;sterreich, Niederlande und der Schweiz verf&uuml;gbar.';
-            document.getElementById('fcpo_ou_error').style.display = 'block';
-            return false;
-        }
-        if(oForm['dynvalue[fcpo_sotype]'].value == 'GPY' && oForm.fcpo_bill_country.value != 'DE') {
-            document.getElementById('fcpo_ou_error_content').innerHTML = 'Zahlart ist nur in Deutschland verf&uuml;gbar.';
-            document.getElementById('fcpo_ou_error').style.display = 'block';
-            return false;
-        }
-        if(oForm['dynvalue[fcpo_sotype]'].value == 'PNT' && oForm.fcpo_bill_country.value == 'CH' && oForm.fcpo_currency.value == 'CHF') {
-            oForm['dynvalue[fcpo_ou_blz]'].value = getCleanedNumber(oForm['dynvalue[fcpo_ou_blz]'].value);
-            if(oForm['dynvalue[fcpo_ou_blz]'].value == '' || oForm['dynvalue[fcpo_ou_blz]'].value.length != 8) {
-                document.getElementById('fcpo_ou_blz_invalid').style.display = 'block';
-                return false;
-            }
-            oForm['dynvalue[fcpo_ou_ktonr]'].value = getCleanedNumber(oForm['dynvalue[fcpo_ou_ktonr]'].value);
-            if(oForm['dynvalue[fcpo_ou_ktonr]'].value == '') {
-                document.getElementById('fcpo_ou_ktonr_invalid').style.display = 'block';
-                return false;
-            }
-        } else {
-            oForm['dynvalue[fcpo_ou_iban]'].value = getCleanedNumberIBAN(oForm['dynvalue[fcpo_ou_iban]'].value);
-            if(oForm['dynvalue[fcpo_ou_iban]'].value == '' || oForm['dynvalue[fcpo_ou_iban]'].value.length > 34) {
-                document.getElementById('fcpo_ou_iban_invalid').style.display = 'block';
-                return false;
-            }
-
-            oForm['dynvalue[fcpo_ou_bic]'].value = getCleanedNumberIBAN(oForm['dynvalue[fcpo_ou_bic]'].value);
-            if(oForm['dynvalue[fcpo_ou_bic]'].value == '' || oForm['dynvalue[fcpo_ou_bic]'].value.length > 11) {
-                document.getElementById('fcpo_ou_bic_invalid').style.display = 'block';
-                return false;
-            }
-        }
-    }
-    return true;
-}
-
 function checkKlarna() {
     resetErrorContainers();
     var oForm = getPaymentForm();
@@ -487,8 +444,6 @@ function fcCheckPaymentSelection() {
             return startCCRequest();
         } else if(sCheckedValue == 'fcpodebitnote') {
             return startELVRequest(true);
-        } else if(sCheckedValue == 'fcpoonlineueberweisung') {
-            return checkOnlineUeberweisung();
         } else if(sCheckedValue == 'fcpoklarna') {
             return checkKlarna();
         }
@@ -664,6 +619,79 @@ function fcSetPayoneInputFields(oForm) {
         fcSetPayoneInput(oForm, sInputName, sInputValue);
     }
 }
+
+/**
+ * Triggers session start call via ajax
+ *
+ * @param void
+ */
+$('#fcpo_klarna_combined_agreed, #klarna_payment_selector').change(
+    function() {
+        var payment_id = $('#klarna_payment_selector').children("option:selected").val();
+        var oForm = getPaymentForm();
+
+        if ($('#fcpo_klarna_combined_agreed').is(':checked') == false) {
+            $('#klarna_widget_combined_container').empty();
+
+            if ($('#klarna_combined_js_inject').html() !== '') {
+                location.reload();
+            }
+            return;
+        } else {
+            if (typeof(oForm['dynvalue[fcpo_klarna_birthday][year]']) !== 'undefined') {
+                var birthday = oForm['dynvalue[fcpo_klarna_birthday][year]'].value + '-'+ oForm['dynvalue[fcpo_klarna_birthday][month]'].value + '-' + oForm['dynvalue[fcpo_klarna_birthday][day]'].value;
+            }
+            if (typeof(oForm['dynvalue[fcpo_klarna_telephone]']) !== 'undefined') {
+                var telephone = oForm['dynvalue[fcpo_klarna_telephone]'].value;
+            }
+            if (typeof(oForm['dynvalue[fcpo_klarna_personalid]']) !== 'undefined') {
+                var personalid = oForm['dynvalue[fcpo_klarna_personalid]'].value;
+            }
+        }
+
+        let payment_category_list = {
+            "fcpoklarna_invoice" : "pay_later",
+            "fcpoklarna_directdebit" : "direct_debit",
+            "fcpoklarna_installments" : "pay_over_time",
+        }
+
+        var payment_category = payment_category_list[payment_id];
+
+        var formParams = '{' +
+            '"payment_container_id":"klarna_widget_combined_container", ' +
+            '"payment_category":"' + payment_category + '",' +
+            '"birthday":"' + birthday + '",' +
+            '"personalid":"' + personalid + '",' +
+            '"telephone":"' + telephone + '"' +
+        '}';
+
+        $.ajax(
+            {
+                url: payoneAjaxControllerUrl,
+                method: 'POST',
+                type: 'POST',
+                dataType: 'text',
+                data: {
+                    paymentid: payment_id,
+                    action: "start_session",
+                    params: formParams,
+                    birthday: birthday,
+                },
+                success: function(Response) {
+                    $('#klarna_widget_combined_container').empty();
+                    $('#klarna_combined_js_inject').empty().html(Response);
+                    $('#payment_klarna_combined').val(payment_id);
+                },
+                error: function () {
+                    location.reload();
+                }
+            }
+        );
+    }
+);
+
+
+
 
 /**
  * Triggers precheck for payolution installment via ajax
@@ -966,16 +994,29 @@ function resetCardTypeCCHosted() {
 /**
  * handles form submission if method is credit card hosted iframe
  */
-$( document).ready(function() {
-    var paymentForm = $( '#payment' );
+$(document).ready(function() {
+    var paymentForm = $('#payment');
 
     resetCardTypeCCHosted();
 
     //check cvc, check if cardtype is selected, progress request, output errors
     paymentForm.on('submit', function(e) {
+        var klarna_auth_done = $('#fcpo_klarna_auth_done').val();
+        var klarna_paymentid = $('#payment_klarna_combined').val();
+        var klarna_combined_checked = $('#payment_klarna_combined').is(':checked');
+
         hideCCHostedErrorsAtSubmit();
         validateCardTypeCCHosted(e);
         validateInputCCHosted(e);
+        if (klarna_combined_checked && klarna_paymentid) {
+            if (klarna_auth_done === 'false') {
+                e.preventDefault();
+                if ($('#fcpo_klarna_combined_agreed').is(':checked') == true) {
+                    // defined in snippets/fcpoKlarnaWidget.txt
+                    klarnaAuthorize(e);
+                }
+            }
+        }
     });
 
     $('#cardtype').on('change', function(e) {

@@ -19,7 +19,7 @@
                     </div>
                 </li>
                 <li>
-                    <label>[{oxmultilang ident="FCPO_CREDITCARD"}]</label>
+                    <label>[{oxmultilang ident="FCPO_CREDITCARD"}]:</label>
                     <select name="dynvalue[fcpo_kktype]" [{if $oView->getMaestroUK()}]onchange="fcCheckType(this); return false;"[{/if}]>
                         [{foreach from=$aFcPoCCPaymentMetaData item="oFcPoCCPaymentMetaData"}]
                             <option value="[{$oFcPoCCPaymentMetaData->sPaymentTag}]" [{if $oFcPoCCPaymentMetaData->blSelected}]selected[{/if}]>[{$oFcPoCCPaymentMetaData->sPaymentName}]</option>
@@ -27,7 +27,7 @@
                     </select>
                 </li>
                 <li>
-                    <label>[{oxmultilang ident="FCPO_NUMBER"}]</label>
+                    <label>[{oxmultilang ident="FCPO_NUMBER"}]:</label>
                     <input placeholder="[{oxmultilang ident="FCPO_NUMBER"}]" autocomplete="off" type="text" class="payment_text" size="20" maxlength="64" name="dynvalue[fcpo_kknumber]" value="[{$dynvalue.fcpo_kknumber}]">
                     <div id="fcpo_cc_number_invalid" class="fcpo_check_error">
                         <p class="oxValidateError" style="display: block;">
@@ -36,13 +36,13 @@
                     </div>
                 </li>
                 <li>
-                    <label>[{oxmultilang ident="FCPO_BANK_ACCOUNT_HOLDER_2"}]</label>
+                    <label>[{oxmultilang ident="FCPO_BANK_ACCOUNT_HOLDER_2"}]:</label>
                     <input placeholder="[{oxmultilang ident="FCPO_BANK_ACCOUNT_HOLDER_2"}]" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_kkname]" value="[{if $dynvalue.fcpo_kkname}][{$dynvalue.fcpo_kkname}][{else}][{$oxcmp_user->oxuser__oxfname->value}] [{$oxcmp_user->oxuser__oxlname->value}][{/if}]">
                     <br>
                     <div class="note">[{oxmultilang ident="FCPO_IF_DEFERENT_FROM_BILLING_ADDRESS"}]</div>
                 </li>
                 <li>
-                    <label>[{oxmultilang ident="FCPO_VALID_UNTIL"}]</label>
+                    <label>[{oxmultilang ident="FCPO_VALID_UNTIL"}]:</label>
                     <select name="dynvalue[fcpo_kkmonth]">
                         <option [{if $dynvalue.fcpo_kkmonth == "01"}]selected[{/if}]>01</option>
                         <option [{if $dynvalue.fcpo_kkmonth == "02"}]selected[{/if}]>02</option>
@@ -70,7 +70,7 @@
                     </div>
                 </li>
                 <li>
-                    <label>[{oxmultilang ident="FCPO_CARD_SECURITY_CODE"}]</label>
+                    <label>[{oxmultilang ident="FCPO_CARD_SECURITY_CODE"}]:</label>
                     <input placeholder="[{oxmultilang ident="FCPO_CARD_SECURITY_CODE"}]" autocomplete="off" type="text" class="payment_text" size="20" maxlength="64" name="dynvalue[fcpo_kkpruef]" value="[{$dynvalue.fcpo_kkpruef}]">
                     <div id="fcpo_cc_cvc2_invalid" class="fcpo_check_error">
                         <p class="oxValidateError" style="display: block;">
@@ -82,7 +82,7 @@
                 </li>
                 [{if $oView->getMaestroUK()}]
                     <li id="fcpo_kkcsn_row" style="display: none;">
-                        <label>[{oxmultilang ident="FCPO_CARDSEQUENCENUMBER"}]</label>
+                        <label>[{oxmultilang ident="FCPO_CARDSEQUENCENUMBER"}]:</label>
                         <input placeholder="[{oxmultilang ident="FCPO_CARDSEQUENCENUMBER"}]" autocomplete="off" type="text" class="payment_text" size="20" maxlength="64" name="dynvalue[fcpo_kkcsn]" value="[{$dynvalue.fcpo_kkcsn}]">
                     </li>
                 [{/if}]

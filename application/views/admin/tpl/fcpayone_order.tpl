@@ -180,7 +180,7 @@
                                 </tr>                                   
                                 <tr>
                                     <td colspan="2">
-                                        <table border="1" cellpadding="5" callspacing="5">
+                                        <table border="0" cellpadding="5" callspacing="5">
                                             <tr>
                                                 <th>[{oxmultilang ident="FCPO_PRODUCT_CAPTURE"}]</th>
                                                 <th>[{oxmultilang ident="FCPO_PRODUCT_AMOUNT"}]</th>
@@ -233,7 +233,7 @@
                             </tr>
                             <tr>
                                 <td class="edittext" >
-                                    <strong>Betrag in [{$edit->oxorder__oxcurrency->value}]</strong>
+                                    <strong>[{oxmultilang ident="FCPO_AMOUNT_IN"}] [{$edit->oxorder__oxcurrency->value}]</strong>
                                 </td>
                                 <td class="edittext">
                                     <input id="fc_capture_amount" type="text" name="capture_amount" value="0,00">
@@ -314,7 +314,7 @@
                                 <tr><td colspan="2">&nbsp;</td></tr>                                 
                                 <tr>
                                     <td colspan="2">
-                                        <table border="1" cellpadding="5" callspacing="5">
+                                        <table border="0" cellpadding="5" callspacing="5">
                                             <tr>
                                                 <th>[{oxmultilang ident="FCPO_PRODUCT_CAPTURE"}]</th>
                                                 <th>[{oxmultilang ident="FCPO_PRODUCT_AMOUNT"}]</th>
@@ -452,7 +452,7 @@
                             [{else}]
                                 <tr>
                                     <td class="edittext" >
-                                        <strong>Betrag in [{$edit->oxorder__oxcurrency->value}]</strong>
+                                        <strong>[{oxmultilang ident="FCPO_AMOUNT_IN"}] [{$edit->oxorder__oxcurrency->value}]</strong>
                                     </td>
                                     <td>
                                         <input type="text" name="debit_amount" value="0,00">

@@ -85,20 +85,20 @@ class fcPayOneThankyouView extends fcPayOneThankyouView_parent
 
         if($oOrder->oxorder__oxpaymenttype->value == 'fcpodebitnote' && $oConfig->getConfigParam('blFCPOMandateDownload')) {
             $sMandateIdentification = false;
-            $sMode = false;
+            $oPayment = $this->_oFcpoHelper->getFactoryObject('oxPayment');
+            $oPayment->load($oOrder->oxorder__oxpaymenttype->value);
+            $sMode = $oPayment->fcpoGetOperationMode();
 
             $aMandate = $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoMandate');
+
             if($aMandate && array_key_exists('mandate_identification', $aMandate) !== false) {
                 $sMandateIdentification = $aMandate['mandate_identification'];
             }
-            if($aMandate && array_key_exists('mode', $aMandate) !== false) {
-                $sMode = $aMandate['mode'];
-            }
+
 
             if($sMandateIdentification && $aMandate['mandate_status'] == 'active') {
-                $oPayment = $this->_oFcpoHelper->getFactoryObject('oxPayment');
                 $oPayment->fcpoAddMandateToDb($oOrder->getId(), $sMandateIdentification);
-                $sPdfUrl = $oConfig->getShopUrl()."modules/fcPayOne/download.php?id=".$oOrder->getId();
+                $sPdfUrl = $oConfig->getShopUrl()."modules/fc/fcpayone/download.php?id=".$oOrder->getId();
             } elseif($sMandateIdentification && $sMode && $oOrder) {
                 $oPORequest = $this->_oFcpoHelper->getFactoryObject('fcporequest');
                 $sPdfUrl = $oPORequest->sendRequestGetFile($oOrder->getId(), $sMandateIdentification, $sMode);
@@ -167,6 +167,8 @@ class fcPayOneThankyouView extends fcPayOneThankyouView_parent
     protected function _fcpoDeleteSessionVariablesOnOrderFinish()
     {
         $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoRefNr');
+        $this->_oFcpoHelper->fcpoDeleteSessionVariable('klarna_authorization_token');
+        $this->_oFcpoHelper->fcpoDeleteSessionVariable('klarna_client_token');
     }
 
     /**
@@ -234,5 +236,20 @@ class fcPayOneThankyouView extends fcPayOneThankyouView_parent
         
         return $this->_sBarzahlenHtml;
     }
-    
+
+    /**
+     * View controller getter for deciding if clearing data should be shown
+     *
+     * @param void
+     * @return bool
+     */
+    public function fcpoShowClearingData()
+    {
+        $oOrder = $this->getOrder();
+
+        $blShowClearingData =
+            $oOrder->fcpoShowClearingData($oOrder);
+
+        return $blShowClearingData;
+    }
 }

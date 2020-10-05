@@ -18,6 +18,8 @@
     <input type="hidden" name="cl" value="fcpayone_main">
 </form>
 
+
+
 <form autocomplete="off" name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post" enctype="multipart/form-data">
     [{$oViewConf->getHiddenSid()}]
     <input type="hidden" name="cl" value="fcpayone_main">
@@ -27,7 +29,14 @@
     [{oxmultilang ident="FCPO_MAIN_CONFIG_INFOTEXT"}]<br><br>
 
     [{oxmultilang ident="FCPO_MODULE_VERSION"}] [{$oView->fcpoGetModuleVersion()}]<br><br>
-    
+
+    [{if $oView->fcpoGetConfigErrors()}]
+        [{foreach from=$oView->fcpoGetConfigErrors() item='sErrorMessage'}]
+            <div style="padding:4px;background: red;color: white;font-weight: bold;">
+                [{$sErrorMessage}]
+            </div>
+        [{/foreach}]
+    [{/if}]
     <div class="groupExp">
         <div>
             <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="FCPO_CONFIG_GROUP_CONN"}]</b></a>
@@ -229,18 +238,6 @@
                 <div class="spacer"></div>
             </dl>
             <dl>
-                <dt>Discover</dt>
-                <dd style="margin-top: 4px; margin-left: 150px;">
-                    <input type="hidden" name="confbools[blFCPODiscoverActivated]" value="false">
-                    <input type="checkbox" name="confbools[blFCPODiscoverActivated]" value="true"  [{if ($confbools.blFCPODiscoverActivated)}]checked[{/if}]>
-                    <input type="button" onclick="JavaScript:showDialog('[{$oView->fcGetAdminSeperator()}]cl=fcpayone_main&amp;aoc=1&amp;oxid=C&amp;type=cc');" class="" value="[{oxmultilang ident="GENERAL_ASSIGNCOUNTRIES"}]">
-                    [{oxinputhelp ident="FCPO_HELP_ASSIGNCOUNTRIES"}]
-                    <input type="radio" name="confbools[blFCPOCCCLive]" value="1" [{if $confbools.blFCPOCCCLive == '1'}]checked[{/if}]> <strong>Live</strong>
-                    <input type="radio" name="confbools[blFCPOCCCLive]" value="0" [{if $confbools.blFCPOCCCLive == '0' || !$confbools.blFCPOCCCLive}]checked[{/if}]> Test
-                </dd>
-                <div class="spacer"></div>
-            </dl>
-            <dl>
                 <dt>Carte Bleue</dt>
                 <dd style="margin-top: 4px; margin-left: 150px;">
                 <input type="hidden" name="confbools[blFCPOCarteBleueActivated]" value="false">
@@ -431,10 +428,6 @@
                 <dt>[{oxmultilang ident="FCPO_CONFIG_DEBIT_GER"}]</dt>
             </dl>
             <dl style="border-top:0px;">
-                <dt>
-                    <input type="hidden" name="confbools[blFCPODebitOldGer]" value="false">
-                    <input type="checkbox" name="confbools[blFCPODebitOldGer]" value="true"  [{if ($confbools.blFCPODebitOldGer)}]checked[{/if}]>
-                </dt>
                 <dd>
                     [{oxmultilang ident="FCPO_CONFIG_DEBIT_SHOW_OLD_FIELDS"}]
                 </dd>
@@ -732,6 +725,15 @@
                 <div class="spacer"></div>
             </dl>
             <dl>
+                <dt>
+                    <input type="text" class="txt" name="confstrs[sFCPORatePaySnippetID]" [{if $confstrs.sFCPORatePaySnippetID == '' || $confstrs.sFCPORatePaySnippetID == 'ratepay'  }] value="ratepay" [{else}]  value="[{$confstrs.sFCPORatePaySnippetID}]" [{/if}]>
+                </dt>
+                <dd>
+                    Ratepay Snippet ID
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+            <dl>
                 <dt></dt>
                 <dd>
                     <h3>[{oxmultilang ident="FCPO_PROFILES_RATEPAY"}]</h3>
@@ -752,9 +754,10 @@
                         [{oxmultilang ident="FCPO_PROFILES_RATEPAY_PAYMENT"}]: 
                         <select class="edittext" name="aRatepayProfiles[[{$sOxid}]][paymentid]">
                             <option value="fcporp_bill" [{if $aRatePayProfile.OXPAYMENTID == 'fcporp_bill'}]selected[{/if}]>RatePay Rechnung</option>
+                            <option value="fcporp_debitnote" [{if $aRatePayProfile.OXPAYMENTID == 'fcporp_debitnote'}]selected[{/if}]>RatePay Lastschrift</option>
                         </select>
                         <input type="submit" class="edittext" name="aRatepayProfiles[[{$sOxid}]][delete]" value="[{oxmultilang ident="FCPO_RATEPAY_DELETE_PROFILE"}]" onClick="Javascript:document.myedit.fnc.value='save'" [{$readonly}]><br>
-                        [{if $aRatePayProfile.merchant_name =='PayONE'}]
+                        [{if $aRatePayProfile.merchant_name != ''}]
                             <input type="checkbox" value="[{$sOxid}]" onclick="Javascript:handleRatePayShowDetails(this)"> [{oxmultilang ident="FCPO_RATEPAY_PROFILE_TOGGLE_DETAILS"}]
                         [{/if}]
                     </dd>
@@ -944,7 +947,7 @@
 
     <div class="groupExp">
         <div>
-            <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="FCPO_GROUP_LOGGING"}]</b></a>
+            <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="FCPO_FORWARD_REDIRECTS"}]</b></a>
             <dl>
                 <dt>
                     <select name="confstrs[sTransactionRedirectLogging]">
@@ -958,6 +961,31 @@
                 </dd>
                 <div class="spacer"></div>
             </dl>
+            <dl>
+                <dt>
+                    <select name="confstrs[sTransactionRedirectMethod]">
+                        <option value="direct" [{if $confstrs.sTransactionRedirectMethod == "direct"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_TRANSACTIONREDIRECTMETHOD_DIRECT"}]</option>
+                        <option value="cronjob" [{if $confstrs.sTransactionRedirectMethod == "cronjob"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_TRANSACTIONREDIRECTMETHOD_CRONJOB"}]</option>
+                    </select>
+                    [{oxinputhelp ident="FCPO_HELP_TRANSACTIONREDIRECTMETHOD"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_TRANSACTIONREDIRECTMETHOD"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+            [{if $confstrs.sTransactionRedirectMethod != "cronjob"}]
+                <dl>
+                    <dt>
+                        <input type="text" class="txt" name="confstrs[sTransactionRedirectTimeout]" value="[{$confstrs.sTransactionRedirectTimeout}]" [{$readonly}]>
+                        [{oxinputhelp ident="FCPO_HELP_TRANSACTIONREDIRECT_TIMEOUT"}]
+                    </dt>
+                    <dd>
+                        [{oxmultilang ident="FCPO_TRANSACTIONREDIRECT_TIMEOUT"}]
+                    </dd>
+                    <div class="spacer"></div>
+                </dl>
+            [{/if}]
         </div>
     </div>
 

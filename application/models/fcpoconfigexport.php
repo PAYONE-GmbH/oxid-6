@@ -540,6 +540,7 @@ class fcpoconfigexport extends oxBase
             'fcpo_p24' => 'sb',
             'fcpo_bancontact' => 'sb',
             'fcporp_debitnote' => 'fnc',
+            'fcpo_alipay' => 'wlt',
         );
 
         if (isset($aAbbreviations[$sPaymentId])) {

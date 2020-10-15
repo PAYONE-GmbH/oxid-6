@@ -741,46 +741,6 @@ class fcpayone_main extends fcpayone_admindetails
     }
 
     /**
-     * Returns matching abbreviation for given payment id
-     * 
-     * @param  string $sPaymentId
-     * @return string
-     */
-    protected function _getPaymentAbbreviation($sPaymentId) 
-    {
-        $sAbbr = '';
-
-        $aAbbreviations = array(
-            'fcpocreditcard' => 'cc',
-            'fcpocashondel' => 'cod',
-            'fcpodebitnote' => 'elv',
-            'fcpopayadvance' => 'vor',
-            'fcpoinvoice' => 'rec',
-            'fcpopaypal' => 'wlt',
-            'fcpopaypal_express' => 'wlt',
-            'fcpoklarna' => 'fnc',
-            'fcpoklarna_new' => 'fnc',
-            'fcpobarzahlen' => 'csh',
-            'fcpopaydirekt' => 'wlt',
-            'fcpo_sofort' => 'sb',
-            'fcpo_giropay' => 'sb',
-            'fcpo_eps' => 'sb',
-            'fcpo_pf_finance' => 'sb',
-            'fcpo_pf_card' => 'sb',
-            'fcpo_ideal' => 'sb',
-            'fcpo_p24' => 'sb',
-            'fcpo_bancontact' => 'sb',
-            'fcpo_wechatpay' => 'wlt',
-        );
-
-        if (isset($aAbbreviations[$sPaymentId])) {
-            $sAbbr = $aAbbreviations[$sPaymentId];
-        }
-
-        return $sAbbr;
-    }
-
-    /**
      * Method returns the checksum result
      * 
      * @param  void

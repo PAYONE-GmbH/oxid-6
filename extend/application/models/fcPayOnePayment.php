@@ -70,6 +70,7 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         'fcpo_p24',
         'fcpo_bancontact',
         'fcporp_debitnote',
+        'fcpo_trustly',
     );
 
     protected static $_aRedirectPayments = array(
@@ -103,6 +104,7 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         'fcpo_ideal',
         'fcpo_p24',
         'fcpo_bancontact',
+
     );
     
     protected static $_aIframePaymentTypes = array(

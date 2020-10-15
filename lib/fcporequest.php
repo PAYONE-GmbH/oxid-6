@@ -575,6 +575,10 @@ class fcpoRequest extends oxSuperCfg
             case 'fcpo_secinvoice':
                 $blAddRedirectUrls = $this->_fcpoAddSecInvoiceParameters($oOrder);
                 break;
+            case 'fcpo_trustly':
+                $this->fcpoAddParametersOnlineTrustly($oOrder);
+                $blAddRedirectUrls = true;
+                break;
             default:
                 return false;
         }
@@ -607,6 +611,21 @@ class fcpoRequest extends oxSuperCfg
         $this->addParameter('businessrelation', $sBusinessRelation);
 
         return true;
+    }
+
+    /**
+     * Add parameters needed for Bancontact
+     *
+     * @param $oOrder
+     * @return void
+     */
+    protected function fcpoAddParametersOnlineTrustly($oOrder)
+    {
+        $this->addParameter('clearingtype', 'sb'); //Payment method
+        $this->addParameter('onlinebanktransfertype', 'TRL');
+        $oBillCountry = oxNew('oxcountry');
+        $oBillCountry->load($oOrder->oxorder__oxbillcountryid->value);
+        $this->addParameter('bankcountry', $oBillCountry->oxcountry__oxisoalpha2->value);
     }
 
     /**

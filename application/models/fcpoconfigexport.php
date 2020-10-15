@@ -540,6 +540,7 @@ class fcpoconfigexport extends oxBase
             'fcpo_p24' => 'sb',
             'fcpo_bancontact' => 'sb',
             'fcporp_debitnote' => 'fnc',
+            'fcpo_trustly' => 'sb',
         );
 
         if (isset($aAbbreviations[$sPaymentId])) {

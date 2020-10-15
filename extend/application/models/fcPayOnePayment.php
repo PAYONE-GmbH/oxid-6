@@ -104,7 +104,7 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         'fcpo_ideal',
         'fcpo_p24',
         'fcpo_bancontact',
-
+        'fcpo_trustly',
     );
     
     protected static $_aIframePaymentTypes = array(

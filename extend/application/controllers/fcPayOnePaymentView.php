@@ -1690,6 +1690,28 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         return $blReturn;
     }
 
+    public function fcpoGetRatePayDeviceFingerprint()
+    {
+        $oSession = $this->_oFcpoHelper->fcpoGetSession();
+        $sFingerprint = $oSession->getVariable('fcpoRatepayDeviceFingerPrint');
+
+        if (!$sFingerprint) {
+            $sFingerprint = $this->fcpoGetUserValue('oxfname');
+            $sFingerprint .= $this->fcpoGetUserValue('oxlname');
+            $sFingerprint .= microtime();
+            $sFingerprint = md5($sFingerprint);
+            $oSession->setVariable('fcpoRatepayDeviceFingerPrint', $sFingerprint);
+        }
+        return $sFingerprint;
+    }
+
+    public function fcpoGetRatePayDeviceFingerprintSnippetId()
+    {
+        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+
+        return $oConfig->getConfigParam('sFCPORatePaySnippetID') ? $oConfig->getConfigParam('sFCPORatePaySnippetID') : 'ratepay' ;
+    }
+
     /**
      * Checks if all mandatory data is available for using ratepay invoicing
      * 

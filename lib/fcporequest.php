@@ -2940,7 +2940,7 @@ class fcpoRequest extends oxSuperCfg
     protected function _saveCheckedAddress($aResponse)
     {
         $sCheckHash = $this->_getAddressHash($aResponse);
-        $sQuery = "REPLACE INTO fcpocheckedaddresses ( fcpo_address_hash ) VALUES ( '{$sCheckHash}' )";
+        $sQuery = "REPLACE INTO fcpocheckedaddresses ( fcpo_address_hash, fcpo_checkdate ) VALUES ( '{$sCheckHash}', NOW() )";
         oxDb::getDb()->Execute($sQuery);
     }
 

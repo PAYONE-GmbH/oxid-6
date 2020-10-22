@@ -308,7 +308,7 @@ class Unit_fcPayOne_Application_Models_fcpoexportconfig extends OxidTestCase
      */
     public function test__fcpoGetShopXmlGlobal_Coverage() 
     {
-        $aMockMap = array('someSubtype' => array('from' => 'someFrom', 'to' => 'someTo'));
+        $aMockMap = array('someSubtype' => array('from' => 'someFrom', 'to' => 'someTo', 'name' => 'someName'));
         $aMockMappings = array('someAbbr' =>  array($aMockMap));
 
         $aMockShopConfVars['sFCPOMerchantID'] = 'someEdition';

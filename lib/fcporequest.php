@@ -576,7 +576,7 @@ class fcpoRequest extends oxSuperCfg
                 $blAddRedirectUrls = $this->_fcpoAddSecInvoiceParameters($oOrder);
                 break;
             case 'fcpo_trustly':
-                $this->fcpoAddParametersOnlineTrustly($oOrder);
+                $this->fcpoAddParametersOnlineTrustly($oOrder, $aDynvalue);
                 $blAddRedirectUrls = true;
                 break;
             default:
@@ -617,12 +617,26 @@ class fcpoRequest extends oxSuperCfg
      * Add parameters needed for Bancontact
      *
      * @param $oOrder
+     * @param $aDynvalue
      * @return void
      */
-    protected function fcpoAddParametersOnlineTrustly($oOrder)
+    protected function fcpoAddParametersOnlineTrustly($oOrder, $aDynvalue)
     {
         $this->addParameter('clearingtype', 'sb'); //Payment method
         $this->addParameter('onlinebanktransfertype', 'TRL');
+
+        $blUseSepaData = (
+            isset($aDynvalue['fcpo_ou_iban']) &&
+            $aDynvalue['fcpo_ou_iban'] != '' &&
+            isset($aDynvalue['fcpo_ou_bic']) &&
+            $aDynvalue['fcpo_ou_bic'] != ''
+        );
+
+        if ($blUseSepaData) {
+            $this->addParameter('iban', $aDynvalue['fcpo_ou_iban']);
+            $this->addParameter('bic', $aDynvalue['fcpo_ou_bic']);
+        }
+
         $oBillCountry = oxNew('oxcountry');
         $oBillCountry->load($oOrder->oxorder__oxbillcountryid->value);
         $this->addParameter('bankcountry', $oBillCountry->oxcountry__oxisoalpha2->value);

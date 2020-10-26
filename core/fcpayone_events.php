@@ -192,7 +192,6 @@ class fcpayone_events
     public static $sQueryTableFcpocheckedaddresses = "
         CREATE TABLE fcpocheckedaddresses (
           fcpo_address_hash CHAR(32) COLLATE latin1_general_ci NOT NULL DEFAULT '',
-          fcpo_checkdate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
           OXTIMESTAMP TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Timestamp',
           PRIMARY KEY (fcpo_address_hash)
         ) ENGINE=INNODB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;";

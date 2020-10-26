@@ -2924,7 +2924,7 @@ class fcpoRequest extends oxSuperCfg
     protected function _wasAddressCheckedBefore()
     {
         $sCheckHash = $this->_getAddressHash();
-        $sQuery = "SELECT fcpo_checkdate FROM fcpocheckedaddresses WHERE fcpo_address_hash = '{$sCheckHash}'";
+        $sQuery = "SELECT oxtimestamp FROM fcpocheckedaddresses WHERE fcpo_address_hash = '{$sCheckHash}'";
         $sDate = oxDb::getDb()->GetOne($sQuery);
         if ($sDate != false) {
             return true;

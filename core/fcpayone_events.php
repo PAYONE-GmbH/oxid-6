@@ -81,7 +81,7 @@ class fcpayone_events
         CREATE TABLE fcporequestlog (
           OXID int(11) NOT NULL AUTO_INCREMENT,
           FCPO_TIMESTAMP timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-          FCPO_REFNR int(32) NOT NULL DEFAULT '0',
+          FCPO_REFNR int(11) NOT NULL DEFAULT '0',
           FCPO_REQUESTTYPE varchar(32) NOT NULL DEFAULT '',
           FCPO_RESPONSESTATUS varchar(32) NOT NULL DEFAULT '',
           FCPO_REQUEST text NOT NULL,
@@ -93,7 +93,7 @@ class fcpayone_events
         ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;";
     public static $sQueryTableFcpotransactionstatus = "
         CREATE TABLE fcpotransactionstatus (
-          OXID char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+          OXID int(11) NOT NULL AUTO_INCREMENT,
           FCPO_TIMESTAMP timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
           FCPO_ORDERNR int(11) DEFAULT '0',
           FCPO_KEY varchar(32) NOT NULL DEFAULT '',
@@ -154,7 +154,7 @@ class fcpayone_events
         ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;";
     public static $sQueryTableFcpoStatusForwarding = "
         CREATE TABLE fcpostatusforwarding(
-                OXID char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+                OXID INT(11) NOT NULL AUTO_INCREMENT,
                 FCPO_PAYONESTATUS VARCHAR(32) CHARSET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' ,
                 FCPO_URL VARCHAR(255) CHARSET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' ,
                 FCPO_TIMEOUT DOUBLE NOT NULL DEFAULT '0' ,
@@ -192,7 +192,7 @@ class fcpayone_events
         CREATE TABLE fcpopdfmandates (
           OXORDERID char(32) COLLATE latin1_general_ci NOT NULL,
           FCPO_FILENAME varchar(32) NOT NULL DEFAULT '',
-          OXTIMESTAMP DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          OXTIMESTAMP CHAR(32) COLLATE latin1_general_ci NOT NULL DEFAULT '',
           PRIMARY KEY (OXORDERID)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
     public static $sQueryTableFcpoklarnacampaigns = "
@@ -532,6 +532,9 @@ class fcpayone_events
     /**
      * Creating database structure changes.
      *
+     * IMPORTANT: Any changes should NOT be made in the "create table" statement but in a new "add column" or
+     * "change column" statement, which should be called in this method.
+     *
      * @return void
      */
     public static function addDatabaseStructure()
@@ -601,6 +604,7 @@ class fcpayone_events
         self::addColumnIfNotExists('fcpoklarnacampaigns', 'FCPO_CAMPAIGN_LANGUAGE', self::$sQueryAlterCampaign1);
         self::addColumnIfNotExists('fcpoklarnacampaigns', 'FCPO_CAMPAIGN_CURRENCY', self::$sQueryAlterCampaign2);
 
+        //CHANGE COLUMN TYPES OF EXISTING COLUMNS
         self::changeColumnTypeIfWrong('fcpotransactionstatus', 'FCPO_USERID', 'varchar(32)', self::$sQueryChangeToVarchar1);
         self::changeColumnTypeIfWrong('fcpotransactionstatus', 'FCPO_TXID', 'varchar(32)', self::$sQueryChangeToVarchar2);
         self::changeColumnTypeIfWrong('fcpotransactionstatus', 'FCPO_REFERENCE', 'varchar(32)', self::$sQueryChangeToVarchar3);
@@ -614,6 +618,10 @@ class fcpayone_events
         }
 
         self::dropIndexIfExists('fcporefnr', 'FCPO_REFNR');
+
+        //DROP CLOUMN
+        self::dropColumnIfExists('fcporequestlog', 'FCPO_TIMESTAMP');
+        self::dropColumnIfExists('fcpotransactionstatus', 'FCPO_TIMESTAMP');
 
         //ADD PAYPAL EXPRESS LOGOS
         self::insertRowIfNotExists('fcpopayoneexpresslogos', array('OXID' => '1'), "INSERT INTO fcpopayoneexpresslogos (OXID, FCPO_ACTIVE, FCPO_LANGID, FCPO_LOGO, FCPO_DEFAULT) VALUES(1, 1, 0, 'btn_xpressCheckout_de.gif', 1);");
@@ -728,6 +736,24 @@ class fcpayone_events
         if (oxDb::getDb()->getOne("SHOW KEYS FROM {$sTable} WHERE Key_name = '{$sIndex}'")) {
             oxDb::getDb()->Execute("ALTER TABLE {$sTable} DROP INDEX {$sIndex}");
             // echo "In Tabelle {$sTable} den Index {$sIndex} entfernt.<br>";
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Delete a database column.
+     *
+     * @param string $sTable database table name
+     * @param string $sColumn database column name
+     *
+     * @return boolean true or false
+     */
+    public static function dropColumnIfExists($sTable, $sColumn)
+    {
+        if (oxDb::getDb()->getOne("SHOW COLUMNS FROM {$sTable} WHERE FIELD = '{$sColumn}'")) {
+            oxDb::getDb()->Execute("ALTER TABLE {$sTable} DROP COLUMN {$sColumn}");
+            // echo "In Tabelle {$sTable} die Spalte {$sColumn} entfernt.<br>";
             return true;
         }
         return false;

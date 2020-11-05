@@ -612,8 +612,8 @@ class fcpayone_events
         self::addColumnIfNotExists('fcpopdfmandates', 'OXTIMESTAMP', self::$sQueryAlterFcpopdfmandatesOxtimestamp);
 
         //COPY DATA FROM OLD FCPO_TIMESTAMP COLUMN TO OXTIMESTAMP
-        self::copyDataFromOldColumnIfExists('fcporequestlog', 'FCPO_TIMESTAMP', self::$sQueryFcporequestlogCopyTimestampData);
-        self::copyDataFromOldColumnIfExists('fcpotransactionstatus', 'FCPO_TIMESTAMP', self::$sQueryFcpotransactionstatusCopyTimestampData);
+        self::copyDataFromOldColumnIfExists('fcporequestlog', 'FCPO_TIMESTAMP', 'OXTIMESTAMP', self::$sQueryFcporequestlogCopyTimestampData);
+        self::copyDataFromOldColumnIfExists('fcpotransactionstatus', 'FCPO_TIMESTAMP', 'OXTIMESTAMP', self::$sQueryFcpotransactionstatusCopyTimestampData);
 
         //DROP OLD FCPO_TIMESTAMP COLUMN
         self::dropColumnIfItAndReplacementExist('fcporequestlog', 'FCPO_TIMESTAMP', 'OXTIMESTAMP');
@@ -688,10 +688,20 @@ class fcpayone_events
         return false;
     }
 
-    public static function copyDataFromOldColumnIfExists($sTableName, $sColumnName, $copyDataQuery)
+    /**
+     * Copy data from old column.
+     *
+     * @param string $sTableName database table name
+     * @param string $oldColumnName database old column name
+     * @param string $newColumnName database new column name
+     * @param string $copyDataQuery  sql query to execute
+     * @return bool
+     */
+    public static function copyDataFromOldColumnIfExists($sTableName, $oldColumnName, $newColumnName, $copyDataQuery)
     {
-        $checkQuery = "SHOW COLUMNS FROM {$sTableName} WHERE FIELD = '{$sColumnName}'";
-        if (oxDb::getDb()->getOne($checkQuery)) {
+        if (oxDb::getDb()->getOne("SHOW COLUMNS FROM {$sTableName} WHERE FIELD = '{$oldColumnName}'") &&
+            oxDb::getDb()->getOne("SHOW COLUMNS FROM {$sTableName} WHERE FIELD = '{$newColumnName}'")
+        ) {
             oxDb::getDb()->Execute($copyDataQuery);
             return true;
         }

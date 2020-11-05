@@ -379,7 +379,7 @@ class fcpayone_events
     public static $sQueryAlterFcpoTransactionForwardingChangeToChar = "ALTER TABLE fcpostatusforwarding CHANGE OXID OXID char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL;";
     public static $sQueryChangeOxtimestampType = "ALTER TABLE [REPLACE_WITH_TABLE_NAME] CHANGE OXTIMESTAMP OXTIMESTAMP TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Timestamp';";
     public static $sQueryAlterFcpopdfmandatesOxtimestamp = "ALTER TABLE fcpopdfmandates ADD COLUMN OXTIMESTAMP TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Timestamp';";
-    public static $sQueryAlterFcpouser2flagFcpotimestamp = "ALTER TABLE fcpouser2flag CHANGE FCPOTIMESTAMP OXTIMESTAMP;";
+    public static $sQueryAlterFcpouser2flagFcpotimestamp = "ALTER TABLE fcpouser2flag CHANGE FCPOTIMESTAMP OXTIMESTAMP TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Timestamp';";
     public static $sQueryFcporequestlogCopyTimestampData = "UPDATE fcporequestlog SET OXTIMESTAMP = FCPO_TIMESTAMP;";
     public static $sQueryFcpotransactionstatusCopyTimestampData = "UPDATE fcpotransactionstatus SET OXTIMESTAMP = FCPO_TIMESTAMP;";
 

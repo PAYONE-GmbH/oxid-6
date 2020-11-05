@@ -67,6 +67,7 @@ class fcpayone_events
         'fcpopayoneexpresslogos',
         'fcpocheckedaddresses',
         'fcporatepay',
+        'fcpouser2flag',
     ];
 
     public static $sQueryTableFcporefnr = "
@@ -378,6 +379,9 @@ class fcpayone_events
     public static $sQueryAlterFcpoTransactionForwardingChangeToChar = "ALTER TABLE fcpostatusforwarding CHANGE OXID OXID char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL;";
     public static $sQueryChangeOxtimestampType = "ALTER TABLE [REPLACE_WITH_TABLE_NAME] CHANGE OXTIMESTAMP OXTIMESTAMP TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Timestamp';";
     public static $sQueryAlterFcpopdfmandatesOxtimestamp = "ALTER TABLE fcpopdfmandates ADD COLUMN OXTIMESTAMP TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Timestamp';";
+    public static $sQueryAlterFcpouser2flagFcpotimestamp = "ALTER TABLE fcpouser2flag CHANGE FCPOTIMESTAMP OXTIMESTAMP;";
+    public static $sQueryFcporequestlogCopyTimestampData = "UPDATE fcporequestlog SET OXTIMESTAMP = FCPO_TIMESTAMP;";
+    public static $sQueryFcpotransactionstatusCopyTimestampData = "UPDATE fcpotransactionstatus SET OXTIMESTAMP = FCPO_TIMESTAMP;";
 
     public static $aPaymentMethods = array(
         'fcpoinvoice' => 'Rechnung',
@@ -607,7 +611,18 @@ class fcpayone_events
 
         self::addColumnIfNotExists('fcpopdfmandates', 'OXTIMESTAMP', self::$sQueryAlterFcpopdfmandatesOxtimestamp);
 
-        //CHANGE COLUMN TYPES OF EXISTING COLUMNS
+        //COPY DATA FROM OLD FCPO_TIMESTAMP COLUMN TO OXTIMESTAMP
+        self::copyDataFromOldColumnIfExists('fcporequestlog', 'FCPO_TIMESTAMP', self::$sQueryFcporequestlogCopyTimestampData);
+        self::copyDataFromOldColumnIfExists('fcpotransactionstatus', 'FCPO_TIMESTAMP', self::$sQueryFcpotransactionstatusCopyTimestampData);
+
+        //DROP OLD FCPO_TIMESTAMP COLUMN
+        self::dropColumnIfItAndReplacementExist('fcporequestlog', 'FCPO_TIMESTAMP', 'OXTIMESTAMP');
+        self::dropColumnIfItAndReplacementExist('fcpotransactionstatus', 'FCPO_TIMESTAMP', 'OXTIMESTAMP');
+
+        //CHANGE COLUMN NAMES
+        self::changeColumnNameIfWrong('fcpouser2flag', 'FCPOTIMESTAMP', self::$sQueryAlterFcpouser2flagFcpotimestamp);
+
+        //CHANGE COLUMN TYPES (AND NAMES)
         self::changeColumnTypeIfWrong('fcpotransactionstatus', 'FCPO_USERID', 'varchar(32)', self::$sQueryChangeToVarchar1);
         self::changeColumnTypeIfWrong('fcpotransactionstatus', 'FCPO_TXID', 'varchar(32)', self::$sQueryChangeToVarchar2);
         self::changeColumnTypeIfWrong('fcpotransactionstatus', 'FCPO_REFERENCE', 'varchar(32)', self::$sQueryChangeToVarchar3);
@@ -616,15 +631,12 @@ class fcpayone_events
         self::changeColumnTypeIfWrong('fcpotransactionstatus', 'OXID', 'char(32)', self::$sQueryAlterFcpoTransactionStatusChangeToChar);
         self::changeColumnTypeIfWrong('fcpostatusforwarding', 'OXID', 'char(32)', self::$sQueryAlterFcpoTransactionForwardingChangeToChar);
 
+        //UPDATE ALL OXTIMESTAMP COLUMN TYPES
         foreach (self::$updateOxtimestampTypeTable as $table) {
             self::changeColumnTypeIfWrong($table, 'OXTIMESTAMP', 'TIMESTAMP', str_replace('[REPLACE_WITH_TABLE_NAME]', $table, self::$sQueryChangeOxtimestampType));
         }
 
         self::dropIndexIfExists('fcporefnr', 'FCPO_REFNR');
-
-        //DROP CLOUMN
-        self::dropColumnIfExists('fcporequestlog', 'FCPO_TIMESTAMP');
-        self::dropColumnIfExists('fcpotransactionstatus', 'FCPO_TIMESTAMP');
 
         //ADD PAYPAL EXPRESS LOGOS
         self::insertRowIfNotExists('fcpopayoneexpresslogos', array('OXID' => '1'), "INSERT INTO fcpopayoneexpresslogos (OXID, FCPO_ACTIVE, FCPO_LANGID, FCPO_LOGO, FCPO_DEFAULT) VALUES(1, 1, 0, 'btn_xpressCheckout_de.gif', 1);");
@@ -671,6 +683,16 @@ class fcpayone_events
             } catch (Exception $e) {
 
             }
+            return true;
+        }
+        return false;
+    }
+
+    public static function copyDataFromOldColumnIfExists($sTableName, $sColumnName, $copyDataQuery)
+    {
+        $checkQuery = "SHOW COLUMNS FROM {$sTableName} WHERE FIELD = '{$sColumnName}'";
+        if (oxDb::getDb()->getOne($checkQuery)) {
+            oxDb::getDb()->Execute($copyDataQuery);
             return true;
         }
         return false;
@@ -727,6 +749,25 @@ class fcpayone_events
     }
 
     /**
+     * Check and change database table structure.
+     *
+     * @param string $sTableName    database table name
+     * @param string $sColumnName   database column name
+     * @param string $sQuery        sql-query to execute
+     *
+     * @return boolean true or false
+     */
+    public static function changeColumnNameIfWrong($sTableName, $sColumnName, $sQuery)
+    {
+        $checkQuery = "SHOW COLUMNS FROM {$sTableName} WHERE FIELD = '{$sColumnName}'";
+        if (oxDb::getDb()->getOne($checkQuery)) {
+            oxDb::getDb()->Execute($sQuery);
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Delete a database index.
      *
      * @param string $sTable database table name
@@ -745,17 +786,20 @@ class fcpayone_events
     }
 
     /**
-     * Delete a database column.
+     * Delete a database column if the column itself and the new replacing column exist.
      *
      * @param string $sTable database table name
-     * @param string $sColumn database column name
+     * @param string $oldColumn database old column name
+     * @param string $replacementColumn database replacement column name
      *
      * @return boolean true or false
      */
-    public static function dropColumnIfExists($sTable, $sColumn)
+    public static function dropColumnIfItAndReplacementExist($sTable, $oldColumn, $replacementColumn)
     {
-        if (oxDb::getDb()->getOne("SHOW COLUMNS FROM {$sTable} WHERE FIELD = '{$sColumn}'")) {
-            oxDb::getDb()->Execute("ALTER TABLE {$sTable} DROP COLUMN {$sColumn}");
+        if (oxDb::getDb()->getOne("SHOW COLUMNS FROM {$sTable} WHERE FIELD = '{$oldColumn}'") &&
+            oxDb::getDb()->getOne("SHOW COLUMNS FROM {$sTable} WHERE FIELD = '{$replacementColumn}'")
+        ) {
+            oxDb::getDb()->Execute("ALTER TABLE {$sTable} DROP COLUMN {$oldColumn}");
             // echo "In Tabelle {$sTable} die Spalte {$sColumn} entfernt.<br>";
             return true;
         }

@@ -614,10 +614,12 @@ class fcpayone_events
         //COPY DATA FROM OLD FCPO_TIMESTAMP COLUMN TO OXTIMESTAMP
         self::copyDataFromOldColumnIfExists('fcporequestlog', 'FCPO_TIMESTAMP', 'OXTIMESTAMP', self::$sQueryFcporequestlogCopyTimestampData);
         self::copyDataFromOldColumnIfExists('fcpotransactionstatus', 'FCPO_TIMESTAMP', 'OXTIMESTAMP', self::$sQueryFcpotransactionstatusCopyTimestampData);
+        self::copyDataFromOldColumnIfExists('fcpocheckedaddresses', 'fcpo_checkdate', 'OXTIMESTAMP', self::$sQueryFcpotransactionstatusCopyTimestampData);
 
         //DROP OLD FCPO_TIMESTAMP COLUMN
         self::dropColumnIfItAndReplacementExist('fcporequestlog', 'FCPO_TIMESTAMP', 'OXTIMESTAMP');
         self::dropColumnIfItAndReplacementExist('fcpotransactionstatus', 'FCPO_TIMESTAMP', 'OXTIMESTAMP');
+        self::dropColumnIfItAndReplacementExist('fcpocheckedaddresses', 'fcpo_checkdate', 'OXTIMESTAMP');
 
         //CHANGE COLUMN NAMES
         self::changeColumnNameIfWrong('fcpouser2flag', 'FCPOTIMESTAMP', self::$sQueryAlterFcpouser2flagFcpotimestamp);

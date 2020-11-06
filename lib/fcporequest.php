@@ -1205,8 +1205,8 @@ class fcpoRequest extends oxSuperCfg
         $sProfileId = $this->_oFcpoHelper->fcpoGetSessionVariable('ratepayprofileid');
         $aProfileData = $oRatePay->fcpoGetProfileData($sProfileId);
         $sRatePayShopId = $aProfileData['shopid'];
-        $sDeviceFingerprint = md5($oUser->oxuser__oxfname->value.$oUser->oxuser__oxlname->value.  microtime());
-
+        $sDeviceFingerprint = $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoRatepayDeviceFingerPrint');
+        $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoRatepayDeviceFingerPrint');
         $sFinancignType = $this->_fcpoGetFinancingTypeByPaymentId($sPaymentId);
         $oCur = $oConfig->getActShopCurrencyObject();
         $sCountry = '';

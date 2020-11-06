@@ -347,8 +347,13 @@ class fcpoconfigexport extends oxBase
 
         foreach ($aPaymentMapping as $sAbbr => $aMappings) {
             $sXml .= $this->_sT . $this->_sT . $this->_sT . $this->_sT . "<{$sAbbr}>" . $this->_sN;
-            foreach ($aMappings as $aMap) {
-                $sXml .= $this->_sT . $this->_sT . $this->_sT . $this->_sT . $this->_sT . '<map from="' . $aMap['from'] . '" to="' . $aMap['to'] . '"/>' . $this->_sN;
+            foreach ($aMappings as $index => $subtype) {
+                $subtype = $index;
+                $sXml .= $this->_sT . $this->_sT . $this->_sT . $this->_sT . $this->_sT . "<{$subtype}>" . $this->_sN;
+                foreach ($aMappings[$subtype] as $aMap) {
+                    $sXml .= $this->_sT . $this->_sT . $this->_sT . $this->_sT . $this->_sT . $this->_sT . '<map from="' . $aMap['from'] . '" to="' . $aMap['to'] . '" name="'. $aMap['name'] . '"/>' . $this->_sN;
+                }
+                $sXml .= $this->_sT . $this->_sT . $this->_sT . $this->_sT . $this->_sT . "</{$subtype}>" . $this->_sN;
             }
             $sXml .= $this->_sT . $this->_sT . $this->_sT . $this->_sT . "</{$sAbbr}>" . $this->_sN;
         }
@@ -550,6 +555,55 @@ class fcpoconfigexport extends oxBase
     }
 
     /**
+     * Returns matching subtypes for given payment id
+     *
+     * @param string $sPaymentId
+     * @return string
+     */
+    protected function _getPaymentSubtype($sPaymentId) {
+        $sAbbr = '';
+
+        $aAbbreviations = array(
+            'fcpocreditcard' => 'V,M,A,D,J,O,U,B',
+            'fcpocashondel' => 'CSH', // has no subtype use clearingtype instead
+            'fcpodebitnote' => 'ELV', // has no subtype use clearingtype instead
+            'fcpopayadvance' => 'VOR', // has no subtype use clearingtype instead
+            'fcpoinvoice' => 'REC', // has no subtype use clearingtype instead
+            'fcpopaypal' => 'PPE',
+            'fcpopaypal_express' => 'PPE',
+            'fcpoklarna_invoice' => 'KIV',
+            'fcpoklarna' => 'KLV',
+            'fcpoklarna_directdebit' => 'KDD',
+            'fcpoklarna_installments' => 'KIS',
+            'fcpobarzahlen' => 'BZN',
+            'fcpopaydirekt' => 'PDT',
+            'fcpopaydirekt_express' => 'PDT',
+            'fcpopo_bill' => 'PYV',
+            'fcpopo_debitnote' => 'PYD',
+            'fcpopo_installment' => 'PYS',
+            'fcporp_bill' => 'RPV',
+            'fcporp_debitnote' => 'RPD',
+            'fcpocreditcard_iframe' => 'V,M,A,D,J,O,U,B',
+            'fcpoamazonpay' => 'AMZ',
+            'fcpo_secinvoice' => 'POV',
+            'fcpo_sofort' => 'PNT',
+            'fcpo_giropay' => 'GPY',
+            'fcpo_eps' => 'EPS',
+            'fcpo_pf_finance' => 'PFF',
+            'fcpo_pf_card' => 'PFC',
+            'fcpo_ideal' => 'IDL',
+            'fcpo_p24' => 'P24',
+            'fcpo_bancontact' => 'BCT',
+        );
+
+        if (isset($aAbbreviations[$sPaymentId])) {
+            $sAbbr = strtolower($aAbbreviations[$sPaymentId]);
+        }
+
+        return $sAbbr;
+    }
+
+    /**
      * Returning red payments
      *
      * @param  void
@@ -623,25 +677,29 @@ class fcpoconfigexport extends oxBase
     /**
      * Returns the configured mappings
      *
-     * @param  void
+     * @param void
      * @return array
      */
-    protected function _getMappings() 
-    {
+    protected function _getMappings() {
         $aMappings = array();
 
         $oMapping = oxNew('fcpomapping');
         $aExistingMappings = $oMapping->fcpoGetExistingMappings();
 
         foreach ($aExistingMappings as $oCurrentMapping) {
-            $sAbbr = $this->_getPaymentAbbreviation($oCurrentMapping->sOxid);
+            $sAbbr = $this->_getPaymentAbbreviation($oCurrentMapping->sPaymentType);
+            $sSubType = $this->_getPaymentSubType($oCurrentMapping->sPaymentType);
+            $aSubTypes = explode(',',$sSubType);
             if (array_key_exists($sAbbr, $aMappings) === false) {
                 $aMappings[$sAbbr] = array();
             }
-            $aMappings[$sAbbr][] = array(
-                'from' => $oCurrentMapping->sPayoneStatusId,
-                'to' => $oCurrentMapping->sFolder,
-            );
+            foreach ($aSubTypes as $sType) {
+                $aMappings[$sAbbr][$sType][] = array(
+                    'from' => $oCurrentMapping->sPayoneStatusId,
+                    'to' => $oCurrentMapping->sShopStatusId,
+                    'name' => $oCurrentMapping->sPaymentType,
+                );
+            }
         }
 
         return $aMappings;

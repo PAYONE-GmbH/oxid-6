@@ -351,8 +351,8 @@ class fcpayone_events
     public static $sQueryAlterFcpoTransactionStatusForwardState= "ALTER TABLE fcpotransactionstatus ADD COLUMN `FCPO_FORWARD_STATE` VARCHAR(32)";
     public static $sQueryAlterFcpoTransactionStatusForwardTries = "ALTER TABLE fcpotransactionstatus ADD COLUMN `FCPO_FORWARD_TRIES` int(11) NOT NULL DEFAULT 0";
     public static $sQueryChangeRefNrToVarchar = "ALTER TABLE oxorder CHANGE FCPOREFNR FCPOREFNR VARCHAR( 32 ) NOT NULL DEFAULT '0'";
-    public static $sQueryAlterFcpoTransactionStatusChangeToChar = "ALTER TABLE fcpotransactionstatus CHANGE OXID OXID CHAR(32) NOT NULL;";
-    public static $sQueryAlterFcpoTransactionForwardingChangeToChar = "ALTER TABLE fcpostatusforwarding CHANGE OXID OXID CHAR(32) NOT NULL;";
+    public static $sQueryAlterFcpoTransactionStatusChangeToChar = "ALTER TABLE fcpotransactionstatus CHANGE OXID OXID char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL;";
+    public static $sQueryAlterFcpoTransactionForwardingChangeToChar = "ALTER TABLE fcpostatusforwarding CHANGE OXID OXID char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL;";
     public static $sQueryChangeMandateTimestamp = "ALTER TABLE fcpopdfmandates CHANGE OXTIMESTAMP OXTIMESTAMP TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Timestamp';";
     public static $aPaymentMethods = array(
         'fcpoinvoice' => 'Rechnung',

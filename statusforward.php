@@ -277,7 +277,7 @@ class fcPayOneTransactionStatusForwarder extends fcPayOneTransactionStatusBase {
         try {
             $oConfig = $this->getConfig();
             $sConfTimeout = $oConfig->getConfigParam('sTransactionRedirectTimeout');
-            $iTimeout = ($sConfTimeout) ? (int) $sConfTimeout : 100;
+            $iTimeout = ($sConfTimeout) ? (int) $sConfTimeout : 10;
             $aParams = $this->_fetchPostParams($sStatusmessageId);
             $sParams = $aParams['string'];
             $aRequest = $aParams['array'];

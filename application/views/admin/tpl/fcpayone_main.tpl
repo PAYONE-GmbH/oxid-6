@@ -974,18 +974,16 @@
                 </dd>
                 <div class="spacer"></div>
             </dl>
-            [{if $confstrs.sTransactionRedirectMethod != "cronjob"}]
-                <dl>
-                    <dt>
-                        <input type="text" class="txt" name="confstrs[sTransactionRedirectTimeout]" value="[{$confstrs.sTransactionRedirectTimeout}]" [{$readonly}]>
-                        [{oxinputhelp ident="FCPO_HELP_TRANSACTIONREDIRECT_TIMEOUT"}]
-                    </dt>
-                    <dd>
-                        [{oxmultilang ident="FCPO_TRANSACTIONREDIRECT_TIMEOUT"}]
-                    </dd>
-                    <div class="spacer"></div>
-                </dl>
-            [{/if}]
+            <dl>
+                <dt>
+                    <input type="text" class="txt" name="confstrs[sTransactionRedirectTimeout]" value="[{$confstrs.sTransactionRedirectTimeout}]" [{$readonly}]>
+                    [{oxinputhelp ident="FCPO_HELP_TRANSACTIONREDIRECT_TIMEOUT"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_TRANSACTION_TIMEOUT"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
         </div>
     </div>
 

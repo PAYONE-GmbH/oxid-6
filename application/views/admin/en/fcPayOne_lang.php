@@ -1,5 +1,5 @@
 <?php
-/** 
+/**
  * PAYONE OXID Connector is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -17,7 +17,7 @@
  * @copyright (C) Payone GmbH
  * @version   OXID eShop CE
  */
- 
+
 
 $sLangName  = "English";
 // -------------------------------
@@ -246,7 +246,7 @@ $aLang = array(
 'fcpo_admin_config_status_shop'             => "shop - status",
 'fcpo_admin_config_status'                  => "status",
 'fcpo_admin_config_url'                     => "URL",
-'fcpo_admin_config_timeout'                 => "timeout",    
+'fcpo_admin_config_timeout'                 => "timeout",
 'fcpo_status_appointed'                     => "appointed",
 'fcpo_status_capture'                       => "capture",
 'fcpo_status_paid'                          => "paid",
@@ -368,22 +368,22 @@ $aLang = array(
 
 'FCPO_HELP_REFPREFIX'                       => "A unique referencenumber has to be transferred to PAYONE with every request. This is a consecutive number, normally starting at 1. When operating multiple shops ( e.g. live- and test-shop ) with the same PAYONE account-data there will be problems when the current referencenumber was already used. This can be avoided by using different prefixes on different shops.",
 'FCPO_REFPREFIX'                            => "Referencenumber prefix ( optional )",
-    
+
 'FCPO_MANDATE_PDF'                          => "SEPA mandate-pdf",
 'FCPO_MANDATE_DOWNLOAD'                     => "download",
-    
+
 'FCPO_EXPORT_CONFIG'                        => "Export configuration",
-    
+
 'FCPO_ASSIGN_COUNTRIES'                     => "Assign countries",
 'FCPO_COUNTRIES'                            => "Countries",
 'FCPO_LANGUAGE'                             => "Languages",
 'FCPO_CURRENCY'                             => "Currencies",
-    
+
 'FCPO_HELP_KLARNA_CAMPAIGNS'                => "Klarna will only accept orders where the combination of country, language and currency match the campaign. You have to configure these combinations here.<br>The customer will only see campaigns matching his current combination.",
 
 'FCPO_PAYPAL_DELADDRESS'                    => 'Transmit the billing-address as delivery-address if delivery-address is missing.',
 'FCPO_HELP_PAYPAL_DELADDRESS'               => 'This is used for the PayPal seller protection.',
-'FCPO_PAYPAL_LOGOS'                         => 'You can upload the PayPal Express logos here.',    
+'FCPO_PAYPAL_LOGOS'                         => 'You can upload the PayPal Express logos here.',
 'FCPO_PAYPAL_LOGOS_ACTIVE'                  => 'active',
 'FCPO_PAYPAL_LOGOS_LANG'                    => 'language',
 'FCPO_PAYPAL_LOGOS_LOGO'                    => 'logo',
@@ -399,30 +399,30 @@ $aLang = array(
 'FCPO_CC_CONFIG'                            => 'Input-configuration',
 'FCPO_CC_STANDARD_STYLE'                    => 'Standard-style',
 'FCPO_CC_ERRORS'                            => 'Error-output',
-    
+
 'FCPO_CC_STANDARD_INPUT'                    => 'Input',
 'FCPO_CC_STANDARD_SELECTION'                => 'Selection',
 'FCPO_CC_STANDARD_FIELDS'                   => 'Input-fields',
 'FCPO_CC_STANDARD_IFRAME'                   => 'Iframe',
-    
+
 'FCPO_CC_ACTIVE'                            => 'Active',
 'FCPO_CC_LANGUAGE'                          => 'Language',
 'FCPO_CC_SELECT'                            => 'Selection',
-    
+
 'FCPO_CC_ERRORLANG_DE'                      => 'German',
 'FCPO_CC_ERRORLANG_EN'                      => 'English',
 'FCPO_CC_CUSTOM_TEMPLATE'                   => 'Custom styling hosted-Iframe',
 'FCPO_CC_PREVIEW'                           => 'Preview',
-    
+
 'FCPO_CREDITCARD'                           => 'Credit card:',
 'FCPO_NUMBER'                               => 'Number:',
 'FCPO_CARD_SECURITY_CODE'                   => 'CVV2 or CVC2 security code:',
 'FCPO_VALID_UNTIL'                          => 'Valid until:',
 'FCPO_FIRSTNAME'                            => 'Firstname:',
 'FCPO_LASTNAME'                             => 'Lastname:',
-    
+
 'FCPO_PREVIEW_NOTICE'                       => 'You need to save before the changes are visible in the preview!',
-    
+
 'FCPO_CC_TYPE'                              => "Request-type",
 'FCPO_HELP_CC_TYPE'                         => "hosted-Iframe: The input-fields are delivered in Iframes which are hosted by PAYONE ( PCI DSS 3.0 conform ).<br>AJAX - The creditcard-information is sent to PAYONE via AJAX",
 
@@ -434,16 +434,16 @@ $aLang = array(
 'FCPO_CC_HEADER_HEIGHT'                     => 'Height',
 'FCPO_CC_HEADER_STYLE'                      => 'Style',
 'FCPO_CC_HEADER_CSS'                        => 'CSS',
-    
+
 'FCPO_CC_ROW_CC_Number'                     => 'Creditcardnumber',
 'FCPO_CC_ROW_CC_CVC'                        => 'CVC security code',
 'FCPO_CC_ROW_CC_Month'                      => 'Validity-month',
 'FCPO_CC_ROW_CC_Year'                       => 'Validity-year',
-    
+
 'FCPO_CC_TYPE_NUMERIC'                      => 'Numeric',
 'FCPO_CC_TYPE_PASSWORD'                     => 'Password',
 'FCPO_CC_TYPE_TEXT'                         => 'Text',
-    
+
 'FCPO_CC_IFRAME_STANDARD'                   => 'Standard',
 'FCPO_CC_IFRAME_CUSTOM'                     => 'Custom',
 'FCPO_CC_USE_CVC'                           => 'Use CVC as mandatory field',
@@ -506,7 +506,7 @@ $aLang = array(
 'FCPO_TRANSACTIONREDIRECTMETHOD_CRONJOB'        => 'Delayed by Cronjob (Secure transaction)',
 'FCPO_HELP_TRANSACTIONREDIRECTMETHOD'           => 'Choose the method how transaction redirects will be handled. There are two choices:<br><b>Direct redirect:</b><br>Using this method will directly redirect the transaction after receiving it. This mode offers a high redirection speed and a moderate transaction security.<br><b>Delayed by Cronjob:</b><br>Instead of directly redirecting the statusmessage, this method collects incoming messages and will redirect them aftery calling a cronjob. This mode offers a very high transaction security. The speed of redirecting statusmessages depends on the setup of your server. Please visit the <a href="">manual</a> for further information for setting this up efficiantly.',
 'FCPO_TRANSACTIONREDIRECTMETHOD'                => 'Method of statusmessage redirecting',
-'FCPO_TRANSACTIONREDIRECT_TIMEOUT'              => 'Timeout in seconds for direct redirects',
+'FCPO_TRANSACTION_TIMEOUT'                      => 'Timeout in seconds',
 'FCPO_HELP_TRANSACTIONREDIRECT_TIMEOUT'         => 'For offering direct redirects without any interruptions, there is a need for having a timout for mode "Direct redirects". Depending on the setup of your server it can be nessessary to have a higher value then 100s default.',
 'FCPO_FORWARD_REDIRECTS'                        => 'Transaction status redirects',
 'FCPO_FORWARD_REDIRECT_TARGETURL'               => 'Target',

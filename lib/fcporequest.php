@@ -575,6 +575,11 @@ class fcpoRequest extends oxSuperCfg
             case 'fcpo_secinvoice':
                 $blAddRedirectUrls = $this->_fcpoAddSecInvoiceParameters($oOrder);
                 break;
+            case 'fcpo_alipay':
+                $this->addParameter('clearingtype', 'wlt'); //Payment method
+                $this->addParameter('wallettype', 'ALP');
+                $blAddRedirectUrls = true;
+                break;
             default:
                 return false;
         }

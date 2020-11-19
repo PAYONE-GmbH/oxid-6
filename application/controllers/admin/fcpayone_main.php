@@ -770,6 +770,7 @@ class fcpayone_main extends fcpayone_admindetails
             'fcpo_ideal' => 'sb',
             'fcpo_p24' => 'sb',
             'fcpo_bancontact' => 'sb',
+            'fcpo_alipay' => 'wlt',
         );
 
         if (isset($aAbbreviations[$sPaymentId])) {

@@ -382,6 +382,7 @@ class fcpayone_events
     public static $sQueryAlterFcpouser2flagFcpotimestamp = "ALTER TABLE fcpouser2flag CHANGE FCPOTIMESTAMP OXTIMESTAMP TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Timestamp';";
     public static $sQueryFcporequestlogCopyTimestampData = "UPDATE fcporequestlog SET OXTIMESTAMP = FCPO_TIMESTAMP;";
     public static $sQueryFcpotransactionstatusCopyTimestampData = "UPDATE fcpotransactionstatus SET OXTIMESTAMP = FCPO_TIMESTAMP;";
+    public static $sQueryFcpocheckedaddressesCopyTimestampData = "UPDATE fcpocheckedaddresses SET OXTIMESTAMP = fcpo_checkdate;";
 
     public static $aPaymentMethods = array(
         'fcpoinvoice' => 'Rechnung',
@@ -615,10 +616,12 @@ class fcpayone_events
         //COPY DATA FROM OLD FCPO_TIMESTAMP COLUMN TO OXTIMESTAMP
         self::copyDataFromOldColumnIfExists('fcporequestlog', 'FCPO_TIMESTAMP', 'OXTIMESTAMP', self::$sQueryFcporequestlogCopyTimestampData);
         self::copyDataFromOldColumnIfExists('fcpotransactionstatus', 'FCPO_TIMESTAMP', 'OXTIMESTAMP', self::$sQueryFcpotransactionstatusCopyTimestampData);
+        self::copyDataFromOldColumnIfExists('fcpocheckedaddresses', 'fcpo_checkdate', 'OXTIMESTAMP', self::$sQueryFcpocheckedaddressesCopyTimestampData);
 
         //DROP OLD FCPO_TIMESTAMP COLUMN
         self::dropColumnIfItAndReplacementExist('fcporequestlog', 'FCPO_TIMESTAMP', 'OXTIMESTAMP');
         self::dropColumnIfItAndReplacementExist('fcpotransactionstatus', 'FCPO_TIMESTAMP', 'OXTIMESTAMP');
+        self::dropColumnIfItAndReplacementExist('fcpocheckedaddresses', 'fcpo_checkdate', 'OXTIMESTAMP');
 
         //CHANGE COLUMN NAMES
         self::changeColumnNameIfWrong('fcpouser2flag', 'FCPOTIMESTAMP', self::$sQueryAlterFcpouser2flagFcpotimestamp);

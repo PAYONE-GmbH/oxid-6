@@ -414,7 +414,8 @@ class fcpayone_events
         'fcpo_p24' => 'P24',
         'fcpo_bancontact' => 'Bancontact',
         'fcporp_debitnote' => 'Ratepay Lastschrift',
-        'fcpo_alipay' => 'Alipay'
+        'fcpo_alipay' => 'Alipay',
+        'fcpo_trustly' => 'Trustly',
     );
 
     /**

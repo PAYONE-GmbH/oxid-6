@@ -575,6 +575,11 @@ class fcpoRequest extends oxSuperCfg
             case 'fcpo_secinvoice':
                 $blAddRedirectUrls = $this->_fcpoAddSecInvoiceParameters($oOrder);
                 break;
+            case 'fcpo_alipay':
+                $this->addParameter('clearingtype', 'wlt'); //Payment method
+                $this->addParameter('wallettype', 'ALP');
+                $blAddRedirectUrls = true;
+                break;
             case 'fcpo_trustly':
                 $this->fcpoAddParametersOnlineTrustly($oOrder, $aDynvalue);
                 $blAddRedirectUrls = true;
@@ -2957,7 +2962,7 @@ class fcpoRequest extends oxSuperCfg
     protected function _wasAddressCheckedBefore()
     {
         $sCheckHash = $this->_getAddressHash();
-        $sQuery = "SELECT fcpo_checkdate FROM fcpocheckedaddresses WHERE fcpo_address_hash = '{$sCheckHash}'";
+        $sQuery = "SELECT oxtimestamp FROM fcpocheckedaddresses WHERE fcpo_address_hash = '{$sCheckHash}'";
         $sDate = oxDb::getDb()->GetOne($sQuery);
         if ($sDate != false) {
             return true;

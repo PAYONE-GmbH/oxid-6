@@ -545,6 +545,7 @@ class fcpoconfigexport extends oxBase
             'fcpo_p24' => 'sb',
             'fcpo_bancontact' => 'sb',
             'fcporp_debitnote' => 'fnc',
+            'fcpo_alipay' => 'wlt',
             'fcpo_trustly' => 'sb',
         );
 
@@ -595,6 +596,7 @@ class fcpoconfigexport extends oxBase
             'fcpo_ideal' => 'IDL',
             'fcpo_p24' => 'P24',
             'fcpo_bancontact' => 'BCT',
+            'fcpo_alipay' => 'ALP',
             'fcpo_trustly' => 'TRL',
         );
 

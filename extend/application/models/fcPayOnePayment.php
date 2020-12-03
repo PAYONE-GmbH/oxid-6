@@ -72,6 +72,7 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         'fcporp_debitnote',
         'fcpo_alipay',
         'fcpo_trustly',
+        'fcpo_wechatpay',
     );
 
     protected static $_aRedirectPayments = array(
@@ -91,6 +92,7 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         'fcpo_p24',
         'fcpo_bancontact',
         'fcpo_alipay',
+        'fcpo_wechatpay',
     );
 
     /**

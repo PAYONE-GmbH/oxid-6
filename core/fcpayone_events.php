@@ -416,6 +416,7 @@ class fcpayone_events
         'fcporp_debitnote' => 'Ratepay Lastschrift',
         'fcpo_alipay' => 'Alipay',
         'fcpo_trustly' => 'Trustly',
+        'fcpo_wechatpay'=> 'WeChat Pay',
     );
 
     /**

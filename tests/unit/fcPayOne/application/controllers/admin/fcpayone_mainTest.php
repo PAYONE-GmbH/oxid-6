@@ -699,19 +699,6 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     }
 
     /**
-     * Testing _getPaymentAbbreviation for coverage
-     *
-     * @param  void
-     * @return void
-     */
-    public function test__getPaymentAbbreviation_Coverage() 
-    {
-        $oTestObject = oxNew('fcpayone_main');
-        $sResponse = $this->invokeMethod($oTestObject, '_getPaymentAbbreviation', array('fcpobarzahlen'));
-        $this->assertEquals('csh', $sResponse);
-    }
-
-    /**
      * Testing _fcpoGetCheckSumResult for coverage
      *
      * @param  void

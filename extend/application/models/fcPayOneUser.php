@@ -128,7 +128,7 @@ class fcPayOneUser extends fcPayOneUser_parent
             OXID,
             OXUSERID,
             FCPOUSERFLAGID,
-            FCPOTIMESTAMP
+            OXTIMESTAMP
           )
           VALUES
           (
@@ -197,7 +197,7 @@ class fcPayOneUser extends fcPayOneUser_parent
             OXID, 
             FCPOUSERFLAGID,
             FCPODISPLAYMESSAGE,
-            FCPOTIMESTAMP
+            OXTIMESTAMP
           FROM 
             fcpouser2flag 
           WHERE
@@ -209,7 +209,7 @@ class fcPayOneUser extends fcPayOneUser_parent
             $oUserFlag = new stdClass();
             $oUserFlag->sOxid = $aRow['OXID'];
             $oUserFlag->sUserFlagId = $aRow['FCPOUSERFLAGID'];
-            $oUserFlag->sTimeStamp = $aRow['FCPOTIMESTAMP'];
+            $oUserFlag->sTimeStamp = $aRow['OXTIMESTAMP'];
             $oUserFlag->sDisplayMessage = $aRow['FCPODISPLAYMESSAGE'];
             $aUserFlagInfos[] = $oUserFlag;
         }

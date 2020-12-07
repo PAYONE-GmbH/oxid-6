@@ -575,6 +575,20 @@ class fcpoRequest extends oxSuperCfg
             case 'fcpo_secinvoice':
                 $blAddRedirectUrls = $this->_fcpoAddSecInvoiceParameters($oOrder);
                 break;
+            case 'fcpo_alipay':
+                $this->addParameter('clearingtype', 'wlt'); //Payment method
+                $this->addParameter('wallettype', 'ALP');
+                $blAddRedirectUrls = true;
+                break;
+            case 'fcpo_trustly':
+                $this->fcpoAddParametersOnlineTrustly($oOrder, $aDynvalue);
+                $blAddRedirectUrls = true;
+                break;
+            case 'fcpo_wechatpay':
+                $this->addParameter('clearingtype', 'wlt'); //Payment method
+                $this->addParameter('wallettype', 'WCP');
+                $blAddRedirectUrls = true;
+                break;
             default:
                 return false;
         }
@@ -607,6 +621,35 @@ class fcpoRequest extends oxSuperCfg
         $this->addParameter('businessrelation', $sBusinessRelation);
 
         return true;
+    }
+
+    /**
+     * Add parameters needed for Bancontact
+     *
+     * @param $oOrder
+     * @param $aDynvalue
+     * @return void
+     */
+    protected function fcpoAddParametersOnlineTrustly($oOrder, $aDynvalue)
+    {
+        $this->addParameter('clearingtype', 'sb'); //Payment method
+        $this->addParameter('onlinebanktransfertype', 'TRL');
+
+        $blUseSepaData = (
+            isset($aDynvalue['fcpo_ou_iban']) &&
+            $aDynvalue['fcpo_ou_iban'] != '' &&
+            isset($aDynvalue['fcpo_ou_bic']) &&
+            $aDynvalue['fcpo_ou_bic'] != ''
+        );
+
+        if ($blUseSepaData) {
+            $this->addParameter('iban', $aDynvalue['fcpo_ou_iban']);
+            $this->addParameter('bic', $aDynvalue['fcpo_ou_bic']);
+        }
+
+        $oBillCountry = oxNew('oxcountry');
+        $oBillCountry->load($oOrder->oxorder__oxbillcountryid->value);
+        $this->addParameter('bankcountry', $oBillCountry->oxcountry__oxisoalpha2->value);
     }
 
     /**
@@ -2924,7 +2967,7 @@ class fcpoRequest extends oxSuperCfg
     protected function _wasAddressCheckedBefore()
     {
         $sCheckHash = $this->_getAddressHash();
-        $sQuery = "SELECT fcpo_checkdate FROM fcpocheckedaddresses WHERE fcpo_address_hash = '{$sCheckHash}'";
+        $sQuery = "SELECT oxtimestamp FROM fcpocheckedaddresses WHERE fcpo_address_hash = '{$sCheckHash}'";
         $sDate = oxDb::getDb()->GetOne($sQuery);
         if ($sDate != false) {
             return true;

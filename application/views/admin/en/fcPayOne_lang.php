@@ -346,7 +346,7 @@ $aLang = array(
     'fcpo_admin_config_error_iframe_mapping' => 'Custom error message for hosted iFrame',
     'fcpo_admin_config_payone_error_code'    => 'Error code',
 
-    'FCPO_SHOW_SOFO_IBAN_FIELDS' => 'Display IBAN/BIC',
+    'FCPO_SHOW_IBAN_FIELDS' => 'Display IBAN/BIC',
 
     'FCPO_SAVEBANKDATA'      => 'Store bank account data',
     'FCPO_HELP_SAVEBANKDATA' => 'Data will be stored encrypted (OXID default) and will be available to select next time',

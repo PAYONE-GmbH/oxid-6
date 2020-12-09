@@ -77,6 +77,11 @@ class fcPayOneOrderarticle extends fcPayOneOrderarticle_parent
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $blPresaveOrder = $oConfig->getConfigParam('blFCPOPresaveOrder');
 
+        # @see https://integrator.payone.de/jira/browse/OX6-87
+        if (is_null($oOrder)) {
+            return parent::save();
+        }
+
         $blUseParentOrderMethod = (
             $blPresaveOrder === false ||
             $oOrder->isPayOnePaymentType() === false

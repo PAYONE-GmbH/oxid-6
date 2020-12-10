@@ -262,7 +262,7 @@ class fcPayOneTransactionStatusHandler extends fcPayOneTransactionStatusBase
         $sShopUrl = $oConfig->getShopUrl();
         $sSslShopUrl = $oConfig->getSslShopUrl();
         $sConfTimeout = $oConfig->getConfigParam('sTransactionRedirectTimeout');
-        $iTimeout = ($sConfTimeout) ? (int) $sConfTimeout : 100;
+        $iTimeout = ($sConfTimeout) ? (int) $sConfTimeout : 5500;
         $sParams = substr($sParams,1);
         $sBaseUrl = (empty($sSslShopUrl)) ? $sShopUrl : $sSslShopUrl;
 

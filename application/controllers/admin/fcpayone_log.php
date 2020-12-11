@@ -166,7 +166,6 @@ class fcpayone_log extends fcpayone_admindetails
         $sParams .= $this->_addParam('statusmessageid', $sStatusmessageId);
         $sParams = substr($sParams,1);
         $sBaseUrl = (empty($sSslShopUrl)) ? $sShopUrl : $sSslShopUrl;
-        $sConfTimeout = $oConfig->getConfigParam('sTransactionRedirectTimeout');
 
         $sForwarderUrl = $sBaseUrl . 'modules/fc/fcpayone/statusforward.php';
 

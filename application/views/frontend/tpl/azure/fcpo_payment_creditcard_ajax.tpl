@@ -35,11 +35,22 @@
                         </p>
                     </div>
                 </li>
-                <li>
-                    <label>[{oxmultilang ident="FCPO_BANK_ACCOUNT_HOLDER_2"}]:</label>
-                    <input placeholder="[{oxmultilang ident="FCPO_BANK_ACCOUNT_HOLDER_2"}]" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_kkname]" value="[{if $dynvalue.fcpo_kkname}][{$dynvalue.fcpo_kkname}][{else}][{$oxcmp_user->oxuser__oxfname->value}] [{$oxcmp_user->oxuser__oxlname->value}][{/if}]">
-                    <br>
-                    <div class="note">[{oxmultilang ident="FCPO_IF_DEFERENT_FROM_BILLING_ADDRESS"}]</div>
+                <li class="form-group">
+                    <label id="fcpo_cc_cardholder_label" class="control-label col-lg-3">[{oxmultilang ident="FCPO_CC_CARDHOLDER"}]</label>
+                    <input autocomplete="off" type="text"
+                           class="form-control"
+                           size="20" maxlength="50" id="fcpo_cc_cardholder" name="dynvalue[fcpo_kkcardholder]"
+                           value="[{$dynvalue.fcpo_kkcardholder}]"
+                           onkeyup="validateCardholder()"
+                    >
+                    <p style="display: block; padding: 5px 0 5px 150px">[{oxmultilang ident="FCPO_CC_CARDHOLDER_HELPTEXT"}]</p>
+                    <div id="fcpo_cc_cardholder_invalid" class="fcpo_check_error">
+                            <span class="help-block">
+                                <ul class="oxValidateError" style="display: block;">
+                                    <li>[{oxmultilang ident="FCPO_CC_CARDHOLDER_INVALID"}]</li>
+                                </ul>
+                            </span>
+                    </div>
                 </li>
                 <li>
                     <label>[{oxmultilang ident="FCPO_VALID_UNTIL"}]:</label>

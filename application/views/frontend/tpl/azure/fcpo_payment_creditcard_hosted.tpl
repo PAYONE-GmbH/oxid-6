@@ -41,13 +41,22 @@
                         <span id="cardexpireyear"></span>
                     </span>
                 </li>
-                <li>
-                    <label for="firstname">[{oxmultilang ident="FCPO_FIRSTNAME"}]:</label>
-                    <input placeholder="[{oxmultilang ident="FCPO_FIRSTNAME"}]" autocomplete="off" id="firstname" type="text" name="firstname" value="">
-                </li>
-                <li>
-                    <label for="lastname">[{oxmultilang ident="FCPO_LASTNAME"}]:</label>
-                    <input placeholder="[{oxmultilang ident="FCPO_LASTNAME"}]" autocomplete="off" id="lastname" type="text" name="lastname" value="">
+                <li class="form-group">
+                    <label id="fcpo_cc_cardholder_label" class="control-label col-lg-3">[{oxmultilang ident="FCPO_CC_CARDHOLDER"}]</label>
+                    <input autocomplete="off" type="text"
+                           class="form-control"
+                           size="20" maxlength="50" id="fcpo_cc_cardholder" name="dynvalue[fcpo_kkcardholder]"
+                           value="[{$dynvalue.fcpo_kkcardholder}]"
+                           onkeyup="validateCardholder()"
+                    >
+                    <p style="display: block; padding: 5px 0 5px 150px">[{oxmultilang ident="FCPO_CC_CARDHOLDER_HELPTEXT"}]</p>
+                    <div id="fcpo_cc_cardholder_invalid" class="fcpo_check_error">
+                            <span class="help-block">
+                                <ul class="oxValidateError" style="display: block;">
+                                    <li>[{oxmultilang ident="FCPO_CC_CARDHOLDER_INVALID"}]</li>
+                                </ul>
+                            </span>
+                    </div>
                 </li>
                 <li>
                     <div id="errorOutput"></div>

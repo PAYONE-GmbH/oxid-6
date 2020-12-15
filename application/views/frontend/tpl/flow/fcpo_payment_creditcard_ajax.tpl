@@ -46,11 +46,23 @@
                     </div>
                 </div>
 
-                <div class="form-group fcpo_kkname">
-                    <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_ACCOUNT_HOLDER_2"}]:</label>
+                <div class="form-group fcpo_kkcardholder">
+                    <label id="fcpo_cc_cardholder_label" class="control-label col-lg-3">[{oxmultilang ident="FCPO_CC_CARDHOLDER"}]</label>
                     <div class="col-lg-9">
-                        <input placeholder="[{oxmultilang ident="FCPO_BANK_ACCOUNT_HOLDER_2"}]" autocomplete="off" type="text" class="form-control js-oxValidate js-oxValidate_notEmpty" size="20" maxlength="64" name="dynvalue[fcpo_kkname]" value="[{if $dynvalue.fcpo_kkname}][{$dynvalue.fcpo_kkname}][{else}][{$oxcmp_user->oxuser__oxfname->value}] [{$oxcmp_user->oxuser__oxlname->value}][{/if}]" required="required">
-                        <span class="help-block">[{oxmultilang ident="FCPO_IF_DEFERENT_FROM_BILLING_ADDRESS"}]</span>
+                        <input autocomplete="off" type="text"
+                               class="form-control"
+                               size="20" maxlength="50" id="fcpo_cc_cardholder" name="dynvalue[fcpo_kkcardholder]"
+                               value="[{$dynvalue.fcpo_kkcardholder}]"
+                               onkeyup="validateCardholder()"
+                        >
+                        <span class="help-block">[{oxmultilang ident="FCPO_CC_CARDHOLDER_HELPTEXT"}]</span>
+                        <div id="fcpo_cc_cardholder_invalid" class="fcpo_check_error">
+                            <span class="help-block">
+                                <ul role="alert" class="list-unstyled text-danger">
+                                    <li>[{oxmultilang ident="FCPO_CC_CARDHOLDER_INVALID"}]</li>
+                                </ul>
+                            </span>
+                        </div>
                     </div>
                 </div>
 

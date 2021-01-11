@@ -51,7 +51,7 @@
                     </div>
                 </div>
                 <div class="form-group fcpo_kkcardholder">
-                    <label id="fcpo_cc_cardholder_label" class="control-label col-lg-3">[{oxmultilang ident="FCPO_CC_CARDHOLDER"}]</label>
+                    <label for="fcpo_cc_cardholder" id="fcpo_cc_cardholder_label" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_CC_CARDHOLDER"}]:</label>
                     <div class="col-lg-9">
                         <input autocomplete="off" type="text"
                                class="form-control"
@@ -59,15 +59,15 @@
                                value="[{$dynvalue.fcpo_kkcardholder}]"
                                onkeyup="validateCardholder()"
                         >
+                        <span class="help-block form-group">[{oxmultilang ident="FCPO_CC_CARDHOLDER_HELPTEXT"}]</span>
                     </div>
                 </div>
-                <span class="help-block">[{oxmultilang ident="FCPO_CC_CARDHOLDER_HELPTEXT"}]</span>
                 <div id="fcpo_cc_cardholder_invalid" class="fcpo_check_error">
-                            <span class="help-block">
-                                <ul role="alert" class="list-unstyled text-danger">
-                                    <li>[{oxmultilang ident="FCPO_CC_CARDHOLDER_INVALID"}]</li>
-                                </ul>
-                            </span>
+                    <span class="help-block">
+                        <ul role="alert" class="list-unstyled text-danger">
+                            <li>[{oxmultilang ident="FCPO_CC_CARDHOLDER_INVALID"}]</li>
+                        </ul>
+                    </span>
                 </div>
                 <div class="form-group">
                     <div class="col-lg-9 col-lg-push-3">

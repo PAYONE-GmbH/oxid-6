@@ -47,9 +47,9 @@
                 </div>
 
                 <div class="form-group fcpo_kkcardholder">
-                    <label id="fcpo_cc_cardholder_label" class="control-label col-lg-3">[{oxmultilang ident="FCPO_CC_CARDHOLDER"}]</label>
+                    <label id="fcpo_cc_cardholder_label" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_CC_CARDHOLDER"}]:</label>
                     <div class="col-lg-9">
-                        <input autocomplete="off" type="text"
+                        <input for="fcpo_cc_cardholder" autocomplete="off" type="text"
                                class="form-control"
                                size="20" maxlength="50" id="fcpo_cc_cardholder" name="dynvalue[fcpo_kkcardholder]"
                                value="[{$dynvalue.fcpo_kkcardholder}]"

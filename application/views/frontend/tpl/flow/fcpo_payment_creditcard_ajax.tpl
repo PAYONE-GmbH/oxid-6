@@ -47,7 +47,7 @@
                 </div>
 
                 <div class="form-group fcpo_kkcardholder">
-                    <label id="fcpo_cc_cardholder_label" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_CC_CARDHOLDER"}]:</label>
+                    <label id="fcpo_cc_cardholder_label" id="fcpo_cc_cardholder_label" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_CC_CARDHOLDER"}]:</label>
                     <div class="col-lg-9">
                         <input for="fcpo_cc_cardholder" autocomplete="off" type="text"
                                class="form-control"

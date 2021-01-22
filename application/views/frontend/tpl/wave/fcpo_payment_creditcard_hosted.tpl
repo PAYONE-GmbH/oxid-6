@@ -50,17 +50,24 @@
                         </span>
                     </div>
                 </div>
-                <div class="form-group fcpo_kkfirstname">
-                    <label for="firstname" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_FIRSTNAME"}]:</label>
+                <div class="form-group fcpo_kkcardholder">
+                    <label for="fcpo_cc_cardholder" id="fcpo_cc_cardholder_label" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_CC_CARDHOLDER"}]:</label>
                     <div class="col-lg-9">
-                        <input placeholder="[{oxmultilang ident="FCPO_FIRSTNAME"}]" class="form-control" autocomplete="off" id="firstname" type="text" name="firstname" value="">
+                        <input autocomplete="off" type="text"
+                               class="form-control"
+                               size="20" maxlength="50" id="fcpo_cc_cardholder" name="dynvalue[fcpo_kkcardholder]"
+                               value="[{$dynvalue.fcpo_kkcardholder}]"
+                               onkeyup="validateCardholder()"
+                        >
+                        <span class="help-block form-group">[{oxmultilang ident="FCPO_CC_CARDHOLDER_HELPTEXT"}]</span>
                     </div>
                 </div>
-                <div class="form-group fcpo_kklastname">
-                    <label for="lastname" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_LASTNAME"}]:</label>
-                    <div class="col-lg-9">
-                        <input placeholder="[{oxmultilang ident="FCPO_LASTNAME"}]" class="form-control" autocomplete="off" id="lastname" type="text" name="lastname" value="">
-                    </div>
+                <div id="fcpo_cc_cardholder_invalid" class="fcpo_check_error">
+                    <span class="help-block">
+                        <ul role="alert" class="list-unstyled text-danger">
+                            <li>[{oxmultilang ident="FCPO_CC_CARDHOLDER_INVALID"}]</li>
+                        </ul>
+                    </span>
                 </div>
                 <div class="form-group">
                     <div class="col-lg-9 col-lg-push-3">

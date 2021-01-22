@@ -84,6 +84,9 @@ function resetErrorContainers() {
     if(document.getElementById('fcpo_cc_cvc2_invalid')) {
         document.getElementById('fcpo_cc_cvc2_invalid').style.display = '';
     }
+    if(document.getElementById('fcpo_cc_cardholder_invalid')) {
+        document.getElementById('fcpo_cc_cardholder_invalid').style.display = '';
+    }
     if(document.getElementById('fcpo_cc_error')) {
         document.getElementById('fcpo_cc_error').style.display = '';
     }
@@ -241,6 +244,24 @@ function startCCRequest() {
     var request = new PayoneRequest(data, options);
     request.checkAndStore();
     return false;
+}
+
+function validateCardholder(e) {
+    var error = false;
+    var cardholder = document.getElementById('fcpo_cc_cardholder').value;
+    var cardholderLabel = document.getElementById('fcpo_cc_cardholder_label');
+    var cardholderReg = new RegExp(/^[A-Za-z \-äöüÄÖÜß]{1,50}$/);
+    if (cardholderReg.test(cardholder)) {
+        document.getElementById('fcpo_cc_cardholder_invalid').style.display = '';
+        cardholderLabel.classList.remove("text-danger");
+        cardholderLabel.classList.remove("cardholder-error");
+    } else {
+        error = true;
+        document.getElementById('fcpo_cc_cardholder_invalid').style.display = 'block';
+        cardholderLabel.classList.add("text-danger");
+        cardholderLabel.classList.add("cardholder-error");
+    }
+    return error;
 }
 
 function getCleanedNumber(dirtyNumber) {
@@ -470,6 +491,10 @@ function processPayoneResponseELV(response) {
 }
 
 function processPayoneResponseCC(response) {
+    var cardholderError = validateCardholder();
+    if (cardholderError) {
+        return false;
+    }
     if(response.get('status') == 'VALID') {
         var oForm = getPaymentForm();
         oForm["dynvalue[fcpo_pseudocardpan]"].value = response.get('pseudocardpan');
@@ -959,6 +984,11 @@ function validateInputCCHosted(e) {
     if(paymentId == 'fcpocreditcard' && oForm.fcpo_cc_type.value == 'hosted' && cardType != 'none') {
         $validateResult = validateCCHostedInputs();
 
+        var cardholderError = validateCardholder(e);
+        if (cardholderError) {
+            e.preventDefault();
+            return;
+        }
         if($validateResult == 0) {
             e.preventDefault();
             $('#errorIncomplete').show();

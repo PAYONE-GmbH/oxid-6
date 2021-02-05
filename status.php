@@ -346,6 +346,7 @@ class fcPayOneTransactionStatusHandler extends fcPayOneTransactionStatusBase
             $this->_isKeyValid();
             $sStatusmessageId = $this->log();
             $this->_allowDebit();
+            $this->_handleAppointed();
             $this->_handlePaid();
             $this->_handleMapping();
             $this->_handleForwarding($sStatusmessageId);
@@ -382,6 +383,46 @@ class fcPayOneTransactionStatusHandler extends fcPayOneTransactionStatusBase
 
         return $this->_oFcOrder;
 
+    }
+
+    /**
+     * OXID-337
+     * Check if appointed signal has been posted and handles it
+     *
+     * @param void
+     * @return void
+     * @throws Exception
+     */
+    protected function _handleAppointed()
+    {
+        if ($this->fcGetPostParam('txaction') != 'appointed') {
+            return;
+        }
+
+        try {
+            $oOrder = $this->_getOrder();
+            $sOrderId = $oOrder->getId();
+            $oLang = oxNew('oxLang');
+
+            $sReplacement = $oLang->translateString('FCPO_REMARK_APPOINTED_MISSING');
+
+            $sQuery = "
+                        UPDATE 
+                            oxorder 
+                        SET 
+                            oxfolder = 'ORDERFOLDER_NEW', 
+                            oxtransstatus = 'OK',
+                            oxremark = REPLACE(oxremark, '".$sReplacement."', '')
+                        WHERE 
+                            oxid = '{$sOrderId}' AND 
+                            oxtransstatus IN ('ERROR') AND 
+                            oxfolder = 'ORDERFOLDER_PROBLEMS'
+            ";
+
+            oxDb::getDb()->Execute($sQuery);
+        } catch (Exception $e) {
+            throw $e;
+        }
     }
 
     /**

@@ -338,6 +338,7 @@ class fcpoRequest extends oxSuperCfg
         $this->addParameter('pseudocardpan', $aDynvalue['fcpo_pseudocardpan']);
         // Override mode for creditcard-type
         $this->addParameter('mode', $aDynvalue['fcpo_ccmode']);
+        $this->addParameter('cardholder', $aDynvalue['fcpo_kkcardholder']);
 
         return true;
     }

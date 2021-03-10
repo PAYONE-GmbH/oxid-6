@@ -1130,7 +1130,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     }
 
     /**
-     * Returns all profiles for given RatePay payment type
+     * Returns all profiles for given Ratepay payment type
      * 
      * @param  string $sPaymentId
      * @return array

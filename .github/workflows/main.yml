@@ -18,7 +18,7 @@ jobs:
     name: Oxid ${{ matrix.oxid-versions }} on PHP ${{ matrix.php-versions }}
     services:
       mysql:
-        image: mysql:5.7.27
+        image: mariadb:latest
         env:
           MYSQL_ROOT_PASSWORD: root
         ports:

@@ -18,11 +18,11 @@ jobs:
     name: Oxid ${{ matrix.oxid-versions }} on PHP ${{ matrix.php-versions }}
     services:
       mysql:
-        image: mysql:5.7.27
+        image: mariadb:latest
         env:
           MYSQL_ROOT_PASSWORD: root
         ports:
-        - 3306
+        - 3306:3306
     steps:
     - name: Checkout
       uses: actions/checkout@master
@@ -30,7 +30,7 @@ jobs:
       uses: shivammathur/setup-php@master
       with:
         php-version: ${{ matrix.php-versions }}
-        extensions: mbstring, xdebug
+        extensions: mbstring, xdebug, gd, bcmath, ctype, curl, dom, hash, iconv, intl, openssl, simplexml, soap, xsl, zip
         tools: composer:v1
     - name: Check PHP Version
       run: php -v
@@ -38,8 +38,6 @@ jobs:
       run: composer -V
     - name: Check PHP Extensions
       run: php -m
-    - name: Start MySQL
-      run: sudo /etc/init.d/mysql start
     - name: PHP Syntax Checker
       run: find . -type f -name '*.php' -print0 | xargs -0 -n1 -P4 php -l -n | (! grep -v "No syntax errors detected" )
 
@@ -49,7 +47,7 @@ jobs:
         cd /tmp/oxid6
         composer create-project -n --no-progress oxid-esales/oxideshop-project . ${{ matrix.oxid-versions }}
         cp /tmp/oxid6/source/config.inc.php.dist /tmp/oxid6/source/config.inc.php
-        sed -i 's|<dbHost>|localhost|; s|<dbName>|oxideshop|; s|<dbUser>|root|; s|<dbPwd>|root|; s|<sShopURL>|http://localhost|; s|<sShopDir>|/tmp/oxid6/source|; s|<sCompileDir>|/tmp/oxid6/source/tmp|; s|\$this->iDebug = 0|\$this->iDebug = 1|' /tmp/oxid6/source/config.inc.php
+        sed -i 's|<dbHost>|127.0.0.1|; s|<dbName>|oxideshop|; s|<dbUser>|root|; s|<dbPwd>|root|; s|<sShopURL>|http://localhost|; s|<sShopDir>|/tmp/oxid6/source|; s|<sCompileDir>|/tmp/oxid6/source/tmp|; s|\$this->iDebug = 0|\$this->iDebug = 1|' /tmp/oxid6/source/config.inc.php
         sed -i "s|\$this->edition = ''|\$this->edition = 'CE'|" /tmp/oxid6/source/config.inc.php
         sed -i "s|partial_module_paths: null|partial_module_paths: 'fc/fcpayone'|" /tmp/oxid6/test_config.yml
         chmod -R 777 /tmp/oxid6/source/log

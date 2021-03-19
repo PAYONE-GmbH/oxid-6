@@ -341,7 +341,7 @@ class Unit_fcPayOne_Application_Models_fcpoexportconfig extends OxidTestCase
         //        $this->assertEquals($aExpect, $aResponse);
         $this->_fcpoTruncateTable('fcpostatusmapping');
 
-        $this->assertContains('<title><![CDATA[AmazonPay]]></title>', $aResponse);
+        $this->assertStringContainsString('<title><![CDATA[AmazonPay]]></title>', $aResponse);
     }
 
     /**

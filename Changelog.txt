@@ -1,3 +1,23 @@
+==1.5.0==
+New Features
+
+* Support for Ratepay Device Fingerprinting
+* Updated Ratepay Legal Texts
+* New payment methods: Alipay, WeChatPay, Trustly
+
+Bugfixes
+
+* fixed clearing data wasn't shown on thank you page in some instances
+* fixed SQL syntax errors on activation
+* better discount handling
+* increased default timeout for transactionstatus forwarding
+
+
+Maintenance
+
+* cardholder name is now required for better exemption handling with 3D Secure 2.0
+* tested with Oxid 6.2.3
+
 ==1.4.0==
 New Feature(s)
  

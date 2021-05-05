@@ -344,6 +344,9 @@ class fcPayOneUser extends fcPayOneUser_parent
         // add and set deliveryaddress
         $this->_fcpoAddDeliveryAddress($aResponse, $sUserOxid);
 
+        // handle the multi purpose address field
+        $this->_fcpoHandleAmazonPayMultiPurposeField($aResponse, $sUserOxid);
+
         return $sUserOxid;
     }
 
@@ -380,7 +383,41 @@ class fcPayOneUser extends fcPayOneUser_parent
         // add and set deliveryaddress
         $this->_fcpoAddDeliveryAddress($aResponse, $sUserOxid);
 
+        // handle the multi purpose address field
+        $this->_fcpoHandleAmazonPayMultiPurposeField($aResponse, $sUserOxid);
+
         return $sUserOxid;
+    }
+
+    /**
+     * Method handles the multi purpose Address line 1 field from AmazonPay.
+     * Depending on the transmitted fields, and the values, the user fields are updated accordingly.
+     *
+     * @param $aResponse
+     * @param $sUserOxid
+     * @return void
+     */
+    public function _fcpoHandleAmazonPayMultiPurposeField($aResponse, $sUserOxid)
+    {
+        $oUser = $this->_oFcpoHelper->getFactoryObject('oxUser');
+        $oUser->load($sUserOxid);
+
+        if (isset($aResponse['add_paydata[shipping_pobox]'])) {
+            $oUser->oxuser__oxaddinfo = new oxField($aResponse['add_paydata[shipping_pobox]']);
+        }
+
+        if (isset($aResponse['add_paydata[shipping_company]'])) {
+            $sCompany = $aResponse['add_paydata[shipping_company]'];
+            if (preg_match('/.*c\/o.*/i', $sCompany)) {
+                $oUser->oxuser__oxaddinfo = new oxField($sCompany);
+            } elseif (preg_match('/.*[0-9]+.*/', $sCompany)) {
+                $oUser->oxuser__oxaddinfo = new oxField($sCompany);
+            } else {
+                $oUser->oxuser__oxcompany = new oxField($sCompany);
+            }
+        }
+
+        $oUser->save();
     }
 
     /**

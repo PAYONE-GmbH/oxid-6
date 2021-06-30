@@ -52,8 +52,8 @@
                 onPaymentSelect: function(orderReference) {
                     console.log('triggered onPaymentSelect');
 
-                    $("[id^=paymentNextStep]").each(function () {
-                        $(this).attr("disabled", true);
+                    $$("button[id^=paymentNextStep]").each(function () {
+                        $(this).disable();
                     });
 
                     var formParams = '{"fcpoAmazonReferenceId":"[{$oViewConf->fcpoGetAmazonPayReferenceId()}]"}';
@@ -65,8 +65,8 @@
                         data: { paymentid: "fcpoamazonpay", action: "get_amazon_reference_details", params: formParams },
                         success: function(Response) {
 
-                            $("[id^=paymentNextStep]").each(function () {
-                                $(this).attr("disabled", false);
+                            $$("button[id^=paymentNextStep]").each(function () {
+                                $(this).enable();
                             });
                         }
                     });

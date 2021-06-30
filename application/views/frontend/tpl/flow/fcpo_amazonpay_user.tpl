@@ -90,8 +90,8 @@
                     onAddressSelect: function(orderReference) {
                         console.log('triggered onAddressSelect');
 
-                        $("[id^=userNextStep]").each(function () {
-                            $(this).attr("disabled", true);
+                        $$('[id^="userNextStep"]').each(function () {
+                            $(this).disable();
                         });
 
                         var formParams = "{";
@@ -104,8 +104,8 @@
                             dataType: 'text',
                             data: { paymentid: "fcpoamazonpay", action: "get_amazon_reference_details", params: formParams },
                             success: function(Response) {
-                                $("[id^=userNextStep]").each(function () {
-                                    $(this).attr("disabled", false);
+                                $$('button[id^="userNextStep"]').each(function () {
+                                    $(this).enable();
                                 });
                             }
                         });

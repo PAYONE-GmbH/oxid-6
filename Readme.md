@@ -11,10 +11,10 @@ The Payone-FinanceGate-Module is already certified by OXID to guarantee faultles
 *	The offered portfolio of payment options can be controlled depending on the consumer's credit rating
 *	The payment extension is compatible with all OXID eShop editions of version 6: Community, Professional and Enterprise edition
 *	Supports simplified PCI DSS conformity in accordance with SAQ A
-*	Find all currently supported payment methods on www.payone.com/oxid
+*	Find all currently supported payment methods on https://docs.payone.com/display/public/INT/Oxid+6+Extension
 
 ## More information
-More information about OXID on https://www.payone.com/oxid or https://www.fatchip.de/Plugins/OXID-eShop/OXID-PAYONE-Connector.html 
+More information about OXID on https://docs.payone.com/display/public/INT/Oxid+6+Extension or https://www.fatchip.de/Plugins/OXID-eShop/OXID-PAYONE-Connector.html 
 
 ## Requirements
 Installed OXID eShop >= v6.0.0

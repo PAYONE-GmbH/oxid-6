@@ -11,10 +11,10 @@ The Payone-FinanceGate-Module is already certified by OXID to guarantee faultles
 *	The offered portfolio of payment options can be controlled depending on the consumer's credit rating
 *	The payment extension is compatible with all OXID eShop editions of version 6: Community, Professional and Enterprise edition
 *	Supports simplified PCI DSS conformity in accordance with SAQ A
-*	Find all currently supported payment methods on www.payone.com/oxid
+*	Find all currently supported payment methods on https://docs.payone.com/display/public/INT/Oxid+6
 
 ## More information
-More information about OXID on https://www.payone.com/oxid or https://www.fatchip.de/Plugins/OXID-eShop/OXID-PAYONE-Connector.html 
+More information about OXID on https://docs.payone.com/display/public/INT/Oxid+6 or https://www.fatchip.de/Plugins/OXID-eShop/OXID-PAYONE-Connector.html 
 
 ## Requirements
 Installed OXID eShop >= v6.0.0
@@ -27,6 +27,15 @@ composer require payone-gmbh/oxid-6
 
 After that, just activate the module in the Oxid backend.
 
-## About BS PAYONE
-Since the end of August 2017, the two payment specialist companies PAYONE and B+S Card Service merged to become BS PAYONE GmbH. All current partnerships will be maintained the way they are. APIs, interfaces, and other technical parameters will stay the same. Your current contact persons will continue to gladly be at your service.<br>
-BS PAYONE GmbH is headquartered in Frankfurt am Main and is one of the leading omnichannel payment providers in Europe. In addition to providing customer support to numerous Sparkasse banks, the full-service payment service provider also provides cashless payment transactions services to more than 255,000 customers from various branches – whether that be in stationary retail or when completing e-commerce and mobile payment transactions.
+## Support and Contact
+
+PAYONE GmbH  
+Office Kiel  
+Fraunhoferstraße 2–4  
+24118 Kiel, Germany  
+Phone +49 431 25968-400  
+oxid@payone.com
+
+## License
+
+The MIT License (MIT). Please see License File for more information.

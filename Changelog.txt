@@ -1,3 +1,20 @@
+==1.5.1==
+
+Bugfixes
+
+* fixed direct debit issues
+* fixed minor bugs with Amazon Pay
+* remove hard block overwriting in email template
+* adapt templates to avoid duplicate CSS loading
+* Renaming the Paysafe payment types to Unzer
+
+
+Maintenance
+
+* compatibilty checked to 6.4.0
+* tested with Oxid 6.4.0
+
+
 ==1.5.0==
 New Features
 

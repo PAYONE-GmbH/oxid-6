@@ -3899,7 +3899,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      */
     public function fcpoAplGetDeviceCheck()
     {
-        return true;
         $oSession = $this->_oFcpoHelper->fcpoGetSession();
         return $oSession->getVariable('applePayAllowedDevice');
     }

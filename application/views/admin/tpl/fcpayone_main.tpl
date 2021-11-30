@@ -872,6 +872,91 @@
 
     <div class="groupExp">
         <div>
+            <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="FCPO_CONFIG_GROUP_APPLE_PAY"}]</b></a>
+
+            <dl>
+                <dt>
+                    <input type="text" class="txt" style="width: 210px" name="confstrs[sFCPOAplMerchantId]" value="[{$confstrs.sFCPOAplMerchantId}]" [{$readonly}]>
+                    [{oxinputhelp ident="FCPO_HELP_APPLE_PAY_MERCHANT_ID"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_APPLE_PAY_MERCHANT_ID"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+
+            <dl>
+                <dt>
+                    <input type="text" class="txt" style="width: 210px" name="confstrs[sFCPOAplCertificate]" value="[{$confstrs.sFCPOAplCertificate}]" [{$readonly}] id="fcpoAplCertificate">
+
+                    <input id="fcpoAplCertificateFile" type="file" accept=".pem" name="fcpoAplCertificateFile">
+                    <script type="text/javascript">
+                        $("fcpoAplCertificateFile").onchange = function(e) {
+                            $("fcpoAplCertificate").value = this.files[0].name
+                        }
+                    </script>
+
+                    [{oxinputhelp ident="FCPO_HELP_APPLE_PAY_CERTIFICATE"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_APPLE_PAY_CERTIFICATE"}] 
+                    [{if !$oViewConf->fcpoCertificateExists()}]
+                    <p class="warning">[{oxmultilang ident="FCPO_APPLE_PAY_CONFIG_CERTIFICATE_MISSING"}]</p>
+                    [{/if}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+
+            <dl>
+                <dt>
+                    <input type="text" class="txt" style="width: 210px" name="confstrs[sFCPOAplKey]" value="[{$confstrs.sFCPOAplKey}]" [{$readonly}] id="fcpoAplKey">
+                    <input id="fcpoAplKeyFile" type="file" name="fcpoAplKeyFile">
+                    <script type="text/javascript">
+                        $("fcpoAplKeyFile").onchange = function(e) {
+                            $("fcpoAplKey").value = this.files[0].name
+                        }
+                    </script>
+
+                    [{oxinputhelp ident="FCPO_HELP_APPLE_PAY_KEY"}]
+
+                    <br />
+                    <textarea name="fcpoAplKeyText"></textarea>
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_APPLE_PAY_KEY"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+
+            <dl>
+                <dt>
+                    <input type="password" class="txt" style="width: 210px" name="confstrs[sFCPOAplPassword]" value="[{$confstrs.sFCPOAplPassword}]" [{$readonly}]>
+                    [{oxinputhelp ident="FCPO_HELP_APPLE_PAY_PASSWORD"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_APPLE_PAY_PASSWORD"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+
+            <dl>
+                <dt>
+                    <select class="select" multiple size="4" name="confarrs[aFCPOAplCreditCards][]" [{$readonly}]>
+                        [{foreach from=$oView->fcpoGetAplCreditCards() key=sCreditCardCode item=oCreditCardData}]
+                        <option value="[{$sCreditCardCode}]"[{if $oCreditCardData->selected}] selected[{/if}]>[{$oCreditCardData->name}]</option>
+                        [{/foreach}]
+                    </select>
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_APPLE_PAY_CREDITCARD"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+        </div>
+    </div>
+
+    <div class="groupExp">
+        <div>
             <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="FCPO_CONFIG_GROUP_SECINVOICE"}]</b></a>
             <dl>
                 <dt>

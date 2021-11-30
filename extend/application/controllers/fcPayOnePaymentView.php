@@ -3892,4 +3892,26 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         return sprintf($sBaseString, $sPaymentMethodSuffix);
     }
 
+    /**
+     * Retrieve the session stored value of the device check for Apple Pay compatibility
+     *
+     * @return int
+     */
+    public function fcpoAplGetDeviceCheck()
+    {
+        return true;
+        $oSession = $this->_oFcpoHelper->fcpoGetSession();
+        return $oSession->getVariable('applePayAllowedDevice');
+    }
+
+    /**
+     * Checks if configured certificate file exists, for Apple Pay availability
+     *
+     * @return mixed
+     */
+    public function fcpoAplCertificateCheck()
+    {
+        $oViewConf = $this->_oFcpoHelper->fcpoGetViewConfig();
+        return $oViewConf->fcpoCertificateExists();
+    }
 }

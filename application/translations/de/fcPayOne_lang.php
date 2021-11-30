@@ -210,6 +210,24 @@ $aLang = array(
     'FCPO_KLARNA_COMBINED_DATA_AGREEMENT'                 => 'Ich stimme zu, dass meine persönlichen Daten zur Durchführung der Zahlung der Klarna GmbH gesendet werden dürfen.',
     'FCPO_KLARNA_NOT_AGREED'                              => 'Sie müssen der Übermittlung ihrer Daten zustimmen, um mit Klarna zu bezahlen.',
     'FCPO_KLARNA_NO_AUTHORIZATION'                        => 'Es ist ein unerwarteter Fehler aufgetreten.',
+
+    'FCPO_CONFIG_GROUP_APPLE_PAY'                      => "Apple Pay",
+    'FCPO_HELP_APPLE_PAY_MERCHANT_ID'                  => "Merchant ID",
+    'FCPO_APPLE_PAY_MERCHANT_ID'                       => "Merchant ID",
+    'FCPO_HELP_APPLE_PAY_CERTIFICATE'                  => "Der Name des Zertifikats wird dem Textfeld entnommen . Es kann in jeden gewünschten Namen geändert werden. Wenn beim Speichern der hochgeladenen Datei leer ist, wird standardmäßig der ursprüngliche Name der Datei verwendet.<br/>Das Textfeld kann auch verwendet werden, um eine vorhandene Zertifikatsdatei auf dem Server zu benennen, ohne eine neue Datei hochzuladen.",
+    'FCPO_APPLE_PAY_CERTIFICATE'                       => "Händleridentifikationszertifikat",
+    'FCPO_APPLE_PAY_CONFIG_CERTIFICATE_MISSING'        => "Die aktuell konfigurierte Zertifikatsdatei existiert nicht.<br/>Apple Pay kann nicht als Zahlungsmethode verwendet werden.",
+    'FCPO_HELP_APPLE_PAY_KEY'                          => "Dies ist ein Mehrfachfeld. Sie können eine Datei mit dem Schlüssel hochladen, oder den Inhalt des Schlüssels direkt in das Textfeld unten eingeben. Priorität hat die hochgeladene Datei, wenn beide Optionen verwendet werden!<br/><br/>
+Das kleinere Textfeld wird verwendet, um die Zieldatei oder den Pfad zu einer vorhandenen Schlüsseldatei auf dem Server zu benennen.<br/>
+- Wenn beim Speichern der hochgeladenen Datei leer, wird der ursprüngliche Name der hochgeladenen Datei verwendet.<br/>
+- Wenn beim Speichern der Direkteingabe leer, wird der Standardname 'merchant_id.key' verwendet.<br/>
+- Wenn leer, während keines davon ausgeführt wird, wird ein leerer Wert angenommen.",
+    'FCPO_APPLE_PAY_KEY'                               => "Privater Schlüssel des Zertifikats",
+    'FCPO_HELP_APPLE_PAY_PASSWORD'                     => "Passwort für Zertifikatsschlüssel",
+    'FCPO_APPLE_PAY_PASSWORD'                          => "Passwort für Zertifikatsschlüssel",
+    'FCPO_APPLE_PAY_CREDITCARD'                        => "Erlaubte Kreditkarten",
+    'FCPO_APPLE_PAY_CREATE_SESSION_ERROR'              => "Fehler beim Herstellen der Verbindung zum Apple Pay Service.",
+    'FCPO_APPLE_PAY_CREATE_SESSION_ERROR_CARDS'        => "In der Konfiguration ist kein gültiger Kreditkartentyp zulässig. Die Apple Pay-Sitzung kann nicht initialisiert werden.",
 );
 
 /*

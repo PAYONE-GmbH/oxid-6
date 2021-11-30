@@ -590,6 +590,20 @@ class fcpoRequest extends oxSuperCfg
                 $this->addParameter('wallettype', 'WCP');
                 $blAddRedirectUrls = true;
                 break;
+            case 'fcpo_apple_pay':
+                $tokenData = $oSession = $this->_oFcpoHelper->fcpoGetSessionVariable('applePayTokenData');
+
+                $this->addParameter('clearingtype', 'wlt');
+                $this->addParameter('wallettype', 'APL');
+                $this->addParameter('cardtype', $tokenData['creditCardType']);
+
+                $this->addParameter('add_paydata[paymentdata_token_version]', $tokenData['paydata']['paymentdata_token_version']);
+                $this->addParameter('add_paydata[paymentdata_token_data]', $tokenData['paydata']['paymentdata_token_data']);
+                $this->addParameter('add_paydata[paymentdata_token_signature]', $tokenData['paydata']['paymentdata_token_signature']);
+                $this->addParameter('add_paydata[paymentdata_token_ephemeral_publickey]', $tokenData['paydata']['paymentdata_token_ephemeral_publickey']);
+                $this->addParameter('add_paydata[paymentdata_token_publickey_hash]', $tokenData['paydata']['paymentdata_token_publickey_hash']);
+                $this->addParameter('add_paydata[paymentdata_token_transaction_id]', $tokenData['paydata']['paymentdata_token_transaction_id']);
+                break;
             default:
                 return false;
         }

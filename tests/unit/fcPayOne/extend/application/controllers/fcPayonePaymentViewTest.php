@@ -1066,6 +1066,9 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
      */
     public function test_getHashELVWithChecktype_Coverage()
     {
+        $oMockConfig = $this->getMock('oxConfig', array('getConfigParam'));
+        $oMockConfig->expects($this->any())->method('getConfigParam')->will($this->returnValue('md5'));
+
         $oTestObject = $this->getMock(
             'fcPayOnePaymentView', array(
                 'getSubAccountId',
@@ -1077,6 +1080,11 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
                 'getPortalKey',
             )
         );
+
+        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
+        $oHelper->expects($this->any())->method('fcpoGetConfig')->will($this->returnValue($oMockConfig));
+        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
+
         $oTestObject->expects($this->any())->method('getSubAccountId')->will($this->returnValue('someSubaccountId'));
         $oTestObject->expects($this->any())->method('getChecktype')->will($this->returnValue('someChecktype'));
         $oTestObject->expects($this->any())->method('getEncoding')->will($this->returnValue('someEncoding'));
@@ -1098,6 +1106,9 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
      */
     public function test_getHashELVWithoutChecktype_Coverage()
     {
+        $oMockConfig = $this->getMock('oxConfig', array('getConfigParam'));
+        $oMockConfig->expects($this->any())->method('getConfigParam')->will($this->returnValue('md5'));
+
         $oTestObject = $this->getMock(
             'fcPayOnePaymentView', array(
                 'getSubAccountId',
@@ -1108,6 +1119,11 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
                 'getPortalKey',
             )
         );
+
+        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
+        $oHelper->expects($this->any())->method('fcpoGetConfig')->will($this->returnValue($oMockConfig));
+        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
+
         $oTestObject->expects($this->any())->method('getSubAccountId')->will($this->returnValue('someSubaccountId'));
         $oTestObject->expects($this->any())->method('getEncoding')->will($this->returnValue('someEncoding'));
         $oTestObject->expects($this->any())->method('getMerchantId')->will($this->returnValue('someMerchantId'));

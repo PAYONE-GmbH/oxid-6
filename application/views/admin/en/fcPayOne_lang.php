@@ -517,6 +517,24 @@ $aLang = array(
     'FCPO_FORWARD_REDIRECT_FULFILLED_NO'               => 'No',
     'FCPO_FORWARD_REDIRECT_DETAILS'                    => 'Details',
     'FCPO_FORWARD_REDIRECT_TRIGGER'                    => 'Trigger all missing/unfulfilled calls',
+
+    'FCPO_CONFIG_GROUP_APPLE_PAY'                      => "Apple Pay",
+    'FCPO_HELP_APPLE_PAY_MERCHANT_ID'                  => "Merchant ID",
+    'FCPO_APPLE_PAY_MERCHANT_ID'                       => "Merchant ID",
+    'FCPO_HELP_APPLE_PAY_CERTIFICATE'                  => "The name of the certificate is taken from the text field. It can be changed to any wished name. If empty when saving uploaded file, it will by default take the file\'s initial name.<br/>The text field can also be used to name an existing certificate file on the server, without uploading a new file.",
+    'FCPO_APPLE_PAY_CERTIFICATE'                       => "Merchant Identification Certificate file",
+    'FCPO_APPLE_PAY_CONFIG_CERTIFICATE_MISSING'        => "The current configured certificate file doesn't exist.<br/>Apple Pay cannot be used as payment method.",
+    'FCPO_HELP_APPLE_PAY_KEY'                          => "This is a multiple field. You can upload a file containing the key, or type the content of the key directly into the text area below. Priority goes to uploaded file if both options are used !<br/><br/>
+The smaller text field is used to name the destination file, or path to an existing key file on server.<br/>
+- If empty while saving uploaded file, it will take the uploaded file's initial name.<br/>
+- If empty while saving direct input, it will take the default name 'merchant_id.key'.<br/>
+- If empty while not doing any of those, it will take an empty value.",
+    'FCPO_APPLE_PAY_KEY'                               => "Certificate private key",
+    'FCPO_HELP_APPLE_PAY_PASSWORD'                     => "Certificate key password",
+    'FCPO_APPLE_PAY_PASSWORD'                          => "Certificate key password",
+    'FCPO_APPLE_PAY_CREDITCARD'                        => "Allowed credit cards to use with Apple Pay",
+    'FCPO_APPLE_PAY_CREATE_SESSION_ERROR'              => "Error while establishing connection to Apple Pay service.",
+    'FCPO_APPLE_PAY_CREATE_SESSION_ERROR_CARDS'        => "No valid credit cards type is allowed in the configuration. Apple Pay session cannot be initialized.",
 );
 
 /*

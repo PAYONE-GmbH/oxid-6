@@ -43,7 +43,7 @@ class MockResultErrorMapping
  * @author Fatchip GmbH
  * @date   2017-02-01
  */
-class Unit_fcPayOne_Application_Models_fcpoerrormapping extends OxidTestCase
+class Unit_fcPayOne_Application_Models_fcpoerrormapping extends OxidTestCaseCompatibilityWrapper
 {
 
     /**
@@ -138,7 +138,7 @@ class Unit_fcPayOne_Application_Models_fcpoerrormapping extends OxidTestCase
      */
     public function test_fcpoGetAvailableErrorCodes_Exception() 
     {
-        $this->expectException(oxException::class);
+        $this->wrapExpectException(oxException::class);
         $oMockException = new oxException('someErrorMessage');
         $oTestObject = $this->getMock('fcpoerrormapping', array('_fcpoParseXml'));
         $oTestObject->expects($this->any())->method('_fcpoParseXml')->will($this->throwException($oMockException));

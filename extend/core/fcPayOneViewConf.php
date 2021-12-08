@@ -818,4 +818,37 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent
 
         return $sPayErrorText;
     }
+
+    /**
+     * Returns the url of Apple Pay payment library
+     *
+     * @return string
+     */
+    public function fcpoGetApplePayLibraryUrl()
+    {
+        return 'https://applepay.cdn-apple.com/jsapi/v1/apple-pay-sdk.js';
+    }
+
+    /**
+     * Returns the path to credential directory
+     *
+     * @return string
+     */
+    public function fcpoGetCertDirPath()
+    {
+        return $this->getModulePath('fcpayone') . '/cert/';
+    }
+
+    /**
+     * Checks if the saved certificate file exists
+     *
+     * @return bool
+     */
+    public function fcpoCertificateExists()
+    {
+        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+        $certificateFilename = $oConfig->getConfigParam('sFCPOAplCertificate');
+
+        return is_file($this->fcpoGetCertDirPath() . $certificateFilename);
+    }
 }

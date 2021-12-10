@@ -345,7 +345,7 @@ class fcPayOneUser extends fcPayOneUser_parent
         $this->_fcpoAddDeliveryAddress($aResponse, $sUserOxid);
 
         // handle the multi purpose address field
-        $this->_fcpoHandleAmazonPayMultiPurposeField($aResponse, $sUserOxid);
+        $this->_fcpoHandleAmazonPayMultiPurposeField($aResponse);
 
         return $sUserOxid;
     }
@@ -384,7 +384,7 @@ class fcPayOneUser extends fcPayOneUser_parent
         $this->_fcpoAddDeliveryAddress($aResponse, $sUserOxid);
 
         // handle the multi purpose address field
-        $this->_fcpoHandleAmazonPayMultiPurposeField($aResponse, $sUserOxid);
+        $this->_fcpoHandleAmazonPayMultiPurposeField($aResponse);
 
         return $sUserOxid;
     }
@@ -394,30 +394,32 @@ class fcPayOneUser extends fcPayOneUser_parent
      * Depending on the transmitted fields, and the values, the user fields are updated accordingly.
      *
      * @param $aResponse
-     * @param $sUserOxid
      * @return void
      */
-    public function _fcpoHandleAmazonPayMultiPurposeField($aResponse, $sUserOxid)
+    public function _fcpoHandleAmazonPayMultiPurposeField($aResponse)
     {
-        $oUser = $this->_oFcpoHelper->getFactoryObject('oxUser');
-        $oUser->load($sUserOxid);
+        $oDelAddr = $oAddress = $this->_oFcpoHelper->getFactoryObject('oxaddress');
+        $sDelAddrId = $this->_oFcpoHelper->fcpoGetSessionVariable('deladrid');
+        if (!empty($sDelAddrId)) {
+            $oDelAddr->load($sDelAddrId);
 
-        if (isset($aResponse['add_paydata[shipping_pobox]'])) {
-            $oUser->oxuser__oxaddinfo = new oxField($aResponse['add_paydata[shipping_pobox]']);
-        }
-
-        if (isset($aResponse['add_paydata[shipping_company]'])) {
-            $sCompany = $aResponse['add_paydata[shipping_company]'];
-            if (preg_match('/.*c\/o.*/i', $sCompany)) {
-                $oUser->oxuser__oxaddinfo = new oxField($sCompany);
-            } elseif (preg_match('/.*[0-9]+.*/', $sCompany)) {
-                $oUser->oxuser__oxaddinfo = new oxField($sCompany);
-            } else {
-                $oUser->oxuser__oxcompany = new oxField($sCompany);
+            if (isset($aResponse['add_paydata[shipping_pobox]'])) {
+                $oDelAddr->oxaddress__oxaddinfo = new oxField($aResponse['add_paydata[shipping_pobox]']);
             }
-        }
 
-        $oUser->save();
+            if (isset($aResponse['add_paydata[shipping_company]'])) {
+                $sCompany = $aResponse['add_paydata[shipping_company]'];
+                if (preg_match('/.*c\/o.*/i', $sCompany)) {
+                    $oDelAddr->oxaddress__oxaddinfo = new oxField($sCompany);
+                } elseif (preg_match('/.*[0-9]+.*/', $sCompany)) {
+                    $oDelAddr->oxaddress__oxaddinfo = new oxField($sCompany);
+                } else {
+                    $oDelAddr->oxaddress__oxcompany = new oxField($sCompany);
+                }
+            }
+
+            $oDelAddr->save();
+        }
     }
 
     /**

@@ -1435,7 +1435,8 @@ class fcpoRequest extends oxSuperCfg
             $iIndex++;
         }
         // discounts
-        foreach ($oBasket->getDiscounts() AS $oDiscount) {
+        $aDiscounts = is_null($oBasket->getDiscounts()) ? [] : $oBasket->getDiscounts();
+        foreach ($aDiscounts AS $oDiscount) {
             $this->addParameter('it[' . $iIndex . ']', 'voucher');
             $this->addParameter('id[' . $iIndex . ']', 'discount');
             $this->addParameter('pr[' . $iIndex . ']', $this->_fcpoGetCentPrice($oDiscount->dDiscount * -1));

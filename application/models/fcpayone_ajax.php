@@ -646,9 +646,12 @@ class fcpayone_ajax extends oxBase
         ];
 
         $aSupportedNetwork = [];
-        foreach ($oConfig->getConfigParam('aFCPOAplCreditCards') as $sCardCode) {
-            if (isset($aCreditCardMapping[$sCardCode])) {
-                $aSupportedNetwork[] = $aCreditCardMapping[$sCardCode];
+        $aConfigAplCreditCard = $oConfig->getConfigParam('aFCPOAplCreditCards');
+        if (!empty($aConfigAplCreditCard)) {
+            foreach ($oConfig->getConfigParam('aFCPOAplCreditCards') as $sCardCode) {
+                if (isset($aCreditCardMapping[$sCardCode])) {
+                    $aSupportedNetwork[] = $aCreditCardMapping[$sCardCode];
+                }
             }
         }
 

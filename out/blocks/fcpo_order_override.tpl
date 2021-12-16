@@ -49,6 +49,6 @@
     <script src="https://x.klarnacdn.net/kp/lib/v1/api.js" async></script>
     [{/if}]
 [{else}]
-    [{assign var="sFcPoTemplatePath" value=$sFcPoTemplatePath|cat:'/fcpo_nosalutation_order.tpl'}]
+    [{assign var="sFcPoTemplatePath" value=$oViewConf->fcpoGetActiveThemePath()|cat:'/fcpo_nosalutation_order.tpl'}]
     [{include file=$oViewConf->fcpoGetAbsModuleTemplateFrontendPath($sFcPoTemplatePath)}]
 [{/if}]

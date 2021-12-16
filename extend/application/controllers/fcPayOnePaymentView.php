@@ -794,17 +794,26 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      */
     public function getHashELVWithChecktype() 
     {
-        $sHash = md5(
+        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+        $sFCPOHashMethod = $oConfig->getConfigParam('sFCPOHashMethod');
+        $sKey = $this->getPortalKey();
+
+        $sData =
             $this->getSubAccountId() .
-                $this->getChecktype() .
-                $this->getEncoding() .
-                $this->getMerchantId() .
-                $this->_getOperationModeELV() .
-                $this->getPortalId() .
-                'bankaccountcheck' .
-                'JSON' .
-                $this->getPortalKey()
-        );
+            $this->getChecktype() .
+            $this->getEncoding() .
+            $this->getMerchantId() .
+            $this->_getOperationModeELV() .
+            $this->getPortalId() .
+            'bankaccountcheck' .
+            'JSON';
+
+        $sHashMD5 = md5($sData.$sKey);
+        $sHashSha2 = hash_hmac('sha384', $sData, $sKey);
+
+        $sHash = ($sFCPOHashMethod == 'sha2-384')
+            ? $sHashSha2 : $sHashMD5;
+
         return $sHash;
     }
 
@@ -815,16 +824,25 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      */
     public function getHashELVWithoutChecktype() 
     {
-        $sHash = md5(
+        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+        $sFCPOHashMethod = $oConfig->getConfigParam('sFCPOHashMethod');
+        $sKey = $this->getPortalKey();
+
+        $sData =
             $this->getSubAccountId() .
-                $this->getEncoding() .
-                $this->getMerchantId() .
-                $this->_getOperationModeELV() .
-                $this->getPortalId() .
-                'bankaccountcheck' .
-                'JSON' .
-                $this->getPortalKey()
-        );
+            $this->getEncoding() .
+            $this->getMerchantId() .
+            $this->_getOperationModeELV() .
+            $this->getPortalId() .
+            'bankaccountcheck' .
+            'JSON';
+
+        $sHashMD5 = md5($sData.$sKey);
+        $sHashSha2 = hash_hmac('sha384', $sData, $sKey);
+
+        $sHash = ($sFCPOHashMethod == 'sha2-384')
+            ? $sHashSha2 : $sHashMD5;
+
         return $sHash;
     }
 
@@ -3874,4 +3892,25 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         return sprintf($sBaseString, $sPaymentMethodSuffix);
     }
 
+    /**
+     * Retrieve the session stored value of the device check for Apple Pay compatibility
+     *
+     * @return int
+     */
+    public function fcpoAplGetDeviceCheck()
+    {
+        $oSession = $this->_oFcpoHelper->fcpoGetSession();
+        return $oSession->getVariable('applePayAllowedDevice');
+    }
+
+    /**
+     * Checks if configured certificate file exists, for Apple Pay availability
+     *
+     * @return mixed
+     */
+    public function fcpoAplCertificateCheck()
+    {
+        $oViewConf = $this->_oFcpoHelper->fcpoGetViewConfig();
+        return $oViewConf->fcpoCertificateExists();
+    }
 }

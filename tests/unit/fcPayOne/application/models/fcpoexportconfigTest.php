@@ -43,7 +43,7 @@ class MockResultExportConfig
  * @author Fatchip GmbH
  * @date   2016-05-31
  */
-class Unit_fcPayOne_Application_Models_fcpoexportconfig extends OxidTestCase
+class Unit_fcPayOne_Application_Models_fcpoexportconfig extends OxidTestCaseCompatibilityWrapper
 {
 
     /**
@@ -341,7 +341,7 @@ class Unit_fcPayOne_Application_Models_fcpoexportconfig extends OxidTestCase
         //        $this->assertEquals($aExpect, $aResponse);
         $this->_fcpoTruncateTable('fcpostatusmapping');
 
-        $this->assertContains('<title><![CDATA[AmazonPay]]></title>', $aResponse);
+        $this->wrapAssertStringContainsString('<title><![CDATA[AmazonPay]]></title>', $aResponse);
     }
 
     /**

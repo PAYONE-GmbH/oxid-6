@@ -93,7 +93,7 @@ class fcpoconfigexport extends oxBase
      *
      * @var array
      */
-    protected $_aSkipMultiline = array('aFCPODebitCountries');
+    protected $_aSkipMultiline = array('aFCPODebitCountries', 'aFCPOAplCreditCards');
 
     /**
      * Init needed data
@@ -548,6 +548,7 @@ class fcpoconfigexport extends oxBase
             'fcpo_alipay' => 'wlt',
             'fcpo_trustly' => 'sb',
             'fcpo_wechatpay' => 'wlt',
+            'fcpo_apple_pay' => 'wlt',
         );
 
         if (isset($aAbbreviations[$sPaymentId])) {
@@ -600,6 +601,7 @@ class fcpoconfigexport extends oxBase
             'fcpo_alipay' => 'ALP',
             'fcpo_trustly' => 'TRL',
             'fcpo_wechatpay' => 'WCP',
+            'fcpo_apple_pay' => 'APL',
         );
 
         if (isset($aAbbreviations[$sPaymentId])) {

@@ -497,6 +497,183 @@ class fcpayone_ajax extends oxBase
         
         return $sCaption;
     }
+
+    public function fcpoAplRegisterDevice($sParamsJson)
+    {
+        $oSession = $this->_oFcpoHelper->fcpoGetSession();
+        $aParams = json_decode($sParamsJson, true);
+
+        $allowedDevice = $aParams['allowed'];
+        $oSession->setVariable('applePayAllowedDevice', $allowedDevice);
+        return json_encode(['status' => 'SUCCESS', 'message' => '']);
+    }
+
+    public function fcpoAplCreateSession($sParamsJson)
+    {
+        $logger = \OxidEsales\Eshop\Core\Registry::getLogger();
+        $oLang = $this->_oFcpoHelper->fcpoGetLang();
+        $aParams = json_decode($sParamsJson, true);
+
+        /** @var oxviewconfig $config */
+        $oViewConfig = $this->_oFcpoHelper->fcpoGetViewConfig();
+        /** @var  \OxidEsales\Eshop\Core\Config $oConfig */
+        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+
+        $certDir =  $oViewConfig->fcpoGetCertDirPath();
+        $shopFQDN = $_SERVER['SERVER_NAME'];
+        $validationUrl = $aParams['validationUrl'];
+
+        try {
+            $merchantId = $oConfig->getConfigParam('sFCPOAplMerchantId');
+            $certificateFileName = $oConfig->getConfigParam('sFCPOAplCertificate');
+            $keyFileName = $oConfig->getConfigParam('sFCPOAplKey');
+            $keyPassword = $oConfig->getConfigParam('sFCPOAplPassword');
+
+            $payload = [
+                'merchantIdentifier' => $merchantId,
+                'displayName' => 'PAYONE Apple Pay',
+                'initiative' => 'web',
+                'initiativeContext' => $shopFQDN
+            ];
+
+            $httpClient = new \OxidEsales\Eshop\Core\Curl();
+            $httpClient->setUrl($validationUrl);
+            $httpClient->setMethod('POST');
+            $httpClient->setOption('CURLOPT_SSLCERT', $certDir . $certificateFileName);
+            $httpClient->setOption('CURLOPT_SSLKEY', $certDir . $keyFileName);
+            $httpClient->setOption('CURLOPT_SSLKEYPASSWD', $keyPassword);
+            $httpClient->setOption('CURLOPT_POSTFIELDS', json_encode($payload));
+            $httpResponse = $httpClient->execute();
+            $status = $httpClient->getStatusCode();
+
+            if ($status !== 200) {
+                $logger->error($oLang->translateString('FCPO_APPLE_PAY_CREATE_SESSION_ERROR') . ' : ' . var_export($httpResponse, true));
+
+                $response = [
+                    'status' => 'ERROR',
+                    'message' => $oLang->translateString('FCPO_APPLE_PAY_CREATE_SESSION_ERROR'),
+                    'errorDetails' => $httpResponse
+                ];
+
+                return json_encode($response);
+            }
+
+            $merchantSession = json_decode($httpResponse, true);
+            $response = [
+                'status' => 'SUCCESS',
+                'message' => '',
+                'merchantSession' => $merchantSession
+            ];
+
+            return json_encode($response);
+
+        } catch (\Exception $e) {
+            $logger->error($e->getTraceAsString());
+
+            $response = [
+                'status' => 'ERROR',
+                'message' => $oLang->translateString('FCPO_APPLE_PAY_CREATE_SESSION_ERROR'),
+                'errorDetails' => $e->getMessage()
+            ];
+
+            return json_encode($response);
+        }
+    }
+
+    public function fcpoAplPayment($sParamsJson)
+    {
+        $aCreditCardMapping = array(
+            'visa' => 'V',
+            'mastercard' => 'M',
+            'amex' => 'M',
+            'discover' => 'D'
+        );
+
+        $oSession = $this->_oFcpoHelper->fcpoGetSession();
+        $aParams = json_decode($sParamsJson, true);
+
+        $paymentData = $aParams['token']['paymentData'];
+        $methodData = $aParams['token']['paymentMethod'];
+        $creditCardType = '';
+        if (isset($aCreditCardMapping[strtolower($methodData['network'])])) {
+            $creditCardType = $aCreditCardMapping[strtolower($methodData['network'])];
+        }
+
+        $tokenData = [
+            'paydata' => [
+                'paymentdata_token_data' => isset($paymentData['data']) ? $paymentData['data'] : '',
+                'paymentdata_token_ephemeral_publickey' => isset($paymentData['header']['ephemeralPublicKey']) ? $paymentData['header']['ephemeralPublicKey'] : '',
+                'paymentdata_token_publickey_hash' => isset($paymentData['header']['publicKeyHash']) ? $paymentData['header']['publicKeyHash'] : '',
+                'paymentdata_token_transaction_id' => isset($paymentData['header']['transactionId']) ? $paymentData['header']['transactionId'] : '',
+                'paymentdata_token_signature' => isset($paymentData['signature']) ? $paymentData['signature'] : '',
+                'paymentdata_token_version' => isset($paymentData['version']) ? $paymentData['version'] : ''
+            ],
+            'creditCardType' => $creditCardType
+        ];
+
+        $oSession->setVariable('applePayTokenData', $tokenData);
+
+        $response = [
+            'status' => 'SUCCESS',
+            'message' => ''
+        ];
+
+        return json_encode($response);
+    }
+
+    public function fcpoAplOrderInfo()
+    {
+        $oLang = $this->_oFcpoHelper->fcpoGetLang();
+        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+        $oSession = $this->_oFcpoHelper->fcpoGetSession();
+        $oBasket = $oSession->getBasket();
+        $sPaymentId = $oBasket->getPaymentId();
+        $sAmount = $oBasket->getPrice()->getPrice();
+
+        $oCurr = $oConfig->getActShopCurrencyObject();
+        $sCurrency = $oCurr->name;
+
+        /** @var \OxidEsales\Eshop\Application\Model\Country $oCountry */
+        $oCountry = $this->_oFcpoHelper->getFactoryObject('oxcountry');
+        $oCountry->load($oBasket->getBasketUser()->getActiveCountry());
+        $sCountry = $oCountry->oxcountry__oxisoalpha2->value;
+
+        $aCreditCardMapping = [
+            'V' => "visa",
+            'M' => "masterCard",
+            'A' => "amex",
+            'D' => "discover"
+        ];
+
+        $aSupportedNetwork = [];
+        $aConfigAplCreditCard = $oConfig->getConfigParam('aFCPOAplCreditCards');
+        if (!empty($aConfigAplCreditCard)) {
+            foreach ($oConfig->getConfigParam('aFCPOAplCreditCards') as $sCardCode) {
+                if (isset($aCreditCardMapping[$sCardCode])) {
+                    $aSupportedNetwork[] = $aCreditCardMapping[$sCardCode];
+                }
+            }
+        }
+
+        $response = [
+            'status' => 'SUCCESS',
+            'message' => '',
+            'info' => [
+                'isApl' => ($sPaymentId == 'fcpo_apple_pay') ? true : false,
+                'amount' => $sAmount,
+                'currency' => $sCurrency,
+                'country' => $sCountry,
+                'supportedNetworks' => $aSupportedNetwork,
+                'errorMessage' => ''
+            ]
+        ];
+
+        if (count($aSupportedNetwork) < 1) {
+            $response['info']['errorMessage'] = $oLang->translateString('FCPO_APPLE_PAY_CREATE_SESSION_ERROR_CARDS');
+        }
+
+        return json_encode($response);
+    }
 }
 
 
@@ -522,6 +699,19 @@ if ($sPaymentId) {
 
     if ($sAction == 'get_amazon_reference_details' && $sPaymentId == 'fcpoamazonpay') {
         $oPayoneAjax->fcpoGetAmazonReferenceId($sParamsJson);
+    }
+
+    if ($sAction == 'fcpoapl_register_device' && $sPaymentId == 'fcpo_apple_pay') {
+        echo $oPayoneAjax->fcpoAplRegisterDevice($sParamsJson);
+    }
+    if ($sAction == 'fcpoapl_create_session' && $sPaymentId == 'fcpo_apple_pay') {
+        echo $oPayoneAjax->fcpoAplCreateSession($sParamsJson);
+    }
+    if ($sAction == 'fcpoapl_payment' && $sPaymentId == 'fcpo_apple_pay') {
+        echo $oPayoneAjax->fcpoAplPayment($sParamsJson);
+    }
+    if ($sAction == 'fcpoapl_get_order_info' && $sPaymentId == 'fcpo_apple_pay') {
+        echo $oPayoneAjax->fcpoAplOrderInfo();
     }
 
 

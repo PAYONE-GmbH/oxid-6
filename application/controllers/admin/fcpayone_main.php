@@ -65,6 +65,13 @@ class fcpayone_main extends fcpayone_admindetails
     protected $_aCountryList = array();
 
     /**
+     * List of credit cards
+     *
+     * @var array
+     */
+    protected $_aAplCreditCardsList = array();
+
+    /**
      * List of config errors encountered
      * @var array
      */
@@ -200,6 +207,7 @@ class fcpayone_main extends fcpayone_admindetails
         $sOxid = $oConfig->getShopId();
         $this->_fcpoLoadConfigs($sOxid);
         $this->_fcpoLoadCountryList();
+        $this->_fcpoLoadAplCreditCardsList();
     }
 
     /**
@@ -309,6 +317,17 @@ class fcpayone_main extends fcpayone_admindetails
     }
 
     /**
+     * Template getter for apple pay credit card list
+     *
+     * @param  void
+     * @return array
+     */
+    public function fcpoGetAplCreditCards()
+    {
+        return $this->_aAplCreditCardsList;
+    }
+
+    /**
      * Saves changed configuration parameters.
      *
      * @return mixed
@@ -365,6 +384,11 @@ class fcpayone_main extends fcpayone_admindetails
         $this->_fcpoCheckRequestAmazonPayConfiguration();
 
         $this->_handlePayPalExpressLogos();
+
+        $this->handleApplePayCredentials(
+            $aConfStrs['sFCPOAplCertificate'],
+            $aConfStrs['sFCPOAplKey']
+        );
         
         //reload config after saving
         $sOxid = $oConfig->getShopId();
@@ -459,6 +483,24 @@ class fcpayone_main extends fcpayone_admindetails
         }
 
         $this->_aCountryList = $oCountryList;
+    }
+
+    /**
+     * Loads list of supported creditcards for Apple Pay
+     *
+     */
+    protected function _fcpoLoadAplCreditCardsList()
+    {
+        $this->_aAplCreditCardsList = [
+            'V' => json_decode(json_encode([
+                'name' => 'Visa',
+                'selected' => $this->_aConfArrs["aFCPOAplCreditCards"] && in_array('V', $this->_aConfArrs["aFCPOAplCreditCards"]) ? 1 : 0
+            ])),
+            'M' => json_decode(json_encode([
+                'name' => 'Mastercard',
+                'selected' => $this->_aConfArrs["aFCPOAplCreditCards"] && in_array('M', $this->_aConfArrs["aFCPOAplCreditCards"]) ? 1 : 0
+            ])),
+        ];
     }
 
     /**
@@ -1088,6 +1130,139 @@ class fcpayone_main extends fcpayone_admindetails
         }
 
         return $aArr;
+    }
+
+    /**
+     * Handles the save of credential files/text for Apple Pay configuration
+     *
+     * @param string $sCertFilename
+     * @param string $sKeyFileName
+     */
+    public function handleApplePayCredentials($sCertFilename, $sKeyFileName)
+    {
+        $aFiles = $this->_oFcpoHelper->fcpoGetFiles();
+        $sCertDir = getShopBasePath() . 'modules/fc/fcpayone/cert/';
+
+        foreach ($aFiles as $sInputName => $aFile) {
+            if (!in_array($sInputName, ['fcpoAplCertificateFile', 'fcpoAplKeyFile'])) {
+                continue;
+            }
+
+            if ($sInputName == 'fcpoAplCertificateFile') {
+                $this->saveApplePayFile($aFile, $sCertFilename, $sCertDir);
+            }
+
+            if ($sInputName == 'fcpoAplKeyFile') {
+                $this->saveApplePayFile($aFile, $sKeyFileName, $sCertDir);
+            }
+        }
+
+        if (!isset($aFiles['fcpoAplKeyFile']) || empty($aFiles['fcpoAplKeyFile']['name'])) {
+            $sKeyText = $this->_oFcpoHelper->fcpoGetRequestParameter('fcpoAplKeyText');
+            if (!empty($sKeyText)) {
+                $this->saveApplePayTextKey($sKeyText, $sKeyFileName, $sCertDir);
+            }
+        }
+    }
+
+    /**
+     * Saves the file, adjusting the filename if necessary
+     *
+     * @param array $aFileData
+     * @param string $sPostedFilename
+     * @param string $sCertDir
+     */
+    protected function saveApplePayFile($aFileData, $sPostedFilename, $sCertDir)
+    {
+        if (!empty($aFileData['name'] && $aFileData['size'] > 0)) {
+            $sFilename = $aFileData['name'];
+            if(!empty($sPostedFilename)) {
+                $sFilename = $sPostedFilename;
+            }
+
+            $this->saveFile(
+                $sFilename,
+                $aFileData['tmp_name'],
+                $sCertDir
+            );
+        }
+    }
+
+    /**
+     * Saves the Apple Pay key text in a proper file, and store its name in configuration
+     *
+     * @param string $sKeyContent
+     * @param string $sPostedFilename
+     * @param string $sCertDir
+     */
+    protected function saveApplePayTextKey($sKeyContent, $sPostedFilename, $sCertDir)
+    {
+        if (!empty($sKeyContent)) {
+            $filename = 'merchant_id.key';
+            if(!empty($sPostedFilename)) {
+                $filename = $sPostedFilename;
+            }
+
+            $blResult = $this->writeFile($filename, $sKeyContent, $sCertDir);
+
+            if ($blResult) {
+                $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+                $oConfig->saveShopConfVar("str", 'sFCPOAplKey', $filename);
+            }
+        }
+    }
+
+    /**
+     * Moves a file to a destination from the temporary storage after upload
+     *
+     * @param string $filename
+     * @param string $tempFilePath
+     * @param string $destinationPath
+     * @return bool
+     * @throws Exception
+     */
+    private function saveFile($filename, $tempFilePath, $destinationPath)
+    {
+        try {
+            if (!is_dir($destinationPath)) {
+                mkdir($destinationPath, 0700);
+            }
+
+            move_uploaded_file($tempFilePath, $destinationPath . $filename);
+            chmod($destinationPath . $filename, 0644);
+
+            return true;
+        } catch(Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * Writes a content to a named destination file
+     *
+     * @param string $filename
+     * @param string $content
+     * @param string $destinationPath
+     * @return bool
+     * @throws Exception
+     */
+    private function writeFile($filename, $content, $destinationPath)
+    {
+        try {
+            if (!is_dir($destinationPath)) {
+                mkdir($destinationPath, 0700);
+            }
+
+            if (!is_file($destinationPath . $filename)) {
+                touch($destinationPath . $filename);
+                chmod($destinationPath . $filename, 0644);
+            }
+            file_put_contents($destinationPath . $filename, $content);
+
+            return true;
+        } catch(Exception $e) {
+            throw $e;
+        }
     }
 
 }

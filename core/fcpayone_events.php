@@ -417,6 +417,7 @@ class fcpayone_events
         'fcpo_alipay' => 'Alipay',
         'fcpo_trustly' => 'Trustly',
         'fcpo_wechatpay'=> 'WeChat Pay',
+        'fcpo_apple_pay'=> 'Apple Pay',
     );
 
     /**

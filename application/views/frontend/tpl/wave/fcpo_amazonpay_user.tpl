@@ -88,10 +88,9 @@
                         orderReferenceId = orderReference.getAmazonOrderReferenceId();
                     },
                     onAddressSelect: function(orderReference) {
-                        console.log('triggered onAddressSelect');
-
-                        $$("button[id^=userNextStep]").each(function () {
-                            $(this).disable();
+                        var userNextStepButtons = $('[id^="userNextStep"]');
+                        userNextStepButtons.each(function () {
+                            this.setAttribute('disabled', true);
                         });
 
                         var formParams = "{";
@@ -104,8 +103,8 @@
                             dataType: 'text',
                             data: { paymentid: "fcpoamazonpay", action: "get_amazon_reference_details", params: formParams },
                             success: function(Response) {
-                                $$("button[id^=userNextStep]").each(function () {
-                                    $(this).enable();
+                                userNextStepButtons.each(function () {
+                                    this.removeAttribute('disabled');
                                 });
                             }
                         });

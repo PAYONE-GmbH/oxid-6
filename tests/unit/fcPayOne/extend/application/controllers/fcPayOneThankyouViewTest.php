@@ -198,12 +198,12 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneThankyouView extends 
     
     
     /**
-     * Testing fcpoIsAppointedError for coverage
+     * Testing fcpoOrderHasProblems for coverage
      * 
      * @param  void
      * @return void
      */
-    public function test_fcpoIsAppointedError_Coverage() 
+    public function test_fcpoOrderHasProblemsError_Coverage()
     {
         $oMockOrder = $this->getMock('oxOrder', array('isPayOnePaymentType'));
         $oMockOrder->expects($this->any())->method('isPayOnePaymentType')->will($this->returnValue(true));
@@ -213,7 +213,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneThankyouView extends 
         $oTestObject = $this->getMock('fcPayOneThankyouView', array('getOrder'));
         $oTestObject->expects($this->any())->method('getOrder')->will($this->returnValue($oMockOrder));
         
-        $this->assertEquals(true, $oTestObject->fcpoIsAppointedError());
+        $this->assertEquals(true, $oTestObject->fcpoOrderHasProblems());
     }
 
     /**

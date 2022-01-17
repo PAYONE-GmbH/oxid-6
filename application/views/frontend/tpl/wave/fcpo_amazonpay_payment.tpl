@@ -50,10 +50,9 @@
                 scope: 'profile payments:widget payments:shipping_address payments:billing_address',
                 amazonOrderReferenceId: '[{$oViewConf->fcpoGetAmazonPayReferenceId()}]',
                 onPaymentSelect: function(orderReference) {
-                    console.log('triggered onPaymentSelect');
-
-                    $("[id^=paymentNextStep]").each(function () {
-                        $(this).attr("disabled", true);
+                    var paymentNextStep = $("button[id^=paymentNextStep]");
+                    paymentNextStep.each(function () {
+                        this.setAttribute('disabled', true);
                     });
 
                     var formParams = '{"fcpoAmazonReferenceId":"[{$oViewConf->fcpoGetAmazonPayReferenceId()}]"}';
@@ -64,9 +63,8 @@
                         dataType: 'text',
                         data: { paymentid: "fcpoamazonpay", action: "get_amazon_reference_details", params: formParams },
                         success: function(Response) {
-
-                            $("[id^=paymentNextStep]").each(function () {
-                                $(this).attr("disabled", false);
+                            paymentNextStep.each(function () {
+                                this.removeAttribute('disabled');
                             });
                         }
                     });

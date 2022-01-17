@@ -81,24 +81,22 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
      *
      * @return string
      */
-    public function execute() 
+    public function execute()
     {
-        $sFcpoMandateCheckbox =
-            $this->_oFcpoHelper->fcpoGetRequestParameter('fcpoMandateCheckbox');
-        
+        $sFcpoMandateCheckbox = $this->_oFcpoHelper->fcpoGetRequestParameter('fcpoMandateCheckbox');
+        $sPaymentId = $this->_oFcpoHelper->fcpoGetSessionVariable('paymentid');
+        $blIsRedirectPayment = fcPayOnePayment::fcIsPayOneRedirectType($sPaymentId);
+
         $blConfirmMandateError = (
-            (
-                !$sFcpoMandateCheckbox ||
-                $sFcpoMandateCheckbox == 'false'
-            ) &&
+            (!$sFcpoMandateCheckbox || $sFcpoMandateCheckbox == 'false') &&
             $this->_fcpoMandateAcceptanceNeeded()
         );
-        
+
         if ($blConfirmMandateError) {
             $this->_blFcpoConfirmMandateError = 1;
             return;
         }
-        
+
         return parent::execute();
     }
     

@@ -526,6 +526,11 @@ Das kleinere Textfeld wird verwendet, um die Zieldatei oder den Pfad zu einer vo
     'FCPO_APPLE_PAY_CREDITCARD'                        => "Erlaubte Kreditkarten",
     'FCPO_APPLE_PAY_CREATE_SESSION_ERROR'              => "Fehler beim Herstellen der Verbindung zum Apple Pay Service.",
     'FCPO_APPLE_PAY_CREATE_SESSION_ERROR_CARDS'        => "In der Konfiguration ist kein gültiger Kreditkartentyp zulässig. Die Apple Pay-Sitzung kann nicht initialisiert werden.",
+
+    'FCPO_SHADOW_BASKET'                               => 'Schatten-Warenkorb',
+    'FCPO_POSSIBLE_FRAUD_DETECTED'                     => 'Ein möglicher Betrugsversuch wurde entdeckt. Bitte prüfen Sie diesen Warenkorb gegen die Bestellung.',
+    'FCPO_GENERAL_SHADOWBASKET_BRUTTO'                 => 'Bruttosumme des Prüfwarenkorbs',
+    'FCPO_GENERAL_SHADOWBASKET_NETTO'                  => 'Nettosumme des Prüfwarenkorbs',
 );
 
 /*

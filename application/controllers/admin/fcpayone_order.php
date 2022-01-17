@@ -67,7 +67,8 @@ class fcpayone_order extends fcpayone_admindetails
     public function render() 
     {
         parent::render();
-
+        $oConfig = $this->getConfig();
+        $oCur = $oConfig->getActShopCurrencyObject();
         $oOrder = $this->_oFcpoHelper->getFactoryObject("oxorder");
 
         $sOxid = $this->_oFcpoHelper->fcpoGetRequestParameter("oxid");
@@ -75,9 +76,11 @@ class fcpayone_order extends fcpayone_admindetails
             // load object
             $oOrder->load($sOxid);
             $this->_aViewData["edit"] = $oOrder;
+            $this->_aViewData["oShadowBasket"] = $oOrder->fcpoGetShadowBasket(true);
         }
 
         $this->_aViewData['sHelpURL'] = $this->_oFcpoHelper->fcpoGetHelpUrl();
+        $this->_aViewData['currency'] = $oCur;
 
         return $this->_sThisTemplate;
     }

@@ -96,8 +96,8 @@ class fcpayone_log_list extends fcpayone_adminlist
         $sQ = parent::_prepareWhereQuery($aWhere, $sQ);
 
         $aPortalIds = [
-            $this->getPortalId(),
-            $this->getSecInvoicePortalId()
+            "'".$this->getPortalId()."'",
+            "'".$this->getSecInvoicePortalId()."'"
         ];
         $sAid = $this->getSubAccountId();
         return $sQ." AND fcpotransactionstatus.fcpo_portalid IN (" . join(',', $aPortalIds) . ") AND fcpotransactionstatus.fcpo_aid = '{$sAid}' ";

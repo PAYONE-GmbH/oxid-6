@@ -1,3 +1,18 @@
+==1.6.1==
+
+
+New Features
+ 
+* Change Version of Javascript
+ 
+Bugfix(es)
+ 
+* check of manipulated basket
+ 
+
+ 
+tested with v 6.4
+
 ==1.6.0==
 
 New Features

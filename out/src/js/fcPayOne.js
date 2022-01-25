@@ -655,10 +655,11 @@ $('#fcpo_klarna_combined_agreed, #klarna_payment_selector').change(
         var payment_id = $('#klarna_payment_selector').children("option:selected").val();
         var oForm = getPaymentForm();
 
-        if ($('[id="fcpo_klarna_combined_agreed"]')[0].checked == false) {
-            $('[id="klarna_widget_combined_container"]')[0].innerHTML = '';
+        var klarna_combined_agreed = $('[id="fcpo_klarna_combined_agreed"]');
+        if (klarna_combined_agreed.length > 0 && klarna_combined_agreed[0].checked == false) {
+            klarna_combined_agreed[0].innerHTML = '';
 
-            if ($('[id="klarna_combined_js_inject"]')[0].innerHTML !== '') {
+            if ($('[id="klarna_combined_js_inject"]').length > 0 && $('[id="klarna_combined_js_inject"]')[0].innerHTML !== '') {
                 location.reload();
             }
             return;
@@ -703,9 +704,15 @@ $('#fcpo_klarna_combined_agreed, #klarna_payment_selector').change(
                     birthday: birthday
                 },
                 success: function(Response) {
-                    $('[id="klarna_widget_combined_container"]')[0].innerHTML = '';
+                    var klarnaWidgetCombinedContainer = $('[id="klarna_widget_combined_container"]');
+                    if (klarnaWidgetCombinedContainer.length > 0) {
+                        klarnaWidgetCombinedContainer[0].innerHTML = '';
+                    }
                     $('#klarna_combined_js_inject').empty().html(Response);
-                    $('[id="payment_klarna_combined"]')[0].value = payment_id;
+                    var paymentKlarnaCombined = $('[id="payment_klarna_combined"]');
+                    if (paymentKlarnaCombined.length > 0) {
+                        paymentKlarnaCombined[0].value = payment_id;
+                    }
                 },
                 error: function () {
                     location.reload();
@@ -895,8 +902,14 @@ if (payolutionInstallmentCheckAvailability.length > 0) {
     payolutionInstallmentCheckAvailability[0].addEventListener('click',
         function () {
             // trigger loading animation and disable button
-            $('[id="payolution_installment_calculation_selection"]')[0].innerHTML = '<div id="payolution_center_animation"><img src="modules/fc/fcpayone/out/img/ajax-loader.gif"</div>';
-            $('[id="payolution_installment_check_availability"]')[0].setAttribute('disabled', true);
+            var payolutionInstallmentCalculationSelection = $('[id="payolution_installment_calculation_selection"]');
+            if (payolutionInstallmentCalculationSelection.length > 0) {
+                payolutionInstallmentCalculationSelection[0].innerHTML = '<div id="payolution_center_animation"><img src="modules/fc/fcpayone/out/img/ajax-loader.gif"</div>';
+            }
+            var payolutionInstallmentCheckAvailability = $('[id="payolution_installment_check_availability"]');
+            if (payolutionInstallmentCheckAvailability.length > 0) {
+                payolutionInstallmentCheckAvailability[0].setAttribute('disabled', true);
+            }
             // collect data from form to pass it through to controller
             var formParams = '{';
             $('[name^="dynvalue"]').each(
@@ -937,33 +950,59 @@ if (payolutionInstallmentCheckAvailability.length > 0) {
                     dataType: 'text',
                     data: {paymentid: "fcpopo_installment", action: "precheck", params: formParams},
                     success: function (Response) {
-                        $('[id="payolution_installment_calculation_selection"]')[0].innerHTML = Response;
-                        $('[id="payolution_installment_check_availability"]')[0].removeAttribute('disabled');
+                        if ($('[id="payolution_installment_calculation_selection"]').length > 0) {
+                            $('[id="payolution_installment_calculation_selection"]')[0].innerHTML = Response;
+                        }
+
+                        if ($('[id="payolution_installment_check_availability"]').length > 0) {
+                            $('[id="payolution_installment_check_availability"]')[0].removeAttribute('disabled');
+                        }
+
                         var numberOfInstallments = 0;
                         if ($('[id="payolution_no_installments"]').length > 0) {
                             numberOfInstallments = $('[id="payolution_no_installments"]')[0].value
                         }
-                        $('[id="payolution_sum_number_installments"]')[0].innerHTML = numberOfInstallments;
+                        if ($('[id="payolution_sum_number_installments"]').length > 0) {
+                            $('[id="payolution_sum_number_installments"]')[0].innerHTML = numberOfInstallments;
+                        }
                         $('input[name=payolution_installment_selection]').bind('change', function () {
                             // selected interest data will be set into summary box
                             var selectedInstallmentIndex = $('input[name=payolution_installment_selection]:checked').val();
                             // disable all installment details and enable selected
                             for (i = 1; i <= numberOfInstallments; i++) {
-                                var element = $('[id="payolution_rates_details_' + i + '"]')[0];
-                                element.classList.remove('payolution_rates_visible');
-                                element.classList.add('payolution_rates_invisible');
+                                var element = $('[id="payolution_rates_details_' + i + '"]');
+                                if (element.length > 0) {
+                                    element[0].classList.remove('payolution_rates_visible');
+                                    element[0].classList.add('payolution_rates_invisible');
+                                }
                             }
-                            element = $('[id="payolution_rates_details_' + selectedInstallmentIndex + '"]')[0];
-                            element.classList.add('payolution_rates_visible');
-                            element.classList.remove('payolution_rates_invisible');
+                            element = $('[id="payolution_rates_details_' + selectedInstallmentIndex + '"]');
+                            if (element.length > 0) {
+                                element[0].classList.add('payolution_rates_visible');
+                                element[0].classList.remove('payolution_rates_invisible');
+                            }
                             // set needed values to foreseen fields
-                            $('[id="payolution_sum_number_installments"]')[0].innerHTML = numberOfInstallments;
-                            $('[id="payolution_financing_sum"]')[0].innerHTML = $('[id="payolution_installment_total_amount_' + selectedInstallmentIndex + '"]')[0].value;
-                            $('[id="payolution_sum_interest_rate"]')[0].innerHTML = $('[id="payolution_installment_interest_rate_' + selectedInstallmentIndex + '"]')[0].value;
-                            $('[id="payolution_sum_eff_interest_rate"]')[0].innerHTML = $('[id="payolution_installment_eff_interest_rate_' + selectedInstallmentIndex + '"]')[0].value;
-                            $('[id="payolution_sum_monthly_rate"]')[0].innerHTML = $('[id="payolution_installment_value_' + selectedInstallmentIndex + '"]')[0].value;
-                            $('[id="payolution_sum_number_installments"]')[0].innerHTML = $('[id="payolution_installment_duration_' + selectedInstallmentIndex + '"]')[0].value;
-                            $('[id="payolution_selected_installment_index"]')[0].value = selectedInstallmentIndex;
+                            if ($('[id="payolution_sum_number_installments"]').length > 0) {
+                                $('[id="payolution_sum_number_installments"]')[0].innerHTML = numberOfInstallments;
+                            }
+                            if ($('[id="payolution_financing_sum"]').length > 0 && $('[id="payolution_installment_total_amount_' + selectedInstallmentIndex + '"]').length > 0) {
+                                $('[id="payolution_financing_sum"]')[0].innerHTML = $('[id="payolution_installment_total_amount_' + selectedInstallmentIndex + '"]')[0].value;
+                            }
+                            if ($('[id="payolution_sum_interest_rate"]').length > 0 && $('[id="payolution_installment_interest_rate_' + selectedInstallmentIndex + '"]').length > 0) {
+                                $('[id="payolution_sum_interest_rate"]')[0].innerHTML = $('[id="payolution_installment_interest_rate_' + selectedInstallmentIndex + '"]')[0].value;
+                            }
+                            if ($('[id="payolution_sum_eff_interest_rate"]').length > 0 && $('[id="payolution_installment_eff_interest_rate_' + selectedInstallmentIndex + '"]').length > 0) {
+                                $('[id="payolution_sum_eff_interest_rate"]')[0].innerHTML = $('[id="payolution_installment_eff_interest_rate_' + selectedInstallmentIndex + '"]')[0].value;
+                            }
+                            if ($('[id="payolution_sum_monthly_rate"]').length > 0 && $('[id="payolution_installment_value_' + selectedInstallmentIndex + '"]').length > 0) {
+                                $('[id="payolution_sum_monthly_rate"]')[0].innerHTML = $('[id="payolution_installment_value_' + selectedInstallmentIndex + '"]')[0].value;
+                            }
+                            if ($('[id="payolution_sum_number_installments"]').length > 0 && $('[id="payolution_installment_duration_' + selectedInstallmentIndex + '"]').length > 0) {
+                                $('[id="payolution_sum_number_installments"]')[0].innerHTML = $('[id="payolution_installment_duration_' + selectedInstallmentIndex + '"]')[0].value;
+                            }
+                            if ($('[id="payolution_selected_installment_index"]').length > 0) {
+                                $('[id="payolution_selected_installment_index"]')[0].value = selectedInstallmentIndex;
+                            }
                         });
                     }
                 }
@@ -1218,9 +1257,18 @@ $(document).ready(function() {
     if (paymentForm.length > 0) {
         //check cvc, check if cardtype is selected, progress request, output errors
         paymentForm[0].addEventListener('submit', function(e) {
-            var klarna_auth_done = $('[id="fcpo_klarna_auth_done"]')[0].value;
-            var klarna_paymentid = $('[id="payment_klarna_combined"]')[0].value;
-            var klarna_combined_checked = $('[id="payment_klarna_combined"]')[0].checked;
+            var klarna_auth_done = '';
+            if ($('[id="fcpo_klarna_auth_done"]').length > 0) {
+                klarna_auth_done = $('[id="fcpo_klarna_auth_done"]')[0].value;
+            }
+
+            var klarna_combined = $('[id="payment_klarna_combined"]');
+            var klarna_paymentid = false;
+            var klarna_combined_checked = false;
+            if (klarna_combined.length > 0) {
+                klarna_paymentid = klarna_combined[0].value;
+                klarna_combined_checked = klarna_combined[0].checked;
+            }
 
             hideCCHostedErrorsAtSubmit();
             validateCardTypeCCHosted(e);
@@ -1228,7 +1276,9 @@ $(document).ready(function() {
             if (klarna_combined_checked && klarna_paymentid) {
                 if (klarna_auth_done === 'false') {
                     e.preventDefault();
-                    if ($('[id="fcpo_klarna_combined_agreed"]')[0].checked == true) {
+
+                    var klarna_combined_agreed = $('[id="fcpo_klarna_combined_agreed"]');
+                    if (klarna_combined_agreed.length > 0 && klarna_combined_agreed[0].checked == true) {
                         // defined in snippets/fcpoKlarnaWidget.txt
                         klarnaAuthorize(e);
                     }

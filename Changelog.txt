@@ -1,3 +1,13 @@
+==1.6.2==
+
+Bugfixes
+ 
+* Creditcard bugs fixed
+ 
+Maintenance
+ 
+* tested with Shop 6.4
+
 ==1.6.1==
 
 

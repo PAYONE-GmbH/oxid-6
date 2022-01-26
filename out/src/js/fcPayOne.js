@@ -1287,10 +1287,7 @@ $(document).ready(function() {
         });
     }
 
-    var cardType = $('[id="cardtype"]');
-    if (cardType.length > 0) {
-        cardType[0].addEventListener('change', function(e) {
-            iframes.setCardType(this.value);
-        });
-    }
+    $('#cardtype').on('change', function(e) {
+        iframes.setCardType(this.value);
+    });
 });

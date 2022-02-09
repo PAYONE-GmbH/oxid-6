@@ -69,6 +69,18 @@ class fcpayone_log_list extends fcpayone_adminlist
         $sReturn = $oConfig->getConfigParam('sFCPOSubAccountID');
         return $sReturn;
     }
+
+    /**
+     * Get config parameter PAYONE safe invoice dedicated portal ID
+     *
+     * @return string
+     */
+    public function getSecInvoicePortalId()
+    {
+        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+        $sReturn = $oConfig->getConfigParam('sFCPOSecinvoicePortalId');
+        return $sReturn;
+    }
     
 
     /**
@@ -82,9 +94,13 @@ class fcpayone_log_list extends fcpayone_adminlist
     protected function _prepareWhereQuery( $aWhere, $sQ ) 
     {
         $sQ = parent::_prepareWhereQuery($aWhere, $sQ);
-        $sPortalId = $this->getPortalId();
+
+        $aPortalIds = [
+            "'".$this->getPortalId()."'",
+            "'".$this->getSecInvoicePortalId()."'"
+        ];
         $sAid = $this->getSubAccountId();
-        return $sQ." AND fcpotransactionstatus.fcpo_portalid = '{$sPortalId}' AND fcpotransactionstatus.fcpo_aid = '{$sAid}' ";
+        return $sQ." AND fcpotransactionstatus.fcpo_portalid IN (" . join(',', $aPortalIds) . ") AND fcpotransactionstatus.fcpo_aid = '{$sAid}' ";
     }
     
     

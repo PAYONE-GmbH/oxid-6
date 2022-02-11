@@ -46,6 +46,7 @@ class fcpayone_events
         'fcpocreditcard_iframe',
         'fcpobillsafe',
         'fcpoonlineueberweisung',
+        'fcpoklarna',
     );
 
     /**
@@ -403,7 +404,6 @@ class fcpayone_events
         'fcpocreditcard' => 'Kreditkarte',
         'fcpopaypal' => 'PayPal',
         'fcpopaypal_express' => 'PayPal Express',
-        'fcpoklarna' => 'Klarna Rechnung',
         'fcpoklarna_invoice' => 'Klarna Pay later',
         'fcpoklarna_installments' => 'Klarna Slice it',
         'fcpoklarna_directdebit' => 'Klarna Pay now',

@@ -2293,10 +2293,10 @@ class fcpoRequest extends oxSuperCfg
         $this->addParameter('shipping_firstname', $oAddress->{$aMap['shipping_firstname'][$sKey]}->value);
         $this->addParameter('shipping_lastname', $oAddress->{$aMap['shipping_lastname'][$sKey]}->value);
         # TODO: may be the reason why doesnt work
-        if ($oAddress->oxaddress__oxcompany->value) {
+        if ($oAddress->{$aMap['shipping_company'][$sKey]}->value) {
             $this->addParameter('shipping_company', $oAddress->{$aMap['shipping_company'][$sKey]}->value);
         }
-        $this->addParameter('shipping_street', trim($oAddress->{$aMap['shipping_street'][$sKey]}->value . ' ' . $oAddress->oxaddress__oxstreetnr->value));
+        $this->addParameter('shipping_street', trim($oAddress->{$aMap['shipping_street'][$sKey]}->value . ' ' . $oAddress->{$aMap['shipping_streetnr'][$sKey]}->value));
         $this->addParameter('shipping_zip', $oAddress->{$aMap['shipping_zip'][$sKey]}->value);
         $this->addParameter('shipping_city', $oAddress->{$aMap['shipping_city'][$sKey]}->value);
         $this->addParameter('shipping_country', $oDelCountry->oxcountry__oxisoalpha2->value);
@@ -3189,6 +3189,7 @@ class fcpoRequest extends oxSuperCfg
             return $aOutput;
         }
 
+        $sRequestUrl = '';
         foreach ($this->_aParameters as $sKey => $sValue) {
             if (is_array($sValue)) {
                 foreach ($sValue as $i => $val1) {

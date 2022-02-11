@@ -291,53 +291,6 @@ function getCleanedNumberIBAN(sDirtyNumber) {
     return sCleanedNumber;
 }
 
-function checkKlarna() {
-    resetErrorContainers();
-    var oForm = getPaymentForm();
-
-    if(oForm['dynvalue[fcpo_klv_fon]']) {
-        oForm['dynvalue[fcpo_klv_fon]'].value = oForm['dynvalue[fcpo_klv_fon]'].value.trim();
-        if(oForm['dynvalue[fcpo_klv_fon]'].value == '') {
-            document.getElementById('fcpo_klv_fon_invalid').style.display = 'block';
-            return false;
-        }
-    }
-    if(oForm['dynvalue[fcpo_klv_birthday][month]']) {
-        if(oForm['dynvalue[fcpo_klv_birthday][month]'].value == '' || oForm['dynvalue[fcpo_klv_birthday][day]'].value == '' || oForm['dynvalue[fcpo_klv_birthday][year]'].value == '') {
-            document.getElementById('fcpo_klv_birthday_invalid').style.display = 'block';
-            return false;
-        }
-    }
-    if(oForm['dynvalue[fcpo_klv_addinfo]']) {
-        oForm['dynvalue[fcpo_klv_addinfo]'].value = oForm['dynvalue[fcpo_klv_addinfo]'].value.trim();
-        if(oForm['dynvalue[fcpo_klv_addinfo]'].value == '') {
-            document.getElementById('fcpo_klv_addinfo_invalid').style.display = 'block';
-            return false;
-        }
-    }
-    if(oForm['dynvalue[fcpo_klv_del_addinfo]']) {
-        oForm['dynvalue[fcpo_klv_del_addinfo]'].value = oForm['dynvalue[fcpo_klv_del_addinfo]'].value.trim();
-        if(oForm['dynvalue[fcpo_klv_del_addinfo]'].value == '') {
-            document.getElementById('fcpo_klv_del_addinfo_invalid').style.display = 'block';
-            return false;
-        }
-    }
-    if(oForm['dynvalue[fcpo_klv_personalid]']) {
-        oForm['dynvalue[fcpo_klv_personalid]'].value = oForm['dynvalue[fcpo_klv_personalid]'].value.trim();
-        if(oForm['dynvalue[fcpo_klv_personalid]'].value == '') {
-            document.getElementById('fcpo_klv_personalid_invalid').style.display = 'block';
-            return false;
-        }
-    }
-    if(oForm['dynvalue[fcpo_klv_confirm]']) {
-        if(!oForm['dynvalue[fcpo_klv_confirm]'][1].checked) {
-            document.getElementById('fcpo_klv_confirmation_missing').style.display = 'block';
-            return false;
-        }
-    }
-    return true;
-}
-
 function fcpoGetElvCountry() {
     var oForm = getPaymentForm();
     var sElvCountry = 'DE';
@@ -465,8 +418,6 @@ function fcCheckPaymentSelection() {
             return startCCRequest();
         } else if(sCheckedValue == 'fcpodebitnote') {
             return startELVRequest(true);
-        } else if(sCheckedValue == 'fcpoklarna') {
-            return checkKlarna();
         }
     }
     return true;

@@ -2,7 +2,7 @@
 [{if $edit->oxpayments__fcpoispayone->value == 1}]
     <tr>
         <td class="edittext" colspan="2">
-            <img src="[{$oViewConf->fcpoGetAdminModuleImgUrl()}]logo_payone.png" alt="PAYONE"><br><br>
+            <img src="[{$oViewConf->fcpoGetAdminModuleImgUrl()}]logo_payone_new.gif" alt="PAYONE"><br><br>
             [{oxmultilang ident="FC_IS_PAYONE"}]
             [{if $edit->oxpayments__oxid->value == 'fcpobarzahlen'}]
                     <input type="hidden" name="editval[oxpayments__fcpoauthmode]" value="preauthorization">

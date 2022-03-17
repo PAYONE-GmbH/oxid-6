@@ -1,41 +1,47 @@
-# PAYONE for Oxid
-![license LGPL](https://img.shields.io/badge/license-LGPL-blue.svg)
-[![GitHub issues](https://img.shields.io/github/issues/PAYONE-GmbH/oxid-6.svg)](https://github.com/PAYONE-GmbH/oxid-6/issues)
+# PAYONE Payment Plugin for Oxid 6
 
-# PAYMENT FOR YOUR OXID-SHOP 
-The Payone-FinanceGate-Module is already certified by OXID to guarantee faultless code quality and correct operation, but we are willing to do an even better job. The community here on Github is a great help for that and we are happy about your participation. Take a look at our released version and send us commits or other feedback to take care for the best possible solution.
+![CI Status](https://img.shields.io/github/workflow/status/PAYONE-GmbH/oxid-6/CI)
+![License](https://img.shields.io/github/license/PAYONE-GmbH/oxid-6)
+![Latest release version (semver)](https://img.shields.io/github/v/release/PAYONE-GmbH/oxid-6)
 
-## Important functions for OXID
-*	Seamless integration in the checkout processes
-*	Centralised administration within Oxid
-*	The offered portfolio of payment options can be controlled depending on the consumer's credit rating
-*	The payment extension is compatible with all OXID eShop editions of version 6: Community, Professional and Enterprise edition
-*	Supports simplified PCI DSS conformity in accordance with SAQ A
-*	Find all currently supported payment methods on https://docs.payone.com/display/public/INT/Oxid+6
-
-## More information
-More information about OXID on https://docs.payone.com/display/public/INT/Oxid+6 or https://www.fatchip.de/Plugins/OXID-eShop/OXID-PAYONE-Connector.html 
-
-## Requirements
-Installed OXID eShop >= v6.0.0
+The official extension for Oxid 6 to enable payment for your
+website via PAYONE service.
 
 ## Installation
-Just go to the directory of your Oxid `composer.json` file and perform the following command:
+### Prerequisites
+You should have your PAYONE API credentials. If you still don't have
+them, [contact PAYONE](https://payone.com).
+
+Software requirements:
+- installed Oxid eShop >= v6.0.0
+
+### Install
+Just go to the directory of your Oxid composer.json file and perform the following command:
+
 ```
 composer require payone-gmbh/oxid-6
 ```
 
 After that, just activate the module in the Oxid backend.
 
-## Support and Contact
+## Features
+- Certified by Oxid
+- Seamless integration in the checkout processes
+- Centralised administration within Oxid
+- The offered portfolio of payment options can be controlled depending on the consumer's credit rating
+- The payment extension is compatible with all Oxid eShop editions of version 6: Community, Professional and Enterprise edition
+- Supports simplified PCI DSS conformity in accordance with SAQ A
 
-PAYONE GmbH  
-Office Kiel  
-Fraunhoferstraße 2–4  
-24118 Kiel, Germany  
-Phone +49 431 25968-400  
-oxid@payone.com
+## Documentation
+You can check [the documentation on our website here](https://docs.payone.com/display/public/INT/Oxid+6+Extension).
 
-## License
+More information can be found [on FATCHIP site](https://www.fatchip.de/Plugins/OXID-eShop/OXID-PAYONE-Connector.html).
 
-The MIT License (MIT). Please see License File for more information.
+## Contact
+PAYONE GmbH<br>
+Office Kiel<br>
+Fraunhoferstraße 2-4<br>
+24118 Kiel, Germany<br>
+Phone +49 431 25968-400<br>
+sales@payone.com<br>
+tech.support@payone.com<br>

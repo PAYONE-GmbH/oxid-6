@@ -9,7 +9,7 @@
             <input type="hidden" name="dynvalue[fcporp_bill_profileid]" value="[{$oView->fcpoGetRatePayMatchedProfile('fcporp_bill')}]">
             <input type="hidden" name="dynvalue[fcporp_bill_device_fingerprint]" value="[{$oView->fcpoGetRatePayDeviceFingerprint()}]">
             <link href="[{$oViewConf->fcpoGetModuleCssPath('lightview.css')}]" rel="stylesheet">
-            <script src="[{$oViewConf->fcpoGetModuleJsPath('jquery-1.10.1.min.js')}]"></script>
+            <script src="[{$oViewConf->fcpoGetModuleJsPath('jquery-3.6.0.min.js')}]"></script>
             <script src="[{$oViewConf->fcpoGetModuleJsPath()}]lightview/lightview.js"></script>
             <script language="JavaScript">
                 var di = { t: '[{$oView->fcpoGetRatePayDeviceFingerprint()}]', v: '[{$oView->fcpoGetRatePayDeviceFingerprintSnippetId()}]', l: 'Checkout'};

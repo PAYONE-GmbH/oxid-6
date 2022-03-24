@@ -535,6 +535,11 @@ The smaller text field is used to name the destination file, or path to an exist
     'FCPO_APPLE_PAY_CREDITCARD'                        => "Allowed credit cards to use with Apple Pay",
     'FCPO_APPLE_PAY_CREATE_SESSION_ERROR'              => "Error while establishing connection to Apple Pay service.",
     'FCPO_APPLE_PAY_CREATE_SESSION_ERROR_CARDS'        => "No valid credit cards type is allowed in the configuration. Apple Pay session cannot be initialized.",
+
+    'FCPO_SHADOW_BASKET'                               => 'Shadow-Basket',
+    'FCPO_POSSIBLE_FRAUD_DETECTED'                     => 'A possible fraud has been detected. Please compare this previously saved basket with order.',
+    'FCPO_GENERAL_SHADOWBASKET_BRUTTO'                 => 'Brutsum of Shadowbasket',
+    'FCPO_GENERAL_SHADOWBASKET_NETTO'                  => 'Netsum of Shadowbasket',
 );
 
 /*

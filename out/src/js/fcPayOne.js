@@ -291,53 +291,6 @@ function getCleanedNumberIBAN(sDirtyNumber) {
     return sCleanedNumber;
 }
 
-function checkKlarna() {
-    resetErrorContainers();
-    var oForm = getPaymentForm();
-
-    if(oForm['dynvalue[fcpo_klv_fon]']) {
-        oForm['dynvalue[fcpo_klv_fon]'].value = oForm['dynvalue[fcpo_klv_fon]'].value.trim();
-        if(oForm['dynvalue[fcpo_klv_fon]'].value == '') {
-            document.getElementById('fcpo_klv_fon_invalid').style.display = 'block';
-            return false;
-        }
-    }
-    if(oForm['dynvalue[fcpo_klv_birthday][month]']) {
-        if(oForm['dynvalue[fcpo_klv_birthday][month]'].value == '' || oForm['dynvalue[fcpo_klv_birthday][day]'].value == '' || oForm['dynvalue[fcpo_klv_birthday][year]'].value == '') {
-            document.getElementById('fcpo_klv_birthday_invalid').style.display = 'block';
-            return false;
-        }
-    }
-    if(oForm['dynvalue[fcpo_klv_addinfo]']) {
-        oForm['dynvalue[fcpo_klv_addinfo]'].value = oForm['dynvalue[fcpo_klv_addinfo]'].value.trim();
-        if(oForm['dynvalue[fcpo_klv_addinfo]'].value == '') {
-            document.getElementById('fcpo_klv_addinfo_invalid').style.display = 'block';
-            return false;
-        }
-    }
-    if(oForm['dynvalue[fcpo_klv_del_addinfo]']) {
-        oForm['dynvalue[fcpo_klv_del_addinfo]'].value = oForm['dynvalue[fcpo_klv_del_addinfo]'].value.trim();
-        if(oForm['dynvalue[fcpo_klv_del_addinfo]'].value == '') {
-            document.getElementById('fcpo_klv_del_addinfo_invalid').style.display = 'block';
-            return false;
-        }
-    }
-    if(oForm['dynvalue[fcpo_klv_personalid]']) {
-        oForm['dynvalue[fcpo_klv_personalid]'].value = oForm['dynvalue[fcpo_klv_personalid]'].value.trim();
-        if(oForm['dynvalue[fcpo_klv_personalid]'].value == '') {
-            document.getElementById('fcpo_klv_personalid_invalid').style.display = 'block';
-            return false;
-        }
-    }
-    if(oForm['dynvalue[fcpo_klv_confirm]']) {
-        if(!oForm['dynvalue[fcpo_klv_confirm]'][1].checked) {
-            document.getElementById('fcpo_klv_confirmation_missing').style.display = 'block';
-            return false;
-        }
-    }
-    return true;
-}
-
 function fcpoGetElvCountry() {
     var oForm = getPaymentForm();
     var sElvCountry = 'DE';
@@ -465,8 +418,6 @@ function fcCheckPaymentSelection() {
             return startCCRequest();
         } else if(sCheckedValue == 'fcpodebitnote') {
             return startELVRequest(true);
-        } else if(sCheckedValue == 'fcpoklarna') {
-            return checkKlarna();
         }
     }
     return true;
@@ -655,10 +606,11 @@ $('#fcpo_klarna_combined_agreed, #klarna_payment_selector').change(
         var payment_id = $('#klarna_payment_selector').children("option:selected").val();
         var oForm = getPaymentForm();
 
-        if ($('#fcpo_klarna_combined_agreed').is(':checked') == false) {
-            $('#klarna_widget_combined_container').empty();
+        var klarna_combined_agreed = $('[id="fcpo_klarna_combined_agreed"]');
+        if (klarna_combined_agreed.length > 0 && klarna_combined_agreed[0].checked == false) {
+            klarna_combined_agreed[0].innerHTML = '';
 
-            if ($('#klarna_combined_js_inject').html() !== '') {
+            if ($('[id="klarna_combined_js_inject"]').length > 0 && $('[id="klarna_combined_js_inject"]')[0].innerHTML !== '') {
                 location.reload();
             }
             return;
@@ -677,8 +629,8 @@ $('#fcpo_klarna_combined_agreed, #klarna_payment_selector').change(
         let payment_category_list = {
             "fcpoklarna_invoice" : "pay_later",
             "fcpoklarna_directdebit" : "direct_debit",
-            "fcpoklarna_installments" : "pay_over_time",
-        }
+            "fcpoklarna_installments" : "pay_over_time"
+        };
 
         var payment_category = payment_category_list[payment_id];
 
@@ -700,12 +652,18 @@ $('#fcpo_klarna_combined_agreed, #klarna_payment_selector').change(
                     paymentid: payment_id,
                     action: "start_session",
                     params: formParams,
-                    birthday: birthday,
+                    birthday: birthday
                 },
                 success: function(Response) {
-                    $('#klarna_widget_combined_container').empty();
+                    var klarnaWidgetCombinedContainer = $('[id="klarna_widget_combined_container"]');
+                    if (klarnaWidgetCombinedContainer.length > 0) {
+                        klarnaWidgetCombinedContainer[0].innerHTML = '';
+                    }
                     $('#klarna_combined_js_inject').empty().html(Response);
-                    $('#payment_klarna_combined').val(payment_id);
+                    var paymentKlarnaCombined = $('[id="payment_klarna_combined"]');
+                    if (paymentKlarnaCombined.length > 0) {
+                        paymentKlarnaCombined[0].value = payment_id;
+                    }
                 },
                 error: function () {
                     location.reload();
@@ -890,81 +848,119 @@ function getAplOrderInfo (placeOrderButtonForm) {
  *
  * @param void
  */
-$('#payolution_installment_check_availability').click(
-    function(){
-        // trigger loading animation and disable button
-        $('#payolution_installment_calculation_selection').html('<div id="payolution_center_animation"><img src="modules/fc/fcpayone/out/img/ajax-loader.gif"</div>');
-        $('#payolution_installment_check_availability').attr('disabled', true);
-        // collect data from form to pass it through to controller
-        var formParams = '{';
-        $('[name^="dynvalue"]').each(
-            function(key, value) {
-                var formType = $(this).attr('type');
-                var rawName = $(this).attr("name");
-
-                var regExp = /\[([^)]+)\]/;
-                var matches = regExp.exec(rawName);
-                if (matches === null) {
-                    return true;
-                }
-
-                var nameInBrackets = matches[1];
-                if (key > 0 && formParams != '{') {
-                    formParams += ', ';
-                }
-
-                if (formType == 'checkbox') {
-                    var inputValue = '';
-                    if ($(this).is(':checked')) {
-                        inputValue = $(this).val();
-                    }
-                }
-                else {
-                    var inputValue = $(this).val();
-                }
-                formParams += '"' + nameInBrackets + '":"' + inputValue + '"';
+var payolutionInstallmentCheckAvailability = $('[id="payolution_installment_check_availability"]');
+if (payolutionInstallmentCheckAvailability.length > 0) {
+    payolutionInstallmentCheckAvailability[0].addEventListener('click',
+        function () {
+            // trigger loading animation and disable button
+            var payolutionInstallmentCalculationSelection = $('[id="payolution_installment_calculation_selection"]');
+            if (payolutionInstallmentCalculationSelection.length > 0) {
+                payolutionInstallmentCalculationSelection[0].innerHTML = '<div id="payolution_center_animation"><img src="modules/fc/fcpayone/out/img/ajax-loader.gif"</div>';
             }
-        );
-        formParams += '}';
+            var payolutionInstallmentCheckAvailability = $('[id="payolution_installment_check_availability"]');
+            if (payolutionInstallmentCheckAvailability.length > 0) {
+                payolutionInstallmentCheckAvailability[0].setAttribute('disabled', true);
+            }
+            // collect data from form to pass it through to controller
+            var formParams = '{';
+            $('[name^="dynvalue"]').each(
+                function (key, value) {
+                    var formType = this.getAttribute('type');
+                    var rawName = this.getAttribute("name");
 
-        $.ajax(
-            {
-                url: payoneAjaxControllerUrl,
-                method: 'POST',
-                type: 'POST',
-                dataType: 'text',
-                data: { paymentid: "fcpopo_installment", action: "precheck", params: formParams },
-                success: function(Response) {
-                    $('#payolution_installment_calculation_selection').html(Response);
-                    $('#payolution_installment_check_availability').attr('disabled', false);
-                    var numberOfInstallments = $('#payolution_no_installments').val();
-                    $('#payolution_sum_number_installments').html(numberOfInstallments);
-                    $('input[name=payolution_installment_selection]').bind(
-                        'change', function() {
+                    var regExp = /\[([^)]+)\]/;
+                    var matches = regExp.exec(rawName);
+                    if (matches === null) {
+                        return true;
+                    }
+
+                    var nameInBrackets = matches[1];
+                    if (key > 0 && formParams != '{') {
+                        formParams += ', ';
+                    }
+
+                    if (formType == 'checkbox') {
+                        var inputValue = '';
+                        if (this.checked) {
+                            inputValue = this.value;
+                        }
+                    }
+                    else {
+                        var inputValue = this.value;
+                    }
+                    formParams += '"' + nameInBrackets + '":"' + inputValue + '"';
+                }
+            );
+            formParams += '}';
+
+            $.ajax(
+                {
+                    url: payoneAjaxControllerUrl,
+                    method: 'POST',
+                    type: 'POST',
+                    dataType: 'text',
+                    data: {paymentid: "fcpopo_installment", action: "precheck", params: formParams},
+                    success: function (Response) {
+                        if ($('[id="payolution_installment_calculation_selection"]').length > 0) {
+                            $('[id="payolution_installment_calculation_selection"]')[0].innerHTML = Response;
+                        }
+
+                        if ($('[id="payolution_installment_check_availability"]').length > 0) {
+                            $('[id="payolution_installment_check_availability"]')[0].removeAttribute('disabled');
+                        }
+
+                        var numberOfInstallments = 0;
+                        if ($('[id="payolution_no_installments"]').length > 0) {
+                            numberOfInstallments = $('[id="payolution_no_installments"]')[0].value
+                        }
+                        if ($('[id="payolution_sum_number_installments"]').length > 0) {
+                            $('[id="payolution_sum_number_installments"]')[0].innerHTML = numberOfInstallments;
+                        }
+                        $('input[name=payolution_installment_selection]').bind('change', function () {
                             // selected interest data will be set into summary box
                             var selectedInstallmentIndex = $('input[name=payolution_installment_selection]:checked').val();
                             // disable all installment details and enable selected
-                            for (i=1;i<=numberOfInstallments;i++) {
-                                $('#payolution_rates_details_'+i).removeClass('payolution_rates_visible');
-                                $('#payolution_rates_details_'+i).addClass('payolution_rates_invisible');
+                            for (i = 1; i <= numberOfInstallments; i++) {
+                                var element = $('[id="payolution_rates_details_' + i + '"]');
+                                if (element.length > 0) {
+                                    element[0].classList.remove('payolution_rates_visible');
+                                    element[0].classList.add('payolution_rates_invisible');
+                                }
                             }
-                            $('#payolution_rates_details_'+selectedInstallmentIndex).addClass('payolution_rates_visible');
-                            $('#payolution_rates_details_'+selectedInstallmentIndex).removeClass('payolution_rates_invisible');
+                            element = $('[id="payolution_rates_details_' + selectedInstallmentIndex + '"]');
+                            if (element.length > 0) {
+                                element[0].classList.add('payolution_rates_visible');
+                                element[0].classList.remove('payolution_rates_invisible');
+                            }
                             // set needed values to foreseen fields
-                            $('#payolution_sum_number_installments').html(numberOfInstallments);
-                            $('#payolution_financing_sum').html($('#payolution_installment_total_amount_' + selectedInstallmentIndex).val());
-                            $('#payolution_sum_interest_rate').html($('#payolution_installment_interest_rate_' + selectedInstallmentIndex).val());
-                            $('#payolution_sum_eff_interest_rate').html($('#payolution_installment_eff_interest_rate_' + selectedInstallmentIndex).val());
-                            $('#payolution_sum_monthly_rate').html($('#payolution_installment_value_' + selectedInstallmentIndex).val());
-                            $('#payolution_sum_number_installments').html($('#payolution_installment_duration_' + selectedInstallmentIndex).val());
-                            $('#payolution_selected_installment_index').val(selectedInstallmentIndex);
-                        }
-                    );
+                            if ($('[id="payolution_sum_number_installments"]').length > 0) {
+                                $('[id="payolution_sum_number_installments"]')[0].innerHTML = numberOfInstallments;
+                            }
+                            if ($('[id="payolution_financing_sum"]').length > 0 && $('[id="payolution_installment_total_amount_' + selectedInstallmentIndex + '"]').length > 0) {
+                                $('[id="payolution_financing_sum"]')[0].innerHTML = $('[id="payolution_installment_total_amount_' + selectedInstallmentIndex + '"]')[0].value;
+                            }
+                            if ($('[id="payolution_sum_interest_rate"]').length > 0 && $('[id="payolution_installment_interest_rate_' + selectedInstallmentIndex + '"]').length > 0) {
+                                $('[id="payolution_sum_interest_rate"]')[0].innerHTML = $('[id="payolution_installment_interest_rate_' + selectedInstallmentIndex + '"]')[0].value;
+                            }
+                            if ($('[id="payolution_sum_eff_interest_rate"]').length > 0 && $('[id="payolution_installment_eff_interest_rate_' + selectedInstallmentIndex + '"]').length > 0) {
+                                $('[id="payolution_sum_eff_interest_rate"]')[0].innerHTML = $('[id="payolution_installment_eff_interest_rate_' + selectedInstallmentIndex + '"]')[0].value;
+                            }
+                            if ($('[id="payolution_sum_monthly_rate"]').length > 0 && $('[id="payolution_installment_value_' + selectedInstallmentIndex + '"]').length > 0) {
+                                $('[id="payolution_sum_monthly_rate"]')[0].innerHTML = $('[id="payolution_installment_value_' + selectedInstallmentIndex + '"]')[0].value;
+                            }
+                            if ($('[id="payolution_sum_number_installments"]').length > 0 && $('[id="payolution_installment_duration_' + selectedInstallmentIndex + '"]').length > 0) {
+                                $('[id="payolution_sum_number_installments"]')[0].innerHTML = $('[id="payolution_installment_duration_' + selectedInstallmentIndex + '"]')[0].value;
+                            }
+                            if ($('[id="payolution_selected_installment_index"]').length > 0) {
+                                $('[id="payolution_selected_installment_index"]')[0].value = selectedInstallmentIndex;
+                            }
+                        });
+                    }
                 }
-            }
-        );
-    }
-);
+            );
+        }
+    );
+}
 
 /**
  * Reaction on changes on radio interest selection
@@ -1129,9 +1125,9 @@ function processPayoneResponseCCHosted(response) {
  * already displayed error will get hidden before recheck
  */
 function hideCCHostedErrorsAtSubmit() {
-    $('#errorCardType').hide();
-    $('#errorCVC').hide();
-    $('#errorIncomplete').hide();
+    $('[id="errorCardType"]').hide();
+    $('[id="errorCVC"]').hide();
+    $('[id="errorIncomplete"]').hide();
 }
 
 /**
@@ -1145,7 +1141,7 @@ function validateCardTypeCCHosted(e) {
     var oForm = getPaymentForm();
 
     if(paymentId == 'fcpocreditcard' && oForm.fcpo_cc_type.value == 'hosted' && cardType == 'none') {
-        $('#errorCardType').show();
+        $('[id="errorCardType"]').show();
 
         e.preventDefault();
     }
@@ -1171,9 +1167,9 @@ function validateInputCCHosted(e) {
         }
         if($validateResult == 0) {
             e.preventDefault();
-            $('#errorIncomplete').show();
+            $('[id="errorIncomplete"]').show();
         } else if($validateResult == 2) {
-            $('#errorCVC').show();
+            $('[id="errorCVC"]').show();
             e.preventDefault();
         } else {
             // halt here if response returns valid but data is not valid (expiry date e.g.)
@@ -1190,14 +1186,14 @@ function validateInputCCHosted(e) {
  */
 function resetCardTypeCCHosted() {
     var cardTypeOptionEl = $('#cardtype option[data-cardtype="none"]');
-    var cardTypeEl = $('#cardtype');
+    var cardTypeEl = $('[id="cardtype"]');
 
-    if(cardTypeOptionEl) {
-        cardTypeOptionEl.attr('selected', true);
+    if(cardTypeOptionEl.length > 0) {
+        cardTypeOptionEl[0].setAttribute('selected', true);
     }
 
-    if(cardTypeOptionEl && cardTypeEl && (typeof cardTypeEl.selectpicker === "function")) {
-        cardTypeEl.selectpicker('refresh');
+    if(cardTypeOptionEl && cardTypeEl.length>0 && (typeof cardTypeEl[0].selectpicker === "function")) {
+        cardTypeEl[0].selectpicker('refresh');
     }
 }
 
@@ -1205,29 +1201,42 @@ function resetCardTypeCCHosted() {
  * handles form submission if method is credit card hosted iframe
  */
 $(document).ready(function() {
-    var paymentForm = $('#payment');
+    var paymentForm = $('[id="payment"]');
 
     resetCardTypeCCHosted();
 
-    //check cvc, check if cardtype is selected, progress request, output errors
-    paymentForm.on('submit', function(e) {
-        var klarna_auth_done = $('#fcpo_klarna_auth_done').val();
-        var klarna_paymentid = $('#payment_klarna_combined').val();
-        var klarna_combined_checked = $('#payment_klarna_combined').is(':checked');
+    if (paymentForm.length > 0) {
+        //check cvc, check if cardtype is selected, progress request, output errors
+        paymentForm[0].addEventListener('submit', function(e) {
+            var klarna_auth_done = '';
+            if ($('[id="fcpo_klarna_auth_done"]').length > 0) {
+                klarna_auth_done = $('[id="fcpo_klarna_auth_done"]')[0].value;
+            }
 
-        hideCCHostedErrorsAtSubmit();
-        validateCardTypeCCHosted(e);
-        validateInputCCHosted(e);
-        if (klarna_combined_checked && klarna_paymentid) {
-            if (klarna_auth_done === 'false') {
-                e.preventDefault();
-                if ($('#fcpo_klarna_combined_agreed').is(':checked') == true) {
-                    // defined in snippets/fcpoKlarnaWidget.txt
-                    klarnaAuthorize(e);
+            var klarna_combined = $('[id="payment_klarna_combined"]');
+            var klarna_paymentid = false;
+            var klarna_combined_checked = false;
+            if (klarna_combined.length > 0) {
+                klarna_paymentid = klarna_combined[0].value;
+                klarna_combined_checked = klarna_combined[0].checked;
+            }
+
+            hideCCHostedErrorsAtSubmit();
+            validateCardTypeCCHosted(e);
+            validateInputCCHosted(e);
+            if (klarna_combined_checked && klarna_paymentid) {
+                if (klarna_auth_done === 'false') {
+                    e.preventDefault();
+
+                    var klarna_combined_agreed = $('[id="fcpo_klarna_combined_agreed"]');
+                    if (klarna_combined_agreed.length > 0 && klarna_combined_agreed[0].checked == true) {
+                        // defined in snippets/fcpoKlarnaWidget.txt
+                        klarnaAuthorize(e);
+                    }
                 }
             }
-        }
-    });
+        });
+    }
 
     $('#cardtype').on('change', function(e) {
         iframes.setCardType(this.value);

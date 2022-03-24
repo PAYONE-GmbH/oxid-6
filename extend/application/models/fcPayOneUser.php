@@ -336,6 +336,7 @@ class fcPayOneUser extends fcPayOneUser_parent
         $oUser->oxuser__oxfname = new oxField($aResponse['add_paydata[billing_firstname]']);
         $oUser->oxuser__oxlname = new oxField($aResponse['add_paydata[billing_lastname]']);
         $oUser->oxuser__oxcity = new oxField($aResponse['add_paydata[billing_city]']);
+        $oUser->oxuser__oxcompany = new oxField($aResponse['add_paydata[billing_company]']);
         $oUser->oxuser__oxcountryid = new oxField($sCountryId);
         $oUser->addToGroup('oxidnotyetordered');
 
@@ -343,6 +344,9 @@ class fcPayOneUser extends fcPayOneUser_parent
 
         // add and set deliveryaddress
         $this->_fcpoAddDeliveryAddress($aResponse, $sUserOxid);
+
+        // handle the multi purpose address field
+        $this->_fcpoHandleAmazonPayMultiPurposeField($aResponse);
 
         return $sUserOxid;
     }
@@ -372,6 +376,7 @@ class fcPayOneUser extends fcPayOneUser_parent
         $oUser->oxuser__oxfname = new oxField(trim($aResponse['add_paydata[billing_firstname]']));
         $oUser->oxuser__oxlname = new oxField(trim($aResponse['add_paydata[billing_lastname]']));
         $oUser->oxuser__oxcity = new oxField($aResponse['add_paydata[billing_city]']);
+        $oUser->oxuser__oxcompany = new oxField($aResponse['add_paydata[billing_company]']);
         $oUser->oxuser__oxcountryid = new oxField($sCountryId);
         $oUser->addToGroup('oxidnotyetordered');
 
@@ -380,7 +385,43 @@ class fcPayOneUser extends fcPayOneUser_parent
         // add and set deliveryaddress
         $this->_fcpoAddDeliveryAddress($aResponse, $sUserOxid);
 
+        // handle the multi purpose address field
+        $this->_fcpoHandleAmazonPayMultiPurposeField($aResponse);
+
         return $sUserOxid;
+    }
+
+    /**
+     * Method handles the multi purpose Address line 1 field from AmazonPay.
+     * Depending on the transmitted fields, and the values, the user fields are updated accordingly.
+     *
+     * @param $aResponse
+     * @return void
+     */
+    public function _fcpoHandleAmazonPayMultiPurposeField($aResponse)
+    {
+        $oDelAddr = $oAddress = $this->_oFcpoHelper->getFactoryObject('oxaddress');
+        $sDelAddrId = $this->_oFcpoHelper->fcpoGetSessionVariable('deladrid');
+        if (!empty($sDelAddrId)) {
+            $oDelAddr->load($sDelAddrId);
+
+            if (isset($aResponse['add_paydata[shipping_pobox]'])) {
+                $oDelAddr->oxaddress__oxaddinfo = new oxField($aResponse['add_paydata[shipping_pobox]']);
+            }
+
+            if (isset($aResponse['add_paydata[shipping_company]'])) {
+                $sCompany = $aResponse['add_paydata[shipping_company]'];
+                if (preg_match('/.*c\/o.*/i', $sCompany)) {
+                    $oDelAddr->oxaddress__oxaddinfo = new oxField($sCompany);
+                } elseif (preg_match('/.*[0-9]+.*/', $sCompany)) {
+                    $oDelAddr->oxaddress__oxaddinfo = new oxField($sCompany);
+                } else {
+                    $oDelAddr->oxaddress__oxcompany = new oxField($sCompany);
+                }
+            }
+
+            $oDelAddr->save();
+        }
     }
 
     /**
@@ -418,6 +459,7 @@ class fcPayOneUser extends fcPayOneUser_parent
         $oAddress->oxaddress__oxcountryid = new oxField($sCountryId);
         $oAddress->oxaddress__oxzip = new oxField($aResponse['add_paydata[shipping_zip]']);
         $oAddress->oxaddress__oxaddinfo = new oxField($aResponse['add_paydata[shipping_addressaddition]']);
+        $oAddress->oxaddress__oxcompany = new oxField($aResponse['add_paydata[shipping_company]']);
 
         // check if address exists
         $sEncodedDeliveryAddress = $oAddress->getEncodedDeliveryAddress();

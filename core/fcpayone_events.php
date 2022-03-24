@@ -223,6 +223,17 @@ class fcpayone_events
           PRIMARY KEY (fcpo_address_hash)
         ) ENGINE=INNODB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;";
 
+    public static $sQueryTableFcpoShadowBasket = "
+        CREATE TABLE IF NOT EXISTS `fcposhadowbasket` (
+          `FCPOSESSIONID` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL DEFAULT '',
+          `OXORDERID` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci DEFAULT '',
+          `FCPOBASKET` text NOT NULL,
+          `FCPOCREATED` datetime NOT NULL,
+          `FCPOCHECKED` datetime DEFAULT NULL,
+          PRIMARY KEY (`FCPOSESSIONID`),
+          KEY `OXORDERID` (`OXORDERID`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+
     public static $sQueryTableRatePay = "
         CREATE TABLE `fcporatepay` (
           `OXID` char(32) COLLATE latin1_general_ci NOT NULL,
@@ -402,7 +413,7 @@ class fcpayone_events
         'fcpopo_debitnote' => 'PAYONE Unzer Lastschrift',
         'fcpopo_installment' => 'PAYONE Unzer Ratenkauf',
         'fcporp_bill' => 'PAYONE Ratepay Rechnungskauf',
-	    'fcpoamazonpay' => 'PAYONE Amazon Pay',
+        'fcpoamazonpay' => 'PAYONE Amazon Pay',
         'fcpo_secinvoice' => 'PAYONE Gesicherter Rechnungskauf',
         'fcpopaydirekt_express' => 'PAYONE paydirekt Express',
         'fcpo_sofort' => 'PAYONE Sofort Überweisung',
@@ -555,6 +566,7 @@ class fcpayone_events
         self::addTableIfNotExists('fcpotransactionstatus', self::$sQueryTableFcpotransactionstatus);
         self::addTableIfNotExists('fcpopayment2country', self::$sQueryTableFcpopayment2country);
         self::addTableIfNotExists('fcpocheckedaddresses', self::$sQueryTableFcpocheckedaddresses);
+        self::addTableIfNotExists('fcposhadowbasket', self::$sQueryTableFcpoShadowBasket);
         self::addTableIfNotExists('fcpostatusforwarding', self::$sQueryTableFcpoStatusForwarding);
         self::addTableIfNotExists('fcpostatusmapping', self::$sQueryTableFcpoStatusMapping);
         self::addTableIfNotExists('fcpoerrormapping', self::$sQueryTableFcpoErrorMapping);

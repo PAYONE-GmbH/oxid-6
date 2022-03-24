@@ -2,7 +2,7 @@
     [{$oView->fcpoGetBarzahlenHtml()}]
 [{else}]
     [{$smarty.block.parent}]
-    [{if $oView->fcpoIsAppointedError()}]
+    [{if $oView->fcpoOrderHasProblems()}]
         <br><br>
         [{oxmultilang ident="FCPO_THANKYOU_APPOINTED_ERROR"}]
     [{/if}]

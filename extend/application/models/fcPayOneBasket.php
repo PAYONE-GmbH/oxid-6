@@ -110,12 +110,16 @@ class fcPayOneBasket extends fcPayOneBasket_parent
         }
         $oUser = oxNew('oxUser');
         $oUser->oxuser__oxcountryid = new oxField('a7c40f631fc920687.20179984');
+        $sDelCountry = $this->_findDelivCountry();
+        if (!$sDelCountry) {
+            $sDelCountry = $oUser->oxuser__oxcountryid->value;
+        }
         $fDelVATPercent = $this->getAdditionalServicesVatPercent();
         $oDeliveryPrice->setVat($fDelVATPercent);
         $aDeliveryList = oxRegistry::get("oxDeliveryList")->getDeliveryList(
             $this,
             $oUser,
-            $this->_findDelivCountry(),
+            $sDelCountry,
             $this->getShippingId()
         );
         if (count($aDeliveryList) > 0) {

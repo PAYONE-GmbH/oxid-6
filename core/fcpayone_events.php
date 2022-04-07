@@ -398,7 +398,7 @@ class fcpayone_events
 
     public static $aPaymentMethods = array(
         'fcpoinvoice' => 'PAYONE Rechnungskauf',
-        'fcpopayadvance' => 'PAYONE Vorauskasse',
+        'fcpopayadvance' => 'PAYONE Vorkasse',
         'fcpodebitnote' => 'PAYONE Lastschrift',
         'fcpocashondel' => 'PAYONE Nachnahme',
         'fcpocreditcard' => 'PAYONE Kreditkarte',

@@ -2,7 +2,7 @@
     [{assign var='checkedPaymentId' value=$oView->getCheckedPaymentId()}]
     <dt>
         <input id="payment_klarna_combined" type="radio" name="paymentid" value="[{$sPaymentID}]" [{if $oView->fcpoIsKlarnaCombined($checkedPaymentId)}]checked[{/if}]>
-        <label for="payment_klarna_combined"><b>Klarna</b></label>
+        <label for="payment_klarna_combined"><b>[{oxmultilang ident="FCPO_KLARNA"}]</b></label>
     </dt>
     <div class="hidden">
         <input type="hidden" id="fcpo_klarna_auth_token" name="dynvalue[klarna_authorization_token]">

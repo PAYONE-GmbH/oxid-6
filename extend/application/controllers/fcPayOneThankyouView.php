@@ -145,6 +145,7 @@ class fcPayOneThankyouView extends fcPayOneThankyouView_parent
      */
     public function render() 
     {
+        $this->_oFcpoHelper->debugGlobalVariables('(' . __CLASS__ . '::' . __FUNCTION__ . ')');
         $oUser = $this->getUser();
         if($oUser) {
             $this->_oFcpoHelper->fcpoSetSessionVariable('sFcpoUserId', $oUser->getId());
@@ -166,6 +167,7 @@ class fcPayOneThankyouView extends fcPayOneThankyouView_parent
      */
     protected function _fcpoDeleteSessionVariablesOnOrderFinish()
     {
+        $this->_oFcpoHelper->debugLog('Delete session variables on order finish', '(' . __CLASS__ . '::' . __FUNCTION__ . ')');
         $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoRefNr');
         $this->_oFcpoHelper->fcpoDeleteSessionVariable('klarna_authorization_token');
         $this->_oFcpoHelper->fcpoDeleteSessionVariable('klarna_client_token');

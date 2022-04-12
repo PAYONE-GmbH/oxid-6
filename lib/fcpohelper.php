@@ -21,6 +21,11 @@
 class fcpohelper extends oxBase
 {
 
+    /** @var bool Log or not the various steps of payment checkout */
+    protected static $_blDebugLogEntries = true;
+    /** @var bool Log or not the php GLOBALs (SERVER, SESSION, GET, POST, FcpoSession) when call a controller */
+    protected static $_blDebugLogGlobals = true;
+
     /**
      * Flags if shop uses registry
      *
@@ -620,6 +625,37 @@ class fcpohelper extends oxBase
             }
         }
         return self::$_blUseRegistry;
+    }
+
+    /**
+     * @param string $message
+     * @param string $location
+     */
+    public function debugLog($message, $location = '')
+    {
+        if (self::$_blDebugLogEntries) {
+            $oLogger = oxNew('fcpodebuglogger');
+            $oLogger->writeEntry($message, $location);
+        }
+    }
+
+    /**
+     * @param string $location
+     */
+    public function debugGlobalVariables($location = '')
+    {
+        if (self::$_blDebugLogGlobals) {
+            $oLogger = oxNew('fcpodebuglogger');
+            $aVariables = [
+                'REQUEST' => $_REQUEST,
+                'SESSION' => $_SESSION,
+                'GET' => $_GET,
+                'POST' => $_POST,
+                'FCPOSession' => $this->fcpoGetSession()
+            ];
+
+            $oLogger->writeEntry(var_export($aVariables, true), $location);
+        }
     }
 
 }

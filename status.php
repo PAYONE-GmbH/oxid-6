@@ -343,6 +343,8 @@ class fcPayOneTransactionStatusHandler extends fcPayOneTransactionStatusBase
     public function handle() 
     {
         try {
+            $oFcpoHelper = oxNew('fcpohelper');
+            $oFcpoHelper->debugLog('Handling txstatus for order (' . $this->fcGetPostParam('reference') . ') : ' . $this->fcGetPostParam('txaction'), '(' . __CLASS__ . '::' . __FUNCTION__ . ')');
             $this->_isKeyValid();
             $sStatusmessageId = $this->log();
             $this->_allowDebit();

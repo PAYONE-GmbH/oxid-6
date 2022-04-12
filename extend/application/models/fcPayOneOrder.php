@@ -471,12 +471,15 @@ class fcPayOneOrder extends fcPayOneOrder_parent
 
         // copies user info
         $this->_setUser($oUser);
+        $this->_oFcpoHelper->debugLog('Finalize order : copy user info', '(' . __CLASS__ . '::' . __FUNCTION__ . ')');
 
         // copies basket info if no basket injection or presave order is inactive
         $this->_fcpoHandleBasket($blSaveAfterRedirect, $oBasket);
+        $this->_oFcpoHelper->debugLog('Finalize order : handle basket', '(' . __CLASS__ . '::' . __FUNCTION__ . ')');
 
         // payment information
         $oUserPayment = $this->_setPayment($oBasket->getPaymentId());
+        $this->_oFcpoHelper->debugLog('Finalize order : set payment info', '(' . __CLASS__ . '::' . __FUNCTION__ . ')');
 
         // set folder information, if order is new
         // #M575 in recalcualting order case folder must be the same as it was
@@ -485,12 +488,14 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         }
 
         $mRet = $this->_fcpoExecutePayment($blSaveAfterRedirect, $oBasket, $oUserPayment, $blRecalculatingOrder);
+        $this->_oFcpoHelper->debugLog('Finalize order : execute payment : ' . $mRet, '(' . __CLASS__ . '::' . __FUNCTION__ . ')');
         if ($mRet !== null) {
             return $mRet;
         }
 
         //saving all order data to DB
         $this->_blFinishingSave = true;
+        $this->_oFcpoHelper->debugLog('Finalize order : saving order to DB', '(' . __CLASS__ . '::' . __FUNCTION__ . ')');
         $this->save();
 
         $this->_fcpoSaveAfterRedirect($blSaveAfterRedirect);
@@ -505,6 +510,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         }
 
         $this->_fcpoSetOrderStatus();
+        $this->_oFcpoHelper->debugLog('Finalize order : set order status', '(' . __CLASS__ . '::' . __FUNCTION__ . ')');
 
         // store orderid
         $oBasket->setOrderId($this->getId());
@@ -521,10 +527,12 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         $this->_fcpoMarkVouchers($blRecalculatingOrder, $oUser, $oBasket);
 
         if (!$this->oxorder__oxordernr->value) {
+            $this->_oFcpoHelper->debugLog('Finalize order : assign missing order nr', '(' . __CLASS__ . '::' . __FUNCTION__ . ')');
             $this->_setNumber();
         } else {
             oxNew(\OxidEsales\Eshop\Core\Counter::class)->update($this->_getCounterIdent(), $this->oxorder__oxordernr->value);
         }
+        $this->_oFcpoHelper->debugLog('Finalize order : order nr = ' . $this->oxorder__oxordernr->value, '(' . __CLASS__ . '::' . __FUNCTION__ . ')');
 
         $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoordernotchecked');
         $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoWorkorderId');
@@ -532,6 +540,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         // send order by email to shop owner and current user
         // skipping this action in case of order recalculation
         $iRet = $this->_fcpoFinishOrder($blRecalculatingOrder, $oUser, $oBasket, $oUserPayment);
+        $this->_oFcpoHelper->debugLog('Finalize order : finish order result : ' . $iRet, '(' . __CLASS__ . '::' . __FUNCTION__ . ')');
 
         // OXID-233 : handle amazon different login
         $this->_fcpoAdjustAmazonPayUserDetails($oUserPayment);
@@ -593,6 +602,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
     {
         if ($blSaveAfterRedirect === true) {
             $sRefNrCheckResult = $this->_fcpoCheckRefNr();
+            $this->_oFcpoHelper->debugLog('Ref nr check result (empty = ok) : ' . $sRefNrCheckResult, '(' . __CLASS__ . '::' . __FUNCTION__ . ')');
             $sTxid = $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoTxid');
 
             if ($sRefNrCheckResult != '') {
@@ -751,6 +761,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
             $oUtils = $this->_oFcpoHelper->fcpoGetUtils();
             $oUtils->logger('BLOCKER');
             // we might use this later, this means that somebody klicked like mad on order button
+            $this->_oFcpoHelper->debugLog('Order validation failed : order already exists', '(' . __CLASS__ . '::' . __FUNCTION__ . ')');
             return self::ORDER_STATE_ORDEREXISTS;
         }
 
@@ -766,6 +777,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
 
             // validating various order/basket parameters before finalizing
             if (($iOrderState = $this->validateOrder($oBasket, $oUser))) {
+                $this->_oFcpoHelper->debugLog('Order validation failed : misc. order/basket parameters', '(' . __CLASS__ . '::' . __FUNCTION__ . ')');
                 return $iOrderState;
             }
         }
@@ -783,6 +795,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         $oShadowBasket = $this->fcpoGetShadowBasket();
         $blIsValid = $this->_fcpoCompareBaskets($oBasket, $oShadowBasket);
         if ($blIsValid === false) {
+            $this->_oFcpoHelper->debugLog('Order validation failed : non-matching shadow basket', '(' . __CLASS__ . '::' . __FUNCTION__ . ')');
             $this->_fcpoMarkOrderAsProblematic();
             $this->_fcpoAddShadowBasketCheckDate();
         } else {
@@ -959,6 +972,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
     protected function _fcpoSaveAfterRedirect($blSaveAfterRedirect) 
     {
         if ($blSaveAfterRedirect === true) {
+            $this->_oFcpoHelper->debugLog('Finalize order : save after redirect order nr', '(' . __CLASS__ . '::' . __FUNCTION__ . ')');
             $sQuery = "UPDATE fcpotransactionstatus SET fcpo_ordernr = '{$this->oxorder__oxordernr->value}' WHERE fcpo_txid = '" . $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoTxid') . "'";
             $this->_oFcpoDb->Execute($sQuery);
         }
@@ -1087,6 +1101,10 @@ class fcPayOneOrder extends fcPayOneOrder_parent
             $this->oxorder__oxremark = new oxField($sNewRemark, oxField::T_RAW);
         }
         $this->_fcpoSetAppointedError($blAppointedError);
+
+        if ($blAppointedError) {
+            $this->_oFcpoHelper->debugLog('Order moved to error folder : Txid check failed', '(' . __CLASS__ . '::' . __FUNCTION__ . ')');
+        }
 
         return $blAppointedError;
     }
@@ -1521,6 +1539,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         ) ? false : true;
 
         if ($blCheckProduct) {
+            $this->_oFcpoHelper->debugLog('Finalize order : check stocks', '(' . __CLASS__ . '::' . __FUNCTION__ . ')');
             parent::validateStock($oBasket);
         }
 
@@ -1643,6 +1662,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      */
     public function fcHandleAuthorization($blReturnRedirectUrl = false, $oPayGateway = null) 
     {
+        $this->_oFcpoHelper->debugLog('Finalize order : handle authorization', '(' . __CLASS__ . '::' . __FUNCTION__ . ')');
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $aDynvalueForm = $this->_oFcpoHelper->fcpoGetRequestParameter('dynvalue');
         if ($this->oxorder__oxpaymenttype->value === 'fcpoklarna_directdebit' && $this->_oFcpoHelper->fcpoGetSessionVariable('klarna_authorization_token') === '' ) {
@@ -1813,6 +1833,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      */
     protected function _fcpoHandleAuthorizationRedirect($aResponse, $sRefNr, $sAuthorizationType, $sMode, $blReturnRedirectUrl) 
     {
+        $this->_oFcpoHelper->debugLog('Finalize order : handle redirect authorization', '(' . __CLASS__ . '::' . __FUNCTION__ . ')');
         $this->_fcpoFlagOrderPaymentAsRedirect();
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $oUtils = $this->_oFcpoHelper->fcpoGetUtils();

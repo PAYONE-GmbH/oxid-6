@@ -955,10 +955,13 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      */
     public function validatePayment() 
     {
+        $this->_oFcpoHelper->debugGlobalVariables('(' . __CLASS__ . '::' . __FUNCTION__ . ')');
         $sPaymentId = $this->_fcpoGetPaymentId();
+        $this->_oFcpoHelper->debugLog('Payment chosen : ' . $sPaymentId, '(' . __CLASS__ . '::' . __FUNCTION__ . ')');
         $this->_fcpoCheckKlarnaUpdateUser($sPaymentId);
 
         $mReturn = parent::validatePayment();
+        $this->_oFcpoHelper->debugLog('Payment validation result : ' . $mReturn, '(' . __CLASS__ . '::' . __FUNCTION__ . ')');
 
         $mReturn = $this->_processParentReturnValue($mReturn);
         $mReturn = $this->_fcpoProcessValidation($mReturn, $sPaymentId);
@@ -1453,6 +1456,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         }
 
         if ($blUserChanged === true) {
+            $this->_oFcpoHelper->debugLog('Klarna User updated : ' . $oUser->oxuser__oxid, '(' . __CLASS__ . '::' . __FUNCTION__ . ')');
             $oUser->save();
         }
     }
@@ -1521,24 +1525,33 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
             $oPayment = $this->_oFcpoHelper->getFactoryObject('oxpayment');
             $oPayment->load($sPaymentId);
             $mReturn = $this->_fcpoSecInvoiceSaveRequestedValues($mReturn, $sPaymentId);
+            $this->_oFcpoHelper->debugLog('Secinvoice validation result : ' . $mReturn, '(' . __CLASS__ . '::' . __FUNCTION__ . ')');
             $blContinue = $this->_fcpoCheckBoniMoment($oPayment);
 
             if ($blContinue !== true) {
                 $this->_fcpoSetBoniErrorValues($sPaymentId);
+                $this->_oFcpoHelper->debugLog('Boni validation failed', '(' . __CLASS__ . '::' . __FUNCTION__ . ')');
                 $mReturn = 'basket';
             } else {
                 $this->_fcpoSetMandateParams($oPayment);
+                $this->_oFcpoHelper->debugLog('Boni validated', '(' . __CLASS__ . '::' . __FUNCTION__ . ')');
             }
 
             $this->_fcCleanupSessionFragments($oPayment);
+            $this->_oFcpoHelper->debugLog('Session variables cleaned', '(' . __CLASS__ . '::' . __FUNCTION__ . ')');
 
             $mReturn = $this->_fcpoKlarnaCombinedValidate($mReturn, $sPaymentId);
+            $this->_oFcpoHelper->debugLog('Klarna validation result : ' . $mReturn, '(' . __CLASS__ . '::' . __FUNCTION__ . ')');
 
             $mReturn = $this->_fcpoPayolutionPreCheck($mReturn, $sPaymentId);
+            $this->_oFcpoHelper->debugLog('Unzer validation result : ' . $mReturn, '(' . __CLASS__ . '::' . __FUNCTION__ . ')');
+
             if (in_array($sPaymentId, array('fcporp_bill', 'fcporp_debitnote'))) {
                 $mReturn = $this->_fcpoCheckRatePayBillMandatoryUserData($mReturn, $sPaymentId);
+                $this->_oFcpoHelper->debugLog('Ratepay validation result : ' . $mReturn, '(' . __CLASS__ . '::' . __FUNCTION__ . ')');
             }
             $mReturn = $this->_fcpoAdultCheck($mReturn, $sPaymentId);
+            $this->_oFcpoHelper->debugLog('Adult check validation result : ' . $mReturn, '(' . __CLASS__ . '::' . __FUNCTION__ . ')');
         }
 
         return $mReturn;

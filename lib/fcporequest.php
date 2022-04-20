@@ -1508,7 +1508,7 @@ class fcpoRequest extends oxSuperCfg
             $dReturnPrice = $dBruttoPrice * $dFactor;
         }
 
-        return (int)$dReturnPrice;
+        return number_format($dReturnPrice, 0, '', '');
     }
 
     protected function _fcpoAddAmazonPayParameters($oOrder) {

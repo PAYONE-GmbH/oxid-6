@@ -1508,14 +1508,17 @@ class fcpoRequest extends oxSuperCfg
             $dReturnPrice = $dBruttoPrice * $dFactor;
         }
 
-        return $this->_fcpoCutDecimalPoints($dReturnPrice);
+        return $this->_fcpoCutDecimalPlaces($dReturnPrice);
     }
 
     /**
+     * Remove all decimal places
+     * Typecast to int was used before, but that returned wrong results in some cases
+     *
      * @param float $dValue
      * @return int
      */
-    protected function _fcpoCutDecimalPoints($dValue)
+    protected function _fcpoCutDecimalPlaces($dValue)
     {
         if (strpos($dValue, '.') !== false) {
             $aExplode = explode(".", $dValue);

@@ -135,6 +135,7 @@ class fcpoRequest extends oxSuperCfg
     protected $_aRatePayPayments = array(
         'fcporp_bill',
         'fcporp_debitnote',
+        'fcporp_installment',
     );
 
     /**
@@ -566,6 +567,7 @@ class fcpoRequest extends oxSuperCfg
                 break;
             case 'fcporp_bill':
             case 'fcporp_debitnote':
+            case 'fcporp_installment':
                 $blAddRedirectUrls = $this->_fcpoAddRatePayParameters($oOrder, $aDynvalue);
                 break;
             case 'fcpoamazonpay':
@@ -1326,6 +1328,15 @@ class fcpoRequest extends oxSuperCfg
             $this->addParameter('iban', $aDynvalue['fcpo_ratepay_debitnote_iban']);
             $this->addParameter('bic', $aDynvalue['fcpo_ratepay_debitnote_bic']);
         }
+        if ($sPaymentId == 'fcporp_installment') {
+            $this->addParameter('iban', $aDynvalue['fcpo_ratepay_installment_iban']);
+            $this->addParameter('bic', $aDynvalue['fcpo_ratepay_installment_bic']);
+        }
+
+        $sWorkorderId = $this->_oFcpoHelper->fcpoGetSessionVariable('ratepay_workorderid');
+        if ($sWorkorderId !== null) {
+            $this->addParameter('workorderid', $sWorkorderId);
+        }
 
         $this->_fcpoAddBasketItemsFromSession();
 
@@ -1865,6 +1876,7 @@ class fcpoRequest extends oxSuperCfg
             'fcpopo_installment' => 'PYS',
             'fcporp_bill' => 'RPV',
             'fcporp_debitnote' => 'RPD',
+            'fcporp_installment' => 'RPS',
         );
 
         $blPaymentIdMatch = isset($aMap[$sPaymentId]);
@@ -1929,6 +1941,40 @@ class fcpoRequest extends oxSuperCfg
         $this->addParameter('add_paydata[action]', 'profile');
         $this->addParameter('add_paydata[shop_id]', $aRatePayData['shopid']);
         $this->addParameter('currency', $aRatePayData['currency']);
+
+        return $this->send();
+    }
+
+    public function sendRequestRatepayCalculation($sCalculationType, $aRatePayData)
+    {
+        $sPaymentId = $aRatePayData['OXPAYMENTID'];
+        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+        $oSession = $this->_oFcpoHelper->fcpoGetSession();
+
+        $oBasket = $oSession->getBasket();
+        $oPrice = $oBasket->getPrice();
+        $iAmount = number_format($oPrice->getBruttoPrice(), 2, '.', '') * 100; //Total order sum in smallest currency unit
+        $sFinancingType = $this->_fcpoGetFinancingTypeByPaymentId($sPaymentId);
+
+        $this->addParameter('request', 'genericpayment'); //Request method
+        $this->addParameter('mode', $this->getOperationMode($sPaymentId)); //PayOne Portal Operation Mode (live or test)
+        $this->addParameter('aid', $oConfig->getConfigParam('sFCPOSubAccountID')); //ID of PayOne Sub-Account
+
+        $this->addParameter('clearingtype', 'fnc');
+        $this->addParameter('financingtype', $sFinancingType);
+        $this->addParameter('amount', $iAmount);
+        $this->addParameter('currency', $aRatePayData['currency']);
+
+        $this->addParameter('add_paydata[action]', 'calculation');
+        $this->addParameter('add_paydata[calculation_type]', $sCalculationType);
+        if ($sCalculationType == 'calculation-by-time') {
+            $this->addParameter('add_paydata[month]', $aRatePayData['duration']);
+        } else {
+            $this->addParameter('add_paydata[rate]', $aRatePayData['installment']);
+        }
+
+        $this->addParameter('add_paydata[shop_id]', $aRatePayData['shopid']);
+        $this->addParameter('add_paydata[customer_allow_credit_inquiry]', 'yes');
 
         return $this->send();
     }

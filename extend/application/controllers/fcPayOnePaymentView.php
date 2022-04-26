@@ -112,7 +112,19 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      */
     protected $_aRatePayProfileIds = array(
         'fcporp_bill' => null,
-        'fcporp_debitnote' => null
+        'fcporp_debitnote' => null,
+        'fcporp_installment' => null
+    );
+
+    /**
+     * Contains a cached version of profile data for successive short term requests
+     *
+     * @var string
+     */
+    protected $_aCachedRatepayProfileData = array(
+        'fcporp_bill' => null,
+        'fcporp_debitnote' => null,
+        'fcporp_installment' => null
     );
 
     /**
@@ -226,6 +238,60 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     public function fcpoGetRatePayMatchedProfile($sPaymentId) 
     {
         return $this->_aRatePayProfileIds[$sPaymentId];
+    }
+
+    /**
+     * Returns matched profile details
+     *
+     * @param  string $sPaymentId
+     * @return array
+     */
+    public function fcpoGetRatepayProfileData($sPaymentId)
+    {
+        if (is_null($this->_aCachedRatepayProfileData[$sPaymentId])) {
+            $sOxid = $this->fcpoGetRatePayMatchedProfile($sPaymentId);
+            $oRatePay = oxNew('fcporatepay');
+            $aProfileData = $oRatePay->fcpoGetProfileData($sOxid);
+            $this->_aCachedRatepayProfileData[$sPaymentId] = $aProfileData;
+        }
+
+        return $this->_aCachedRatepayProfileData[$sPaymentId];
+    }
+
+    /**
+     * Prepares some parameter for the installment calculation
+     *
+     * @param  string $sPaymentId
+     * @return array
+     */
+    public function fcpoGetRatepayCalculatorParams($sPaymentId)
+    {
+        $aRatepayCalculatorParams = [];
+        $aRatepayData = $this->fcpoGetRatepayProfileData($sPaymentId);
+
+        $aMonthAllowed = explode(',', $aRatepayData['month_allowed']);
+        $iValidMaxDuration = $this->_fcpoGetRatepayValidMaxAllowedMonth($aRatepayData, max($aMonthAllowed));
+        $aMonthAllowed = array_filter($aMonthAllowed, function($month) use ($iValidMaxDuration) { return $month<=$iValidMaxDuration; });
+
+        $aRatepayCalculatorParams['monthAllowed'] = $aMonthAllowed;
+
+        return $aRatepayCalculatorParams;
+    }
+
+    /**
+     * Execute a pre-check to determine the maximal duration and limit the offered options
+     *
+     * @param  array $aRatepayData
+     * @param  int $iMaxMonthAllowed
+     * @return int
+     */
+    protected function _fcpoGetRatepayValidMaxAllowedMonth($aRatepayData, $iMaxMonthAllowed)
+    {
+        $aRatepayData['duration'] = $iMaxMonthAllowed;
+        $oRequest = $this->_oFcpoHelper->getFactoryObject('fcporequest');
+        $aResponse = $oRequest->sendRequestRatepayCalculation('calculation-by-time', $aRatepayData);
+
+        return $aResponse['add_paydata[number-of-rates]'];
     }
 
     /**
@@ -1137,6 +1203,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         $aMap = array(
             'fcporp_bill' => 'invoice',
             'fcporp_debitnote' => 'elv',
+            'fcporp_installment' => 'installment',
         );
 
         $sReturn = '';
@@ -1535,7 +1602,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
             $mReturn = $this->_fcpoKlarnaCombinedValidate($mReturn, $sPaymentId);
 
             $mReturn = $this->_fcpoPayolutionPreCheck($mReturn, $sPaymentId);
-            if (in_array($sPaymentId, array('fcporp_bill', 'fcporp_debitnote'))) {
+            if (in_array($sPaymentId, array('fcporp_bill', 'fcporp_debitnote', 'fcporp_installment'))) {
                 $mReturn = $this->_fcpoCheckRatePayBillMandatoryUserData($mReturn, $sPaymentId);
             }
             $mReturn = $this->_fcpoAdultCheck($mReturn, $sPaymentId);
@@ -1781,11 +1848,17 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         }
 
 
+        $sFieldPrefix = '';
+        if ($sPaymentId == 'fcporp_debitnote') {
+            $sFieldPrefix = 'fcpo_ratepay_debitnote';
+        } elseif ($sPaymentId == 'fcporp_installment') {
+            $sFieldPrefix = 'fcpo_ratepay_installment';
+        }
         $blSepaAndDataUsageAgreed = (
-            $sPaymentId != 'fcporp_debitnote' ||
+        ($sPaymentId != 'fcporp_debitnote' && $sPaymentId != 'fcporp_installment') ||
             (
-                $aRequestedValues['fcpo_ratepay_debitnote_agreed'] == 'agreed' &&
-                $aRequestedValues['fcpo_ratepay_debitnote_sepa_agreed'] == 'agreed'
+                $aRequestedValues[$sFieldPrefix.'_agreed'] == 'agreed' &&
+                $aRequestedValues[$sFieldPrefix.'_sepa_agreed'] == 'agreed'
             )
         );
 

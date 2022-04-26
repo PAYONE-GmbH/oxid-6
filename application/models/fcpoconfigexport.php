@@ -549,6 +549,7 @@ class fcpoconfigexport extends oxBase
             'fcpo_trustly' => 'sb',
             'fcpo_wechatpay' => 'wlt',
             'fcpo_apple_pay' => 'wlt',
+            'fcporp_installment' => 'fnc',
         );
 
         if (isset($aAbbreviations[$sPaymentId])) {
@@ -587,6 +588,7 @@ class fcpoconfigexport extends oxBase
             'fcpopo_installment' => 'PYS',
             'fcporp_bill' => 'RPV',
             'fcporp_debitnote' => 'RPD',
+            'fcporp_installment' => 'RPS',
             'fcpocreditcard_iframe' => 'V,M,A,D,J,O,U,B',
             'fcpoamazonpay' => 'AMZ',
             'fcpo_secinvoice' => 'POV',

@@ -279,6 +279,29 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     }
 
     /**
+     * Determines which settlement types are available in the connected Ratepay profile
+     *
+     * @return string
+     */
+    public function fcpoGetRatepaySettlementType($sPaymentId)
+    {
+        $aRatepayData = $this->fcpoGetRatepayProfileData($sPaymentId);
+        $sFirstDay = $aRatepayData['payment_firstday'];
+        $sBillCountry = $aRatepayData['country_code_billing'];
+
+        if (!in_array($sBillCountry, array('DE', 'AT'))) {
+            return false;
+        }
+
+        if ($sFirstDay == '2,28') {
+            return 'both';
+        } elseif ($sFirstDay == '28') {
+            return 'banktransfer';
+        }
+        return 'debit';
+    }
+
+    /**
      * Execute a pre-check to determine the maximal duration and limit the offered options
      *
      * @param  array $aRatepayData
@@ -1847,20 +1870,20 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
             }
         }
 
+        $blSepaAndDataUsageAgreed = false;
+        if ($sPaymentId != 'fcporp_debitnote' && $sPaymentId != 'fcporp_installment') {
+            $blSepaAndDataUsageAgreed = true;
+        } else {
+            $sFieldPrefix = ($sPaymentId == 'fcporp_debitnote') ? 'fcpo_ratepay_debitnote' : 'fcpo_ratepay_installment';
 
-        $sFieldPrefix = '';
-        if ($sPaymentId == 'fcporp_debitnote') {
-            $sFieldPrefix = 'fcpo_ratepay_debitnote';
-        } elseif ($sPaymentId == 'fcporp_installment') {
-            $sFieldPrefix = 'fcpo_ratepay_installment';
+            if ($aRequestedValues[$sFieldPrefix.'_agreed'] == 'agreed') {
+                if ($sPaymentId == 'fcporp_installment' && $aRequestedValues['fcporp_installment_settlement_type'] == 'banktransfer') {
+                    $blSepaAndDataUsageAgreed = true;
+                } elseif ($aRequestedValues[$sFieldPrefix.'_sepa_agreed'] == 'agreed') {
+                    $blSepaAndDataUsageAgreed = true;
+                }
+            }
         }
-        $blSepaAndDataUsageAgreed = (
-        ($sPaymentId != 'fcporp_debitnote' && $sPaymentId != 'fcporp_installment') ||
-            (
-                $aRequestedValues[$sFieldPrefix.'_agreed'] == 'agreed' &&
-                $aRequestedValues[$sFieldPrefix.'_sepa_agreed'] == 'agreed'
-            )
-        );
 
         if (!$blSepaAndDataUsageAgreed) {
             $mReturn = false;

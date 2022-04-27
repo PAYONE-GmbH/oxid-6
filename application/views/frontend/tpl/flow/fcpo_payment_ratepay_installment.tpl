@@ -1,4 +1,6 @@
 [{if $oView->fcpoRatePayAllowed('fcporp_installment')}]
+    [{assign var='sSettlementType' value=$oView->fcpoGetRatepaySettlementType('fcporp_installment')}]
+    [{assign var="aFcPoRpCalcParam" value=$oView->fcpoGetRatepayCalculatorParams('fcporp_installment')}]
     <dl>
         <dt>
             <input id="payment_[{$sPaymentID}]" type="radio" name="paymentid" value="[{$sPaymentID}]" [{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]checked[{/if}]>
@@ -8,6 +10,7 @@
             <input type="hidden" name="fcpo_mode_[{$sPaymentID}]" value="[{$paymentmethod->fcpoGetOperationMode()}]">
             <input type="hidden" name="dynvalue[fcporp_installment_profileid]" value="[{$oView->fcpoGetRatePayMatchedProfile('fcporp_installment')}]">
             <input type="hidden" name="dynvalue[fcporp_installment_device_fingerprint]" value="[{$oView->fcpoGetRatePayDeviceFingerprint()}]">
+            <input type="hidden" id="fcporp_installment_settlement_type" name="dynvalue[fcporp_installment_settlement_type]" value="[{if $sSettlementType=='both'}]debit[{else}]{$sSettlementType}[{/if}]">
             <script language="JavaScript">
                 var di = { t: '[{$oView->fcpoGetRatePayDeviceFingerprint()}]', v: '[{$oView->fcpoGetRatePayDeviceFingerprintSnippetId()}]', l: 'Checkout'};
             </script>
@@ -65,10 +68,8 @@
                 </div>
             [{/if}]
 
-            [{assign var="aFcPoRpCalcParam" value=$oView->fcpoGetRatepayCalculatorParams('fcporp_installment')}]
-
             <div class="rpContainer">
-                <div class="col-lg-offset-3">
+                <div class="col-lg-offset-0">
                     [{oxmultilang ident="FCPO_RATEPAY_CALCULATION_INTRO_PART1"}]
                     [{oxmultilang ident="FCPO_RATEPAY_CALCULATION_INTRO_PART2"}]
                     [{oxmultilang ident="FCPO_RATEPAY_CALCULATION_INTRO_PART3"}]
@@ -119,41 +120,46 @@
                 <div id="fcporp_installment_calculation_details"></div>
             </div>
 
-            <div id="fcporp_installment_sepa_container">
-                <div class="form-group fcpo_ratepay_installment_iban">
-                    <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_IBAN"}]</label>
-                    <div class="col-lg-9">
-                        <input placeholder="[{oxmultilang ident="FCPO_BANK_IBAN"}]" class="form-control js-oxValidate js-oxValidate_notEmpty" type="text" size="20" maxlength="64" name="dynvalue[fcpo_ratepay_installment_iban]" value="[{$dynvalue.fcpo_ratepay_installment_iban}]" onkeyup="fcHandleDebitInputs();return false;" required="required">
-                        <div id="fcpo_ratepay_iban_invalid" class="fcpo_check_error">
-                            <p class="oxValidateError" style="display: block;">
-                                [{oxmultilang ident="FCPO_IBAN_INVALID"}]
-                            </p>
+            [{if (in_array($sSettlementType, array('both', 'debit')))}]
+                <div id="fcporp_installment_sepa_container">
+                    [{if ($sSettlementType == 'both')}]
+                        <strong class="rp-installment-header">[{oxmultilang ident='FCPO_RATEPAY_INSTALLMENT_TYPE_DEBIT_TITLE'}]</strong>
+                        <div class="row rp-payment-type-switch" id="fcporp_installment_rp-switch-payment-type-bank-transfer" onclick="fcpoChangeInstallmentPaymentType(28, 'fcporp_installment')">
+                            <a class="rp-link">[{oxmultilang ident='FCPO_RATEPAY_INSTALLMENT_SWITCH_TO_TRANSFER_LINK'}]</a>
+                        </div><br>
+                    [{/if}]
+                    <div class="form-group fcpo_ratepay_installment_iban">
+                        <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_IBAN"}]</label>
+                        <div class="col-lg-9">
+                            <input id="fcporp_installment_iban" placeholder="[{oxmultilang ident="FCPO_BANK_IBAN"}]" class="form-control js-oxValidate js-oxValidate_notEmpty" type="text" size="20" maxlength="64" name="dynvalue[fcpo_ratepay_installment_iban]" value="[{$dynvalue.fcpo_ratepay_installment_iban}]" onkeyup="fcHandleDebitInputs();return false;" required="required">
+                            <div id="fcpo_ratepay_iban_invalid" class="fcpo_check_error">
+                                <p class="oxValidateError" style="display: block;">
+                                    [{oxmultilang ident="FCPO_IBAN_INVALID"}]
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="form-group fcpo_ratepay_installment_bic">
-                    <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_BIC"}]</label>
-                    <div class="col-lg-9">
-                        <input class="form-control js-oxValidate js-oxValidate_notEmpty" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_ratepay_installment_bic]" value="[{$dynvalue.fcpo_ratepay_installment_bic}]" onkeyup="fcHandleDebitInputs();return false;" required="required">
-                        <div id="fcpo_ratepay_bic_invalid" class="fcpo_check_error">
-                            <p class="oxValidateError" style="display: block;">
-                                [{oxmultilang ident="FCPO_BIC_INVALID"}]
-                            </p>
-                        </div>
+
+                    <div class="alert alert-info col-lg-offset-3 desc">
+                        [{oxmultilang ident='FCPO_RATEPAY_MANDATE_IDENTIFICATION'}]
+                    </div>
+
+                    <div class="alert alert-info col-lg-offset-3 desc">
+                        <input name="dynvalue[fcpo_ratepay_installment_sepa_agreed]" value="agreed" type="checkbox">&nbsp;[{oxmultilang ident="FCPO_RATEPAY_SEPA_AGREE"}]
                     </div>
                 </div>
-
-                <div class="alert alert-info col-lg-offset-3 desc">
-                    <input name="dynvalue[fcpo_ratepay_installment_agreed]" value="agreed" type="checkbox"> [{oxmultilang ident="FCPO_RATEPAY_ADD_TERMS1"}] <a href='[{$oView->fcpoGetRatepayAgreementLink()}]' class='lightview fcpoRatepayAgreeRed' data-lightview-type="iframe" data-lightview-options="width: 800, height: 600, viewport: 'scale',background: { color: '#fff', opacity: 1 },skin: 'light'">[{oxmultilang ident="FCPO_RATEPAY_ADD_TERMS2"}]</a> [{oxmultilang ident="FCPO_RATEPAY_ADD_TERMS3"}] <a href='[{$oView->fcpoGetRatepayPrivacyLink()}]' class='lightview fcpoRatepayAgreeRed' data-lightview-type="iframe" data-lightview-options="width: 800, height: 600, viewport: 'scale',background: { color: '#fff', opacity: 1 },skin: 'light'">[{oxmultilang ident="FCPO_RATEPAY_ADD_TERMS4"}]</a> [{oxmultilang ident="FCPO_RATEPAY_ADD_TERMS5"}]
+                [{if ($sSettlementType == 'both')}]
+                <div id="fcporp_installment_rp-switch-payment-type-direct-debit">
+                    <strong class="rp-installment-header">[{oxmultilang ident='FCPO_RATEPAY_INSTALLMENT_TYPE_TRANSFER_TITLE'}]</strong>
+                    <div class="row rp-payment-type-switch" id="fcporp_installment_rp-switch-payment-type-bank-transfer" onclick="fcpoChangeInstallmentPaymentType(2, 'fcporp_installment')">
+                        <a class="rp-link">[{oxmultilang ident='FCPO_RATEPAY_INSTALLMENT_SWITCH_TO_DEBIT_LINK'}]</a>
+                    </div><br>
                 </div>
+                [{/if}]
+            [{/if}]
 
-                <div class="alert alert-info col-lg-offset-3 desc">
-                    [{oxmultilang ident='FCPO_RATEPAY_MANDATE_IDENTIFICATION'}]
-                </div>
-
-                <div class="alert alert-info col-lg-offset-3 desc">
-                    <input name="dynvalue[fcpo_ratepay_installment_sepa_agreed]" value="agreed" type="checkbox">&nbsp;[{oxmultilang ident="FCPO_RATEPAY_SEPA_AGREE"}]
-                </div>
+            <div class="alert alert-info col-lg-offset-0 desc">
+                <input name="dynvalue[fcpo_ratepay_installment_agreed]" value="agreed" type="checkbox"> [{oxmultilang ident="FCPO_RATEPAY_ADD_TERMS1"}] <a href='[{$oView->fcpoGetRatepayAgreementLink()}]' class='lightview fcpoRatepayAgreeRed' data-lightview-type="iframe" data-lightview-options="width: 800, height: 600, viewport: 'scale',background: { color: '#fff', opacity: 1 },skin: 'light'">[{oxmultilang ident="FCPO_RATEPAY_ADD_TERMS2"}]</a> [{oxmultilang ident="FCPO_RATEPAY_ADD_TERMS3"}] <a href='[{$oView->fcpoGetRatepayPrivacyLink()}]' class='lightview fcpoRatepayAgreeRed' data-lightview-type="iframe" data-lightview-options="width: 800, height: 600, viewport: 'scale',background: { color: '#fff', opacity: 1 },skin: 'light'">[{oxmultilang ident="FCPO_RATEPAY_ADD_TERMS4"}]</a> [{oxmultilang ident="FCPO_RATEPAY_ADD_TERMS5"}]
             </div>
 
             [{block name="checkout_payment_longdesc"}]

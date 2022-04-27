@@ -155,6 +155,7 @@
 /* RATEPAY */
 .rpContainer {
     width: 100%;
+    padding-top:10px
 }
 .rp-installment-plan-description {
     display: none;
@@ -221,10 +222,7 @@
 #fcporp_installment_rp-sepa-agreement {
     margin-left: 5px
 }
-#fcporp_installment_rp-switch-payment-type-direct-debit, #fcporp_installment_rp-switch-payment-type-direct-debit {
-    display: none;
-}
-#fcporp_installment_rp-switch-payment-type-direct-debit, #fcporp_installment_rp-rate-elv {
+#fcporp_installment_rp-switch-payment-type-direct-debit {
     display: none;
 }
 #fcporp_installment_rp-iban-account-number {

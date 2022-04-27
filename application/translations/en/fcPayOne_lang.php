@@ -313,6 +313,11 @@ The smaller text field is used to name the destination file, or path to an exist
 'FCPO_RATEPAY_CALCULATION_LAST_RATE_DESC' => 'Partial amount due in the last month',
 'FCPO_RATEPAY_CALCULATION_TOTAL_AMOUNT_LABEL' => 'Total amount',
 'FCPO_RATEPAY_CALCULATION_TOTAL_AMOUNT_DESC' => 'Sum of the amounts to be paid by the buyer from the value of the goods, contract conclusion fee and interest.',
+
+'FCPO_RATEPAY_INSTALLMENT_TYPE_TRANSFER_TITLE' => 'Installment by bank transfer',
+'FCPO_RATEPAY_INSTALLMENT_TYPE_DEBIT_TITLE' => 'Installment by debit',
+'FCPO_RATEPAY_INSTALLMENT_SWITCH_TO_TRANSFER_LINK' => 'I would like to make the installment payments myself and not pay by direct debit',
+'FCPO_RATEPAY_INSTALLMENT_SWITCH_TO_DEBIT_LINK' => 'I would like to conveniently pay the installments by direct debit',
 );
 
 /*

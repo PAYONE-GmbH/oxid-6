@@ -1316,6 +1316,7 @@ class fcpoRequest extends oxSuperCfg
         $this->addParameter('street', $oUser->oxuser__oxstreet->value.' '.$oUser->oxuser__oxstreetnr->value);
         $this->addParameter('zip', $oUser->oxuser__oxzip->value);
         $this->addParameter('city', $oUser->oxuser__oxcity->value);
+
         $this->addParameter('company', $oUser->oxuser__oxcompany->value);
         $this->addParameter('shipping_firstname', $sShippingFirstName);
         $this->addParameter('shipping_lastname', $sShippingLastName);
@@ -1328,9 +1329,25 @@ class fcpoRequest extends oxSuperCfg
             $this->addParameter('iban', $aDynvalue['fcpo_ratepay_debitnote_iban']);
             $this->addParameter('bic', $aDynvalue['fcpo_ratepay_debitnote_bic']);
         }
+
         if ($sPaymentId == 'fcporp_installment') {
-            $this->addParameter('iban', $aDynvalue['fcpo_ratepay_installment_iban']);
-            $this->addParameter('bic', $aDynvalue['fcpo_ratepay_installment_bic']);
+            if ($aDynvalue['fcporp_installment_settlement_type'] == 'debit') {
+                $this->addParameter('iban', $aDynvalue['fcpo_ratepay_installment_iban']);
+                $this->addParameter('add_paydata[debit_paytype]', 'DIRECT-DEBIT');
+            } else {
+                $this->addParameter('add_paydata[debit_paytype]', 'BANK-TRANSFER');
+            }
+
+            $iInstallmentAmount = number_format($aDynvalue['fcporp_installment_amount'], 2, '.', '') * 100;
+            $iInstallmentLastAmount = number_format($aDynvalue['fcporp_installment_last_amount'], 2, '.', '') * 100;
+            $iInterestRate = number_format($aDynvalue['fcporp_installment_interest_rate'], 2, '.', '') * 100;
+            $iTotalAmount = number_format($aDynvalue['fcporp_installment_total_amount'], 2, '.', '') * 100;
+
+            $this->addParameter('add_paydata[installment_number]', $aDynvalue['fcporp_installment_number']);
+            $this->addParameter('add_paydata[installment_amount]', $iInstallmentAmount);
+            $this->addParameter('add_paydata[last_installment_amount]', $iInstallmentLastAmount);
+            $this->addParameter('add_paydata[interest_rate]', $iInterestRate);
+            $this->addParameter('add_paydata[amount]', $iTotalAmount);
         }
 
         $sWorkorderId = $this->_oFcpoHelper->fcpoGetSessionVariable('ratepay_workorderid');

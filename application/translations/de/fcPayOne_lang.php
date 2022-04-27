@@ -306,6 +306,10 @@ Das kleinere Textfeld wird verwendet, um die Zieldatei oder den Pfad zu einer vo
     'FCPO_RATEPAY_CALCULATION_TOTAL_AMOUNT_LABEL' => 'Gesamtbetrag',
     'FCPO_RATEPAY_CALCULATION_TOTAL_AMOUNT_DESC' => 'Summe der vom K&auml;ufer zu zahlenden Betr&auml;ge aus Warenwert, Vertragsabschlussgeb&uuml;hr und Zinsen.',
 
+    'FCPO_RATEPAY_INSTALLMENT_TYPE_TRANSFER_TITLE' => 'Rate per &Uuml;berweisung',
+    'FCPO_RATEPAY_INSTALLMENT_TYPE_DEBIT_TITLE' => 'Rate per Lastschrift',
+    'FCPO_RATEPAY_INSTALLMENT_SWITCH_TO_TRANSFER_LINK' => 'Ich m&ouml;chte die Ratenzahlungen selbst vornehmen und nicht per Lastschrift begleichen',
+    'FCPO_RATEPAY_INSTALLMENT_SWITCH_TO_DEBIT_LINK' => 'Ich m&ouml;chte die Ratenzahlungen bequem per Lastschrift begleichen',
 
 
 );

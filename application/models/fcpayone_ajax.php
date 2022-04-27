@@ -878,6 +878,19 @@ class fcpayone_ajax extends oxBase
         $sHtml .= '        </div>';
         $sHtml .= '    </div>';
         $sHtml .= '</div>';
+        $sHtml .= '<div>';
+        $sHtml .= '<input type="hidden" name="dynvalue[fcporp_installment_amount]" value="' . $aInstallmentDetails['rate'] . '">';
+        $sHtml .= '<input type="hidden" name="dynvalue[fcporp_installment_number]" value="' . $aInstallmentDetails['numberOfRatesFull'] . '">';
+        $sHtml .= '<input type="hidden" name="dynvalue[fcporp_installment_last_amount]" value="' . $aInstallmentDetails['lastRate'] . '">';
+        $sHtml .= '<input type="hidden" name="dynvalue[fcporp_installment_interest_rate]" value="' . $aInstallmentDetails['interestRate'] . '">';
+        $sHtml .= '<input type="hidden" name="dynvalue[fcporp_installment_total_amount]" value="' . $aInstallmentDetails['totalAmount'] . '">';
+
+        $sHtml .= '<input type="hidden" name="dynvalue[fcporp_installment_service_charge]" value="' . $aInstallmentDetails['serviceCharge'] . '">';
+        $sHtml .= '<input type="hidden" name="dynvalue[fcporp_installment_annual_percentage_rate]" value="' . $aInstallmentDetails['annualPercentageRate'] . '">';
+        $sHtml .= '<input type="hidden" name="dynvalue[fcporp_installment_interest_amount]" value="' . $aInstallmentDetails['interestAmount'] . '">';
+        $sHtml .= '<input type="hidden" name="dynvalue[fcporp_installment_basket_amount]" value="' . $aInstallmentDetails['amount'] . '">';
+        $sHtml .= '<input type="hidden" name="dynvalue[fcporp_installment_number_of_rate]" value="' . $aInstallmentDetails['numberOfRate'] . '">';
+        $sHtml .= '</div>';
 
         return $sHtml;
     }

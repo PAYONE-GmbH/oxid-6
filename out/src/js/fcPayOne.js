@@ -899,6 +899,20 @@ function fcpoRpChangeDetails(paymentMethod) {
         document.getElementById(paymentMethod + '_rp-installment-plan-no-details').style.display = 'none';
     }
 }
+function fcpoChangeInstallmentPaymentType(payment, paymentMethod) {
+    if (payment == 28) {
+        document.getElementById(paymentMethod + '_iban').value = '';
+        document.getElementById(paymentMethod + '_sepa_container').style.display = 'none';
+        document.getElementById(paymentMethod + '_rp-switch-payment-type-direct-debit').style.display = 'block';
+        document.getElementById(paymentMethod + '_paymentFirstday').value = 2;
+        document.getElementById(paymentMethod + '_settlement_type').value = 'banktransfer';
+    } else {
+        document.getElementById(paymentMethod + '_sepa_container').style.display = 'block';
+        document.getElementById(paymentMethod + '_rp-switch-payment-type-direct-debit').style.display = 'none';
+        document.getElementById(paymentMethod + '_paymentFirstday').value = 28;
+        document.getElementById(paymentMethod + '_settlement_type').value = 'debit';
+    }
+}
 
 // RATEPAY INSTALLMENT <<<<
 

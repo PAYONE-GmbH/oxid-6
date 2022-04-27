@@ -787,4 +787,18 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
 
         return $mReturn;
     }
+
+    /**
+     * Return last calculation values
+     *
+     * @param string $sParam
+     * @return string
+     */
+    public function fcpoCalculationParameter($sParam)
+    {
+        $aDynvalue = $this->_oFcpoHelper->fcpoGetSessionVariable('dynvalue');
+        $aDynvalue = $aDynvalue ? $aDynvalue : $this->_oFcpoHelper->fcpoGetRequestParameter('dynvalue');
+
+        return isset($aDynvalue[$sParam]) ? $aDynvalue[$sParam] : '';
+    }
 }

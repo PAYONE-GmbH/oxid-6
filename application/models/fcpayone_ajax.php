@@ -765,7 +765,7 @@ class fcpayone_ajax extends oxBase
         $sHtml .= '    <div id="' . $sPaymentMethod . '_rp-installment-plan-details">';
         $sHtml .= '        <div class="rp-installment-plan-details">';
         $sHtml .= '             <div class="rp-installment-plan-title" onmouseover="fcpoMouseOver(\'' . $sPaymentMethod . '_amount\')" onmouseout="fcpoMouseOut(\'' . $sPaymentMethod . '_amount\')">';
-        $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_DETAILS_PRICE_LABEL');
+        $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_DETAILS_PRICE_LABEL') . '&nbsp;';
         $sHtml .= '                 <p id="' . $sPaymentMethod . '_amount" class="rp-installment-plan-description small">';
         $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_DETAILS_PRICE_DESC');
         $sHtml .= '                </p>';
@@ -777,7 +777,7 @@ class fcpayone_ajax extends oxBase
 
         $sHtml .= '        <div class="rp-installment-plan-details">';
         $sHtml .= '            <div class="rp-installment-plan-title" onmouseover="fcpoMouseOver(\'' . $sPaymentMethod . '_serviceCharge\')" onmouseout="fcpoMouseOut(\'' . $sPaymentMethod . '_serviceCharge\')">';
-        $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_DETAILS_SERVICE_CHARGE_LABEL');
+        $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_DETAILS_SERVICE_CHARGE_LABEL') . '&nbsp;';
         $sHtml .= '                <p id="' . $sPaymentMethod . '_serviceCharge" class="rp-installment-plan-description small">';
         $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_DETAILS_SERVICE_CHARGE_DESC');
         $sHtml .= '                </p>';
@@ -789,7 +789,7 @@ class fcpayone_ajax extends oxBase
 
         $sHtml .= '        <div class="rp-installment-plan-details">';
         $sHtml .= '            <div class="rp-installment-plan-title" onmouseover="fcpoMouseOver(\'' . $sPaymentMethod . '_annualPercentageRate\')" onmouseout="fcpoMouseOut(\'' . $sPaymentMethod . '_annualPercentageRate\')">';
-        $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_EFFECTIVE_RATE_LABEL');
+        $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_EFFECTIVE_RATE_LABEL') . '&nbsp;';
         $sHtml .= '                <p id="' . $sPaymentMethod . '_annualPercentageRate" class="rp-installment-plan-description small">';
         $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_EFFECTIVE_RATE_DESC');
         $sHtml .= '                </p>';
@@ -801,7 +801,7 @@ class fcpayone_ajax extends oxBase
 
         $sHtml .= '        <div class="rp-installment-plan-details">';
         $sHtml .= '            <div class="rp-installment-plan-title" onmouseover="fcpoMouseOver(\'' . $sPaymentMethod . '_interestRate\')" onmouseout="fcpoMouseOut(\'' . $sPaymentMethod . '_interestRate\')">';
-        $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_DEBIT_RATE_LABEL');
+        $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_DEBIT_RATE_LABEL') . '&nbsp;';
         $sHtml .= '                <p id="' . $sPaymentMethod . '_interestRate" class="rp-installment-plan-description small">';
         $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_DEBIT_RATE_DESC');
         $sHtml .= '                </p>';
@@ -813,7 +813,7 @@ class fcpayone_ajax extends oxBase
 
         $sHtml .= '        <div class="rp-installment-plan-details">';
         $sHtml .= '            <div class="rp-installment-plan-title" onmouseover="fcpoMouseOver(\'' . $sPaymentMethod . '_interestAmount\')" onmouseout="fcpoMouseOut(\'' . $sPaymentMethod . '_interestAmount\')">';
-        $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_INTEREST_AMOUNT_LABEL');
+        $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_INTEREST_AMOUNT_LABEL') . '&nbsp;';
         $sHtml .= '                <p id="' . $sPaymentMethod . '_interestAmount" class="rp-installment-plan-description small">';
         $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_INTEREST_AMOUNT_DESC');
         $sHtml .= '                </p>';
@@ -829,7 +829,7 @@ class fcpayone_ajax extends oxBase
 
         $sHtml .= '        <div class="rp-installment-plan-details">';
         $sHtml .= '            <div class="rp-installment-plan-title" onmouseover="fcpoMouseOver(\'' . $sPaymentMethod . '_rate\')" onmouseout="fcpoMouseOut(\'' . $sPaymentMethod . '_rate\')">';
-        $sHtml .= $aInstallmentDetails['numberOfRate'] . ' ' . $oLang->translateString('FCPO_RATEPAY_CALCULATION_DURATION_MONTH_LABEL');
+        $sHtml .= $aInstallmentDetails['numberOfRate'] . ' ' . $oLang->translateString('FCPO_RATEPAY_CALCULATION_DURATION_MONTH_LABEL') . '&nbsp;';
         $sHtml .= '                <p id="' . $sPaymentMethod . '_rate" class="rp-installment-plan-description small">';
         $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_DURATION_MONTH_DESC');
         $sHtml .= '                </p>';
@@ -841,7 +841,7 @@ class fcpayone_ajax extends oxBase
 
         $sHtml .= '        <div class="rp-installment-plan-details">';
         $sHtml .= '            <div class="rp-installment-plan-title" onmouseover="fcpoMouseOver(\'' . $sPaymentMethod . '_lastRate\')" onmouseout="fcpoMouseOut(\'' . $sPaymentMethod . '_lastRate\')">';
-        $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_LAST_RATE_LABEL');
+        $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_LAST_RATE_LABEL') . '&nbsp;';
         $sHtml .= '                <p id="' . $sPaymentMethod . '_lastRate" class="rp-installment-plan-description small">';
         $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_LAST_RATE_DESC');
         $sHtml .= '                </p>';
@@ -856,7 +856,7 @@ class fcpayone_ajax extends oxBase
         $sHtml .= '    <div id="' . $sPaymentMethod . '_rp-installment-plan-no-details">';
         $sHtml .= '        <div class="rp-installment-plan-no-details">';
         $sHtml .= '            <div class="rp-installment-plan-title" onmouseover="fcpoMouseOver(\'' . $sPaymentMethod . '_rate2\')" onmouseout="fcpoMouseOut(\'' . $sPaymentMethod . '_rate2\')">';
-        $sHtml .= $aInstallmentDetails['numberOfRatesFull'] . ' ' . $oLang->translateString('FCPO_RATEPAY_CALCULATION_DURATION_MONTH_LABEL');
+        $sHtml .= $aInstallmentDetails['numberOfRatesFull'] . ' ' . $oLang->translateString('FCPO_RATEPAY_CALCULATION_DURATION_MONTH_LABEL') . '&nbsp;';
         $sHtml .= '                <p id="' . $sPaymentMethod . '_rate2" class="rp-installment-plan-description small">';
         $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_DURATION_MONTH_DESC');
         $sHtml .= '                </p>';
@@ -868,7 +868,7 @@ class fcpayone_ajax extends oxBase
         $sHtml .= '    </div>';
         $sHtml .= '    <div class="rp-installment-plan-details">';
         $sHtml .= '        <div class="rp-installment-plan-title" onmouseover="fcpoMouseOver(\'' . $sPaymentMethod . '_totalAmount\')" onmouseout="fcpoMouseOut(\'' . $sPaymentMethod . '_totalAmount\')">';
-        $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_TOTAL_AMOUNT_LABEL');
+        $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_TOTAL_AMOUNT_LABEL') . '&nbsp;';
         $sHtml .= '            <p id="' . $sPaymentMethod . '_totalAmount" class="rp-installment-plan-description small">';
         $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_TOTAL_AMOUNT_DESC');
         $sHtml .= '            </p>';

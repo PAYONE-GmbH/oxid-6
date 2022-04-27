@@ -32,7 +32,7 @@
             <div class="rp-installment-plan-details">
                 <div class="rp-installment-plan-title" onmouseover="fcpoMouseOver('fcporp_installment_amount')"
                      onmouseout="fcpoMouseOut('fcporp_installment_amount')">
-                    [{oxmultilang ident='FCPO_RATEPAY_CALCULATION_DETAILS_PRICE_LABEL'}]
+                    [{oxmultilang ident='FCPO_RATEPAY_CALCULATION_DETAILS_PRICE_LABEL'}]&nbsp;
                     <p id="fcporp_installment_amount" class="rp-installment-plan-description small">
                         [{oxmultilang ident='FCPO_RATEPAY_CALCULATION_DETAILS_PRICE_DESC'}]
                     </p>
@@ -45,7 +45,7 @@
             <div class="rp-installment-plan-details">
                 <div class="rp-installment-plan-title" onmouseover="fcpoMouseOver('fcporp_installment_serviceCharge')"
                      onmouseout="fcpoMouseOut('fcporp_installment_serviceCharge')">
-                    [{oxmultilang ident='FCPO_RATEPAY_CALCULATION_DETAILS_SERVICE_CHARGE_LABEL'}]
+                    [{oxmultilang ident='FCPO_RATEPAY_CALCULATION_DETAILS_SERVICE_CHARGE_LABEL'}]&nbsp;
                     <p id="fcporp_installment_serviceCharge" class="rp-installment-plan-description small">
                         [{oxmultilang ident='FCPO_RATEPAY_CALCULATION_DETAILS_SERVICE_CHARGE_DESC'}]
                     </p>
@@ -59,7 +59,7 @@
                 <div class="rp-installment-plan-title"
                      onmouseover="fcpoMouseOver('fcporp_installment_annualPercentageRate')"
                      onmouseout="fcpoMouseOut('fcporp_installment_annualPercentageRate')">
-                    [{oxmultilang ident='FCPO_RATEPAY_CALCULATION_EFFECTIVE_RATE_LABEL'}]
+                    [{oxmultilang ident='FCPO_RATEPAY_CALCULATION_EFFECTIVE_RATE_LABEL'}]&nbsp;
                     <p id="fcporp_installment_annualPercentageRate" class="rp-installment-plan-description small">
                         [{oxmultilang ident='FCPO_RATEPAY_CALCULATION_EFFECTIVE_RATE_DESC'}]
                     </p>
@@ -72,7 +72,7 @@
             <div class="rp-installment-plan-details">
                 <div class="rp-installment-plan-title" onmouseover="fcpoMouseOver('fcporp_installment_interestRate')"
                      onmouseout="fcpoMouseOut('fcporp_installment_interestRate')">
-                    [{oxmultilang ident='FCPO_RATEPAY_CALCULATION_DEBIT_RATE_LABEL'}]
+                    [{oxmultilang ident='FCPO_RATEPAY_CALCULATION_DEBIT_RATE_LABEL'}]&nbsp;
                     <p id="fcporp_installment_interestRate" class="rp-installment-plan-description small">
                         [{oxmultilang ident='FCPO_RATEPAY_CALCULATION_DEBIT_RATE_DESC'}]
                     </p>
@@ -85,7 +85,7 @@
             <div class="rp-installment-plan-details">
                 <div class="rp-installment-plan-title" onmouseover="fcpoMouseOver('fcporp_installment_interestAmount')"
                      onmouseout="fcpoMouseOut('fcporp_installment_interestAmount')">
-                    [{oxmultilang ident='FCPO_RATEPAY_CALCULATION_INTEREST_AMOUNT_LABEL'}]
+                    [{oxmultilang ident='FCPO_RATEPAY_CALCULATION_INTEREST_AMOUNT_LABEL'}]&nbsp;
                     <p id="fcporp_installment_interestAmount" class="rp-installment-plan-description small">
                         [{oxmultilang ident='FCPO_RATEPAY_CALCULATION_INTEREST_AMOUNT_DESC'}]
                     </p>
@@ -102,7 +102,7 @@
             <div class="rp-installment-plan-details">
                 <div class="rp-installment-plan-title" onmouseover="fcpoMouseOver('fcporp_installment_rate')"
                      onmouseout="fcpoMouseOut('fcporp_installment_rate')">
-                    [{$oView->fcpoCalculationParameter('fcporp_installment_number_of_rate')}] [{oxmultilang ident='FCPO_RATEPAY_CALCULATION_DURATION_MONTH_LABEL'}]
+                    [{$oView->fcpoCalculationParameter('fcporp_installment_number_of_rate')}] [{oxmultilang ident='FCPO_RATEPAY_CALCULATION_DURATION_MONTH_LABEL'}]&nbsp;
                     <p id="fcporp_installment_rate" class="rp-installment-plan-description small">
                         [{oxmultilang ident='FCPO_RATEPAY_CALCULATION_DURATION_MONTH_DESC'}]
                     </p>
@@ -115,7 +115,7 @@
             <div class="rp-installment-plan-details">
                 <div class="rp-installment-plan-title" onmouseover="fcpoMouseOver('fcporp_installment_lastRate')"
                      onmouseout="fcpoMouseOut('fcporp_installment_lastRate')">
-                    [{oxmultilang ident='FCPO_RATEPAY_CALCULATION_LAST_RATE_LABEL'}]
+                    [{oxmultilang ident='FCPO_RATEPAY_CALCULATION_LAST_RATE_LABEL'}]&nbsp;
                     <p id="fcporp_installment_lastRate" class="rp-installment-plan-description small">
                         [{oxmultilang ident='FCPO_RATEPAY_CALCULATION_LAST_RATE_DESC'}]
                     </p>
@@ -130,7 +130,7 @@
             <div class="rp-installment-plan-no-details">
                 <div class="rp-installment-plan-title" onmouseover="fcpoMouseOver('fcporp_installment_rate2')"
                      onmouseout="fcpoMouseOut('fcporp_installment_rate2')">
-                    [{$oView->fcpoCalculationParameter('fcporp_installment_number')}] [{oxmultilang ident='FCPO_RATEPAY_CALCULATION_DURATION_MONTH_LABEL'}]
+                    [{$oView->fcpoCalculationParameter('fcporp_installment_number')}] [{oxmultilang ident='FCPO_RATEPAY_CALCULATION_DURATION_MONTH_LABEL'}]&nbsp;
                     <p id="fcporp_installment_rate2" class="rp-installment-plan-description small">
                         [{oxmultilang ident='FCPO_RATEPAY_CALCULATION_DURATION_MONTH_DESC'}]
                     </p>
@@ -143,7 +143,7 @@
         <div class="rp-installment-plan-details">
             <div class="rp-installment-plan-title" onmouseover="fcpoMouseOver('fcporp_installment_totalAmount')"
                  onmouseout="fcpoMouseOut('fcporp_installment_totalAmount')">
-                [{oxmultilang ident='FCPO_RATEPAY_CALCULATION_TOTAL_AMOUNT_LABEL'}]
+                [{oxmultilang ident='FCPO_RATEPAY_CALCULATION_TOTAL_AMOUNT_LABEL'}]&nbsp;
                 <p id="fcporp_installment_totalAmount" class="rp-installment-plan-description small">
                     [{oxmultilang ident='FCPO_RATEPAY_CALCULATION_TOTAL_AMOUNT_DESC'}]
                 </p>

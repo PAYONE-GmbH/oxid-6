@@ -272,7 +272,7 @@ Das kleinere Textfeld wird verwendet, um die Zieldatei oder den Pfad zu einer vo
     'FCPO_RATEPAY_CALCULATION_INTRO_PART2' => 'Legen Sie bequem die Anzahl der Raten und somit <b>die Laufzeit</b> der Ratenzahlung fest ',
     'FCPO_RATEPAY_CALCULATION_INTRO_PART3' => 'oder bestimmen sie einfach die gew&uuml;nschte <b>monatliche Ratenh&ouml;he.</b>',
 
-    'FCPO_RATEPAY_CALCULATION_DETAILS_TITLE' => 'Pers&Ouml;nliche Ratenberechnung',
+    'FCPO_RATEPAY_CALCULATION_DETAILS_TITLE' => 'Pers&ouml;nliche Ratenberechnung',
     'FCPO_RATEPAY_CALCULATION_DETAILS_CODE_TRANSLATION_603' => 'Die Wunschrate entspricht den vorgegebenen Bedingungen.',
     'FCPO_RATEPAY_CALCULATION_DETAILS_CODE_TRANSLATION_671' => 'Die letzte Rate war niedriger als erlaubt. Laufzeit und/oder Rate wurden angepasst.',
     'FCPO_RATEPAY_CALCULATION_DETAILS_CODE_TRANSLATION_688' => 'Die Rate war niedriger als f&uuml;r Ratenpl&auml;ne mit langer Laufzeit erlaubt. Die Laufzeit wurde angepasst.',

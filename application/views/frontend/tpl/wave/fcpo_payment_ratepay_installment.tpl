@@ -10,7 +10,7 @@
             <input type="hidden" name="fcpo_mode_[{$sPaymentID}]" value="[{$paymentmethod->fcpoGetOperationMode()}]">
             <input type="hidden" name="dynvalue[fcporp_installment_profileid]" value="[{$oView->fcpoGetRatePayMatchedProfile('fcporp_installment')}]">
             <input type="hidden" name="dynvalue[fcporp_installment_device_fingerprint]" value="[{$oView->fcpoGetRatePayDeviceFingerprint()}]">
-            <input type="hidden" id="fcporp_installment_settlement_type" name="dynvalue[fcporp_installment_settlement_type]" value="[{if $sSettlementType=='both'}]debit[{else}]{$sSettlementType}[{/if}]">
+            <input type="hidden" id="fcporp_installment_settlement_type" name="dynvalue[fcporp_installment_settlement_type]" value="[{if $sSettlementType=='both'}]debit[{else}][{$sSettlementType}][{/if}]">
             <script language="JavaScript">
                 var di = { t: '[{$oView->fcpoGetRatePayDeviceFingerprint()}]', v: '[{$oView->fcpoGetRatePayDeviceFingerprintSnippetId()}]', l: 'Checkout'};
             </script>

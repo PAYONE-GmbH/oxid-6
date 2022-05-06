@@ -1251,6 +1251,8 @@ class fcPayOneOrder extends fcPayOneOrder_parent
                 'fcpoklarna_directdebit',
                 'fcpo_secinvoice',
                 'fcporp_bill',
+                'fcporp_debitnote',
+                'fcporp_installment',
                 'fcpopaydirekt_express',
             )
         );

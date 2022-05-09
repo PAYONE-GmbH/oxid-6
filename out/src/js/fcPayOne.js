@@ -843,6 +843,79 @@ function getAplOrderInfo (placeOrderButtonForm) {
 // APPLE PAY <<<
 
 
+// >>>> RATEPAY INSTALLMENT
+
+function fcpoRatepayRateCalculatorAction(sMode, sPaymentMethodId, iMonth) {
+    var oForm = getPaymentForm();
+    var sPaymentMethodOxid = oForm['dynvalue[fcporp_installment_profileid]'].value;
+    var iInstallmentRate = oForm['dynvalue[fcporp_installment_rate_value]'].value;
+
+    var sFormParams = '{' +
+        '"sPaymentMethodOxid":"' + sPaymentMethodOxid + '" , ' +
+        '"sMode":"' + sMode + '"';
+
+    if (sMode === 'runtime') {
+        sFormParams += ', "iMonth":' + iMonth
+    } else {
+        sFormParams += ', "iInstallment":' + iInstallmentRate
+    }
+
+    sFormParams += '}';
+
+    $.ajax({
+        url: payoneAjaxControllerUrl,
+        method: 'POST',
+        type: 'POST',
+        data: {
+            paymentid: sPaymentMethodId,
+            action: 'fcporp_calculation',
+            params: sFormParams
+        },
+        success: function (response) {
+            var oCalculationDetailsContainer = document.getElementById('fcporp_installment_calculation_details');
+            oCalculationDetailsContainer.innerHTML = response;
+
+            document.getElementById('fcporp_installment_sepa_container').style.display = 'block';
+        }
+    });
+}
+function fcpoMouseOver(mouseoverString) {
+    document.getElementById(mouseoverString).style.display = 'block';
+}
+function fcpoMouseOut(mouseoverString) {
+    document.getElementById(mouseoverString).style.display = 'none';
+}
+function fcpoRpChangeDetails(paymentMethod) {
+    if (document.getElementById(paymentMethod + '_rp-show-installment-plan-details').style.display === 'none') {
+        document.getElementById(paymentMethod + '_rp-show-installment-plan-details').style.display = 'block';
+        document.getElementById(paymentMethod + '_rp-hide-installment-plan-details').style.display = 'none';
+        document.getElementById(paymentMethod + '_rp-installment-plan-details').style.display = 'none';
+        document.getElementById(paymentMethod + '_rp-installment-plan-no-details').style.display = 'block';
+    } else {
+        document.getElementById(paymentMethod + '_rp-hide-installment-plan-details').style.display = 'block';
+        document.getElementById(paymentMethod + '_rp-show-installment-plan-details').style.display = 'none';
+        document.getElementById(paymentMethod + '_rp-show-installment-plan-details').style.display = 'none';
+        document.getElementById(paymentMethod + '_rp-installment-plan-details').style.display = 'block';
+        document.getElementById(paymentMethod + '_rp-installment-plan-no-details').style.display = 'none';
+    }
+}
+function fcpoChangeInstallmentPaymentType(payment, paymentMethod) {
+    if (payment == 28) {
+        document.getElementById(paymentMethod + '_iban').value = '';
+        document.getElementById(paymentMethod + '_sepa_container').style.display = 'none';
+        document.getElementById(paymentMethod + '_rp-switch-payment-type-direct-debit').style.display = 'block';
+        document.getElementById(paymentMethod + '_paymentFirstday').value = 2;
+        document.getElementById(paymentMethod + '_settlement_type').value = 'banktransfer';
+    } else {
+        document.getElementById(paymentMethod + '_sepa_container').style.display = 'block';
+        document.getElementById(paymentMethod + '_rp-switch-payment-type-direct-debit').style.display = 'none';
+        document.getElementById(paymentMethod + '_paymentFirstday').value = 28;
+        document.getElementById(paymentMethod + '_settlement_type').value = 'debit';
+    }
+}
+
+// RATEPAY INSTALLMENT <<<<
+
 /**
  * Triggers precheck for payolution installment via ajax
  *

@@ -4,7 +4,7 @@
             <input id="payment_[{$sPaymentID}]" type="radio" name="paymentid" value="[{$sPaymentID}]" [{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]checked[{/if}]>
             <label for="payment_[{$sPaymentID}]"><b>[{oxmultilang ident=$paymentmethod->oxpayments__oxdesc->value}] [{$oView->fcpoGetFormattedPaymentCosts($paymentmethod)}]</b></label>
         </dt>
-        <dd class="[{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]activePayment[{/if}]">
+        <dd class="[{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]activePayment[{else}]payment-option[{/if}]">
             <input type="hidden" name="fcpo_mode_[{$sPaymentID}]" value="[{$paymentmethod->fcpoGetOperationMode()}]">
             <input type="hidden" name="dynvalue[fcporp_debitnote_profileid]" value="[{$oView->fcpoGetRatePayMatchedProfile('fcporp_debitnote')}]">
             <input type="hidden" name="dynvalue[fcporp_debitnote_device_fingerprint]" value="[{$oView->fcpoGetRatePayDeviceFingerprint()}]">

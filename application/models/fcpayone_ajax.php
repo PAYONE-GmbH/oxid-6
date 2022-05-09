@@ -674,6 +674,226 @@ class fcpayone_ajax extends oxBase
 
         return json_encode($response);
     }
+
+    public function fcpoRatepayCalculation($sParamsJson)
+    {
+        $aParams = json_decode($sParamsJson, true);
+        $sOxid = $aParams['sPaymentMethodOxid'];
+
+        $oRatePay = oxNew('fcporatepay');
+        $aRatepayData = $oRatePay->fcpoGetProfileData($sOxid);
+
+        if ($aParams['sMode'] == 'runtime') {
+            $sCalculationMode = 'calculation-by-time';
+            $aRatepayData['duration'] = $aParams['iMonth'];
+        } else {
+            $sCalculationMode = 'calculation-by-rate';
+            $aRatepayData['installment'] = $aParams['iInstallment'];
+        }
+
+        $oRequest = $this->_oFcpoHelper->getFactoryObject('fcporequest');
+        $aResponse = $oRequest->sendRequestRatepayCalculation($sCalculationMode, $aRatepayData);
+
+        if (is_array($aResponse) && array_key_exists('workorderid', $aResponse) !== false) {
+            $this->_oFcpoHelper->fcpoSetSessionVariable('ratepay_workorderid', $aResponse['workorderid']);
+        }
+
+        $aInstallmentDetails = [
+            'annualPercentageRate' => $aResponse['add_paydata[annual-percentage-rate]'],
+            'interestAmount' => $aResponse['add_paydata[interest-amount]'],
+            'amount' => $aResponse['add_paydata[amount]'],
+            'numberOfRate' => $aResponse['add_paydata[number-of-rates]'],
+            'numberOfRatesFull' => $aResponse['add_paydata[number-of-rates]'],
+            'rate' => $aResponse['add_paydata[rate]'],
+            'paymentFirstday' => $aResponse['add_paydata[payment-firstday]'],
+            'interestRate' => $aResponse['add_paydata[interest-rate]'],
+            'monthlyDebitInterest' => $aResponse['add_paydata[monthly-debit-interest]'],
+            'lastRate' => $aResponse['add_paydata[last-rate]'],
+            'serviceCharge' => $aResponse['add_paydata[service-charge]'],
+            'totalAmount' => $aResponse['add_paydata[total-amount]'],
+        ];
+
+        if ($aInstallmentDetails['lastRate'] < $aInstallmentDetails['rate']) {
+            $aInstallmentDetails['numberOfRate'] = $aInstallmentDetails['numberOfRate']-1;
+        }
+
+        $code = $this->_generateTranslatedResultCode($aRatepayData, $aInstallmentDetails);
+
+        $sHtml = $this->_parseRatepayRateDetails($aRatepayData['OXPAYMENTID'], $aInstallmentDetails, $code);
+
+        return $sHtml;
+    }
+
+    protected function _generateTranslatedResultCode($aRatepayData, $aInstallmentDetails)
+    {
+        if (isset($aRatepayData['installment']) && $aRatepayData['installment'] < $aInstallmentDetails['rate']) {
+            return 'RATE_INCREASED';
+        }
+        if (isset($aRatepayData['installment']) && $aRatepayData['installment'] > $aInstallmentDetails['rate']) {
+            return 'RATE_REDUCED';
+        }
+
+        return 603;
+    }
+
+    protected function _parseRatepayRateDetails($sPaymentMethod, $aInstallmentDetails, $iCode)
+    {
+        $oLang = $this->_oFcpoHelper->fcpoGetLang();
+
+        $sHtml = '<div class="rp-table-striped">';
+        $sHtml .= '    <div>';
+        $sHtml .= '        <div class="text-center text-uppercase" colspan="2">' . $oLang->translateString('FCPO_RATEPAY_CALCULATION_DETAILS_TITLE') . '</div>';
+        $sHtml .= '    </div>';
+
+        $sHtml .= '    <div>';
+        $sHtml .= '        <div class="warning small text-center" colspan="2">' . $oLang->translateString('FCPO_RATEPAY_CALCULATION_DETAILS_CODE_TRANSLATION_' . $iCode) . '<br/>' . $oLang->translateString('FCPO_RATEPAY_CALCULATION_DETAILS_EXAMPLE') . '</div>';
+        $sHtml .= '    </div>';
+
+        $sHtml .= '    <div class="rp-menue">';
+        $sHtml .= '        <div colspan="2" class="small text-right">';
+        $sHtml .= '             <a class="rp-link" id="' . $sPaymentMethod . '_rp-show-installment-plan-details" onclick="fcpoRpChangeDetails(\'' . $sPaymentMethod . '\')">';
+        $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_DETAILS_SHOW');
+        $sHtml .= '                <img src="modules/fc/fcpayone/out/img/icon-enlarge.png" class="rp-details-icon" />';
+        $sHtml .= '            </a>';
+        $sHtml .= '             <a class="rp-link" id="' . $sPaymentMethod . '_rp-hide-installment-plan-details" onclick="fcpoRpChangeDetails(\'' . $sPaymentMethod . '\')">';
+        $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_DETAILS_HIDE');
+        $sHtml .= '                <img src="modules/fc/fcpayone/out/img/icon-shrink.png" class="rp-details-icon" />';
+        $sHtml .= '            </a>';
+        $sHtml .= '        </div>';
+        $sHtml .= '    </div>';
+
+        $sHtml .= '    <div id="' . $sPaymentMethod . '_rp-installment-plan-details">';
+        $sHtml .= '        <div class="rp-installment-plan-details">';
+        $sHtml .= '             <div class="rp-installment-plan-title" onmouseover="fcpoMouseOver(\'' . $sPaymentMethod . '_amount\')" onmouseout="fcpoMouseOut(\'' . $sPaymentMethod . '_amount\')">';
+        $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_DETAILS_PRICE_LABEL') . '&nbsp;';
+        $sHtml .= '                 <p id="' . $sPaymentMethod . '_amount" class="rp-installment-plan-description small">';
+        $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_DETAILS_PRICE_DESC');
+        $sHtml .= '                </p>';
+        $sHtml .= '            </div>';
+        $sHtml .= '            <div class="text-right">';
+        $sHtml .= $aInstallmentDetails['amount'];
+        $sHtml .= '            </div>';
+        $sHtml .= '        </div>';
+
+        $sHtml .= '        <div class="rp-installment-plan-details">';
+        $sHtml .= '            <div class="rp-installment-plan-title" onmouseover="fcpoMouseOver(\'' . $sPaymentMethod . '_serviceCharge\')" onmouseout="fcpoMouseOut(\'' . $sPaymentMethod . '_serviceCharge\')">';
+        $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_DETAILS_SERVICE_CHARGE_LABEL') . '&nbsp;';
+        $sHtml .= '                <p id="' . $sPaymentMethod . '_serviceCharge" class="rp-installment-plan-description small">';
+        $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_DETAILS_SERVICE_CHARGE_DESC');
+        $sHtml .= '                </p>';
+        $sHtml .= '            </div>';
+        $sHtml .= '            <div class="text-right">';
+        $sHtml .= $aInstallmentDetails['serviceCharge'];
+        $sHtml .= '            </div>';
+        $sHtml .= '        </div>';
+
+        $sHtml .= '        <div class="rp-installment-plan-details">';
+        $sHtml .= '            <div class="rp-installment-plan-title" onmouseover="fcpoMouseOver(\'' . $sPaymentMethod . '_annualPercentageRate\')" onmouseout="fcpoMouseOut(\'' . $sPaymentMethod . '_annualPercentageRate\')">';
+        $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_EFFECTIVE_RATE_LABEL') . '&nbsp;';
+        $sHtml .= '                <p id="' . $sPaymentMethod . '_annualPercentageRate" class="rp-installment-plan-description small">';
+        $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_EFFECTIVE_RATE_DESC');
+        $sHtml .= '                </p>';
+        $sHtml .= '            </div>';
+        $sHtml .= '            <div class="text-right">';
+        $sHtml .= $aInstallmentDetails['annualPercentageRate'];
+        $sHtml .= '            </div>';
+        $sHtml .= '        </div>';
+
+        $sHtml .= '        <div class="rp-installment-plan-details">';
+        $sHtml .= '            <div class="rp-installment-plan-title" onmouseover="fcpoMouseOver(\'' . $sPaymentMethod . '_interestRate\')" onmouseout="fcpoMouseOut(\'' . $sPaymentMethod . '_interestRate\')">';
+        $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_DEBIT_RATE_LABEL') . '&nbsp;';
+        $sHtml .= '                <p id="' . $sPaymentMethod . '_interestRate" class="rp-installment-plan-description small">';
+        $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_DEBIT_RATE_DESC');
+        $sHtml .= '                </p>';
+        $sHtml .= '            </div>';
+        $sHtml .= '            <div class="text-right">';
+        $sHtml .= $aInstallmentDetails['interestRate'];
+        $sHtml .= '            </div>';
+        $sHtml .= '        </div>';
+
+        $sHtml .= '        <div class="rp-installment-plan-details">';
+        $sHtml .= '            <div class="rp-installment-plan-title" onmouseover="fcpoMouseOver(\'' . $sPaymentMethod . '_interestAmount\')" onmouseout="fcpoMouseOut(\'' . $sPaymentMethod . '_interestAmount\')">';
+        $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_INTEREST_AMOUNT_LABEL') . '&nbsp;';
+        $sHtml .= '                <p id="' . $sPaymentMethod . '_interestAmount" class="rp-installment-plan-description small">';
+        $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_INTEREST_AMOUNT_DESC');
+        $sHtml .= '                </p>';
+        $sHtml .= '            </div>';
+        $sHtml .= '            <div class="text-right">';
+        $sHtml .= $aInstallmentDetails['interestAmount'];
+        $sHtml .= '            </div>';
+        $sHtml .= '        </div>';
+
+        $sHtml .= '        <div class="rp-installment-plan-details">';
+        $sHtml .= '            <div colspan="2"></div>';
+        $sHtml .= '        </div>';
+
+        $sHtml .= '        <div class="rp-installment-plan-details">';
+        $sHtml .= '            <div class="rp-installment-plan-title" onmouseover="fcpoMouseOver(\'' . $sPaymentMethod . '_rate\')" onmouseout="fcpoMouseOut(\'' . $sPaymentMethod . '_rate\')">';
+        $sHtml .= $aInstallmentDetails['numberOfRate'] . ' ' . $oLang->translateString('FCPO_RATEPAY_CALCULATION_DURATION_MONTH_LABEL') . '&nbsp;';
+        $sHtml .= '                <p id="' . $sPaymentMethod . '_rate" class="rp-installment-plan-description small">';
+        $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_DURATION_MONTH_DESC');
+        $sHtml .= '                </p>';
+        $sHtml .= '            </div>';
+        $sHtml .= '            <div class="text-right">';
+        $sHtml .= $aInstallmentDetails['rate'];
+        $sHtml .= '            </div>';
+        $sHtml .= '        </div>';
+
+        $sHtml .= '        <div class="rp-installment-plan-details">';
+        $sHtml .= '            <div class="rp-installment-plan-title" onmouseover="fcpoMouseOver(\'' . $sPaymentMethod . '_lastRate\')" onmouseout="fcpoMouseOut(\'' . $sPaymentMethod . '_lastRate\')">';
+        $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_LAST_RATE_LABEL') . '&nbsp;';
+        $sHtml .= '                <p id="' . $sPaymentMethod . '_lastRate" class="rp-installment-plan-description small">';
+        $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_LAST_RATE_DESC');
+        $sHtml .= '                </p>';
+        $sHtml .= '            </div>';
+        $sHtml .= '            <div class="text-right">';
+        $sHtml .= $aInstallmentDetails['lastRate'];
+        $sHtml .= '            </div>';
+        $sHtml .= '        </div>';
+        $sHtml .= '    </div>';
+
+
+        $sHtml .= '    <div id="' . $sPaymentMethod . '_rp-installment-plan-no-details">';
+        $sHtml .= '        <div class="rp-installment-plan-no-details">';
+        $sHtml .= '            <div class="rp-installment-plan-title" onmouseover="fcpoMouseOver(\'' . $sPaymentMethod . '_rate2\')" onmouseout="fcpoMouseOut(\'' . $sPaymentMethod . '_rate2\')">';
+        $sHtml .= $aInstallmentDetails['numberOfRatesFull'] . ' ' . $oLang->translateString('FCPO_RATEPAY_CALCULATION_DURATION_MONTH_LABEL') . '&nbsp;';
+        $sHtml .= '                <p id="' . $sPaymentMethod . '_rate2" class="rp-installment-plan-description small">';
+        $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_DURATION_MONTH_DESC');
+        $sHtml .= '                </p>';
+        $sHtml .= '            </div>';
+        $sHtml .= '            <div class="text-right">';
+        $sHtml .= $aInstallmentDetails['rate'];
+        $sHtml .= '            </div>';
+        $sHtml .= '        </div>';
+        $sHtml .= '    </div>';
+        $sHtml .= '    <div class="rp-installment-plan-details">';
+        $sHtml .= '        <div class="rp-installment-plan-title" onmouseover="fcpoMouseOver(\'' . $sPaymentMethod . '_totalAmount\')" onmouseout="fcpoMouseOut(\'' . $sPaymentMethod . '_totalAmount\')">';
+        $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_TOTAL_AMOUNT_LABEL') . '&nbsp;';
+        $sHtml .= '            <p id="' . $sPaymentMethod . '_totalAmount" class="rp-installment-plan-description small">';
+        $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_TOTAL_AMOUNT_DESC');
+        $sHtml .= '            </p>';
+        $sHtml .= '        </div>';
+        $sHtml .= '        <div class="text-right">';
+        $sHtml .= $aInstallmentDetails['totalAmount'];
+        $sHtml .= '        </div>';
+        $sHtml .= '    </div>';
+        $sHtml .= '</div>';
+        $sHtml .= '<div>';
+        $sHtml .= '<input type="hidden" name="dynvalue[fcporp_installment_amount]" value="' . $aInstallmentDetails['rate'] . '">';
+        $sHtml .= '<input type="hidden" name="dynvalue[fcporp_installment_number]" value="' . $aInstallmentDetails['numberOfRatesFull'] . '">';
+        $sHtml .= '<input type="hidden" name="dynvalue[fcporp_installment_last_amount]" value="' . $aInstallmentDetails['lastRate'] . '">';
+        $sHtml .= '<input type="hidden" name="dynvalue[fcporp_installment_interest_rate]" value="' . $aInstallmentDetails['interestRate'] . '">';
+        $sHtml .= '<input type="hidden" name="dynvalue[fcporp_installment_total_amount]" value="' . $aInstallmentDetails['totalAmount'] . '">';
+
+        $sHtml .= '<input type="hidden" name="dynvalue[fcporp_installment_service_charge]" value="' . $aInstallmentDetails['serviceCharge'] . '">';
+        $sHtml .= '<input type="hidden" name="dynvalue[fcporp_installment_annual_percentage_rate]" value="' . $aInstallmentDetails['annualPercentageRate'] . '">';
+        $sHtml .= '<input type="hidden" name="dynvalue[fcporp_installment_interest_amount]" value="' . $aInstallmentDetails['interestAmount'] . '">';
+        $sHtml .= '<input type="hidden" name="dynvalue[fcporp_installment_basket_amount]" value="' . $aInstallmentDetails['amount'] . '">';
+        $sHtml .= '<input type="hidden" name="dynvalue[fcporp_installment_number_of_rate]" value="' . $aInstallmentDetails['numberOfRate'] . '">';
+        $sHtml .= '</div>';
+
+        return $sHtml;
+    }
 }
 
 
@@ -712,6 +932,10 @@ if ($sPaymentId) {
     }
     if ($sAction == 'fcpoapl_get_order_info' && $sPaymentId == 'fcpo_apple_pay') {
         echo $oPayoneAjax->fcpoAplOrderInfo();
+    }
+
+    if ($sAction == 'fcporp_calculation' && $sPaymentId == 'fcporp_installment') {
+        echo $oPayoneAjax->fcpoRatepayCalculation($sParamsJson);
     }
 
 

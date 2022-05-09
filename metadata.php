@@ -156,6 +156,11 @@ $aModule = array(
             'file' => 'fcpo_order_override'
         ),
         array(
+            'template' => 'page/checkout/order.tpl',
+            'block' => 'shippingAndPayment',
+            'file' => 'fcpo_order_order_shippingAndPayment_override'
+        ),
+        array(
             'template' => 'page/checkout/user.tpl',
             'block' => 'checkout_user_main',
             'file' => 'fcpo_user_override'

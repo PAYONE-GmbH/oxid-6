@@ -755,6 +755,7 @@
                         <select class="edittext" name="aRatepayProfiles[[{$sOxid}]][paymentid]">
                             <option value="fcporp_bill" [{if $aRatePayProfile.OXPAYMENTID == 'fcporp_bill'}]selected[{/if}]>Ratepay Rechnung</option>
                             <option value="fcporp_debitnote" [{if $aRatePayProfile.OXPAYMENTID == 'fcporp_debitnote'}]selected[{/if}]>Ratepay Lastschrift</option>
+                            <option value="fcporp_installment" [{if $aRatePayProfile.OXPAYMENTID == 'fcporp_installment'}]selected[{/if}]>Ratepay Ratenkauf</option>
                         </select>
                         <input type="submit" class="edittext" name="aRatepayProfiles[[{$sOxid}]][delete]" value="[{oxmultilang ident="FCPO_RATEPAY_DELETE_PROFILE"}]" onClick="Javascript:document.myedit.fnc.value='save'" [{$readonly}]><br>
                         [{if $aRatePayProfile.merchant_name != ''}]

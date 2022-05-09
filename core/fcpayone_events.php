@@ -429,6 +429,7 @@ class fcpayone_events
         'fcpo_trustly' => 'PAYONE Trustly',
         'fcpo_wechatpay'=> 'PAYONE WeChat Pay',
         'fcpo_apple_pay'=> 'PAYONE Apple Pay',
+        'fcporp_installment' => 'PAYONE Ratepay Ratenkauf',
     );
 
     /**

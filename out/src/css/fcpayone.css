@@ -152,6 +152,101 @@
     color:red;
 }
 
+/* RATEPAY */
+.rpContainer {
+    width: 100%;
+    padding-top:10px
+}
+.rp-installment-plan-description {
+    display: none;
+}
+#fcporp_installment_rp-installment-plan-details {
+    display: none;
+}
+#fcporp_installment_rp-installment-plan-no-details {
+    display: block;
+}
+#fcporp_installment_rp-hide-installment-plan-details {
+    display: none;
+}
+#fcporp_installment_rp-show-installment-plan-details {
+    display: block;
+}
+.rp-table-striped {
+    margin-left: 5%;
+    margin-bottom: 5%;
+    width: 90%;
+}
+.rp-menue,
+.rp-installment-plan-details,
+.rp-installment-plan-no-details {
+    border-bottom: 1px solid #ddd;
+    width: 100%;
+    margin: 0px 3px;
+    padding: 13px 6px;
+}
+
+.rp-installment-plan-details:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.rp-installment-plan-title {
+    float: left;
+}
+.warning {
+    background-color: #fcf8e3;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    padding: 7px 0px;
+}
+.text-center {
+    padding: 10px 0px;
+    border-top: 1px solid #ddd
+}
+.rp-sepa-form {
+    width: 80%;
+    margin-left: 14px;
+}
+.rp-sepa-table {
+    margin-left: -10px;
+}
+.rp-special-item {
+    margin-left: 5px;
+}
+.rp-link {
+    margin-left: 20px
+}
+#fcporp_installment_sepa_container {
+    display: none;
+}
+#fcporp_installment_rp-sepa-agreement {
+    margin-left: 5px
+}
+#fcporp_installment_rp-switch-payment-type-direct-debit {
+    display: none;
+}
+#fcporp_installment_rp-iban-account-number {
+    display: block;
+}
+.rp-payment-type-switch A {
+    display:inline-block;
+    color:#444;
+    border:1px solid #CCC;
+    background:#FFF;
+    cursor:pointer;
+    vertical-align:middle;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+}
+.rp-installment-header {
+    display:inline-block;
+    text-decoration: underline;
+    margin: 0 0 10px 6px;
+}
+/* END RATEPAY */
+
+
 /* overwriting OXID base style */
 .payment dl dd.activePayment {
     display: block;

@@ -30,8 +30,8 @@ $aModule = array(
                         Das Leistungsspektrum umfasst die Akzeptanz und Abwicklung nationaler und internationaler Zahlungsarten sowie alle Zahlungsdienstleistungen. 
                         Standardisierte Schnittstellen und Extensions erlauben eine einfache Integration in bestehende E-Commerce und IT-Systeme bei h&ouml;chsten Sicherheitsstandards.<br><br>
                         Hier finden Sie weitere Informationen zum PAYONE Payment-Modul f&uuml;r OXID eShop: 
-                        <a href="https://www.payone.de/plattform-integration/extensions/oxid/" style="color:darkblue;text-decoration: underline;" title="PAYONE Homepage" target="_blank">
-                            https://www.payone.de
+                        <a href="https://docs.payone.com/display/public/INT/Oxid+6+Extension" style="color:darkblue;text-decoration: underline;" title="PAYONE Homepage" target="_blank">
+                            https://www.payone.com
                         </a>',
     'thumbnail'     => 'picture.gif',
     'version'       => '1.6.2',

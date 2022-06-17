@@ -27,6 +27,7 @@
     <input type="hidden" name="oxid" value="[{$oxid}]">
 
     [{oxmultilang ident="FCPO_MAIN_CONFIG_INFOTEXT"}]<br><br>
+    [{oxmultilang ident="FCPO_MAIN_CONFIG_TESTACCOUNT_LINK"}]<br><br>
 
     [{oxmultilang ident="FCPO_MODULE_VERSION"}] [{$oView->fcpoGetModuleVersion()}]<br><br>
 

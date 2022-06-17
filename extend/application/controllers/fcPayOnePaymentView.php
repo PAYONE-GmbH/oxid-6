@@ -960,6 +960,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
                 parent::getPaymentList();
                 $this->_fcpoCheckPaypalExpressRemoval();
                 $this->_fcpoRemoveForbiddenPaymentsByUser();
+                $this->_fcpoCheckSecInvoiceRemoval();
             } else {
                 $oUtils = $this->_oFcpoHelper->fcpoGetUtils();
                 $oUtils->redirect($this->_oFcpoHelper->fcpoGetConfig()->getShopHomeURL() . 'cl=user', false);
@@ -1482,6 +1483,20 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     {
         $this->_fcpoRemovePaymentFromFrontend('fcpopaypal_express');
         //&& !$this->_oFcpoHelper->fcpoGetSessionVariable('fcpoWorkorderId')
+    }
+
+    /**
+     * Checking if secure invoice should be removed from payment list
+     *
+     * @param  void
+     * @return void
+     */
+    protected function _fcpoCheckSecInvoiceRemoval()
+    {
+        $blshowshipaddress = $this->_oFcpoHelper->fcpoGetSessionVariable('blshowshipaddress');
+        if ($blshowshipaddress == 1) {
+            $this->_fcpoRemovePaymentFromFrontend('fcpo_secinvoice');
+        }
     }
 
     /**

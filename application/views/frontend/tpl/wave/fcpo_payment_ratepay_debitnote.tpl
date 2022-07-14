@@ -1,4 +1,5 @@
 [{if $oView->fcpoRatePayAllowed('fcporp_debitnote')}]
+<div class="well well-sm">
     <dl>
         <dt>
             <input id="payment_[{$sPaymentID}]" type="radio" name="paymentid" value="[{$sPaymentID}]" [{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]checked[{/if}]>
@@ -107,4 +108,5 @@
             [{/block}]
         </dd>
     </dl>
+</div>
 [{/if}]

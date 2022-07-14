@@ -1,6 +1,7 @@
 [{if $oView->fcpoRatePayAllowed('fcporp_installment')}]
     [{assign var='sSettlementType' value=$oView->fcpoGetRatepaySettlementType('fcporp_installment')}]
     [{assign var="aFcPoRpCalcParam" value=$oView->fcpoGetRatepayCalculatorParams('fcporp_installment')}]
+<div class="well well-sm">
     <dl>
         <dt>
             <input id="payment_[{$sPaymentID}]" type="radio" name="paymentid" value="[{$sPaymentID}]" [{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]checked[{/if}]>
@@ -171,4 +172,5 @@
             [{/block}]
         </dd>
     </dl>
+</div>
 [{/if}]

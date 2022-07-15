@@ -61,5 +61,24 @@ function onClickDebit(oElement) {
     }
 }
 
+function fcpoToggleDetails(sId, blOpen) {
+    var target = window.document.getElementById(sId + '-title');
+    var lines = document.querySelectorAll('.' + sId);
+    if(blOpen) {
+        target.getElementsByClassName('unfold-icon')[0].style.display = 'none';
+        target.getElementsByClassName('fold-icon')[0].style.display = '';
+
+        lines.forEach(function (elem, index) {
+            elem.style.display = '';
+        });
+    } else {
+        target.getElementsByClassName('unfold-icon')[0].style.display = '';
+        target.getElementsByClassName('fold-icon')[0].style.display = 'none';
+
+        lines.forEach(function (elem, index) {
+            elem.style.display = 'none';
+        });
+    }
+}
 
 

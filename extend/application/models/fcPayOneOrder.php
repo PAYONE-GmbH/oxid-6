@@ -1607,7 +1607,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      */
     public function fcpoGetStatus() 
     {
-        $sQuery = "SELECT oxid FROM fcpotransactionstatus WHERE fcpo_txid = '{$this->oxorder__fcpotxid->value}' ORDER BY oxid ASC";
+        $sQuery = "SELECT oxid FROM fcpotransactionstatus WHERE fcpo_txid = '{$this->oxorder__fcpotxid->value}' ORDER BY fcpo_sequencenumber ASC";
         $aRows = $this->_oFcpoDb->getAll($sQuery);
 
         $aStatus = array();
@@ -1619,6 +1619,17 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         }
 
         return $aStatus;
+    }
+
+    /**
+     * Returns authorization method of order
+     *
+     * @param  void
+     * @return string
+     */
+    public function getAuthorizationMethod()
+    {
+        return $this->getRequestParameter('request');
     }
 
     /**

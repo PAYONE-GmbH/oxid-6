@@ -10,17 +10,11 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ubuntu-latest]
-        php-versions: ['7.4', '8.0', '8.1']
-        oxid-versions: ['dev-b-6.1-ce', 'dev-b-6.2-ce', 'dev-b-6.3-ce']
+        php-versions: ['7.4', '8.0']
+        oxid-versions: ['dev-b-6.2-ce', 'dev-b-6.3-ce', 'dev-b-6.4-ce']
         exclude:
-          - php-versions: '7.4' 
-            oxid-versions: 'dev-b-6.1-ce'
-          - php-versions: '8.0' 
-            oxid-versions: 'dev-b-6.1-ce'
           - php-versions: '8.0'
             oxid-versions: 'dev-b-6.2-ce'
-          - php-versions: '8.1'
-            oxid-versions: 'dev-b-6.5-ce'
     name: Oxid ${{ matrix.oxid-versions }} on PHP ${{ matrix.php-versions }}
     services:
       mysql:

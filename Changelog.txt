@@ -1,3 +1,20 @@
+==1.7.0==
+
+New Features
+ 
+* Ratepay installment
+* Renaming paymentmethods
+ 
+Bugfix(es)
+ 
+* hiding secure invoice by different delivery adress
+* update iDeals banklist
+* fixing some typeerrors
+ 
+Maintenance
+ 
+* tested with Oxid 6.4 and prepared for Oxid 6.5
+* php 8.1 support
 ==1.6.2==
 
 Bugfixes

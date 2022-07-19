@@ -1322,11 +1322,14 @@ class fcPayOneOrder extends fcPayOneOrder_parent
     /**
      * Returns request array of last authorization call
      *
+     * @param array $aAcceptedStatus
      * @return array|null
      */
-    protected function getRequest() 
+    protected function getRequest($aAcceptedStatus = array('APPROVED'))
     {
         if ($this->_aRequest === null) {
+            array_walk($aAcceptedStatus, function(&$sStatus){$sStatus = "'".$sStatus."'";});
+
             $sSelect = "
                 SELECT oxid 
                 FROM fcporequestlog 
@@ -1335,7 +1338,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
                     fcpo_requesttype = 'preauthorization' OR 
                     fcpo_requesttype = 'authorization'
                 )
-                AND FCPO_RESPONSESTATUS = 'APPROVED'
+                AND FCPO_RESPONSESTATUS IN (" . join(',', $aAcceptedStatus) . ")
                 ORDER BY oxtimestamp DESC
             ";
             $sOxidRequest = $this->_oFcpoDb->GetOne($sSelect);
@@ -1629,7 +1632,11 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      */
     public function getAuthorizationMethod()
     {
-        return $this->getRequestParameter('request');
+        $aRequest = $this->getRequest(array('APPROVED','REDIRECT'));
+        $sReturn = (isset($aRequest['request'])) ?
+            $aRequest['request'] : '';
+
+        return $sReturn;
     }
 
     /**

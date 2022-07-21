@@ -37,6 +37,13 @@ class fcpayone_order extends fcpayone_admindetails
     protected $_aStatus = null;
 
     /**
+     * Holds the authorization method
+     *
+     * @var array
+     */
+    protected $_sAuthorizationMethod = null;
+
+    /**
      * Holds prefix of request message to be able to translate right
      *
      * @var array
@@ -155,6 +162,97 @@ class fcpayone_order extends fcpayone_admindetails
             }
         }
         return $this->_aStatus;
+    }
+
+    /**
+     * Returns the payment request method Auth/Preauthorization
+     *
+     * @return string
+     */
+    public function getAuthorizationMethod()
+    {
+        if (!$this->_sAuthorizationMethod) {
+            $this->_sAuthorizationMethod = '';
+            $sOxid = $this->_oFcpoHelper->fcpoGetRequestParameter("oxid");
+            if ($sOxid != "-1" && isset($sOxid)) {
+                $oOrder = $this->_oFcpoHelper->getFactoryObject('oxorder');
+                $oOrder->load($sOxid);
+            }
+
+            if ($oOrder) {
+                $this->_sAuthorizationMethod = $oOrder->getAuthorizationMethod();
+            }
+        }
+
+        return $this->_sAuthorizationMethod;
+    }
+
+    /**
+     * Returns formatted/sorted txstatus entries
+     *
+     * @return array
+     */
+    public function getCaptureDebitEntries()
+    {
+        $aEntries = array(
+            'capture'=> array(),
+            'debit'=> array(),
+            'paid' => array(),
+            'totalCapture' => 0,
+            'totalDebit' => 0,
+            'totalBalance' => 0
+        );
+
+        $dLastReceivable = 0.0;
+        $dLastPayment = 0.0;
+        foreach ($this->getStatus() as $oStatus) {
+            $dReceivable = $oStatus->fcpotransactionstatus__fcpo_receivable->value;
+            $dPayment = $oStatus->fcpotransactionstatus__fcpo_receivable->value-$oStatus->fcpotransactionstatus__fcpo_balance->value;
+
+            if ($dLastPayment != $dPayment) {
+                $dPaymentAmount = $dPayment-$dLastPayment;
+            } else {
+                $dPaymentAmount = $oStatus->fcpotransactionstatus__fcpo_receivable->value;
+            }
+
+            if ($oStatus->fcpotransactionstatus__fcpo_txaction->value == 'capture') {
+                $aEntries['capture'][] = [
+                    'oxid' => $oStatus->fcpotransactionstatus__oxid->value,
+                    'date' => $oStatus->fcpotransactionstatus__fcpo_txtime->value,
+                    'amount' => $dPaymentAmount,
+                ];
+                $aEntries['totalCapture'] += $dPaymentAmount;
+
+                $dLastReceivable = $dReceivable;
+                $dLastPayment = $dPayment;
+
+                $aEntries['totalBalance'] = $dLastReceivable;
+            } elseif ($oStatus->fcpotransactionstatus__fcpo_txaction->value == 'debit') {
+                $aEntries['debit'][] = [
+                    'oxid' => $oStatus->fcpotransactionstatus__oxid->value,
+                    'date' => $oStatus->fcpotransactionstatus__fcpo_txtime->value,
+                    'amount' => $dPaymentAmount,
+                ];
+                $aEntries['totalDebit'] += $dPaymentAmount;
+
+                $dLastReceivable = $dReceivable;
+                $dLastPayment = $dPayment;
+
+                $aEntries['totalBalance'] = $dLastReceivable;
+            } elseif ($oStatus->fcpotransactionstatus__fcpo_txaction->value == 'paid') {
+                $aEntries['paid'][] = [
+                    'oxid' => $oStatus->fcpotransactionstatus__oxid->value,
+                    'date' => $oStatus->fcpotransactionstatus__fcpo_txtime->value,
+                    'amount' => $dPaymentAmount,
+                ];
+                
+                $dLastReceivable = $dReceivable;
+                $dLastPayment = $dPayment;
+                $aEntries['totalBalance'] = $dLastReceivable;
+            }
+        }
+
+        return $aEntries;
     }
 
     /**

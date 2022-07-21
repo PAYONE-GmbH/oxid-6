@@ -2,6 +2,7 @@
 [{assign var="currStatus" value=$oView->fcpoGetCurrentStatus()}]
 [{assign var="status_oxid" value=$oView->fcpoGetStatusOxid()}]
 [{assign var="status" value=$oView->getStatus()}]
+[{assign var="oOrderarticles" value=$edit->getOrderArticles()}]
 
 [{oxscript include=$oViewConf->fcpoGetModuleJsPath('fcpayone_order.js')}]
 
@@ -310,7 +311,6 @@
                             [{/if}]
                             [{if $edit->isDetailedProductInfoNeeded()}]
                                 [{assign var="blShowDebit" value=false}]
-                                [{assign var="oOrderarticles" value=$edit->getOrderArticles()}]
                                 <tr><td colspan="2">&nbsp;</td></tr>                                 
                                 <tr>
                                     <td colspan="2">
@@ -952,84 +952,134 @@
             </td>
             <td valign="top">
                 [{if $status}]
-                    <div id="liste">
-                        [{oxmultilang ident="FCPO_LIST_HEADER_TITLE"}]<br>
-                        <table cellspacing="0" cellpadding="0" border="0" width="100%">
-                            <colgroup><col width="25%"><col width="25%"><col width="25%"><col width="25%"></colgroup>
-                            <tr class="listitem">
-                                <td valign="top" class="listfilter first">
-                                    <div class="r1"><div class="b1">
-                                        [{oxmultilang ident="FCPO_LIST_HEADER_TXTIME"}]
-                                    </div></div>
-                                </td>
-                                <td height="20" valign="top" class="listfilter" nowrap>
-                                    <div class="r1"><div class="b1">
-                                            [{oxmultilang ident="FCPO_LIST_HEADER_PROCESS"}]
-                                    </div></div>
-                                </td>
-                                <td height="20" valign="top" class="listfilter" nowrap>
-                                    <div class="r1"><div class="b1">
-                                            [{oxmultilang ident="FCPO_LIST_HEADER_DEMAND"}]
-                                    </div></div>
-                                </td>
-                                <td height="20" valign="top" class="listfilter" nowrap>
-                                    <div class="r1"><div class="b1">
-                                        [{oxmultilang ident="fcpo_payment"}]
-                                    </div></div>
+                    [{assign var="authorizationMethod" value=$oView->getAuthorizationMethod()}]
+                    [{assign var="captureDebitEntries" value=$oView->getCaptureDebitEntries()}]
+                    <table border="0" width="50%">
+                        <tbody>
+                            <tr>
+                                <td><strong>[{oxmultilang ident="FCPO_AUTHORIZATION_METHOD"}]</strong></td>
+                                <td style="text-align: right">
+                                    [{if $authorizationMethod == 'authorization'}]
+                                    <span><strong>[{oxmultilang ident="FCPO_AUTHORIZATION"}]</strong></span>
+                                    [{else}]
+                                    <span><strong>[{oxmultilang ident="FCPO_PREAUTHORIZATION"}]</strong></span>
+                                    [{/if}]
                                 </td>
                             </tr>
-                            [{assign var="listclass" value="listitem"}]
-                            [{assign var="last_receivable" value=0}]
-                            [{assign var="last_payment" value=0}]
-                            [{foreach from=$status item=stat name=transactions}]
-                                [{assign var="receivable" value=$stat->fcpotransactionstatus__fcpo_receivable->value}]
-                                [{assign var="payment" value=$stat->fcpotransactionstatus__fcpo_receivable->value-$stat->fcpotransactionstatus__fcpo_balance->value}]
-
-                                [{if $last_receivable != $receivable || ($last_receivable == $receivable && $last_payment == $payment)}]
-                                    <tr>
-                                        <td class="[{$listclass}]" style="padding-left: 5px;"><a href="Javascript:editThisStatus('[{$stat->fcpotransactionstatus__oxid->value}]', '[{$oxid}]');">[{$stat->fcpotransactionstatus__oxtimestamp->value}]</a>&nbsp;</td>
-                                        <td class="[{$listclass}]" style="padding-left: 5px;">[{$stat->getDisplayNameReceivable($receivable-$last_receivable)}]&nbsp;</td>
-                                        <td class="[{$listclass}]" style="padding-left: 5px; [{if $receivable-$last_receivable < 0}]color: red;[{/if}]">[{$receivable-$last_receivable|number_format:2:',':''}]&nbsp;[{$stat->fcpotransactionstatus__fcpo_currency->value}]</td>
-                                        <td class="[{$listclass}]" style="padding-left: 5px;"></td>
-                                    </tr>
-                                    [{if $listclass == "listitem2"}]
-                                        [{assign var="listclass" value="listitem"}]
+                            <tr style="border-bottom: solid 1px">
+                                <td>
+                                    [{if $authorizationMethod == 'authorization'}]
+                                    <strong>[{oxmultilang ident="FCPO_AUTHORIZED_AMOUNT"}]</strong>
                                     [{else}]
-                                        [{assign var="listclass" value="listitem2"}]
+                                    <strong>[{oxmultilang ident="FCPO_PREAUTHORIZED_AMOUNT"}]</strong>
                                     [{/if}]
-                                [{/if}]
+                                </td>
+                                <td style="text-align: right">
+                                    <span><strong>[{$edit->oxorder__oxtotalordersum->value|number_format:2:",":""}] [{$edit->oxorder__oxcurrency->value}]</strong></span>
+                                </td>
+                            </tr>
 
-                                [{if $last_payment != $payment}]
-                                    <tr>
-                                        <td class="[{$listclass}]" style="padding-left: 5px;"><a href="Javascript:editThisStatus('[{$stat->fcpotransactionstatus__oxid->value}]', '[{$oxid}]');">[{$stat->fcpotransactionstatus__oxtimestamp->value}]</a>&nbsp;</td>
-                                        <td class="[{$listclass}]" style="padding-left: 5px;">[{$stat->getDisplayNamePayment($payment-$last_payment)}]&nbsp;</td>
-                                        <td class="[{$listclass}]" style="padding-left: 5px;">&nbsp;</td>
-                                        <td class="[{$listclass}]" style="padding-left: 5px; [{if $payment-$last_payment < 0}]color: red;[{/if}]">[{$payment-$last_payment|number_format:2:',':''}]&nbsp;[{$stat->fcpotransactionstatus__fcpo_currency->value}]</td>
-                                    </tr>
-                                    [{if $listclass == "listitem2"}]
-                                        [{assign var="listclass" value="listitem"}]
-                                    [{else}]
-                                        [{assign var="listclass" value="listitem2"}]
-                                    [{/if}]
-                                [{/if}]
+                            [{if $authorizationMethod == 'authorization' && $captureDebitEntries.paid|@count > 0}]
+                                [{foreach from=$captureDebitEntries.paid item=entry name=paid}]
+                                <tr class="paid-details" style="">
+                                    <td>
+                                        <span>[{oxmultilang ident="FCPO_PAID_AMOUNT"}]</span>
+                                        <a href="Javascript:editThisStatus('[{$entry.oxid}]', '[{$oxid}]');">[{$entry.date}]</a>
+                                    </td>
+                                    <td style="text-align: right; padding-right: 10px">[{$entry.amount|number_format:2:",":""}] [{$edit->oxorder__oxcurrency->value}]</td>
+                                </tr>
+                                [{/foreach}]
+                            [{else}]
+                                <tr class="preauth-remains-details" style="">
+                                    <td>
+                                        <span>[{oxmultilang ident="FCPO_LEFT_PREAUTHORIZED_AMOUNT"}]</span>
+                                    </td>
+                                    <td style="text-align: right; padding-right: 10px">[{$edit->oxorder__oxtotalordersum->value-$captureDebitEntries.totalCapture|number_format:2:",":""}] [{$edit->oxorder__oxcurrency->value}]</td>
+                                </tr>
+                            [{/if}]
 
-                                [{assign var="last_receivable" value=$receivable}]
-                                [{assign var="last_payment" value=$payment}]
-                                [{if $smarty.foreach.transactions.last}]
-                                    </table>
-                                    <table cellspacing="0" cellpadding="0" border="0" width="100%">
-                                        <tr>
-                                            <td align="right">
-                                                <strong>[{oxmultilang ident="FCPO_BALANCE"}]: <span [{if $stat->fcpotransactionstatus__fcpo_balance->value < 0}]style="color: red;"[{/if}]>[{$stat->fcpotransactionstatus__fcpo_balance->value|number_format:2:',':''}]&nbsp;[{$stat->fcpotransactionstatus__fcpo_currency->value}]</span></strong>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                [{/if}]
-                            [{/foreach}]
-                    </div>
+                            [{if $captureDebitEntries.capture|@count > 0}]
+                                <tr><td colspan="2" style="border-bottom:solid 1px black"></td></tr>
+                                <tr>
+                                    <td>
+                                        <div id="capture-details-title" style="display: inline">
+                                            <span onclick="fcpoToggleDetails('capture-details', true)" class="unfold-icon" style="cursor: pointer">&#8744;</span>
+                                            <span onclick="fcpoToggleDetails('capture-details', false)" class="fold-icon" style="display: none; cursor: pointer">&#8743;</span>
+                                        </div>
+                                        <span><strong>[{oxmultilang ident="FCPO_CAPTURED_AMOUNT"}]</strong></span>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <span><strong>[{$captureDebitEntries.totalCapture|number_format:2:",":""}] [{$edit->oxorder__oxcurrency->value}]</strong></span>
+                                    </td>
+                                </tr>
+                                [{foreach from=$captureDebitEntries.capture item=entry name=captured}]
+                                <tr class="capture-details" style="display: none">
+                                    <td><a href="Javascript:editThisStatus('[{$entry.oxid}]', '[{$oxid}]');">[{$entry.date}]</a></td>
+                                    <td style="text-align: right; padding-right: 10px">[{$entry.amount|number_format:2:",":""}] [{$edit->oxorder__oxcurrency->value}]</td>
+                                </tr>
+                                [{/foreach}]
+                            [{/if}]
+
+                            [{if $captureDebitEntries.debit|@count > 0}]
+                                <tr><td colspan="2" style="border-bottom:solid 1px black"></td></tr>
+                                <tr>
+                                    <td>
+                                        <div id="debit-details-title" style="display: inline">
+                                            <span onclick="fcpoToggleDetails('debit-details', true)" class="unfold-icon" style="cursor: pointer">&#8744;</span>
+                                            <span onclick="fcpoToggleDetails('debit-details', false)" class="fold-icon" style="display: none; cursor: pointer">&#8743;</span>
+                                        </div>
+                                        <span><strong>[{oxmultilang ident="FCPO_REFUNDED_AMOUNT"}]</strong></span>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <span style="color: red"><strong>[{$captureDebitEntries.totalDebit|number_format:2:",":""}] [{$edit->oxorder__oxcurrency->value}]</strong></span>
+                                    </td>
+                                </tr>
+                                [{foreach from=$captureDebitEntries.debit item=entry name=refunded}]
+                                <tr class="debit-details" style="display: none">
+                                    <td><a href="Javascript:editThisStatus('[{$entry.oxid}]', '[{$oxid}]');">[{$entry.date}]</a></td>
+                                    <td style="text-align: right; padding-right: 10px; color: red">[{$entry.amount|number_format:2:",":""}] [{$edit->oxorder__oxcurrency->value}]</td>
+                                </tr>
+                                [{/foreach}]
+                            [{/if}]
+                            <tr><td colspan="2" style="border-bottom:solid 1px black"></td></tr>
+                            <tr>
+                                <td><strong>[{oxmultilang ident="FCPO_BALANCE"}]</strong></td>
+                                <td style="text-align: right; [{if $captureDebitEntries.totalBalance < 0}]color: red;[{/if}]"><strong>[{$captureDebitEntries.totalBalance|number_format:2:",":""}] [{$edit->oxorder__oxcurrency->value}]</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 [{else}]
                     [{oxmultilang ident="FCPO_NO_TRANSACTION_STATUS_RECEIVED"}]
                 [{/if}]
+
+                <div style="clear: both; margin-bottom: 50px;"></div>
+
+                <div style="margin-top: 20px">
+                    <p style="border-bottom: solid 1px black;text-transform: uppercase;"><strong>[{oxmultilang ident="FCPO_PRODUCTS"}]</strong></p>
+                    <table border="0" cellpadding="5" callspacing="5">
+                        <colgroup>
+                            <col width="70%">
+                            <col width="10%">
+                            <col width="5%">
+                            <col width="10%">
+                        </colgroup>
+                        <tr style="text-align: right">
+                            <th style="text-align: left">[{oxmultilang ident="FCPO_PRODUCT_TITLE"}]</th>
+                            <th>[{oxmultilang ident="FCPO_PRODUCT_PRICE"}]</th>
+                            <th>[{oxmultilang ident="FCPO_PRODUCT_AMOUNT"}]</th>
+                            <th>[{oxmultilang ident="FCPO_PRODUCT_TOTAL"}]</th>
+                        </tr>
+                        [{foreach from=$oOrderarticles item=oOrderArt}]
+                        [{assign var="articleTotal" value=$oOrderArt->oxorderarticles__oxamount->value*$oOrderArt->oxorderarticles__oxbprice->value}]
+                        <tr style="text-align: right">
+                            <td style="text-align: left">[{$oOrderArt->oxorderarticles__oxtitle->value}]</td>
+                            <td>[{$oOrderArt->oxorderarticles__oxbprice->value|number_format:2:",":""}] [{$edit->oxorder__oxcurrency->value}]</td>
+                            <td style="text-align: center">[{$oOrderArt->oxorderarticles__oxamount->value}]</td>
+                            <td>[{$articleTotal|number_format:2:",":""}] [{$edit->oxorder__oxcurrency->value}]</td>
+                        </tr>
+                        [{/foreach}]
+                    </table>
+                </div>
             </td>
         </tr>
     </table>

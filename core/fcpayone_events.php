@@ -227,7 +227,7 @@ class fcpayone_events
         CREATE TABLE IF NOT EXISTS `fcposhadowbasket` (
           `FCPOSESSIONID` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL DEFAULT '',
           `OXORDERID` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci DEFAULT '',
-          `FCPOBASKET` text NOT NULL,
+          `FCPOBASKET` BLOB NOT NULL,
           `FCPOCREATED` datetime NOT NULL,
           `FCPOCHECKED` datetime DEFAULT NULL,
           PRIMARY KEY (`FCPOSESSIONID`),
@@ -395,6 +395,7 @@ class fcpayone_events
     public static $sQueryFcporequestlogCopyTimestampData = "UPDATE fcporequestlog SET OXTIMESTAMP = FCPO_TIMESTAMP;";
     public static $sQueryFcpotransactionstatusCopyTimestampData = "UPDATE fcpotransactionstatus SET OXTIMESTAMP = FCPO_TIMESTAMP;";
     public static $sQueryFcpocheckedaddressesCopyTimestampData = "UPDATE fcpocheckedaddresses SET OXTIMESTAMP = fcpo_checkdate;";
+    public static $sQueryAlterFcpoShadowBasketFcbasketChangeToBlob = "ALTER TABLE fcposhadowbasket MODIFY FCPOBASKET BLOB;";
 
     public static $aPaymentMethods = array(
         'fcpoinvoice' => 'PAYONE Rechnungskauf',
@@ -666,6 +667,9 @@ class fcpayone_events
         self::insertRowIfNotExists('fcpopayoneexpresslogos', array('OXID' => '2'), "INSERT INTO fcpopayoneexpresslogos (OXID, FCPO_ACTIVE, FCPO_LANGID, FCPO_LOGO, FCPO_DEFAULT) VALUES(2, 1, 1, 'btn_xpressCheckout_en.gif', 0);");
         // add available user flags
         self::insertRowIfNotExists('fcpouserflags', array('OXID' => 'fcporatepayrejected'), "INSERT INTO fcpouserflags (OXID, FCPOCODE, FCPOEFFECT, FCPOFLAGDURATION, FCPONAME, FCPODESC) VALUES ('fcporatepayrejected', 307, 'RPR', 24, 'Ratepay Rejected', 'CUSTOM');");
+
+        // OX6-127: CHANGE SHADOW BASKET TYPE
+        self::changeColumnTypeIfWrong('fcposhadowbasket', 'FCPOBASKET', 'BLOB', self::$sQueryAlterFcpoShadowBasketFcbasketChangeToBlob);
     }
 
     /**

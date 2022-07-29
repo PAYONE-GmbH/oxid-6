@@ -120,25 +120,6 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
     }
 
     /**
-     * Handling of paydirekt express
-     *
-     * @param void
-     * @return string
-     */
-    public function fcpoHandlePaydirektExpress()
-    {
-        try {
-            $this->_handlePaydirektExpressCall();
-        }
-        catch (oxException $oExcp) {
-            $oUtilsView = $this->_oFcpoHelper->fcpoGetUtilsView();
-            $oUtilsView->addErrorToDisplay($oExcp);
-            return "basket";
-        }
-    }
-
-
-    /**
      * Checks if user of this paypal order already exists
      *
      * @param string $sEmail
@@ -152,8 +133,7 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
         $blIsExpressException = (
             $blReturn !== false &&
             (
-                $sPaymentId == 'fcpopaypal_express' ||
-                $sPaymentId == 'fcpopaydirekt_express'
+                $sPaymentId == 'fcpopaypal_express'
             )
         );
 
@@ -210,8 +190,7 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
         $sPaymentId = $this->_oFcpoHelper->fcpoGetSessionVariable('paymentid');
 
         $aMap = array(
-            'fcpopaypal_express'=>'basket',
-            'fcpopaydirekt_express'=>'basket',
+            'fcpopaypal_express'=>'basket'
         );
 
         $sReturn = (isset($aMap[$sPaymentId])) ?
@@ -233,8 +212,7 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
         $sPaymentId = $this->_oFcpoHelper->fcpoGetSessionVariable('paymentid');
 
         $aMap = array(
-            'fcpopaypal_express'=>'fcpoUsePayPalExpress',
-            'fcpopaydirekt_express'=>'fcpoUsePaydirektExpress'
+            'fcpopaypal_express'=>'fcpoUsePayPalExpress'
         );
 
         $sReturn = (isset($aMap[$sPaymentId])) ?
@@ -384,12 +362,8 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
      */
     protected function _fcpoCreateUserByResponse($aResponse) {
         $oUser = $this->_oFcpoHelper->getFactoryObject("oxUser");
-        $sPaymentId = $this->_oFcpoHelper->fcpoGetSessionVariable('paymentid');
 
-        $sEmailIdent =
-            ($sPaymentId == 'fcpopaydirekt_express') ?
-                'add_paydata[buyer_email]' :
-                'add_paydata[email]';
+        $sEmailIdent = 'add_paydata[email]';
 
         $sUserId = $this->_fcpoGetIdByUserName($aResponse[$sEmailIdent]);
         if ($sUserId) {
@@ -556,29 +530,6 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
             if($oUser) {
                 $this->_fcpoUpdateUserOfExpressBasket($oUser, "fcpopaypal_express");
             }
-        }
-    }
-
-    /**
-     * Handles Paydirekt Express Call
-     *
-     * @param void
-     * @return void
-     */
-    protected function _handlePaydirektExpressCall()
-    {
-        $oSession = $this->_oFcpoHelper->fcpoGetSession();
-        $sWorkorderId = $oSession->getVariable('fcpoWorkorderId');
-
-        if (!$sWorkorderId) return;
-
-        $oRequest   = $this->_oFcpoHelper->getFactoryObject('fcporequest');
-        $aOutput    = $oRequest->sendRequestPaydirektCheckout($sWorkorderId);
-        $this->_oFcpoHelper->fcpoSetSessionVariable('paymentid', "fcpopaydirekt_express");
-        $oUser = $this->_fcpoHandleExpressUser($aOutput);
-
-        if($oUser) {
-            $this->_fcpoUpdateUserOfExpressBasket($oUser, "fcpopaydirekt_express");
         }
     }
 

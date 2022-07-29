@@ -60,7 +60,6 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         'fcporp_bill',
         'fcpoamazonpay',
         'fcpo_secinvoice',
-        'fcpopaydirekt_express',
         'fcpo_sofort',
         'fcpo_giropay',
         'fcpo_eps',
@@ -135,7 +134,6 @@ class fcPayOnePayment extends fcPayOnePayment_parent
     protected $_aExpressPayments = array(
         'fcpomasterpass',
         'fcpoamazonpay',
-        'fcpopaydirekt_express'
     );
 
 

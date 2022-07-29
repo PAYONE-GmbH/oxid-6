@@ -42,13 +42,6 @@ class fcPayOneBasketView extends fcPayOneBasketView_parent
      */
     protected $_sPayPalExpressPic = null;
 
-
-    /**
-     * Paydirekt Express picture
-     * @var string|null
-     */
-    protected $_sPaydirektExpressPic = null;
-
     /**
      * init object construction
      * 
@@ -186,88 +179,6 @@ class fcPayOneBasketView extends fcPayOneBasketView_parent
             $oUtils->redirect($aOutput['redirecturl'], false);
         }
     }
-
-    /**
-     * Public getter for paydirekt express picture
-     *
-     * @param void
-     * @return mixed
-     */
-    public function fcpoGetPaydirektExpressPic()
-    {
-        if ($this->_sPaydirektExpressPic === null) {
-            $this->_sPaydirektExpressPic = false;
-            if ($this->_fcpoIsPaydirektExpressActive()) {
-                $this->_sPaydirektExpressPic =
-                    $this->_fcpoGetPaydirektExpressPic();
-            }
-        }
-        return $this->_sPaydirektExpressPic;
-    }
-    /**
-     * Returns if paydirekt express is set active
-     *
-     * @param void
-     * @return bool
-     */
-    protected function _fcpoIsPaydirektExpressActive() {
-        $oPayment = $this->_oFcpoHelper->getFactoryObject('oxpayment');
-        $oPayment->load('fcpopaydirekt_express');
-        $blIsActive = (bool) $oPayment->oxpayments__oxactive->value;
-        return $blIsActive;
-    }
-    /**
-     * Returns actual Paydirekt picture. Using paypal express path due its
-     * actually the same
-     *
-     * @param void
-     * @return mixed
-     */
-    protected function _fcpoGetPaydirektExpressPic()
-    {
-        $sPaydirektExpressPic = false;
-        $oBasket = $this->_oFcpoHelper->getFactoryObject('oxBasket');
-        $sPic = $oBasket->fcpoGetPaydirektExpressPic();
-        $sPaydirektExpressLogoPath =
-            getShopBasePath() .
-            $this->_sPayPalExpressLogoPath .
-            $sPic;
-        $blLogoPathExists =
-            $this->_oFcpoHelper->fcpoFileExists($sPaydirektExpressLogoPath);
-        if ($blLogoPathExists) {
-            $oConfig = $this->getConfig();
-            $sShopURL = $oConfig->getCurrentShopUrl(false);
-            $sPaydirektExpressPic =
-                $sShopURL . $this->_sPayPalExpressLogoPath . $sPic;
-        }
-        return $sPaydirektExpressPic;
-    }
-    /**
-     * Calling paydirekt express and deliver REDIRECT or false if not available
-     *
-     * @param void
-     * @return boolean|void
-     */
-    public function fcpoUsePaydirektExpress()
-    {
-        $this->fcpoLogoutUser();
-
-        $oRequest = $this->_oFcpoHelper->getFactoryObject('fcporequest');
-        $aOutput = $oRequest->sendRequestPaydirektCheckout();
-        $blIsRedirect = ($aOutput['status'] == 'REDIRECT');
-        if ($blIsRedirect) {
-            $this->_oFcpoHelper
-                ->fcpoSetSessionVariable('fcpoWorkorderId', $aOutput['workorderid']);
-            $oUtils = $this->_oFcpoHelper->fcpoGetUtils();
-            $oUtils->redirect($aOutput['redirecturl'], false);
-            return;
-        }
-        $this->_iLastErrorNo = $aOutput['errorcode'];
-        $this->_sLastError = $aOutput['customermessage'];
-
-        return false;
-    }
-
 
     /**
      * Logout user

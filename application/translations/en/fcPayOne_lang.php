@@ -251,7 +251,6 @@ The smaller text field is used to name the destination file, or path to an exist
 'PAYONE Kreditkarte' => 'PAYONE Credit Card',
 'PAYONE Lastschrift' => 'PAYONE Direct Debit',
 'PAYONE Nachnahme' => 'PAYONE Cash on Delivery',
-'PAYONE paydirekt Express' => 'PAYONE paydirekt Express',
 'PAYONE paydirekt' => 'PAYONE paydirekt',
 'PAYONE PayPal Express' => 'PAYONE PayPal Express',
 'PAYONE PayPal' => 'PAYONE PayPal',

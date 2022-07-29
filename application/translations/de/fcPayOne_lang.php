@@ -243,7 +243,6 @@ Das kleinere Textfeld wird verwendet, um die Zieldatei oder den Pfad zu einer vo
     'PAYONE Kreditkarte' => 'PAYONE Kreditkarte',
     'PAYONE Lastschrift' => 'PAYONE Lastschrift',
     'PAYONE Nachnahme' => 'PAYONE Nachnahme',
-    'PAYONE paydirekt Express' => 'PAYONE paydirekt Express',
     'PAYONE paydirekt' => 'PAYONE paydirekt',
     'PAYONE PayPal Express' => 'PAYONE PayPal Express',
     'PAYONE PayPal' => 'PAYONE PayPal',

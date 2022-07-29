@@ -270,7 +270,6 @@ class fcpoRequest extends oxSuperCfg
         }
 
         $blIsWalletTypePaymentWithDelAddress = (
-            $oOrder->oxorder__oxpaymenttype->value == 'fcpopaydirekt_express' ||
             $oOrder->oxorder__oxpaymenttype->value == 'fcpopaydirekt' ||
             $oOrder->fcIsPayPalOrder() === true &&
             $this->getConfig()->getConfigParam('blFCPOPayPalDelAddress') === true
@@ -534,7 +533,6 @@ class fcpoRequest extends oxSuperCfg
                 $this->addParameter('api_version', '3.10');
                 break;
             case 'fcpopaydirekt':
-            case 'fcpopaydirekt_express':
                 $this->addParameter('clearingtype', 'wlt'); //Payment method
                 $this->addParameter('wallettype', 'PDT');
                 if (strlen($sRefNr) <= 37) {// 37 is the max in this parameter for paydirekt - otherwise the request will fail
@@ -548,15 +546,6 @@ class fcpoRequest extends oxSuperCfg
                     if ($blAllowOvercapture) {
                         $this->addParameter('add_paydata[over_capture]','yes');
                     }
-                }
-                if ($sPaymentId == 'fcpopaydirekt_express') {
-                    $sDate = date('Y-m-d');
-                    $sTime = date('H:i:s');
-                    $sTimestamp = $sDate."T".$sTime."Z";
-                    $this->addParameter('add_paydata[terms_accepted_timestamp]', $sTimestamp);
-                    $oSession = $this->_oFcpoHelper->fcpoGetSession();
-                    $sWorkorderId = $oSession->getVariable('fcpoWorkorderId');
-                    $this->addParameter('workorderid', $sWorkorderId);
                 }
                 $blAddRedirectUrls = true;
                 break;
@@ -2152,71 +2141,6 @@ class fcpoRequest extends oxSuperCfg
     }
 
     /**
-     * Sends request for paydirekt checkout
-     *
-     * @param bool $blGetStatus
-     * @return array
-     */
-    public function sendRequestPaydirektCheckout($sWorkorderId = false) {
-        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
-        $sShippingSetId = $oConfig->getConfigParam('sPaydirektExpressDeliverySetId');
-        $sShippingSetId = ($sShippingSetId == 'none') ? 'oxidstandard' : $sShippingSetId;
-
-        $sOperationMode = $this->getOperationMode('fcpoamazonpay');
-        $sSubAccountId = $oConfig->getConfigParam('sFCPOSubAccountID');
-        $this->addParameter('request', 'genericpayment');
-        $this->addParameter('mode', $sOperationMode);
-        $this->addParameter('aid', $sSubAccountId);
-        $this->addParameter('clearingtype', 'wlt');
-        $this->addParameter('wallettype', 'PDT');
-        $this->addParameter('add_paydata[action]', 'checkout');
-        $this->addParameter('add_paydata[type]',$this->_fcpoGetPaydirektCheckoutType());
-        $this->addParameter(
-            'add_paydata[web_url_shipping_terms]',
-            $this->_fcpoGetPaydirektShippingTermsUrl()
-        );
-        $oCurr = $oConfig->getActShopCurrencyObject();
-        $this->addParameter('currency', $oCurr->name);
-
-        $oBasket = $this->_fcpoAddBasketItemsFromSession($sShippingSetId);
-        $this->_fcpoAddPaydirektExpressBasketAmount($oBasket, $sWorkorderId);
-
-        $this->_addRedirectUrls('basket', false, 'fcpoHandlePaydirektExpress');
-        if ($sWorkorderId) {
-            $this->_fcpoAddPaydirektGetStatusParams($sWorkorderId);
-        }
-        return $this->send();
-    }
-
-    /**
-     * Fetches current basket and adding final amount
-     *
-     * @param object $oBasket
-     * @param string $sWorkOrderId
-     * @return void
-     */
-    protected function _fcpoAddPaydirektExpressBasketAmount($oBasket, $sWorkOrderId)
-    {
-        $oPrice = $oBasket->getPrice();
-        $oUser = $oBasket->getBasketUser();
-        $sUserName = $oUser->oxuser__oxusername->value;
-
-        $blAddCostsDirectly = (!$sWorkOrderId && !$sUserName);
-
-        if ($blAddCostsDirectly) {
-            // only do this on the first call due
-            // to session has been updated then
-            $sDeliveryCosts =
-                $this->_fcpoFetchCostsFromBasket($oBasket, 'oxdelivery');
-            $dDelveryCosts = (double) str_replace(',', '.', $sDeliveryCosts);
-            $oPrice->add($dDelveryCosts);
-        }
-        $iAmount =
-            number_format($oPrice->getBruttoPrice(), 2, '.', '') * 100;
-        $this->addParameter('amount', $iAmount);
-    }
-
-    /**
      * Adding params for getting status
      *
      * @param $sWorkorderId
@@ -2240,23 +2164,6 @@ class fcpoRequest extends oxSuperCfg
         $sShippingTermUrl =
             (string) $oConfig->getConfigParam('sPaydirektShippingTermsUrl');
         return $sShippingTermUrl;
-    }
-
-    /**
-     * Returns checkout type of paydirekt express initial call
-     *
-     * @param void
-     * @return string
-     */
-    protected function _fcpoGetPaydirektCheckoutType()
-    {
-        $oPayment =
-            $this->_oFcpoHelper->getFactoryObject('oxPayment');
-        $oPayment->load('fcpopaydirekt_express');
-        $sAuthorizationType = $oPayment->oxpayments__fcpoauthmode->value;
-        $blIsPreauthorization = ($sAuthorizationType == 'preauthorization') ;
-        $sType = ($blIsPreauthorization) ? 'order' : 'directsale';
-        return $sType;
     }
 
     /**

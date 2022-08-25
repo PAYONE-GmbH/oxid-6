@@ -47,6 +47,7 @@ class fcpayone_events
         'fcpobillsafe',
         'fcpoonlineueberweisung',
         'fcpoklarna',
+        'fcpopaydirekt_express'
     );
 
     /**
@@ -416,7 +417,6 @@ class fcpayone_events
         'fcporp_bill' => 'PAYONE Ratepay Rechnungskauf',
         'fcpoamazonpay' => 'PAYONE Amazon Pay',
         'fcpo_secinvoice' => 'PAYONE Gesicherter Rechnungskauf',
-        'fcpopaydirekt_express' => 'PAYONE paydirekt Express',
         'fcpo_sofort' => 'PAYONE Sofort Überweisung',
         'fcpo_giropay' => 'PAYONE Giropay',
         'fcpo_eps' => 'PAYONE eps Überweisung',

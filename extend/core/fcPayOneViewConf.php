@@ -321,18 +321,6 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent
     }
 
     /**
-     * Returns if paydirekt express button can be shown
-     *
-     * @param void
-     * @return bool
-     */
-    public function fcpoCanDisplayPaydirektExpressButton()
-    {
-        $blIsActive = $this->_fcpoPaymentIsActive('fcpopaydirekt_express');
-        return $blIsActive;
-    }
-
-    /**
      * Checks is given payment is active
      *
      * @param $sPaymentId

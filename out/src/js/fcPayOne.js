@@ -916,6 +916,30 @@ function fcpoChangeInstallmentPaymentType(payment, paymentMethod) {
 
 // RATEPAY INSTALLMENT <<<<
 
+
+// >>>> BNPL INSTALLMENT
+
+function fcpoSelectBNPLInstallmentPlan(iIndex) {
+    var oRadio = document.getElementById('bnplPlan_' + iIndex);
+    if (oRadio) {
+        oRadio.checked = true;
+    }
+
+    var oDetailsList = document.getElementsByClassName('bnpl_installment_overview');
+    for (var i = 0 ; i < oDetailsList.length ; i++) {
+        var oElement = oDetailsList[i];
+
+        if (oElement.id === 'bnpl_installment_overview_' + iIndex) {
+            oElement.style.display = 'block';
+        } else {
+            oElement.style.display = 'none';
+        }
+    }
+}
+
+// BNPL INSTALLMENT <<<<
+
+
 /**
  * Triggers precheck for payolution installment via ajax
  *

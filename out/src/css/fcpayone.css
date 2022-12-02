@@ -272,6 +272,10 @@
     bottom: 5px;
 }
 
+.fcpopl-secinstallment-table-value {
+    text-align: right;
+}
+
 @media screen and (min-width: 0px) and (max-width: 961px) {
     .fcCol {
         float: left;

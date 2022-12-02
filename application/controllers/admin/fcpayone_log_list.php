@@ -81,6 +81,18 @@ class fcpayone_log_list extends fcpayone_adminlist
         $sReturn = $oConfig->getConfigParam('sFCPOSecinvoicePortalId');
         return $sReturn;
     }
+
+    /**
+     * Get config parameter PAYONE BNPL dedicated portal ID
+     *
+     * @return string
+     */
+    public function getBNPLPortalId()
+    {
+        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+        $sReturn = $oConfig->getConfigParam('sFCPOPLPortalId');
+        return $sReturn;
+    }
     
 
     /**
@@ -97,7 +109,8 @@ class fcpayone_log_list extends fcpayone_adminlist
 
         $aPortalIds = [
             "'".$this->getPortalId()."'",
-            "'".$this->getSecInvoicePortalId()."'"
+            "'".$this->getSecInvoicePortalId()."'",
+            "'".$this->getBNPLPortalId()."'",
         ];
         $sAid = $this->getSubAccountId();
         return $sQ." AND fcpotransactionstatus.fcpo_portalid IN (" . join(',', $aPortalIds) . ") AND fcpotransactionstatus.fcpo_aid = '{$sAid}' ";

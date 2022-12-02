@@ -141,7 +141,8 @@ class fcPayOneTransactionStatusBase extends oxBase {
 
         $aKeys = array_merge(
             array_values($this->_getConfigParams('sFCPOPortalKey')),
-            array_values($this->_getConfigParams('sFCPOSecinvoicePortalKey'))
+            array_values($this->_getConfigParams('sFCPOSecinvoicePortalKey')),
+            array_values($this->_getConfigParams('sFCPOPLPortalKey'))
         );
         $blValid = false;
         foreach ($aKeys as $i => $sConfigKey) {

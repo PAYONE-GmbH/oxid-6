@@ -8,6 +8,17 @@
 
         [{assign var="installmentOptions" value=$oView->fcpoGetBNPLInstallment()}]
         [{if $installmentOptions.status != 'OK' || $installmentOptions.plans|@count < 1}]
+            <script type="text/javascript">
+                document.addEventListener("DOMContentLoaded", function(event) {
+                    var aPaymentSelectionButtons = document.getElementsByName("paymentid");
+                    aPaymentSelectionButtons.forEach(function(oElem) {
+                        oElem.addEventListener('click', function(event) {
+                            var oPaymentConfirmButton = document.getElementById("paymentNextStepBottom");
+                            oPaymentConfirmButton.disabled = (event.target.value === 'fcpopl_secinstallment');
+                        });
+                    });
+                });
+            </script>
             <div class="alert alert-info col-lg-offset-3 desc">
                 [{oxmultilang ident='FCPO_BNPL_SECINSTALLMENT_UNAVAILABLE'}]
             </div>

@@ -994,8 +994,15 @@ class fcpoRequest extends oxSuperCfg
                 } else {
                     $dItemAmount = $oOrderarticle->oxorderarticles__oxamount->value;
                 }
+
+                $dPrice = $this->fcpoGetPosPr(
+                    $oOrderarticle->oxorderarticles__oxbprice->value,
+                    $oOrder->oxorder__oxpaymenttype->value,
+                    $blDebit
+                );
+
                 $this->addParameter('id[' . $i . ']', $oOrderarticle->oxorderarticles__oxartnum->value);
-                $this->addParameter('pr[' . $i . ']', number_format($oOrderarticle->oxorderarticles__oxbprice->value, 2, '.', '') * 100);
+                $this->addParameter('pr[' . $i . ']', number_format($dPrice, 2, '.', '') * 100);
                 $dAmount += $oOrderarticle->oxorderarticles__oxbprice->value * $dItemAmount;
                 $this->addParameter('it[' . $i . ']', 'goods');
                 $this->addParameter('no[' . $i . ']', $dItemAmount);
@@ -1018,8 +1025,15 @@ class fcpoRequest extends oxSuperCfg
                     $sDelDesc .= $oLang->translateString('FCPO_DEDUCTION', null, false);
                 }
                 $sDelDesc .= ' ' . str_replace(':', '', $oLang->translateString('FCPO_SHIPPINGCOST', null, false));
+
+                $dPrice = $this->fcpoGetPosPr(
+                    $oOrder->oxorder__oxdelcost->value,
+                    $oOrder->oxorder__oxpaymenttype->value,
+                    $blDebit
+                );
+
                 $this->addParameter('id[' . $i . ']', 'delivery');
-                $this->addParameter('pr[' . $i . ']', number_format($oOrder->oxorder__oxdelcost->value, 2, '.', '') * 100);
+                $this->addParameter('pr[' . $i . ']', number_format($dPrice, 2, '.', '') * 100);
                 $dAmount += $oOrder->oxorder__oxdelcost->value;
                 $this->addParameter('it[' . $i . ']', 'shipment');
                 $this->addParameter('no[' . $i . ']', 1);
@@ -1035,8 +1049,15 @@ class fcpoRequest extends oxSuperCfg
                     $sPayDesc .= $oLang->translateString('FCPO_DEDUCTION', null, false);
                 }
                 $sPayDesc .= ' ' . str_replace(':', '', $oLang->translateString('FCPO_PAYMENTTYPE', null, false));
+
+                $dPrice = $this->fcpoGetPosPr(
+                    $oOrder->oxorder__oxpaycost->value,
+                    $oOrder->oxorder__oxpaymenttype->value,
+                    $blDebit
+                );
+
                 $this->addParameter('id[' . $i . ']', 'payment');
-                $this->addParameter('pr[' . $i . ']', number_format($oOrder->oxorder__oxpaycost->value, 2, '.', '') * 100);
+                $this->addParameter('pr[' . $i . ']', number_format($dPrice, 2, '.', '') * 100);
                 $dAmount += $oOrder->oxorder__oxpaycost->value;
                 $this->addParameter('it[' . $i . ']', 'handling');
                 $this->addParameter('no[' . $i . ']', 1);
@@ -1045,8 +1066,15 @@ class fcpoRequest extends oxSuperCfg
                 $i++;
             }
             if ($oOrder->oxorder__oxwrapcost->value != 0 && ($aPositions === false || ($blDebit === false || array_key_exists('oxwrapcost', $aPositions) !== false))) {
+
+                $dPrice = $this->fcpoGetPosPr(
+                    $oOrder->oxorder__oxwrapcost->value,
+                    $oOrder->oxorder__oxpaymenttype->value,
+                    $blDebit
+                );
+
                 $this->addParameter('id[' . $i . ']', 'wrapping');
-                $this->addParameter('pr[' . $i . ']', number_format($oOrder->oxorder__oxwrapcost->value, 2, '.', '') * 100);
+                $this->addParameter('pr[' . $i . ']', number_format($dPrice, 2, '.', '') * 100);
                 $dAmount += $oOrder->oxorder__oxwrapcost->value;
                 $this->addParameter('it[' . $i . ']', 'goods');
                 $this->addParameter('no[' . $i . ']', 1);
@@ -1056,8 +1084,15 @@ class fcpoRequest extends oxSuperCfg
                 $i++;
             }
             if ($oOrder->oxorder__oxgiftcardcost->value != 0 && ($aPositions === false || ($blDebit === false || array_key_exists('oxgiftcardcost', $aPositions) !== false))) {
+
+                $dPrice = $this->fcpoGetPosPr(
+                    $oOrder->oxorder__oxgiftcardcost->value,
+                    $oOrder->oxorder__oxpaymenttype->value,
+                    $blDebit
+                );
+
                 $this->addParameter('id[' . $i . ']', 'giftcard');
-                $this->addParameter('pr[' . $i . ']', number_format($oOrder->oxorder__oxgiftcardcost->value, 2, '.', '') * 100);
+                $this->addParameter('pr[' . $i . ']', number_format($dPrice, 2, '.', '') * 100);
                 $dAmount += $oOrder->oxorder__oxgiftcardcost->value;
                 $this->addParameter('it[' . $i . ']', 'goods');
                 $this->addParameter('no[' . $i . ']', 1);
@@ -3630,6 +3665,23 @@ class fcpoRequest extends oxSuperCfg
         $this->_oFcpoHelper->fcpoSetSessionVariable('fcpoRefNr', $sRefNr);
 
         return $sRefNrComplete;
+    }
+
+    /**
+     * Returns the price as negative if situation meets the criteria
+     *
+     * @param double $dInitialPr original price
+     * @param string $sPaymentId payment method
+     * @param bool $blDebit
+     * @return double
+     */
+    protected function fcpoGetPosPr($dInitialPr, $sPaymentId, $blDebit = false)
+    {
+        if (!$blDebit || !in_array($sPaymentId, array('fcpopl_secinvoice', 'fcpopl_secinstallment'))) {
+            return $dInitialPr;
+        }
+
+        return -abs($dInitialPr);
     }
 
 }

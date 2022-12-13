@@ -231,7 +231,7 @@ $aLang = array(
 'FCPO_BNPL_SECINSTALLMENT_OVW_INTEREST'             => 'Interest rate',
 'FCPO_BNPL_SECINSTALLMENT_OVW_EFFECTIVEINTEREST'    => 'Effective interest rate',
 'FCPO_BNPL_SECINSTALLMENT_OVW_MONTHLYRATE'          => 'Monthly amount',
-'FCPO_BNPL_SECINSTALLMENT_OVW_DL_CREDINFO'          => 'Download Installment contract template',
+'FCPO_BNPL_SECINSTALLMENT_OVW_DL_CREDINFO'          => '&gt;&nbsp;Download Installment contract template',
 'FCPO_BNPL_SECINSTALLMENT_PLAN_INVALID'             => 'Please select the desired installment plan',
 
 'FCPO_CONFIG_GROUP_APPLE_PAY'                      => "Apple Pay",

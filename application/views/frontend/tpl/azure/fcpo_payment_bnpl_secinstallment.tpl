@@ -19,14 +19,14 @@
                     });
                 });
             </script>
-            <div class="alert alert-info col-lg-offset-3 desc">
+            <div class="warning">
                 [{oxmultilang ident='FCPO_BNPL_SECINSTALLMENT_UNAVAILABLE'}]
             </div>
         [{else}]
+            <ul class="form">
             [{if ! $oView->fcpoIsB2BPov()}]
-            <div class="form-group">
+                <li>
                 <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_SECINVOICE_BIRTHDATE"}]:</label>
-                <div class="col-lg-9">
                     <select name="dynvalue[fcpopl_secinstallment_birthdate_day]">
                         [{foreach from=$oView->fcpoGetDayRange() item='sDay'}]
                         <option value="[{$sDay}]" [{if $sDay == $oView->fcpoGetBirthdayField('day')}]selected[{/if}]>[{$sDay}]</option>
@@ -44,50 +44,48 @@
                         <option value="[{$sYear}]" [{if $sYear == $oView->fcpoGetBirthdayField('year')}]selected[{/if}]>[{$sYear}]</option>
                         [{/foreach}]
                     </select>
-                </div>
-            </div>
+                </li>
             [{/if}]
 
             [{if $oView->fcpoBNPLShowFon()}]
-            <div class="form-group">
-                <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BNPL_FON"}]:</label>
-                <div class="col-lg-9">
-                    <input placeholder="[{oxmultilang ident="FCPO_BNPL_FON"}]" class="form-control" type="text" size="20" maxlength="64" name="dynvalue[fcpopl_secinstallment_fon]" value="[{$oView->fcpoGetUserValue('oxfon')}]" required="required">
-                </div>
-            </div>
+                <li>
+                    <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BNPL_FON"}]:</label>
+                    <div class="col-lg-9">
+                        <input placeholder="[{oxmultilang ident="FCPO_BNPL_FON"}]" class="form-control" type="text" size="20" maxlength="64" name="dynvalue[fcpopl_secinstallment_fon]" value="[{$oView->fcpoGetUserValue('oxfon')}]" required="required">
+                    </div>
+                </li>
             [{/if}]
 
-            <div class="form-group">
+            <li>
                 <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANKACCOUNTHOLDER"}]:</label>
                 <div class="col-lg-9">
                     <input type="hidden" name="dynvalue[fcpopl_secinstallment_account_holder]" value="[{$oView->fcpoGetAccountHolder()}]" />
                     [{$oView->fcpoGetAccountHolder()}]
                 </div>
-            </div>
+            </li>
 
-            <div class="form-group">
-                <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_IBAN"}]:</label>
-                <div class="col-lg-9">
-                    <input placeholder="[{oxmultilang ident="FCPO_BANK_IBAN"}]" class="form-control js-oxValidate js-oxValidate_notEmpty" type="text" size="20" maxlength="64" name="dynvalue[fcpopl_secinstallment_iban]" value="[{$dynvalue.fcpopl_secinstallment_iban}]" onkeyup="fcHandleDebitInputs();return false;" required="required">
-                    <div id="fcpopl_secinstallment_iban_invalid" class="fcpo_check_error">
-                        <p class="oxValidateError" style="display: block;">
-                            [{oxmultilang ident="FCPO_IBAN_INVALID"}]
-                        </p>
-                    </div>
+            <li>
+                <label>[{oxmultilang ident="FCPO_BANK_IBAN"}]:</label>
+                <input placeholder="[{oxmultilang ident="FCPO_BANK_IBAN"}]" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpopl_secinstallment_iban]" value="[{$dynvalue.fcpopl_secinstallment_iban}]" onkeyup="fcHandleDebitInputs('[{$oView->fcpoGetBICMandatory()}]]');return false;">
+                <div id="fcpopl_secinstallment_iban_invalid" class="fcpo_check_error">
+                    <p class="oxValidateError" style="display: block;">
+                        [{oxmultilang ident="FCPO_IBAN_INVALID"}]
+                    </p>
                 </div>
-            </div>
+            </li>
+            </ul>
 
             [{oxid_include_dynamic file=$oViewConf->fcpoGetAbsModuleTemplateFrontendPath('fcpo_payment_bnpl_snippet.tpl')}]
 
             [{block name="checkout_payment_longdesc"}]
             [{if $paymentmethod->oxpayments__oxlongdesc->value}]
-            <div class="alert alert-info col-lg-offset-3 desc">
+            <div desc">
                 [{$paymentmethod->oxpayments__oxlongdesc->getRawValue()}]
             </div>
             [{/if}]
             [{/block}]
 
-            <div class="form-group">
+            <li>
                 <label class="req control-label col-lg-3">[{oxmultilang ident='FCPO_BNPL_SECINSTALLMENT_SELECTION'}]:</label>
                 <div class="col-lg-9">
                     <div></div>
@@ -100,9 +98,9 @@
                     </div>
                     [{/foreach}]
                 </div>
-            </div>
+            </li>
 
-            <div class="form-group">
+            <li>
                 <div class="col-lg-3"></div>
                 <div class="col-lg-9">
                 [{foreach from=$installmentOptions.plans key=index item=plan}]
@@ -150,9 +148,9 @@
                     </div>
                     [{/foreach}]
                 </div>
-            </div>
+            </li>
 
-            <div class="alert alert-info col-lg-offset-3 desc">
+            <div class="warning">
                 [{oxmultilang ident='FCPO_BNPL_TNC_DATAPROTECTION_NOTICE'}]
             </div>
         [{/if}]

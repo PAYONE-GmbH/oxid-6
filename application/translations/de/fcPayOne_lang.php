@@ -223,7 +223,7 @@ $aLang = array(
     'FCPO_BNPL_SECINSTALLMENT_OVW_INTEREST'               => 'Zinssatz',
     'FCPO_BNPL_SECINSTALLMENT_OVW_EFFECTIVEINTEREST'      => 'Effektivzinssatz',
     'FCPO_BNPL_SECINSTALLMENT_OVW_MONTHLYRATE'            => 'Monatliche Rate',
-    'FCPO_BNPL_SECINSTALLMENT_OVW_DL_CREDINFO'            => 'Ratenkauf Mustervertrag herunterladen',
+    'FCPO_BNPL_SECINSTALLMENT_OVW_DL_CREDINFO'            => '&gt;&nbsp;Ratenkauf Mustervertrag herunterladen',
     'FCPO_BNPL_SECINSTALLMENT_PLAN_INVALID'               => 'Bitte wählen Sie Ihre gewünschte Anzahl von Raten',
 
     'FCPO_CONFIG_GROUP_APPLE_PAY'                      => "Apple Pay",

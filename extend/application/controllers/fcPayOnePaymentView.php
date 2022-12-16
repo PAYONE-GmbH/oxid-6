@@ -180,7 +180,31 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         $oPayment->load($sPaymentId);
         $blShowAsRegularPaymentSelection =
             $oPayment->fcpoShowAsRegularPaymentSelection();
+
+        if ($blShowAsRegularPaymentSelection && in_array($sPaymentId, ['fcpopl_secinvoice', 'fcpopl_secinstallment'])) {
+            $blShowAsRegularPaymentSelection = $this->fcpoShowBNPLPaymentSelection();
+        }
+
         return $blShowAsRegularPaymentSelection;
+    }
+
+    /**
+     * Check if BNPL methods can be shown (AT/DE country and EUR currency only)
+     *
+     * @return bool
+     */
+    protected function fcpoShowBNPLPaymentSelection()
+    {
+        if (!in_array($this->getUserBillCountryId(), ['a7c40f631fc920687.20179984', 'a7c40f6320aeb2ec2.72885259'])) {
+            return false;
+        }
+        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+        $oCurr = $oConfig->getActShopCurrencyObject();
+        if ($oCurr->name != 'EUR') {
+            return false;
+        }
+
+        return true;
     }
 
     /**

@@ -6,6 +6,7 @@
         </dt>
         <dd class="[{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]activePayment[{else}]payment-option[{/if}]">
             <input type="hidden" name="fcpo_mode_[{$sPaymentID}]" value="[{$paymentmethod->fcpoGetOperationMode()}]">
+            <input type="hidden" name="dynvalue[fcpopl_secinstallment_account_holder]" value="[{$oView->fcpoGetAccountHolder()}]" />
 
             [{assign var="installmentOptions" value=$oView->fcpoGetBNPLInstallment()}]
             [{if $installmentOptions.status != 'OK' || $installmentOptions.plans|@count < 1}]
@@ -57,14 +58,6 @@
                 </div>
             </div>
             [{/if}]
-
-            <div class="form-group">
-                <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANKACCOUNTHOLDER"}]</label>
-                <div class="col-lg-9">
-                    <input type="hidden" name="dynvalue[fcpopl_secinstallment_account_holder]" value="[{$oView->fcpoGetAccountHolder()}]" />
-                    [{$oView->fcpoGetAccountHolder()}]
-                </div>
-            </div>
 
             <div class="form-group">
                 <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_IBAN"}]</label>

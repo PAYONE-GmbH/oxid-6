@@ -24,7 +24,7 @@
             </div>
         [{else}]
             <ul class="form">
-            [{if ! $oView->fcpoIsB2BPov()}]
+            [{if $oView->fcpoBNPLShowBirthdate()}]
                 <li>
                 <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_SECINVOICE_BIRTHDATE"}]:</label>
                     <select name="dynvalue[fcpopl_secinstallment_birthdate_day]">

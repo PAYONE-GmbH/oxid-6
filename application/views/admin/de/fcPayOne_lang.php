@@ -550,7 +550,7 @@ Das kleinere Textfeld wird verwendet, um die Zieldatei oder den Pfad zu einer vo
     'PAYONE Barzahlen' => 'PAYONE Barzahlen',
     'PAYONE eps Überweisung' => 'PAYONE eps Überweisung',
     'PAYONE Gesicherter Rechnungskauf' => 'PAYONE Gesicherter Rechnungskauf',
-    'PAYONE gesicherter Rechnungskauf' => 'PAYONE gesicherter Rechnungskauf',
+    'PAYONE gesicherter Rechnungskauf (neu)' => 'PAYONE gesicherter Rechnungskauf (neu)',
     'PAYONE gesicherter Ratenkauf' => 'PAYONE gesicherter Ratenkauf',
     'PAYONE Giropay' => 'PAYONE Giropay',
     'PAYONE iDEAL' => 'PAYONE iDEAL',

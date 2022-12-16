@@ -2731,7 +2731,10 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
             case 'fcpopl_secinvoice':
             case 'fcpopl_secinstallment':
                 $blB2CMode = ! $this->fcpoIsB2BPov();
-                $blBirthdayRequired = $blB2CMode;
+                $blFieldPresence = isset($aRequestedValues['fcpopl_secinvoice_birthdate_day'])
+                    && isset($aRequestedValues['fcpopl_secinvoice_birthdate_month'])
+                    && isset($aRequestedValues['fcpopl_secinvoice_birthdate_year']);
+                $blBirthdayRequired = $blB2CMode && $blFieldPresence;
                 $blValidBirthdateData = $this->_fcpoValidateSecInvoiceBirthdayData($sPaymentId, $aRequestedValues);
                 break;
         }
@@ -4167,5 +4170,19 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         $blIsB2B = $oUser->oxuser__oxcompany->value != '';
 
         return (!$blIsB2B && $oUser->oxuser__oxfon->value == '');
+    }
+
+    /**
+     * Template getter which checks if requesting birthdate is needed
+     *
+     * @param  void
+     * @return bool
+     */
+    public function fcpoBNPLShowBirthdate()
+    {
+        $oUser = $this->getUser();
+        $blIsB2B = $oUser->oxuser__oxcompany->value != '';
+
+        return (!$blIsB2B && (is_null($oUser->oxuser__oxbirthdate->value) || $oUser->oxuser__oxbirthdate->value == '0000-00-00'));
     }
 }

@@ -23,7 +23,7 @@
                 [{oxmultilang ident='FCPO_BNPL_SECINSTALLMENT_UNAVAILABLE'}]
             </div>
         [{else}]
-            [{if ! $oView->fcpoIsB2BPov()}]
+            [{if $oView->fcpoBNPLShowBirthdate()}]
             <div class="form-group">
                 <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_SECINVOICE_BIRTHDATE"}]:</label>
                 <div class="col-lg-9">

@@ -258,7 +258,7 @@ The smaller text field is used to name the destination file, or path to an exist
 'PAYONE Barzahlen' => 'PAYONE Barzahlen',
 'PAYONE eps Überweisung' => 'PAYONE eps',
 'PAYONE Gesicherter Rechnungskauf' => 'PAYONE Secure Invoice',
-'PAYONE gesicherter Rechnungskauf' => 'PAYONE Secured Invoice',
+'PAYONE gesicherter Rechnungskauf (neu)' => 'PAYONE Secured Invoice',
 'PAYONE gesicherter Ratenkauf' => 'PAYONE Secured Installment',
 'PAYONE Giropay' => 'PAYONE Giropay',
 'PAYONE iDEAL' => 'PAYONE iDEAL',

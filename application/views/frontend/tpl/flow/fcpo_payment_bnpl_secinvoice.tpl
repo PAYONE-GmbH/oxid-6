@@ -5,7 +5,7 @@
     </dt>
     <dd class="[{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]activePayment[{/if}]">
         <input type="hidden" name="fcpo_mode_[{$sPaymentID}]" value="[{$paymentmethod->fcpoGetOperationMode()}]">
-        [{if ! $oView->fcpoIsB2BPov()}]
+        [{if $oView->fcpoBNPLShowBirthdate()}]
             <div class="form-group">
                 <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_SECINVOICE_BIRTHDATE"}]:</label>
                 <div class="col-lg-9">

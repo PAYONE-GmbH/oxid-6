@@ -124,7 +124,7 @@
             <dl>
                 <dt>
                     <input type="hidden" name="confbools[blFCPOPresaveOrder]" value="false">
-                    <input type="checkbox" name="confbools[blFCPOPresaveOrder]" value="true" [{if ($confbools.blFCPOPresaveOrder)}]checked[{/if}] onclick="handlePresaveOrderCheckbox(this);">
+                    <input type="checkbox" name="confbools[blFCPOPresaveOrder]" value="true" [{if ($confbools.blFCPOPresaveOrder)}]checked[{/if}] onclick="fcpoHandlePresaveOrderCheckbox(this);">
                     [{oxinputhelp ident="FCPO_HELP_PRESAVE_ORDER"}]
                 </dt>
                 <dd>
@@ -271,7 +271,7 @@
             </dl>
             <dl>
                 <dd>
-                    <a href="#" onclick="toggleHostedTemplate();" style="text-decoration: underline;">[{oxmultilang ident="FCPO_CC_CUSTOM_TEMPLATE"}]</a>
+                    <a href="#" onclick="fcpoToggleHostedTemplate();" style="text-decoration: underline;">[{oxmultilang ident="FCPO_CC_CUSTOM_TEMPLATE"}]</a>
                     <div id="fcpoHostedCCTemplate" style="display:none;padding-top:10px;">
                         <table>
                             <tr>
@@ -309,7 +309,7 @@
                                     </td>
                                     <td>
                                         [{assign var="sFieldIdentIframe" value="sFCPOCC"|cat:$sField|cat:"Iframe"}]
-                                        <select name="confstrs[[{$sFieldIdentIframe}]]" onchange="handleSizeFields(this, '[{$sField}]')">
+                                        <select name="confstrs[[{$sFieldIdentIframe}]]" onchange="fcpoHandleSizeFields(this, '[{$sField}]')">
                                             [{foreach from=$oView->getCCStyles() key=sType item=sTitle}]
                                                 <option value="[{$sType}]" [{if $sType == $confstrs.$sFieldIdentIframe}]selected[{/if}]>[{$sTitle}]</option>
                                             [{/foreach}]
@@ -325,7 +325,7 @@
                                     </td>
                                     <td>
                                         [{assign var="sFieldIdentCSS" value="sFCPOCC"|cat:$sField|cat:"Style"}]
-                                        <select name="confstrs[[{$sFieldIdentCSS}]]" onchange="handleCss(this, '[{$sField}]')">
+                                        <select name="confstrs[[{$sFieldIdentCSS}]]" onchange="fcpoHandleCss(this, '[{$sField}]')">
                                             [{foreach from=$oView->getCCStyles() key=sType item=sTitle}]
                                                 <option value="[{$sType}]" [{if $sType == $confstrs.$sFieldIdentCSS}]selected[{/if}]>[{$sTitle}]</option>
                                             [{/foreach}]
@@ -395,7 +395,7 @@
                             </tr>
                         </table>
                         <br>
-                        <a href="#" onclick="togglePreview();" style="text-decoration: underline;">[{oxmultilang ident="FCPO_CC_PREVIEW"}]</a>
+                        <a href="#" onclick="fcpoTogglePreview();" style="text-decoration: underline;">[{oxmultilang ident="FCPO_CC_PREVIEW"}]</a>
                         <div id="fcpoHostedCCPreview" style="display:none;padding-top:10px;">
                             [{include file="fcpayone_cc_preview.tpl"}]
                         </div>
@@ -760,7 +760,7 @@
                         </select>
                         <input type="submit" class="edittext" name="aRatepayProfiles[[{$sOxid}]][delete]" value="[{oxmultilang ident="FCPO_RATEPAY_DELETE_PROFILE"}]" onClick="Javascript:document.myedit.fnc.value='save'" [{$readonly}]><br>
                         [{if $aRatePayProfile.merchant_name != ''}]
-                            <input type="checkbox" value="[{$sOxid}]" onclick="Javascript:handleRatePayShowDetails(this)"> [{oxmultilang ident="FCPO_RATEPAY_PROFILE_TOGGLE_DETAILS"}]
+                            <input type="checkbox" value="[{$sOxid}]" onclick="Javascript:fcpoHandleRatePayShowDetails(this)"> [{oxmultilang ident="FCPO_RATEPAY_PROFILE_TOGGLE_DETAILS"}]
                         [{/if}]
                     </dd>
                     <div class="spacer"></div>

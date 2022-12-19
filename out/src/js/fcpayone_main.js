@@ -2,7 +2,7 @@
  * JS of fcpayone_main.js
  */
 
-function handlePresaveOrderCheckbox(oCheckbox) {
+function fcpoHandlePresaveOrderCheckbox(oCheckbox) {
     if(oCheckbox.checked) {
         document.getElementById('reduce_stock').style.display = "";
     } else {
@@ -10,7 +10,7 @@ function handlePresaveOrderCheckbox(oCheckbox) {
     }
 }
 
-function handleRatePayShowDetails(oCheckbox) {
+function fcpoHandleRatePayShowDetails(oCheckbox) {
     var sOxid = oCheckbox.value;
     var sId = 'ratepay_profile_details_' + sOxid;
     if(oCheckbox.checked) {
@@ -30,7 +30,7 @@ function _groupExp(oElement) {
     }
 }
 
-function toggleHostedTemplate() {
+function fcpoToggleHostedTemplate() {
     if(document.getElementById('fcpoHostedCCTemplate').style.display !== "") {
         document.getElementById('fcpoHostedCCTemplate').style.display = "";
     } else {
@@ -38,7 +38,7 @@ function toggleHostedTemplate() {
     }
 }
 
-function togglePreview() {
+function fcpoTogglePreview() {
     if(document.getElementById('fcpoHostedCCPreview').style.display !== "") {
         document.getElementById('fcpoHostedCCPreview').style.display = "";
     } else {
@@ -46,27 +46,27 @@ function togglePreview() {
     }
 }
 
-function inputEnable(sInputId) {
+function fcpoInputEnable(sInputId) {
     document.getElementById(sInputId).disabled = false;
 }
-function inputDisable(sInputId) {
+function fcpoInputDisable(sInputId) {
     document.getElementById(sInputId).disabled = true;
 }
 
-function handleSizeFields(oSelect, sRowName) {
+function fcpoHandleSizeFields(oSelect, sRowName) {
     if(oSelect.options[oSelect.selectedIndex].value === 'custom') {
-        inputEnable('input_height_' + sRowName);
-        inputEnable('input_width_' + sRowName);
+        fcpoInputEnable('input_height_' + sRowName);
+        fcpoInputEnable('input_width_' + sRowName);
     } else {
-        inputDisable('input_height_' + sRowName);
-        inputDisable('input_width_' + sRowName);            
+        fcpoInputDisable('input_height_' + sRowName);
+        fcpoInputDisable('input_width_' + sRowName);
     }
 }
 
-function handleCss(oSelect, sRowName) {
+function fcpoHandleCss(oSelect, sRowName) {
     if(oSelect.options[oSelect.selectedIndex].value === 'custom') {
-        inputEnable('input_css_' + sRowName);
+        fcpoInputEnable('input_css_' + sRowName);
     } else {
-        inputDisable('input_css_' + sRowName);
+        fcpoInputDisable('input_css_' + sRowName);
     }
 }

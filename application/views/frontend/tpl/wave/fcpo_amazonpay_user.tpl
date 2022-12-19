@@ -39,7 +39,7 @@
             </div>
         </div>
         <script>
-            function getCookie(cname) {
+            function fcpoGetCookie(cname) {
                 var name = cname + "=";
                 var decodedCookie = decodeURIComponent(document.cookie);
                 var ca = decodedCookie.split(';');
@@ -55,18 +55,18 @@
                 return "";
             }
 
-            function getURLParameter(name, source) {
+            function fcpoGetURLParameter(name, source) {
                 return decodeURIComponent((new RegExp('[?|&|#]' + name + '=' +
                     '([^&]+?)(&|#|;|$)').exec(source) || [,""])[1].replace(/\+/g,
                     '%20')) || null;
             }
 
-            var accessToken = getCookie('amazon_Login_accessToken');
+            var sFcpoAccessToken = fcpoGetCookie('amazon_Login_accessToken');
 
-            if (typeof accessToken === 'string' && accessToken === '') {
-                var accessToken = getURLParameter("access_token", location.hash);
-                if (typeof accessToken === 'string' && accessToken.match(/^Atza/)) {
-                    document.cookie = "amazon_Login_accessToken=" + accessToken +
+            if (typeof sFcpoAccessToken === 'string' && sFcpoAccessToken === '') {
+                var sFcpoAccessToken = fcpoGetURLParameter("access_token", location.hash);
+                if (typeof sFcpoAccessToken === 'string' && sFcpoAccessToken.match(/^Atza/)) {
+                    document.cookie = "amazon_Login_accessToken=" + sFcpoAccessToken +
                         ";secure";
                 }
             }

@@ -1,5 +1,5 @@
-function getSelectedPaymentMethod() {
-    var oForm = getPaymentForm();
+function fcpoGetSelectedPaymentMethod() {
+    var oForm = fcpoGetPaymentForm();
     if(oForm && oForm.paymentid) {
         if(oForm.paymentid.length) {
             for(var i = 0;i < oForm.paymentid.length; i++) {
@@ -14,7 +14,7 @@ function getSelectedPaymentMethod() {
     return false;
 }
 
-function getPaymentForm() {
+function fcpoGetPaymentForm() {
     if(document.order) {
         if(document.order[0].nodeName != 'FORM' && document.order.paymentid) {
             return document.order;
@@ -29,12 +29,13 @@ function getPaymentForm() {
     return false;
 }
 
-function getOperationMode(sType) {
-    var sSelectedPaymentOperationMode = 'fcpo_mode_' + getSelectedPaymentMethod();
+function fcpoGetOperationMode(sType) {
+    var sSelectedPaymentOperationMode = 'fcpo_mode_' + fcpoGetSelectedPaymentMethod();
     if(sType != '') {
         sSelectedPaymentOperationMode += '_' + sType;
     }
-    var oForm = getPaymentForm();
+    var oForm = fcpoGetPaymentForm();
+    console.log(sSelectedPaymentOperationMode);
     return oForm[sSelectedPaymentOperationMode].value;
 }
 
@@ -47,7 +48,7 @@ function fcCheckType(element) {
 }
 
 function fcCheckDebitCountry() {
-    var oForm = getPaymentForm();
+    var oForm = fcpoGetPaymentForm();
     if(fcpoGetElvCountry() == 'DE') {
         if(document.getElementById('fcpo_elv_ktonr_info')) {
             document.getElementById('fcpo_elv_ktonr_info').style.display = '';
@@ -74,7 +75,7 @@ function fcCheckDebitCountry() {
     fcHandleDebitInputs();
 }
 
-function resetErrorContainers() {
+function fcpoResetErrorContainers() {
     if(document.getElementById('fcpo_cc_number_invalid')) {
         document.getElementById('fcpo_cc_number_invalid').style.display = '';
     }
@@ -174,7 +175,7 @@ function resetErrorContainers() {
 }
 
 function fcpoGetCreditcardType() {
-    var oForm = getPaymentForm();
+    var oForm = fcpoGetPaymentForm();
     if(oForm["dynvalue[fcpo_kktype]"].nodeName == 'INPUT') {
         sCreditcardType = oForm["dynvalue[fcpo_kktype]"].value;
     } else {
@@ -184,7 +185,7 @@ function fcpoGetCreditcardType() {
 }
 
 function fcpoGetCardExpireDate() {
-    var oForm = getPaymentForm();
+    var oForm = fcpoGetPaymentForm();
     if(oForm["dynvalue[fcpo_kkyear]"].nodeName == 'INPUT') {
         sDate = oForm["dynvalue[fcpo_kkyear]"].value.substr(2,2) + oForm["dynvalue[fcpo_kkmonth]"].value;
     } else {
@@ -193,9 +194,9 @@ function fcpoGetCardExpireDate() {
     return sDate;
 }
 
-function startCCRequest() {
-    resetErrorContainers();
-    var oForm = getPaymentForm();
+function fcpoStartCCRequest() {
+    fcpoResetErrorContainers();
+    var oForm = fcpoGetPaymentForm();
     oForm["dynvalue[fcpo_kknumber]"].value = getCleanedNumber(oForm["dynvalue[fcpo_kknumber]"].value);
     if(oForm["dynvalue[fcpo_kknumber]"].value == '') {
         document.getElementById('fcpo_cc_number_invalid').style.display = 'block';
@@ -210,7 +211,7 @@ function startCCRequest() {
 
     var sKKType = fcpoGetCreditcardType();
 
-    var sMode = getOperationMode(sKKType);
+    var sMode = fcpoGetOperationMode(sKKType);
 
     var data = {
         mid : oForm.fcpo_mid.value,
@@ -238,7 +239,7 @@ function startCCRequest() {
     }
     var options = {
         return_type : 'object',
-        callback_function_name : 'processPayoneResponseCC'
+        callback_function_name : 'fcpoProcessPayoneResponseCC'
     };
 
     var request = new PayoneRequest(data, options);
@@ -246,7 +247,7 @@ function startCCRequest() {
     return false;
 }
 
-function validateCardholder(e) {
+function fcpoValidateCardholder(e) {
     var error = false;
     var cardholder = document.getElementById('fcpo_cc_cardholder').value;
     var cardholderLabel = document.getElementById('fcpo_cc_cardholder_label');
@@ -264,7 +265,7 @@ function validateCardholder(e) {
     return error;
 }
 
-function getCleanedNumber(dirtyNumber) {
+function fcpoGetCleanedNumber(dirtyNumber) {
     var cleanedNumber = '';
     var tmpChar;
     for (i = 0; i < dirtyNumber.length; i++) {
@@ -276,7 +277,7 @@ function getCleanedNumber(dirtyNumber) {
     return cleanedNumber;
 }
 
-function getCleanedNumberIBAN(sDirtyNumber) {
+function fcpoGetCleanedNumberIBAN(sDirtyNumber) {
     var sCleanedNumber = '';
     var sTmpChar;
     for (i = 0; i < sDirtyNumber.length; i++) {
@@ -292,7 +293,7 @@ function getCleanedNumberIBAN(sDirtyNumber) {
 }
 
 function fcpoGetElvCountry() {
-    var oForm = getPaymentForm();
+    var oForm = fcpoGetPaymentForm();
     var sElvCountry = 'DE';
     if (oForm["dynvalue[fcpo_elv_country]"].length > 0) {
         if(oForm["dynvalue[fcpo_elv_country]"].nodeName == 'INPUT') {
@@ -304,28 +305,28 @@ function fcpoGetElvCountry() {
     return sElvCountry;
 }
 
-function startELVRequest() {
-    resetErrorContainers();
-    var oForm = getPaymentForm();
+function fcpoStartELVRequest() {
+    fcpoResetErrorContainers();
+    var oForm = fcpoGetPaymentForm();
 
     if(oForm['dynvalue[fcpo_elv_blz]']) {
-        oForm['dynvalue[fcpo_elv_blz]'].value = getCleanedNumber(oForm['dynvalue[fcpo_elv_blz]'].value);
+        oForm['dynvalue[fcpo_elv_blz]'].value = fcpoGetCleanedNumber(oForm['dynvalue[fcpo_elv_blz]'].value);
     }
     if(oForm['dynvalue[fcpo_elv_ktonr]']) {
-        oForm['dynvalue[fcpo_elv_ktonr]'].value = getCleanedNumber(oForm['dynvalue[fcpo_elv_ktonr]'].value);
+        oForm['dynvalue[fcpo_elv_ktonr]'].value = fcpoGetCleanedNumber(oForm['dynvalue[fcpo_elv_ktonr]'].value);
     }
     if(oForm['dynvalue[fcpo_elv_iban]']) {
-        oForm['dynvalue[fcpo_elv_iban]'].value = getCleanedNumberIBAN(oForm['dynvalue[fcpo_elv_iban]'].value);
+        oForm['dynvalue[fcpo_elv_iban]'].value = fcpoGetCleanedNumberIBAN(oForm['dynvalue[fcpo_elv_iban]'].value);
     }
     if(oForm['dynvalue[fcpo_elv_bic]']) {
-        oForm['dynvalue[fcpo_elv_bic]'].value = getCleanedNumberIBAN(oForm['dynvalue[fcpo_elv_bic]'].value);
+        oForm['dynvalue[fcpo_elv_bic]'].value = fcpoGetCleanedNumberIBAN(oForm['dynvalue[fcpo_elv_bic]'].value);
     }
 
     if(oForm['dynvalue[fcpo_payolution_iban]']) {
-        oForm['dynvalue[fcpo_payolution_iban]'].value = getCleanedNumberIBAN(oForm['dynvalue[fcpo_payolution_iban]'].value);
+        oForm['dynvalue[fcpo_payolution_iban]'].value = fcpoGetCleanedNumberIBAN(oForm['dynvalue[fcpo_payolution_iban]'].value);
     }
     if(oForm['dynvalue[fcpo_payolution_bic]']) {
-        oForm['dynvalue[fcpo_payolution_bic]'].value = getCleanedNumberIBAN(oForm['dynvalue[fcpo_payolution_bic]'].value);
+        oForm['dynvalue[fcpo_payolution_bic]'].value = fcpoGetCleanedNumberIBAN(oForm['dynvalue[fcpo_payolution_bic]'].value);
     }
 
     if(oForm['dynvalue[fcpo_elv_iban]'].value == '' && (!oForm['dynvalue[fcpo_elv_bic]'] || oForm['dynvalue[fcpo_elv_bic]'].value == '') && (!oForm['dynvalue[fcpo_elv_blz]'] || oForm['dynvalue[fcpo_elv_blz]'].value == '') && (!oForm['dynvalue[fcpo_elv_ktonr]'] || oForm['dynvalue[fcpo_elv_ktonr]'].value == '')) {
@@ -372,7 +373,7 @@ function startELVRequest() {
         return false;
     }
 
-    var sMode = getOperationMode('');
+    var sMode = fcpoGetOperationMode('');
     var data = {
         mid : oForm.fcpo_mid.value,
         portalid : oForm.fcpo_portalid.value,
@@ -401,7 +402,7 @@ function startELVRequest() {
 
     var options = {
         return_type : 'object',
-        callback_function_name : 'processPayoneResponseELV'
+        callback_function_name : 'fcpoProcessPayoneResponseELV'
     };
 
     var request = new PayoneRequest(data, options);
@@ -411,19 +412,19 @@ function startELVRequest() {
 }
 
 function fcCheckPaymentSelection() {
-    var sCheckedValue = getSelectedPaymentMethod();
+    var sCheckedValue = fcpoGetSelectedPaymentMethod();
     if(sCheckedValue != false) {
-        var oForm = getPaymentForm();
+        var oForm = fcpoGetPaymentForm();
         if(sCheckedValue == 'fcpocreditcard' && oForm.fcpo_cc_type.value == 'ajax') {
-            return startCCRequest();
+            return fcpoStartCCRequest();
         } else if(sCheckedValue == 'fcpodebitnote') {
-            return startELVRequest(true);
+            return fcpoStartELVRequest(true);
         }
     }
     return true;
 }
 
-function processPayoneResponseELV(response) {
+function fcpoProcessPayoneResponseELV(response) {
     if(response.get('status') != 'VALID') {
         if(response.get('errorcode') == '1083') {
             document.getElementById('fcpo_elv_ktonr_invalid').style.display = 'block';
@@ -436,20 +437,20 @@ function processPayoneResponseELV(response) {
             document.getElementById('fcpo_elv_error').style.display = 'block';
         }
     } else {
-        var oForm = getPaymentForm();
+        var oForm = fcpoGetPaymentForm();
         oForm.submit();
     }
 }
 
-function processPayoneResponseCC(response) {
-    var cardholderError = validateCardholder();
+function fcpoProcessPayoneResponseCC(response) {
+    var cardholderError = fcpoValidateCardholder();
     if (cardholderError) {
         return false;
     }
     if(response.get('status') == 'VALID') {
-        var oForm = getPaymentForm();
+        var oForm = fcpoGetPaymentForm();
         oForm["dynvalue[fcpo_pseudocardpan]"].value = response.get('pseudocardpan');
-        oForm["dynvalue[fcpo_ccmode]"].value = getOperationMode(fcpoGetCreditcardType());
+        oForm["dynvalue[fcpo_ccmode]"].value = fcpoGetOperationMode(fcpoGetCreditcardType());
         oForm["dynvalue[fcpo_kknumber]"].value = response.get('truncatedcardpan');
         oForm["dynvalue[fcpo_kkpruef]"].value = 'xxx';
         oForm.submit();
@@ -475,7 +476,7 @@ function fcHandleDebitInputs(sDebitBICMandatory) {
     fcHandleDebitInputsTypeBlz();
 }
 function fcEnableDebitInputsTypeIban() {
-    var oForm = getPaymentForm();
+    var oForm = fcpoGetPaymentForm();
     if (oForm['dynvalue[fcpo_elv_iban]'] && oForm['dynvalue[fcpo_elv_bic]'] ) {
         oForm['dynvalue[fcpo_elv_iban]'].disabled = false;
         oForm['dynvalue[fcpo_elv_iban]'].style.backgroundColor = "";
@@ -484,7 +485,7 @@ function fcEnableDebitInputsTypeIban() {
     }
 }
 function fcEnableDebitInputsTypeBlz() {
-    var oForm = getPaymentForm();
+    var oForm = fcpoGetPaymentForm();
     if (oForm['dynvalue[fcpo_elv_ktonr]'] && oForm['dynvalue[fcpo_elv_blz]'] ) {
         oForm['dynvalue[fcpo_elv_ktonr]'].disabled = false;
         oForm['dynvalue[fcpo_elv_ktonr]'].style.backgroundColor = "";
@@ -493,7 +494,7 @@ function fcEnableDebitInputsTypeBlz() {
     }
 }
 function fcDisableDebitInputsTypeIban() {
-    var oForm = getPaymentForm();
+    var oForm = fcpoGetPaymentForm();
     if (oForm['dynvalue[fcpo_elv_iban]'] && oForm['dynvalue[fcpo_elv_bic]'] ) {
         oForm['dynvalue[fcpo_elv_iban]'].disabled = true;
         oForm['dynvalue[fcpo_elv_iban]'].style.backgroundColor = "#EEE";
@@ -502,7 +503,7 @@ function fcDisableDebitInputsTypeIban() {
     }
 }
 function fcDisableDebitInputsTypeBlz() {
-    var oForm = getPaymentForm();
+    var oForm = fcpoGetPaymentForm();
     if (oForm['dynvalue[fcpo_elv_ktonr]'] && oForm['dynvalue[fcpo_elv_blz]'] ) {
         oForm['dynvalue[fcpo_elv_ktonr]'].disabled = true;
         oForm['dynvalue[fcpo_elv_ktonr]'].style.backgroundColor = "#EEE";
@@ -511,7 +512,7 @@ function fcDisableDebitInputsTypeBlz() {
     }
 }
 function fcHandleDebitInputsTypeIban() {
-    var oForm = getPaymentForm();
+    var oForm = fcpoGetPaymentForm();
     if((oForm['dynvalue[fcpo_elv_bic]'] && oForm['dynvalue[fcpo_elv_iban]'])) {
         if(fcpoGetElvCountry() == 'DE'
             && (oForm['dynvalue[fcpo_elv_iban]'].value != '' || oForm['dynvalue[fcpo_elv_bic]'].value != '' )
@@ -525,7 +526,7 @@ function fcHandleDebitInputsTypeIban() {
 }
 
 function fcHandleDebitInputsTypeBlz() {
-    var oForm = getPaymentForm();
+    var oForm = fcpoGetPaymentForm();
     if((oForm['dynvalue[fcpo_elv_ktonr]'] && oForm['dynvalue[fcpo_elv_blz]'])) {
         if(fcpoGetElvCountry() == 'DE'
             && (oForm['dynvalue[fcpo_elv_ktonr]'].value != '' || oForm['dynvalue[fcpo_elv_blz]'].value != '')
@@ -604,7 +605,7 @@ function fcSetPayoneInputFields(oForm) {
 $('#fcpo_klarna_combined_agreed, #klarna_payment_selector').change(
     function() {
         var payment_id = $('#klarna_payment_selector').children("option:selected").val();
-        var oForm = getPaymentForm();
+        var oForm = fcpoGetPaymentForm();
 
         var klarna_combined_agreed = $('[id="fcpo_klarna_combined_agreed"]');
         if (klarna_combined_agreed.length > 0 && klarna_combined_agreed[0].checked == false) {
@@ -676,7 +677,7 @@ $('#fcpo_klarna_combined_agreed, #klarna_payment_selector').change(
 
 // >>> APPLE PAY
 
-function payWithApplePay(amount, country, currency, networks, checkoutForm) {
+function fcpoPayWithApplePay(amount, country, currency, networks, checkoutForm) {
     var session = new ApplePaySession(3, {
         countryCode: country,
         currencyCode: currency,
@@ -758,7 +759,7 @@ function payWithApplePay(amount, country, currency, networks, checkoutForm) {
     session.begin()
 }
 
-function checkDevice() {
+function fcpoAplCheckDevice() {
     var allowedDevice = 0;
     if (window.ApplePaySession) {
         var canMakePayments = ApplePaySession.canMakePayments();
@@ -776,23 +777,23 @@ function checkDevice() {
             action: 'fcpoapl_register_device',
             params: JSON.stringify({"allowed": allowedDevice})
         },
-        success: checkDeviceSuccess,
-        error: checkDeviceFailure
+        success: fcpoAplCheckDeviceSuccess,
+        error: fcpoAplCheckDeviceFailure
     });
 }
-function checkDeviceSuccess (response) {
+function fcpoAplCheckDeviceSuccess (response) {
     var responseData = JSON.parse(response);
 
     if ('SUCCESS' !== responseData.status) {
         alert("Bad response\n" + responseData.message);
     }
 }
-function checkDeviceFailure(response) {
+function fcpoAplCheckDeviceFailure(response) {
     var responseData = JSON.parse(response);
     alert("Failure : Call failed\n" + responseData.message);
 }
 
-function getAplOrderInfo (placeOrderButtonForm) {
+function fcpoGetAplOrderInfo (placeOrderButtonForm) {
     $.ajax({
         url: payoneAjaxControllerUrl,
         method: 'POST',
@@ -820,7 +821,7 @@ function getAplOrderInfo (placeOrderButtonForm) {
                       return false;
                     }
 
-                    payWithApplePay(
+                    fcpoPayWithApplePay(
                         info.amount,
                         info.country,
                         info.currency,
@@ -846,7 +847,7 @@ function getAplOrderInfo (placeOrderButtonForm) {
 // >>>> RATEPAY INSTALLMENT
 
 function fcpoRatepayRateCalculatorAction(sMode, sPaymentMethodId, iMonth) {
-    var oForm = getPaymentForm();
+    var oForm = fcpoGetPaymentForm();
     var sPaymentMethodOxid = oForm['dynvalue[fcporp_installment_profileid]'].value;
     var iInstallmentRate = oForm['dynvalue[fcporp_installment_rate_value]'].value;
 
@@ -921,9 +922,9 @@ function fcpoChangeInstallmentPaymentType(payment, paymentMethod) {
  *
  * @param void
  */
-var payolutionInstallmentCheckAvailability = $('[id="payolution_installment_check_availability"]');
-if (payolutionInstallmentCheckAvailability.length > 0) {
-    payolutionInstallmentCheckAvailability[0].addEventListener('click',
+var fcpoPayolutionInstallmentCheckAvailability = $('[id="payolution_installment_check_availability"]');
+if (fcpoPayolutionInstallmentCheckAvailability.length > 0) {
+    fcpoPayolutionInstallmentCheckAvailability[0].addEventListener('click',
         function () {
             // trigger loading animation and disable button
             var payolutionInstallmentCalculationSelection = $('[id="payolution_installment_calculation_selection"]');
@@ -1050,7 +1051,7 @@ if (payolutionInstallmentCheckAvailability.length > 0) {
     g.src = 'https://secure.pay1.de/client-api/js/ajax.js';
     s.parentNode.insertBefore(g, s);
 
-    var oForm = getPaymentForm();
+    var oForm = fcpoGetPaymentForm();
     if (oForm) {
         fcSetPayoneInputFields(oForm);
 
@@ -1078,14 +1079,14 @@ if (payolutionInstallmentCheckAvailability.length > 0) {
 
 
 $(document).ready(function() {
-    var placeOrderButtonForm = $('#orderConfirmAgbBottom');
-    if (placeOrderButtonForm && placeOrderButtonForm.length > 0) {
-        getAplOrderInfo(placeOrderButtonForm);
+    var fcpoPlaceOrderButtonForm = $('#orderConfirmAgbBottom');
+    if (fcpoPlaceOrderButtonForm && fcpoPlaceOrderButtonForm.length > 0) {
+        fcpoGetAplOrderInfo(fcpoPlaceOrderButtonForm);
     }
 
     var paymentForm = $('#payment');
     if (paymentForm && paymentForm.length > 0) {
-        checkDevice(payoneAjaxControllerUrl);
+        fcpoAplCheckDevice(payoneAjaxControllerUrl);
     }
 });
 
@@ -1096,11 +1097,11 @@ $(document).ready(function() {
  */
 
 function fcInitCCIframes() {
-    var oForm = getPaymentForm();
+    var oForm = fcpoGetPaymentForm();
     var sKKType = fcpoGetCreditcardType();
     var sMode = oForm["fcpo_mode_fcpocreditcard_" + sKKType].value;
 
-    request = {
+    oFcpoRequest = {
         request: 'creditcardcheck', // fixed value
         responsetype: 'JSON', // fixed value
         mode: sMode, // desired mode
@@ -1111,7 +1112,7 @@ function fcInitCCIframes() {
         storecarddata: 'yes', // fixed value
         hash: oForm["fcpo_hashcc_" + sKKType].value
     };
-    var iframes = new Payone.ClientApi.HostedIFrames(config, request);
+    var iframes = new Payone.ClientApi.HostedIFrames(oFcpoConfig, oFcpoRequest);
 
     //set default cardType on initialization
     iframes.setCardType("V");
@@ -1125,7 +1126,7 @@ function fcInitCCIframes() {
  * @param object response
  * @returns bool
  */
-function validateCardExpireDate(response) {
+function fcpoValidateCardExpireDate(response) {
     if (response.status === "VALID") {
         // current year month string has to be set into format YYMM
         var fullMonth = new Array("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12");
@@ -1159,14 +1160,14 @@ function validateCardExpireDate(response) {
  * 2 = cvc missing
  *
  */
-function validateCCHostedInputs() { // Function called by submitting PAY-button
-    if (iframes.isComplete()) {
+function fcpoValidateCCHostedInputs() { // Function called by submitting PAY-button
+    if (oFcpoIframes.isComplete()) {
         return 1;
     } else {
-        if(iframes.isCardTypeComplete() &&
-            iframes.isCardpanComplete() &&
-            iframes.isExpireMonthComplete() &&
-            iframes.isExpireYearComplete())
+        if(oFcpoIframes.isCardTypeComplete() &&
+            oFcpoIframes.isCardpanComplete() &&
+            oFcpoIframes.isExpireMonthComplete() &&
+            oFcpoIframes.isExpireYearComplete())
         {
             return 2;
         }
@@ -1180,13 +1181,13 @@ function validateCCHostedInputs() { // Function called by submitting PAY-button
  *
  * @param response
  */
-function processPayoneResponseCCHosted(response) {
-    response = validateCardExpireDate(response);
+function fcpoProcessPayoneResponseCCHosted(response) {
+    response = fcpoValidateCardExpireDate(response);
     console.log(response);
     if (response.status === "VALID") {
-        var oForm = getPaymentForm();
+        var oForm = fcpoGetPaymentForm();
         oForm["dynvalue[fcpo_pseudocardpan]"].value = response.pseudocardpan;
-        oForm["dynvalue[fcpo_ccmode]"].value = getOperationMode(fcpoGetCreditcardType());
+        oForm["dynvalue[fcpo_ccmode]"].value = fcpoGetOperationMode(fcpoGetCreditcardType());
         oForm["dynvalue[fcpo_kknumber]"].value = response.truncatedcardpan;
         oForm.submit();
     } else {
@@ -1197,7 +1198,7 @@ function processPayoneResponseCCHosted(response) {
 /**
  * already displayed error will get hidden before recheck
  */
-function hideCCHostedErrorsAtSubmit() {
+function fcpoHideCCHostedErrorsAtSubmit() {
     $('[id="errorCardType"]').hide();
     $('[id="errorCVC"]').hide();
     $('[id="errorIncomplete"]').hide();
@@ -1208,10 +1209,10 @@ function hideCCHostedErrorsAtSubmit() {
  *
  * @param e
  */
-function validateCardTypeCCHosted(e) {
+function fcpoValidateCardTypeCCHosted(e) {
     var paymentId = $('input[name=paymentid]:checked').val();
     var cardType = $( '#cardtype option:selected' ).attr('data-cardtype');
-    var oForm = getPaymentForm();
+    var oForm = fcpoGetPaymentForm();
 
     if(paymentId == 'fcpocreditcard' && oForm.fcpo_cc_type.value == 'hosted' && cardType == 'none') {
         $('[id="errorCardType"]').show();
@@ -1225,15 +1226,15 @@ function validateCardTypeCCHosted(e) {
  *
  * @param e
  */
-function validateInputCCHosted(e) {
+function fcpoValidateInputCCHosted(e) {
     var paymentId = $('input[name=paymentid]:checked').val();
     var cardType = $( '#cardtype option:selected' ).attr('data-cardtype');
-    var oForm = getPaymentForm();
+    var oForm = fcpoGetPaymentForm();
 
     if(paymentId == 'fcpocreditcard' && oForm.fcpo_cc_type.value == 'hosted' && cardType != 'none') {
-        $validateResult = validateCCHostedInputs();
+        $validateResult = fcpoValidateCCHostedInputs();
 
-        var cardholderError = validateCardholder(e);
+        var cardholderError = fcpoValidateCardholder(e);
         if (cardholderError) {
             e.preventDefault();
             return;
@@ -1248,7 +1249,7 @@ function validateInputCCHosted(e) {
             // halt here if response returns valid but data is not valid (expiry date e.g.)
             e.preventDefault();
             //perform request for validation
-            iframes.creditCardCheck('processPayoneResponseCCHosted');
+            oFcpoIframes.creditCardCheck('fcpoProcessPayoneResponseCCHosted');
         }
     }
 }
@@ -1257,7 +1258,7 @@ function validateInputCCHosted(e) {
  * if user is using browser back function,
  * card type is preselected and cvc check may is not working
  */
-function resetCardTypeCCHosted() {
+function fcpoResetCardTypeCCHosted() {
     var cardTypeOptionEl = $('#cardtype option[data-cardtype="none"]');
     var cardTypeEl = $('[id="cardtype"]');
 
@@ -1276,7 +1277,7 @@ function resetCardTypeCCHosted() {
 $(document).ready(function() {
     var paymentForm = $('[id="payment"]');
 
-    resetCardTypeCCHosted();
+    fcpoResetCardTypeCCHosted();
 
     if (paymentForm.length > 0) {
         //check cvc, check if cardtype is selected, progress request, output errors
@@ -1294,9 +1295,9 @@ $(document).ready(function() {
                 klarna_combined_checked = klarna_combined[0].checked;
             }
 
-            hideCCHostedErrorsAtSubmit();
-            validateCardTypeCCHosted(e);
-            validateInputCCHosted(e);
+            fcpoHideCCHostedErrorsAtSubmit();
+            fcpoValidateCardTypeCCHosted(e);
+            fcpoValidateInputCCHosted(e);
             if (klarna_combined_checked && klarna_paymentid) {
                 if (klarna_auth_done === 'false') {
                     e.preventDefault();
@@ -1312,6 +1313,6 @@ $(document).ready(function() {
     }
 
     $('#cardtype').on('change', function(e) {
-        iframes.setCardType(this.value);
+        oFcpoIframes.setCardType(this.value);
     });
 });

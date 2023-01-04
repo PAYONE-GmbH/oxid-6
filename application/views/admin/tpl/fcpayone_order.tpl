@@ -444,12 +444,38 @@
                                         </table>
                                     </td>
                                 </tr>
+                                [{if $edit->isCancellationReasonNeeded()}]
+                                <tr>
+                                    <td><strong>[{oxmultilang ident="FCPO_BNPL_ADMIN_DEBIT_REASON_TITLE"}]</strong></td>
+                                    <td>
+                                        <select name="bnpl_cancellation_reason" class="editinput">
+                                            <option value="consumer_request">[{oxmultilang ident="FCPO_BNPL_SECINSTALLMENT_DEBIT_REASON_CRQ"}]</option>
+                                            <option value="duplicate">[{oxmultilang ident="FCPO_BNPL_SECINSTALLMENT_DEBIT_REASON_DUP"}]</option>
+                                            <option value="fraudulent">[{oxmultilang ident="FCPO_BNPL_SECINSTALLMENT_DEBIT_REASON_FRD"}]</option>
+                                            <option value="undeliverable">[{oxmultilang ident="FCPO_BNPL_SECINSTALLMENT_DEBIT_REASON_UND"}]</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                [{/if}]
                                 <tr>
                                     <td class="edittext" colspan="2">
                                         <input type="button" onclick="document.myedit.fnc.value='debit';document.myedit.submit();return false;" value="[{oxmultilang ident="FCPO_EXECUTE"}]" style="padding: 0 4px 0 4px;">
                                     </td>
                                 </tr>
                             [{else}]
+                                [{if $edit->isCancellationReasonNeeded()}]
+                                <tr>
+                                    <td><strong>[{oxmultilang ident="FCPO_BNPL_ADMIN_DEBIT_REASON_TITLE"}]</strong></td>
+                                    <td>
+                                        <select name="bnpl_cancellation_reason" class="editinput">
+                                            <option value="consumer_request">[{oxmultilang ident="FCPO_BNPL_SECINSTALLMENT_DEBIT_REASON_CRQ"}]</option>
+                                            <option value="duplicate">[{oxmultilang ident="FCPO_BNPL_SECINSTALLMENT_DEBIT_REASON_DUP"}]</option>
+                                            <option value="fraudulent">[{oxmultilang ident="FCPO_BNPL_SECINSTALLMENT_DEBIT_REASON_FRD"}]</option>
+                                            <option value="undeliverable">[{oxmultilang ident="FCPO_BNPL_SECINSTALLMENT_DEBIT_REASON_UND"}]</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                [{/if}]
                                 <tr>
                                     <td class="edittext" >
                                         <strong>[{oxmultilang ident="FCPO_AMOUNT_IN"}] [{$edit->oxorder__oxcurrency->value}]</strong>

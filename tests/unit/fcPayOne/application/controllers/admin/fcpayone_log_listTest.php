@@ -114,8 +114,9 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_log_list extends Oxid
         $oTestObject->expects($this->any())->method('getSubAccountId')->will($this->returnValue('mysubaccountid'));
         $oTestObject->expects($this->any())->method('getPortalId')->will($this->returnValue('myportalid'));
         $oTestObject->expects($this->any())->method('getSecInvoicePortalId')->will($this->returnValue('mysecinvportalid'));
+        $oTestObject->expects($this->any())->method('getBNPLPortalId')->will($this->returnValue('mybnplportalid'));
 
-        $sExpectString = " AND fcpotransactionstatus.fcpo_portalid IN ('myportalid','mysecinvportalid') AND fcpotransactionstatus.fcpo_aid = 'mysubaccountid' ";
+        $sExpectString = " AND fcpotransactionstatus.fcpo_portalid IN ('myportalid','mysecinvportalid','mybnplportalid') AND fcpotransactionstatus.fcpo_aid = 'mysubaccountid' ";
 
         $this->assertEquals($sExpectString, $this->invokeMethod($oTestObject, '_prepareWhereQuery', array(array(),'')));
     }

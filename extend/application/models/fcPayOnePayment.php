@@ -74,6 +74,8 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         'fcpo_wechatpay',
         'fcpo_apple_pay',
         'fcporp_installment',
+        'fcpopl_secinvoice',
+        'fcpopl_secinstallment',
     );
 
     protected static $_aRedirectPayments = array(

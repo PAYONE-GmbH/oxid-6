@@ -1252,7 +1252,9 @@ class fcPayOneOrder extends fcPayOneOrder_parent
                 'fcpo_secinvoice',
                 'fcporp_bill',
                 'fcporp_debitnote',
-                'fcporp_installment'
+                'fcporp_installment',
+                'fcpopl_secinvoice',
+                'fcpopl_secinstallment',
             )
         );
 
@@ -1262,6 +1264,17 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         $blSendArticleList = $oConfig->getConfigParam('blFCPOSendArticlelist');
 
         return $blSendArticleList;
+    }
+
+    public function isCancellationReasonNeeded()
+    {
+        return in_array(
+            $this->oxorder__oxpaymenttype->value,
+            array(
+                'fcpopl_secinvoice',
+                'fcpopl_secinstallment',
+            )
+        );
     }
 
     /**

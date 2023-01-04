@@ -839,4 +839,33 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent
 
         return is_file($this->fcpoGetCertDirPath() . $certificateFilename);
     }
+
+    public function fcpoGetBNPLDeviceToken($sPaylaPartnerId,$sPartnerMerchantId)
+    {
+        $oSession = $this->_oFcpoHelper->fcpoGetSession();
+        $sUUIDv4 = $oSession->getId();
+        if (empty($sUUIDv4)) {
+            $sUUIDv4 = $this->_oFcpoHelper->fcpoGenerateUUIDv4();
+            $oSession->setId($sUUIDv4);
+        }
+
+        return $sPaylaPartnerId . "_" . $sPartnerMerchantId . "_" . $sUUIDv4;
+    }
+
+    public function fcpoGetPayoneSecureEnvironment($sPaymentId)
+    {
+        $oPayment = $this->_oFcpoHelper->getFactoryObject('oxpayment');
+        $oPayment->load($sPaymentId);
+        $blIsLive = $oPayment->oxpayments__fcpolivemode->value;
+
+        return $blIsLive ? 'p' : 't';
+    }
+
+    public function fcpoGetMerchantId()
+    {
+        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+        $sClientId = $oConfig->getConfigParam('sFCPOMerchantID');
+
+        return (string)$sClientId;
+    }
 }

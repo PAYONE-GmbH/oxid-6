@@ -171,6 +171,9 @@ function resetErrorContainers() {
     if(document.getElementById('fcpo_kls_confirmation_missing')) {
         document.getElementById('fcpo_kls_confirmation_missing').style.display = '';
     }
+    if(document.getElementById('fcpopl_secinstallment_iban_invalid')) {
+        document.getElementById('fcpopl_secinstallment_iban_invalid').style.display = '';
+    }
 }
 
 function fcpoGetCreditcardType() {
@@ -304,6 +307,22 @@ function fcpoGetElvCountry() {
     return sElvCountry;
 }
 
+function fcpoValidateBNPLIban() {
+    resetErrorContainers();
+    var oForm = getPaymentForm();
+
+    if(oForm['dynvalue[fcpopl_secinstallment_iban]']) {
+        oForm['dynvalue[fcpopl_secinstallment_iban]'].value = getCleanedNumberIBAN(oForm['dynvalue[fcpopl_secinstallment_iban]'].value);
+    }
+
+    if(oForm['dynvalue[fcpopl_secinstallment_iban]'].value == '') {
+        document.getElementById('fcpopl_secinstallment_iban_invalid').style.display = 'block';
+        return false;
+    }
+
+    return true;
+}
+
 function startELVRequest() {
     resetErrorContainers();
     var oForm = getPaymentForm();
@@ -418,6 +437,8 @@ function fcCheckPaymentSelection() {
             return startCCRequest();
         } else if(sCheckedValue == 'fcpodebitnote') {
             return startELVRequest(true);
+        } else if(sCheckedValue == 'fcpopl_secinstallment') {
+            return fcpoValidateBNPLIban();
         }
     }
     return true;
@@ -915,6 +936,30 @@ function fcpoChangeInstallmentPaymentType(payment, paymentMethod) {
 }
 
 // RATEPAY INSTALLMENT <<<<
+
+
+// >>>> BNPL INSTALLMENT
+
+function fcpoSelectBNPLInstallmentPlan(iIndex) {
+    var oRadio = document.getElementById('bnplPlan_' + iIndex);
+    if (oRadio) {
+        oRadio.checked = true;
+    }
+
+    var oDetailsList = document.getElementsByClassName('bnpl_installment_overview');
+    for (var i = 0 ; i < oDetailsList.length ; i++) {
+        var oElement = oDetailsList[i];
+
+        if (oElement.id === 'bnpl_installment_overview_' + iIndex) {
+            oElement.style.display = 'block';
+        } else {
+            oElement.style.display = 'none';
+        }
+    }
+}
+
+// BNPL INSTALLMENT <<<<
+
 
 /**
  * Triggers precheck for payolution installment via ajax

@@ -275,6 +275,11 @@ class fcpoRequest extends oxSuperCfg
             $this->getConfig()->getConfigParam('blFCPOPayPalDelAddress') === true
         );
 
+        $blIsBNPLPayment = (
+            $oOrder->oxorder__oxpaymenttype->value == 'fcpopl_secinvoice'
+            || $oOrder->oxorder__oxpaymenttype->value == 'fcpopl_secinstallment'
+        );
+
         if ($oOrder->oxorder__oxdellname->value != '') {
             $oDelCountry = oxNew('oxcountry');
             $oDelCountry->load($oOrder->oxorder__oxdelcountryid->value);
@@ -294,7 +299,7 @@ class fcpoRequest extends oxSuperCfg
             if ($this->_stateNeeded($oDelCountry->oxcountry__oxisoalpha2->value)) {
                 $this->addParameter('shipping_state', $this->_getShortState($oOrder->oxorder__oxdelstateid->value));
             }
-        } elseif ($blIsWalletTypePaymentWithDelAddress) {
+        } elseif ($blIsWalletTypePaymentWithDelAddress || $blIsBNPLPayment) {
             $oDelCountry = oxNew('oxcountry');
             $oDelCountry->load($oOrder->oxorder__oxbillcountryid->value);
 
@@ -567,6 +572,12 @@ class fcpoRequest extends oxSuperCfg
             case 'fcpo_secinvoice':
                 $blAddRedirectUrls = $this->_fcpoAddSecInvoiceParameters($oOrder);
                 break;
+            case 'fcpopl_secinvoice':
+                $this->_fcpoAddBNPLSecInvoiceParameters($oOrder, $aDynvalue);
+                break;
+            case 'fcpopl_secinstallment':
+                $this->_fcpoAddBNPLSecInstallmentParameters($oOrder, $aDynvalue);
+                break;
             case 'fcpo_alipay':
                 $this->addParameter('clearingtype', 'wlt'); //Payment method
                 $this->addParameter('wallettype', 'ALP');
@@ -625,6 +636,81 @@ class fcpoRequest extends oxSuperCfg
         $blIsB2B = $this->_fcpoIsOrderB2B($oOrder);
         $sBusinessRelation = ($blIsB2B) ? 'b2b' : 'b2c';
         $this->addParameter('businessrelation', $sBusinessRelation);
+
+        return true;
+    }
+
+    /**
+     * Adds specific portal/key information for BNPL
+     */
+    protected function _fcpoAddBNPLPortalParameters() {
+        $oConfig = $this->getConfig();
+
+        $sPortalId = $oConfig->getConfigParam('sFCPOPLPortalId');
+        $sPortalKeyHash = md5($oConfig->getConfigParam('sFCPOPLPortalKey'));
+        $this->addParameter('portalid', $sPortalId);
+        $this->addParameter('key', $sPortalKeyHash);
+    }
+
+    /**
+     * Adds additional parameters for BNPL secure invoice payment fnc/PIV
+     *
+     * @param $oOrder
+     * @return  boolean
+     */
+    protected function _fcpoAddBNPLSecInvoiceParameters($oOrder, $aDynvalue = []) {
+        $this->_fcpoAddBNPLPortalParameters();
+
+        $this->addParameter('clearingtype', 'fnc');
+        $this->addParameter('financingtype', 'PIV');
+
+        $blIsB2B = $this->_fcpoIsOrderB2B($oOrder);
+        $sBusinessRelation = ($blIsB2B) ? 'b2b' : 'b2c';
+        $this->addParameter('businessrelation', $sBusinessRelation);
+
+        if (isset($aDynvalue['fcpopl_device_token'])) {
+            $this->addParameter('add_paydata[device_token]', $aDynvalue['fcpopl_device_token']);
+        }
+
+        return true;
+    }
+
+    /**
+     * Adds additional parameters for BNPL secure installment payment fnc/PIN
+     *
+     * @param $oOrder
+     * @return  boolean
+     */
+    protected function _fcpoAddBNPLSecInstallmentParameters($oOrder, $aDynvalue = []) {
+        $this->_fcpoAddBNPLPortalParameters();
+
+        $this->addParameter('clearingtype', 'fnc');
+        $this->addParameter('financingtype', 'PIN');
+
+        $blIsB2B = $this->_fcpoIsOrderB2B($oOrder);
+        $sBusinessRelation = ($blIsB2B) ? 'b2b' : 'b2c';
+        $this->addParameter('businessrelation', $sBusinessRelation);
+
+        if (isset($aDynvalue['fcpopl_secinstallment_iban'])) {
+            $this->addParameter('iban', $aDynvalue['fcpopl_secinstallment_iban']);
+        }
+
+        if (isset($aDynvalue['fcpopl_secinstallment_account_holder'])) {
+            $this->addParameter('bankaccountholder', $aDynvalue['fcpopl_secinstallment_account_holder']);
+        }
+
+        if (isset($aDynvalue['fcpopl_device_token'])) {
+            $this->addParameter('add_paydata[device_token]', $aDynvalue['fcpopl_device_token']);
+        }
+
+        if (isset($aDynvalue['fcpopl_secinstallment_plan'])) {
+            $this->addParameter('add_paydata[installment_option_id]', $aDynvalue['fcpopl_secinstallment_plan']);
+        }
+
+        $sWorkorderId = $this->_oFcpoHelper->fcpoGetSessionVariable('fcpopl_secinstallment_workorderid');
+        if ($sWorkorderId !== null) {
+            $this->addParameter('workorderid', $sWorkorderId);
+        }
 
         return true;
     }
@@ -908,8 +994,15 @@ class fcpoRequest extends oxSuperCfg
                 } else {
                     $dItemAmount = $oOrderarticle->oxorderarticles__oxamount->value;
                 }
+
+                $dPrice = $this->fcpoGetPosPr(
+                    $oOrderarticle->oxorderarticles__oxbprice->value,
+                    $oOrder->oxorder__oxpaymenttype->value,
+                    $blDebit
+                );
+
                 $this->addParameter('id[' . $i . ']', $oOrderarticle->oxorderarticles__oxartnum->value);
-                $this->addParameter('pr[' . $i . ']', number_format($oOrderarticle->oxorderarticles__oxbprice->value, 2, '.', '') * 100);
+                $this->addParameter('pr[' . $i . ']', number_format($dPrice, 2, '.', '') * 100);
                 $dAmount += $oOrderarticle->oxorderarticles__oxbprice->value * $dItemAmount;
                 $this->addParameter('it[' . $i . ']', 'goods');
                 $this->addParameter('no[' . $i . ']', $dItemAmount);
@@ -932,8 +1025,15 @@ class fcpoRequest extends oxSuperCfg
                     $sDelDesc .= $oLang->translateString('FCPO_DEDUCTION', null, false);
                 }
                 $sDelDesc .= ' ' . str_replace(':', '', $oLang->translateString('FCPO_SHIPPINGCOST', null, false));
+
+                $dPrice = $this->fcpoGetPosPr(
+                    $oOrder->oxorder__oxdelcost->value,
+                    $oOrder->oxorder__oxpaymenttype->value,
+                    $blDebit
+                );
+
                 $this->addParameter('id[' . $i . ']', 'delivery');
-                $this->addParameter('pr[' . $i . ']', number_format($oOrder->oxorder__oxdelcost->value, 2, '.', '') * 100);
+                $this->addParameter('pr[' . $i . ']', number_format($dPrice, 2, '.', '') * 100);
                 $dAmount += $oOrder->oxorder__oxdelcost->value;
                 $this->addParameter('it[' . $i . ']', 'shipment');
                 $this->addParameter('no[' . $i . ']', 1);
@@ -949,8 +1049,15 @@ class fcpoRequest extends oxSuperCfg
                     $sPayDesc .= $oLang->translateString('FCPO_DEDUCTION', null, false);
                 }
                 $sPayDesc .= ' ' . str_replace(':', '', $oLang->translateString('FCPO_PAYMENTTYPE', null, false));
+
+                $dPrice = $this->fcpoGetPosPr(
+                    $oOrder->oxorder__oxpaycost->value,
+                    $oOrder->oxorder__oxpaymenttype->value,
+                    $blDebit
+                );
+
                 $this->addParameter('id[' . $i . ']', 'payment');
-                $this->addParameter('pr[' . $i . ']', number_format($oOrder->oxorder__oxpaycost->value, 2, '.', '') * 100);
+                $this->addParameter('pr[' . $i . ']', number_format($dPrice, 2, '.', '') * 100);
                 $dAmount += $oOrder->oxorder__oxpaycost->value;
                 $this->addParameter('it[' . $i . ']', 'handling');
                 $this->addParameter('no[' . $i . ']', 1);
@@ -959,8 +1066,15 @@ class fcpoRequest extends oxSuperCfg
                 $i++;
             }
             if ($oOrder->oxorder__oxwrapcost->value != 0 && ($aPositions === false || ($blDebit === false || array_key_exists('oxwrapcost', $aPositions) !== false))) {
+
+                $dPrice = $this->fcpoGetPosPr(
+                    $oOrder->oxorder__oxwrapcost->value,
+                    $oOrder->oxorder__oxpaymenttype->value,
+                    $blDebit
+                );
+
                 $this->addParameter('id[' . $i . ']', 'wrapping');
-                $this->addParameter('pr[' . $i . ']', number_format($oOrder->oxorder__oxwrapcost->value, 2, '.', '') * 100);
+                $this->addParameter('pr[' . $i . ']', number_format($dPrice, 2, '.', '') * 100);
                 $dAmount += $oOrder->oxorder__oxwrapcost->value;
                 $this->addParameter('it[' . $i . ']', 'goods');
                 $this->addParameter('no[' . $i . ']', 1);
@@ -970,8 +1084,15 @@ class fcpoRequest extends oxSuperCfg
                 $i++;
             }
             if ($oOrder->oxorder__oxgiftcardcost->value != 0 && ($aPositions === false || ($blDebit === false || array_key_exists('oxgiftcardcost', $aPositions) !== false))) {
+
+                $dPrice = $this->fcpoGetPosPr(
+                    $oOrder->oxorder__oxgiftcardcost->value,
+                    $oOrder->oxorder__oxpaymenttype->value,
+                    $blDebit
+                );
+
                 $this->addParameter('id[' . $i . ']', 'giftcard');
-                $this->addParameter('pr[' . $i . ']', number_format($oOrder->oxorder__oxgiftcardcost->value, 2, '.', '') * 100);
+                $this->addParameter('pr[' . $i . ']', number_format($dPrice, 2, '.', '') * 100);
                 $dAmount += $oOrder->oxorder__oxgiftcardcost->value;
                 $this->addParameter('it[' . $i . ']', 'goods');
                 $this->addParameter('no[' . $i . ']', 1);
@@ -1934,6 +2055,38 @@ class fcpoRequest extends oxSuperCfg
     }
 
     /**
+     * Performs a installment calculation call
+     *
+     * @param  oxOrder $oOrder
+     * @return array
+     */
+    public function sendRequestBNPLInstallmentOptions()
+    {
+        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+        $oSession = $this->_oFcpoHelper->fcpoGetSession();
+
+        $oBasket = $oSession->getBasket();
+        $oPrice = $oBasket->getPrice();
+        $iAmount = number_format($oPrice->getBruttoPrice(), 2, '.', '') * 100; //Total order sum in smallest currency unit
+
+        $this->addParameter('request', 'genericpayment'); //Request method
+        $this->addParameter('mode', $this->getOperationMode('fcpopl_secinstallment')); //PayOne Portal Operation Mode (live or test)
+        $this->addParameter('aid', $oConfig->getConfigParam('sFCPOSubAccountID')); //ID of PayOne Sub-Account
+        $this->_fcpoAddBNPLPortalParameters();
+
+        $this->addParameter('clearingtype', 'fnc');
+        $this->addParameter('financingtype', 'PIN');
+
+        $this->addParameter('amount', $iAmount);
+        $oCurr = $oConfig->getActShopCurrencyObject();
+        $this->addParameter('currency', $oCurr->name);
+
+        $this->addParameter('add_paydata[action]', 'installment_options');
+
+        return $this->send();
+    }
+
+    /**
      * Send profile request to PAYONE Server-API with request-type "genericpayment"
      *
      * @return array
@@ -2393,6 +2546,12 @@ class fcpoRequest extends oxSuperCfg
         if ($sPaymentId == 'fcpo_secinvoice') {
             $this->_fcpoAddSecInvoiceParameters($oOrder);
         }
+        if ($sPaymentId == 'fcpopl_secinvoice') {
+            $this->_fcpoAddBNPLSecInvoiceParameters($oOrder);
+        }
+        if ($sPaymentId == 'fcpopl_secinstallment') {
+            $this->_fcpoAddBNPLSecInstallmentParameters($oOrder);
+        }
 
         $aResponse = $this->send();
 
@@ -2418,7 +2577,7 @@ class fcpoRequest extends oxSuperCfg
     }
 
     /**
-     * If payment is Secure Invoice (rec/POV) other portal data
+     * If payment is Secure Invoice (rec/POV) or BNPL other portal data
      * has to be set for upcoming call
      *
      * @param $oOrder
@@ -2428,15 +2587,18 @@ class fcpoRequest extends oxSuperCfg
     {
         $sPaymentId =
             (string) $oOrder->oxorder__oxpaymenttype->value;
-        $blPaymentMatches = ($sPaymentId === 'fcpo_secinvoice');
+        $blPaymentMatches = ($sPaymentId === 'fcpo_secinvoice' || $sPaymentId === 'fcpopl_secinvoice' || $sPaymentId === 'fcpopl_secinstallment');
 
         if (!$blPaymentMatches) return;
 
         $oConfig = $this->getConfig();
-        $sFCPOSecinvoicePortalKey =
-            $oConfig->getConfigParam('sFCPOSecinvoicePortalKey');
-        $sFCPOSecinvoicePortalId =
-            $oConfig->getConfigParam('sFCPOSecinvoicePortalId');
+        if ($sPaymentId === 'fcpopl_secinvoice' || $sPaymentId === 'fcpopl_secinstallment') {
+            $sFCPOSecinvoicePortalId = $oConfig->getConfigParam('sFCPOPLPortalId');
+            $sFCPOSecinvoicePortalKey = $oConfig->getConfigParam('sFCPOPLPortalKey');
+        } else {
+            $sFCPOSecinvoicePortalId = $oConfig->getConfigParam('sFCPOSecinvoicePortalId');
+            $sFCPOSecinvoicePortalKey = $oConfig->getConfigParam('sFCPOSecinvoicePortalKey');
+        }
 
         $this->addParameter('portalid', $sFCPOSecinvoicePortalId);
         $this->addParameter('key', md5($sFCPOSecinvoicePortalKey));
@@ -2509,6 +2671,12 @@ class fcpoRequest extends oxSuperCfg
 
         if ($sPaymentId == 'fcpo_secinvoice') {
             $this->_fcpoAddSecInvoiceParameters($oOrder);
+        }
+        if ($sPaymentId == 'fcpopl_secinvoice') {
+            $this->_fcpoAddBNPLSecInvoiceParameters($oOrder);
+        }
+        if ($sPaymentId == 'fcpopl_secinstallment') {
+            $this->_fcpoAddBNPLSecInstallmentParameters($oOrder);
         }
 
         $aResponse = $this->send();
@@ -3497,6 +3665,23 @@ class fcpoRequest extends oxSuperCfg
         $this->_oFcpoHelper->fcpoSetSessionVariable('fcpoRefNr', $sRefNr);
 
         return $sRefNrComplete;
+    }
+
+    /**
+     * Returns the price as negative if situation meets the criteria
+     *
+     * @param double $dInitialPr original price
+     * @param string $sPaymentId payment method
+     * @param bool $blDebit
+     * @return double
+     */
+    protected function fcpoGetPosPr($dInitialPr, $sPaymentId, $blDebit = false)
+    {
+        if (!$blDebit || !in_array($sPaymentId, array('fcpopl_secinvoice', 'fcpopl_secinstallment'))) {
+            return $dInitialPr;
+        }
+
+        return -abs($dInitialPr);
     }
 
 }

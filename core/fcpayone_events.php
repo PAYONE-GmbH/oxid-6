@@ -431,6 +431,9 @@ class fcpayone_events
         'fcpo_wechatpay'=> 'PAYONE WeChat Pay',
         'fcpo_apple_pay'=> 'PAYONE Apple Pay',
         'fcporp_installment' => 'PAYONE Ratepay Ratenkauf',
+        'fcpopl_secinvoice' => 'PAYONE Gesicherter Rechnungskauf (neu)',
+        'fcpopl_secinstallment' => 'PAYONE Gesicherter Ratenkauf',
+
     );
 
     /**

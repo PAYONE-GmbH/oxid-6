@@ -985,6 +985,45 @@
 
     <div class="groupExp">
         <div>
+            <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="FCPO_CONFIG_GROUP_BNPL"}]</b></a>
+            <dl>
+                <dt>
+                    <input type="text" class="txt" name="confstrs[sFCPOPLPortalId]" value="[{$confstrs.sFCPOPLPortalId}]" [{$readonly}]>
+                    [{oxinputhelp ident="FCPO_HELP_BNPL_PORTAL_ID"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_BNPL_PORTAL_ID"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+            <dl>
+                <dt>
+                    <input type="text" class="txt" name="confstrs[sFCPOPLPortalKey]" value="[{$confstrs.sFCPOPLPortalKey}]" [{$readonly}]>
+                    [{oxinputhelp ident="FCPO_HELP_BNPL_PORTAL_KEY"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_BNPL_PORTAL_KEY"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+            <!-- OX6-133 : Remove css hidding to show this feature *}] -->
+            <dl style="display:none;">
+                <dt>
+                    <input type="hidden" name="confbools[blFCPOPLAllowDiffAddress]" value="false">
+                    <!-- OX6-133 : Replace below the value="false" by value="true" to allow usage of this feature -->
+                    <input type="checkbox" name="confbools[blFCPOPLAllowDiffAddress]" value="false" [{if ($confbools.blFCPOPLAllowDiffAddress)}]checked[{/if}] [{$readonly}]>
+                    [{oxinputhelp ident="FCPO_HELP_BNPL_ALLOW_DIFF_ADDRESS"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_BNPL_ALLOW_DIFF_ADDRESS"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+        </div>
+    </div>
+
+    <div class="groupExp">
+        <div>
             <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="FCPO_CONFIG_GROUP_PAYDIREKT"}]</b></a>
             <dl>
                 <dt>

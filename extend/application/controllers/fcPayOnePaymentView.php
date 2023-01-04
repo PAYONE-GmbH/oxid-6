@@ -180,7 +180,31 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         $oPayment->load($sPaymentId);
         $blShowAsRegularPaymentSelection =
             $oPayment->fcpoShowAsRegularPaymentSelection();
+
+        if ($blShowAsRegularPaymentSelection && in_array($sPaymentId, ['fcpopl_secinvoice', 'fcpopl_secinstallment'])) {
+            $blShowAsRegularPaymentSelection = $this->fcpoShowBNPLPaymentSelection();
+        }
+
         return $blShowAsRegularPaymentSelection;
+    }
+
+    /**
+     * Check if BNPL methods can be shown (AT/DE country and EUR currency only)
+     *
+     * @return bool
+     */
+    protected function fcpoShowBNPLPaymentSelection()
+    {
+        if (!in_array($this->getUserBillCountryId(), ['a7c40f631fc920687.20179984', 'a7c40f6320aeb2ec2.72885259'])) {
+            return false;
+        }
+        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+        $oCurr = $oConfig->getActShopCurrencyObject();
+        if ($oCurr->name != 'EUR') {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -227,6 +251,53 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         }
 
         $this->render();
+    }
+
+    public function fcpoGetBNPLInstallment()
+    {
+        $oRequest = $this->_oFcpoHelper->getFactoryObject('fcporequest');
+        $aResponse = $oRequest->sendRequestBNPLInstallmentOptions();
+
+        $aFormattedData = [];
+        $aFormattedData['status'] = $aResponse['status'];
+        $aFormattedData['workorderid'] = $aResponse['workorderid'];
+        $aFormattedData['amountValue'] = $this->fcpoPriceFromCentToDec($aResponse['add_paydata[amount_value]']);
+        $aFormattedData['amountCurrency'] = $aResponse['add_paydata[amount_currency]'];
+        $aFormattedData['plans'] = [];
+
+        $this->_oFcpoHelper->fcpoSetSessionVariable('fcpopl_secinstallment_workorderid', $aResponse['workorderid']);
+
+        $iCurrPlan = 0;
+        while (true) {
+            if (!isset ($aResponse['add_paydata[total_amount_currency_' . $iCurrPlan . ']'])) {
+                break;
+            }
+
+            $aFormattedData['plans'][$iCurrPlan] = [
+                'effectiveInterestRate' => $this->fcpoPriceFromCentToDec($aResponse['add_paydata[effective_interest_rate_' . $iCurrPlan . ']']),
+                'firstRateDate' => $aResponse['add_paydata[first_rate_date_' . $iCurrPlan . ']'],
+                'installmentOptionId' => $aResponse['add_paydata[installment_option_id_' . $iCurrPlan . ']'],
+                'lastRateAmountCurrency' => $aResponse['add_paydata[last_rate_amount_currency_' . $iCurrPlan . ']'],
+                'lastRateAmountValue' => $this->fcpoPriceFromCentToDec($aResponse['add_paydata[last_rate_amount_value_' . $iCurrPlan . ']']),
+                'linkCreditInformationHref' => $aResponse['add_paydata[link_credit_information_href_' . $iCurrPlan . ']'],
+                'linkCreditInformationType' => $aResponse['add_paydata[link_credit_information_type_' . $iCurrPlan . ']'],
+                'monthlyAmountCurrency' => $aResponse['add_paydata[monthly_amount_currency_' . $iCurrPlan . ']'],
+                'monthlyAmountValue' => $this->fcpoPriceFromCentToDec($aResponse['add_paydata[monthly_amount_value_' . $iCurrPlan . ']']),
+                'nominalInterestRate' => $this->fcpoPriceFromCentToDec($aResponse['add_paydata[nominal_interest_rate_' . $iCurrPlan . ']']),
+                'numberOfPayments' => $aResponse['add_paydata[number_of_payments_' . $iCurrPlan . ']'],
+                'totalAmountCurrency' => $aResponse['add_paydata[total_amount_currency_' . $iCurrPlan . ']'],
+                'totalAmountValue' => $this->fcpoPriceFromCentToDec($aResponse['add_paydata[total_amount_value_' . $iCurrPlan . ']']),
+            ];
+
+            $iCurrPlan++;
+        }
+
+        return $aFormattedData;
+    }
+
+    protected function fcpoPriceFromCentToDec($iAmount)
+    {
+        return number_format($iAmount / 100, 2, ',', '.');
     }
 
     /**
@@ -961,6 +1032,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
                 $this->_fcpoCheckPaypalExpressRemoval();
                 $this->_fcpoRemoveForbiddenPaymentsByUser();
                 $this->_fcpoCheckSecInvoiceRemoval();
+                $this->_fcpoCheckBNPLRemoval();
             } else {
                 $oUtils = $this->_oFcpoHelper->fcpoGetUtils();
                 $oUtils->redirect($this->_oFcpoHelper->fcpoGetConfig()->getShopHomeURL() . 'cl=user', false);
@@ -1500,6 +1572,26 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     }
 
     /**
+     * Checking if BNPL methods should be removed from payment list
+     *
+     * @param  void
+     * @return void
+     */
+    protected function _fcpoCheckBNPLRemoval()
+    {
+        $oUser = $this->getUser();
+        $blIsB2B = $oUser->oxuser__oxcompany->value != '';
+
+        $blshowshipaddress = $this->_oFcpoHelper->fcpoGetSessionVariable('blshowshipaddress');
+        $blDiffShippingAllowed = $this->_oFcpoHelper->fcpoGetConfig()->getConfigParam('blFCPOPLAllowDiffAddress');
+
+        if ((!$blDiffShippingAllowed && $blshowshipaddress == 1) || $blIsB2B) {
+            $this->_fcpoRemovePaymentFromFrontend('fcpopl_secinvoice');
+            $this->_fcpoRemovePaymentFromFrontend('fcpopl_secinstallment');
+        }
+    }
+
+    /**
      * Removes payments that are forbidden by user
      *
      * @param void
@@ -1626,6 +1718,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
             $oPayment = $this->_oFcpoHelper->getFactoryObject('oxpayment');
             $oPayment->load($sPaymentId);
             $mReturn = $this->_fcpoSecInvoiceSaveRequestedValues($mReturn, $sPaymentId);
+            $mReturn = $this->_fcpoBNPLSaveRequestedValues($mReturn, $sPaymentId);
             $blContinue = $this->_fcpoCheckBoniMoment($oPayment);
 
             if ($blContinue !== true) {
@@ -2455,6 +2548,43 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     }
 
     /**
+     * Save requested values of BNPL methods
+     *
+     * @param mixed $mReturn
+     * @param string $sPaymentId
+     * @return bool
+     */
+    public function _fcpoBNPLSaveRequestedValues($mReturn, $sPaymentId)
+    {
+        $blIsBNPL = ($sPaymentId == 'fcpopl_secinvoice' || $sPaymentId == 'fcpopl_secinstallment');
+        if (!$blIsBNPL) return $mReturn;
+
+        $aRequestedValues = $this->_oFcpoHelper->fcpoGetRequestParameter('dynvalue');
+        $aBirthdayValidation = $this->_fcpoValidateBirthdayData($sPaymentId, $aRequestedValues);
+        $blBirthdayRequired = $aBirthdayValidation['blBirthdayRequired'];
+
+        $blBirthdayCheckPassed = true;
+        if ($blBirthdayRequired) {
+            $blBirthdayCheckPassed = $this->_fcpoSaveBirthdayData($aRequestedValues, $sPaymentId);
+        }
+
+        $blInstallmentPlanCheckPassed = true;
+        if ($sPaymentId == 'fcpopl_secinstallment') {
+            $blInstallmentPlanCheckPassed = $this->_fcpoBNPLValidateInstallmentPlan($aRequestedValues);
+        }
+
+        if (isset($aRequestedValues[$sPaymentId . '_fon'])) {
+            $sCurrentValue = $this->fcpoGetUserValue('oxfon');
+            $blRefreshValue = ($sCurrentValue != $aRequestedValues[$sPaymentId . '_fon']);
+            if ($blRefreshValue) {
+                $this->_fcpoSetUserValue('oxfon', $aRequestedValues[$sPaymentId . '_fon']);
+            }
+        }
+
+        return ($blBirthdayCheckPassed && $blInstallmentPlanCheckPassed) ? $mReturn : false;
+    }
+
+    /**
      * Method checks if given field should be saved and returns if it has saved this data or not
      *
      * @param $sPaymentId
@@ -2474,6 +2604,21 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         }
 
         return $blSavedData;
+    }
+
+    protected function _fcpoBNPLValidateInstallmentPlan($aRequestedValues)
+    {
+        if (empty($aRequestedValues['fcpopl_secinstallment_plan'])) {
+            $oLang = $this->_oFcpoHelper->fcpoGetLang();
+            $sMessage = $oLang->translateString('FCPO_BNPL_SECINSTALLMENT_PLAN_INVALID');
+            $this->_oFcpoHelper->fcpoSetSessionVariable('payerror', -20);
+            $this->_oFcpoHelper->fcpoSetSessionVariable('payerrortext', $sMessage);
+
+            return false;
+        }
+
+         return  true;
+
     }
 
     /**
@@ -2607,8 +2752,13 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
                 $blValidBirthdateData = $this->_fcpoValidatePayolutionBirthdayData($sPaymentId, $aRequestedValues);
                 break;
             case 'fcpo_secinvoice':
+            case 'fcpopl_secinvoice':
+            case 'fcpopl_secinstallment':
                 $blB2CMode = ! $this->fcpoIsB2BPov();
-                $blBirthdayRequired = $blB2CMode;
+                $blFieldPresence = isset($aRequestedValues['fcpopl_secinvoice_birthdate_day'])
+                    && isset($aRequestedValues['fcpopl_secinvoice_birthdate_month'])
+                    && isset($aRequestedValues['fcpopl_secinvoice_birthdate_year']);
+                $blBirthdayRequired = $blB2CMode && $blFieldPresence;
                 $blValidBirthdateData = $this->_fcpoValidateSecInvoiceBirthdayData($sPaymentId, $aRequestedValues);
                 break;
         }
@@ -2631,9 +2781,9 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     protected function _fcpoValidateSecInvoiceBirthdayData($sPaymentId, $aRequestedValues) {
         $oLang = $this->_oFcpoHelper->fcpoGetLang();
         $sChooseString = $oLang->translateString('FCPO_PAYOLUTION_PLEASE SELECT');
-        $sBirthdateYear = $aRequestedValues['fcpo_secinvoice_birthdate_year'];
-        $sBirthdateMonth = $aRequestedValues['fcpo_secinvoice_birthdate_month'];
-        $sBirthdateDay = $aRequestedValues['fcpo_secinvoice_birthdate_day'];
+        $sBirthdateYear = $aRequestedValues[$sPaymentId . '_birthdate_year'];
+        $sBirthdateMonth = $aRequestedValues[$sPaymentId . '_birthdate_month'];
+        $sBirthdateDay = $aRequestedValues[$sPaymentId . '_birthdate_day'];
         $blValidRequestYear = ((!empty($sBirthdateYear) && $sBirthdateYear != $sChooseString));
         $blValidRequestMonth = ((!empty($sBirthdateMonth) && $sBirthdateMonth != $sChooseString));
         $blValidRequestDay = ((!empty($sBirthdateDay) && $sBirthdateDay != $sChooseString));
@@ -2663,9 +2813,11 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
                     "-" . $aRequestedValues['fcpo_payolution_' . $sFieldNameAddition . '_birthdate_day'];
                 break;
             case 'fcpo_secinvoice':
-                $sRequestBirthdate = $aRequestedValues['fcpo_secinvoice_birthdate_year'] .
-                    "-" . $aRequestedValues['fcpo_secinvoice_birthdate_month'] .
-                    "-" . $aRequestedValues['fcpo_secinvoice_birthdate_day'];
+            case 'fcpopl_secinvoice':
+            case 'fcpopl_secinstallment':
+                $sRequestBirthdate = $aRequestedValues[$sPaymentId . '_birthdate_year'] .
+                    "-" . $aRequestedValues[$sPaymentId . '_birthdate_month'] .
+                    "-" . $aRequestedValues[$sPaymentId . '_birthdate_day'];
                 break;
         }
 
@@ -3832,6 +3984,11 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         return $sReturn;
     }
 
+    public function fcpoGetAccountHolder()
+    {
+        return $this->fcpoGetUserValue('oxfname') . ' ' . $this->fcpoGetUserValue('oxlname');
+    }
+
     /**
      * Returns a value of user object or empty string if value nor available
      * 
@@ -4023,5 +4180,33 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     {
         $oViewConf = $this->_oFcpoHelper->fcpoGetViewConfig();
         return $oViewConf->fcpoCertificateExists();
+    }
+
+    /**
+     * Template getter which checks if requesting telephone number is needed
+     *
+     * @param  void
+     * @return bool
+     */
+    public function fcpoBNPLShowFon()
+    {
+        $oUser = $this->getUser();
+        $blIsB2B = $oUser->oxuser__oxcompany->value != '';
+
+        return (!$blIsB2B && $oUser->oxuser__oxfon->value == '');
+    }
+
+    /**
+     * Template getter which checks if requesting birthdate is needed
+     *
+     * @param  void
+     * @return bool
+     */
+    public function fcpoBNPLShowBirthdate()
+    {
+        $oUser = $this->getUser();
+        $blIsB2B = $oUser->oxuser__oxcompany->value != '';
+
+        return (!$blIsB2B && (is_null($oUser->oxuser__oxbirthdate->value) || $oUser->oxuser__oxbirthdate->value == '0000-00-00'));
     }
 }

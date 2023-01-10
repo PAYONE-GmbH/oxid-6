@@ -1713,8 +1713,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         }
 
         if ($mReturn == 'order') { // success
-            $this->_fcpoSetKlarnaCampaigns();
-
             $oPayment = $this->_oFcpoHelper->getFactoryObject('oxpayment');
             $oPayment->load($sPaymentId);
             $mReturn = $this->_fcpoSecInvoiceSaveRequestedValues($mReturn, $sPaymentId);
@@ -3264,21 +3262,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     }
 
     /**
-     * Sets needed session values if there is corresponding data
-     * 
-     * @param  void
-     * @return void
-     */
-    protected function _fcpoSetKlarnaCampaigns() 
-    {
-        if ($this->_oFcpoHelper->fcpoGetRequestParameter('fcpo_klarna_campaign')) {
-            $this->_oFcpoHelper->fcpoSetSessionVariable('fcpo_klarna_campaign', $this->_oFcpoHelper->fcpoGetRequestParameter('fcpo_klarna_campaign'));
-        } else {
-            $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpo_klarna_campaign');
-        }
-    }
-
-    /**
      * Returns paymentid wether from request parameter or session
      * 
      * @param  void
@@ -3403,7 +3386,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     public function fcpoGetConfirmationText() 
     {
         $oPayment = $this->_oFcpoHelper->getFactoryObject('oxPayment');
-        $sId = $oPayment->fcpoGetKlarnaStoreId();
+        $sId = '';
         $sKlarnaLang = $this->_fcpoGetKlarnaLang();
         $oLang = $this->_oFcpoHelper->fcpoGetLang();
         $sConfirmText = $oLang->translateString('FCPO_KLV_CONFIRM');

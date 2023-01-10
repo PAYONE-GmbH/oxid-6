@@ -266,16 +266,10 @@ $aLang = array(
     'fcpo_status_transfer'                      => "transfer",
     'fcpo_status_invoice'                       => "invoice",
 
-    'FCPO_KLARNA_STORE_ID_ADMIN'  => "Klarna StoreIDs",
-    'FCPO_KLARNA_ADD_STORE_ID'    => "add StoreID",
-    'FCPO_KLARNA_DELETE_STORE_ID' => "delete",
-
     'FCPO_CONFIG_GROUP_CONN'                    => "Connection-configuration",
     'FCPO_CONFIG_GROUP_GENERAL'                 => "General",
     'FCPO_CONFIG_GROUP_DEBITNOTE'               => "Debit",
     'FCPO_CONFIG_GROUP_CREDITCARD'              => "Creditcard",
-    'FCPO_CONFIG_GROUP_KLARNA'                  => "Klarna StoreIDs",
-    'FCPO_CONFIG_GROUP_KLARNA_CAMPAIGNS'        => "Klarna campaigns",
     'FCPO_CONFIG_GROUP_PAYOLUTION'              => 'Payolution',
     'FCPO_CONFIG_GROUP_RATEPAY'                 => 'Ratepay',
     'FCPO_CONFIG_GROUP_AMAZONPAY'               => 'AmazonPay',
@@ -332,11 +326,6 @@ $aLang = array(
     'fcpo_admin_config_status_language'          => 'Language',
     'fcpo_admin_config_status_own_error_message' => 'Custom error message',
 
-    'FCPO_KLARNA_CAMPAIGNS'      => "Campaigns",
-    'FCPO_KLARNA_CAMPAIGN_CODE'  => "Campaign-Code",
-    'FCPO_KLARNA_CAMPAIGN_TITLE' => "Title",
-    'FCPO_KLARNA_ADD_CAMPAIGN'   => "add campaign",
-
     'FCPO_CONFIG_DEBIT_BANKDATA'        => "Input bank account data",
     'FCPO_CONFIG_DEBIT_MULTISELECT'     => "Country control list (hold CTRL for multiselect)",
     'FCPO_CONFIG_DEBIT_GER'             => "German bank accounts only",
@@ -368,7 +357,6 @@ $aLang = array(
     'FCPO_CAPTURE_AMOUNT_GREATER_NULL' => 'Captured amount has to be greater than 0',
 
     'FCPO_HELP_ASSIGNCOUNTRIES_2' => 'If no country is assigned, this payment method will be available for all countries',
-    'FCPO_HELP_ASSIGNCOUNTRIES_3' => 'If no country is assigned, this payment method will be available for all countries',
 
     'FCPO_ADDRESSCHECK_PUG' => 'If building is unknown, customer will get redirected back customer form',
     'FCPO_ADDRESSCHECK_PUZ' => 'If customer is moved,  customer will get redirected back customer form',
@@ -386,13 +374,6 @@ $aLang = array(
     'FCPO_MANDATE_DOWNLOAD' => "download",
 
     'FCPO_EXPORT_CONFIG' => "Export configuration",
-
-    'FCPO_ASSIGN_COUNTRIES' => "Assign countries",
-    'FCPO_COUNTRIES'        => "Countries",
-    'FCPO_LANGUAGE'         => "Languages",
-    'FCPO_CURRENCY'         => "Currencies",
-
-    'FCPO_HELP_KLARNA_CAMPAIGNS' => "Klarna will only accept orders where the combination of country, language and currency match the campaign. You have to configure these combinations here.<br>The customer will only see campaigns matching his current combination.",
 
     'FCPO_PAYPAL_DELADDRESS'         => 'Transmit the billing-address as delivery-address if delivery-address is missing.',
     'FCPO_HELP_PAYPAL_DELADDRESS'    => 'This is used for the PayPal seller protection.',

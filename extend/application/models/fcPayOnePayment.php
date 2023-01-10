@@ -300,33 +300,6 @@ class fcPayOnePayment extends fcPayOnePayment_parent
     }
 
     /**
-     * Returns the Klarna StoreID for the current bill country
-     * 
-     * @return string
-     */
-    public function fcpoGetKlarnaStoreId() 
-    {
-        $oUser = $this->getUser();
-        $sBillCountryId = $oUser->oxuser__oxcountryid->value;
-
-        $sQuery = " SELECT 
-                        b.fcpo_storeid 
-                    FROM 
-                        fcpopayment2country AS a
-                    INNER JOIN
-                        fcpoklarnastoreids AS b ON a.fcpo_type = b.oxid
-                    WHERE 
-                        a.fcpo_paymentid = 'KLV' AND 
-                        a.fcpo_countryid = " . oxDb::getDb()->quote($sBillCountryId) . " 
-                    LIMIT 1";
-        $sStoreId = $this->_oFcpoDb->GetOne($sQuery);
-
-        $sStoreId = ($sStoreId) ? $sStoreId : 0;
-
-        return $sStoreId;
-    }
-
-    /**
      * Returns user paymentid 
      * 
      * @param  string $sUserOxid
@@ -455,87 +428,6 @@ class fcPayOnePayment extends fcPayOnePayment_parent
     }
 
     /**
-     * Returning klarna campaigns
-     * 
-     * @param  bool $blGetAll
-     * @return array
-     */
-    public function fcpoGetKlarnaCampaigns($blGetAll = false) 
-    {
-        $aStoreIds = array();
-
-        $sQuery = "
-            SELECT 
-                oxid, 
-                fcpo_campaign_code, 
-                fcpo_campaign_title, 
-                fcpo_campaign_language, 
-                fcpo_campaign_currency
-            FROM 
-                 fcpoklarnacampaigns 
-            ORDER BY oxid ASC";
-
-        $aRows = $this->_oFcpoDb->getAll($sQuery);
-        foreach ($aRows as $aRow) {
-            $aCampaign = $this->_fcpoGetKlarnaCampaignArray($aRow);
-            $blAdd = ($blGetAll) ? true : $this->_fcpoCheckKlarnaCampaignsResult($aRow[0], $aCampaign);
-
-            if ($blAdd === true) {
-                $aStoreIds[$aRow[0]] = $aCampaign;
-            }
-        }
-        return $aStoreIds;
-    }
-
-    /**
-     * Method returns campaign array on db request result
-     * 
-     * @param  array $aRow
-     * @return array
-     */
-    protected function _fcpoGetKlarnaCampaignArray($aRow) 
-    {
-        $aCampaign = array(
-            'code' => $aRow[1],
-            'title' => $aRow[2],
-            'language' => unserialize($aRow[3]),
-            'currency' => unserialize($aRow[4]),
-        );
-
-        $aCampaign = $this->_fcpoSetArrayDefault($aCampaign, 'language');
-        $aCampaign = $this->_fcpoSetArrayDefault($aCampaign, 'currency');
-
-        return $aCampaign;
-    }
-
-    /**
-     * Method evaluates result of klarna campaign data and returns if it can be added
-     * 
-     * @param  string $sCountryOxid
-     * @param  array  $aCampaign
-     * @return boolean
-     */
-    protected function _fcpoCheckKlarnaCampaignsResult($sCountryOxid, $aCampaign) 
-    {
-        $blAdd = true;
-
-        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
-        $oLang = $this->_oFcpoHelper->fcpoGetLang();
-        $sCurrLanguage = $oLang->getLanguageAbbr();
-        $oUser = $this->getUser();
-        $sCurrCountry = $oUser->oxuser__oxcountryid->value;
-        $oCurrency = $oConfig->getActShopCurrencyObject();
-        $sCurrCurrency = $oCurrency->name;
-
-        $aConnectedCountries = $this->_fcGetCountries($sCountryOxid);
-        $blAdd = $this->_fcpoCheckAddCampaign($blAdd, $sCurrCountry, $aConnectedCountries);
-        $blAdd = $this->_fcpoCheckAddCampaign($blAdd, $sCurrLanguage, $aCampaign['language']);
-        $blAdd = $this->_fcpoCheckAddCampaign($blAdd, $sCurrCurrency, $aCampaign['currency']);
-
-        return $blAdd;
-    }
-
-    /**
      * Sets add flag to false if conditions doesn't match
      * 
      * @param  boolean $blAdd
@@ -550,22 +442,6 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         }
 
         return $blAdd;
-    }
-
-    /**
-     * Sets given index to empty array if no array has been detected
-     * 
-     * @param  array  $aCampaign
-     * @param  string $sIndex
-     * @return array
-     */
-    protected function _fcpoSetArrayDefault($aCampaign, $sIndex) 
-    {
-        if (!is_array($aCampaign[$sIndex])) {
-            $aCampaign[$sIndex] = array();
-        }
-
-        return $aCampaign;
     }
 
     /**

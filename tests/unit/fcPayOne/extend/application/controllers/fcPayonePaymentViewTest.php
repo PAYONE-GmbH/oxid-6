@@ -1727,9 +1727,6 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
         $sKlarnaLang = '';
         $sConfirmText = 'someConfirmText';
 
-        $oMockPayment = $this->getMock('oxpayment', array('fcpoGetKlarnaStoreId'));
-        $oMockPayment->expects($this->any())->method('fcpoGetKlarnaStoreId')->will($this->returnValue(''));
-
         $oTestObject = $this->getMock('fcPayOnePaymentView', array('_fcpoGetKlarnaLang'));
         $oTestObject->expects($this->any())->method('_fcpoGetKlarnaLang')->will($this->returnValue($sKlarnaLang));
 

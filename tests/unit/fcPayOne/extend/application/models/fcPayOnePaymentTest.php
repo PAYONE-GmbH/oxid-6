@@ -172,28 +172,7 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOnePaymentTest extends OxidTe
         
         $this->assertEquals('someValue', $oTestObject->fcpoGetCountryNameById('someCountryId'));
     }
-    
-    
-    /**
-     * Testing _fcpoGetKlarnaStoreId for coverage
-     * 
-     * @param  void
-     * @return void
-     */
-    public function test_fcpoGetKlarnaStoreId_Coverage() 
-    {
-        $oTestObject = $this->getMock('fcPayOnePayment', array('getUserBillCountryId'));
-        $oTestObject->expects($this->any())->method('getUserBillCountryId')->will($this->returnValue(true));
-        
-        $oMockDatabase = $this->getMock('oxDb', array('GetOne'));
-        $oMockDatabase->expects($this->any())->method('GetOne')->will($this->returnValue('someStoreId'));
-        
-        $this->invokeSetAttribute($oTestObject, '_oFcpoDb', $oMockDatabase);
-        
-        $this->assertEquals('someStoreId', $this->invokeMethod($oTestObject, 'fcpoGetKlarnaStoreId'));
-    }
-    
-    
+
     /**
      * Testing fcpoGetUserPaymentId for coverage
      */

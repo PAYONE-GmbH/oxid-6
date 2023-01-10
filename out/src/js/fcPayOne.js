@@ -200,13 +200,13 @@ function fcpoGetCardExpireDate() {
 function fcpoStartCCRequest() {
     fcpoResetErrorContainers();
     var oForm = fcpoGetPaymentForm();
-    oForm["dynvalue[fcpo_kknumber]"].value = getCleanedNumber(oForm["dynvalue[fcpo_kknumber]"].value);
+    oForm["dynvalue[fcpo_kknumber]"].value = fcpoGetCleanedNumber(oForm["dynvalue[fcpo_kknumber]"].value);
     if(oForm["dynvalue[fcpo_kknumber]"].value == '') {
         document.getElementById('fcpo_cc_number_invalid').style.display = 'block';
         return false;
     }
 
-    oForm["dynvalue[fcpo_kkpruef]"].value = getCleanedNumber(oForm["dynvalue[fcpo_kkpruef]"].value);
+    oForm["dynvalue[fcpo_kkpruef]"].value = fcpoGetCleanedNumber(oForm["dynvalue[fcpo_kkpruef]"].value);
     if(oForm["dynvalue[fcpo_kkpruef]"].value == '' || oForm["dynvalue[fcpo_kkpruef]"].value.length < 3) {
         document.getElementById('fcpo_cc_cvc2_invalid').style.display = 'block';
         return false;
@@ -313,7 +313,7 @@ function fcpoValidateBNPLIban() {
     var oForm = getPaymentForm();
 
     if(oForm['dynvalue[fcpopl_secinstallment_iban]']) {
-        oForm['dynvalue[fcpopl_secinstallment_iban]'].value = getCleanedNumberIBAN(oForm['dynvalue[fcpopl_secinstallment_iban]'].value);
+        oForm['dynvalue[fcpopl_secinstallment_iban]'].value = fcpoGetCleanedNumberIBAN(oForm['dynvalue[fcpopl_secinstallment_iban]'].value);
     }
 
     if(oForm['dynvalue[fcpopl_secinstallment_iban]'].value == '') {

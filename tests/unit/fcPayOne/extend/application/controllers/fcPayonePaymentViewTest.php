@@ -1526,7 +1526,6 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
 
         $oTestObject = $this->getMock(
             'fcPayOnePaymentView', array(
-                '_fcpoSetKlarnaCampaigns',
                 '_fcpoCheckBoniMoment',
                 '_fcpoSetBoniErrorValues',
                 '_fcpoSetMandateParams',
@@ -1536,7 +1535,6 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
                 '_fcpoSecInvoiceSaveRequestedValues'
             )
         );
-        $oTestObject->expects($this->any())->method('_fcpoSetKlarnaCampaigns')->will($this->returnValue(null));
         $oTestObject->expects($this->any())->method('_fcpoCheckBoniMoment')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcpoSetBoniErrorValues')->will($this->returnValue(null));
         $oTestObject->expects($this->any())->method('_fcpoSetMandateParams')->will($this->returnValue(null));
@@ -1565,7 +1563,6 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
 
         $oTestObject = $this->getMock(
             'fcPayOnePaymentView', array(
-                '_fcpoSetKlarnaCampaigns',
                 '_fcpoCheckBoniMoment',
                 '_fcpoSetBoniErrorValues',
                 '_fcpoSetMandateParams',
@@ -1575,7 +1572,6 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
                 '_fcpoSecInvoiceSaveRequestedValues'
             )
         );
-        $oTestObject->expects($this->any())->method('_fcpoSetKlarnaCampaigns')->will($this->returnValue(null));
         $oTestObject->expects($this->any())->method('_fcpoCheckBoniMoment')->will($this->returnValue(false));
         $oTestObject->expects($this->any())->method('_fcpoSetBoniErrorValues')->will($this->returnValue(null));
         $oTestObject->expects($this->any())->method('_fcpoSetMandateParams')->will($this->returnValue(null));
@@ -1730,9 +1726,6 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
         $sId = 'someKlarnaStoreId';
         $sKlarnaLang = '';
         $sConfirmText = 'someConfirmText';
-
-        $oMockPayment = $this->getMock('oxpayment', array('fcpoGetKlarnaStoreId'));
-        $oMockPayment->expects($this->any())->method('fcpoGetKlarnaStoreId')->will($this->returnValue(''));
 
         $oTestObject = $this->getMock('fcPayOnePaymentView', array('_fcpoGetKlarnaLang'));
         $oTestObject->expects($this->any())->method('_fcpoGetKlarnaLang')->will($this->returnValue($sKlarnaLang));
@@ -2170,7 +2163,6 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
     {
         $oTestObject = $this->getMock(
             'fcPayOnePaymentView', array(
-                '_fcpoSetKlarnaCampaigns',
                 '_fcpoCheckBoniMoment',
                 '_fcpoSetBoniErrorValues',
                 '_fcpoSetMandateParams',
@@ -2178,7 +2170,6 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
                 '_fcpoSecInvoiceSaveRequestedValues'
             )
         );
-        $oTestObject->expects($this->any())->method('_fcpoSetKlarnaCampaigns')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcpoCheckBoniMoment')->will($this->returnValue(false));
         $oTestObject->expects($this->any())->method('_fcpoSetBoniErrorValues')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcpoSetMandateParams')->will($this->returnValue(true));
@@ -2509,7 +2500,6 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
     {
         $oTestObject = $this->getMock(
             'fcPayOnePaymentView', array(
-                '_fcpoSetKlarnaCampaigns',
                 '_fcpoCheckBoniMoment',
                 '_fcpoSetBoniErrorValues',
                 '_fcpoSetMandateParams',
@@ -2518,7 +2508,6 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
                 '_fcpoPayolutionPreCheck'
             )
         );
-        $oTestObject->expects($this->any())->method('_fcpoSetKlarnaCampaigns')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcpoCheckBoniMoment')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcpoSetBoniErrorValues')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcpoSetMandateParams')->will($this->returnValue(true));
@@ -3619,38 +3608,6 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
         $sMockPaymentId = 'someId';
 
         $this->assertEquals(false, $oTestObject->_fcpoValidateApproval($sMockPaymentId, $aMockApproval));
-    }
-
-    /**
-     * Testing _fcpoSetKlarnaCampaigns for case request param is available
-     */
-    public function test__fcpoSetKlarnaCampaigns_RequestParamAvailable()
-    {
-        $oTestObject = oxNew('fcPayOnePaymentView');
-
-        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
-        $oHelper->expects($this->any())->method('fcpoGetRequestParameter')->will($this->returnValue('someParam'));
-        $oHelper->expects($this->any())->method('fcpoSetSessionVariable')->will($this->returnValue(null));
-        $oHelper->expects($this->any())->method('fcpoDeleteSessionVariable')->will($this->returnValue(null));
-        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
-
-        $this->assertEquals(null, $oTestObject->_fcpoSetKlarnaCampaigns());
-    }
-
-    /**
-     * Testing _fcpoSetKlarnaCampaigns for case request param is not available
-     */
-    public function test__fcpoSetKlarnaCampaigns_RequestParamNotAvailable()
-    {
-        $oTestObject = oxNew('fcPayOnePaymentView');
-
-        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
-        $oHelper->expects($this->any())->method('fcpoGetRequestParameter')->will($this->returnValue(false));
-        $oHelper->expects($this->any())->method('fcpoSetSessionVariable')->will($this->returnValue(null));
-        $oHelper->expects($this->any())->method('fcpoDeleteSessionVariable')->will($this->returnValue(null));
-        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
-
-        $this->assertEquals(null, $oTestObject->_fcpoSetKlarnaCampaigns());
     }
 
     /**

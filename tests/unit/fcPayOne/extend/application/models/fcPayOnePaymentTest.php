@@ -172,28 +172,7 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOnePaymentTest extends OxidTe
         
         $this->assertEquals('someValue', $oTestObject->fcpoGetCountryNameById('someCountryId'));
     }
-    
-    
-    /**
-     * Testing _fcpoGetKlarnaStoreId for coverage
-     * 
-     * @param  void
-     * @return void
-     */
-    public function test_fcpoGetKlarnaStoreId_Coverage() 
-    {
-        $oTestObject = $this->getMock('fcPayOnePayment', array('getUserBillCountryId'));
-        $oTestObject->expects($this->any())->method('getUserBillCountryId')->will($this->returnValue(true));
-        
-        $oMockDatabase = $this->getMock('oxDb', array('GetOne'));
-        $oMockDatabase->expects($this->any())->method('GetOne')->will($this->returnValue('someStoreId'));
-        
-        $this->invokeSetAttribute($oTestObject, '_oFcpoDb', $oMockDatabase);
-        
-        $this->assertEquals('someStoreId', $this->invokeMethod($oTestObject, 'fcpoGetKlarnaStoreId'));
-    }
-    
-    
+
     /**
      * Testing fcpoGetUserPaymentId for coverage
      */
@@ -289,92 +268,7 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOnePaymentTest extends OxidTe
         
         $this->assertEquals($aExpect, $oTestObject->_fcGetCountries('someId'));
     }
-    
 
-    /**
-     * Testing fcpoGetKlarnaCampaigns for coverage
-     */
-    public function test_fcpoGetKlarnaCampaigns_Coverage() 
-    {
-        $oMockCurrency          = new stdClass();
-        $oMockCurrency->name    = 'someName';
-        
-        $oMockLang = $this->getMock('oxLang', array('getLanguageAbbr'));
-        $oMockLang->expects($this->any())->method('getLanguageAbbr')->will($this->returnValue('someValue'));
-        
-        $oMockConfig = $this->getMock('oxConfig', array('getActShopCurrencyObject'));
-        $oMockConfig->expects($this->any())->method('getActShopCurrencyObject')->will($this->returnValue($oMockCurrency));
-        
-        $aMockCountries                 = array();
-        $oMockUser                      = new stdClass();
-        $oMockUser->oxuser__oxcountryid = new oxField('someCountryId');
-        
-        $oTestObject = $this->getMock('fcPayOnePayment', array('_fcGetCountries', 'getUser'));
-        $oTestObject->expects($this->any())->method('_fcGetCountries')->will($this->returnValue($aMockCountries));
-        $oTestObject->expects($this->any())->method('getUser')->will($this->returnValue($oMockUser));
-
-        $aMockResult    = array(array('someValue','someValue','someValue','someValue', 'someValue'));
-        $oMockDatabase  = $this->getMock('oxDb', array('getAll'));
-        $oMockDatabase->expects($this->any())->method('getAll')->will($this->returnValue($aMockResult));
-
-        $oMockConfig = $this->getMock('oxConfig', array('getActShopCurrencyObject'));
-        $oMockConfig->expects($this->any())->method('getActShopCurrencyObject')->will($this->returnValue($oMockCurrency));
-        
-        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
-        $oHelper->expects($this->any())->method('fcpoGetConfig')->will($this->returnValue($oMockConfig));
-        $oHelper->expects($this->any())->method('fcpoGetLang')->will($this->returnValue($oMockLang));
-        
-        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
-        $this->invokeSetAttribute($oTestObject, '_oFcpoDb', $oMockDatabase);
-        
-        $aResponse = $aExpect = $oTestObject->fcpoGetKlarnaCampaigns(false);
-        
-        $this->assertEquals($aExpect, $aResponse);
-    }
-    
-    
-    /**
-     * Testing fcpoGetKlarnaCampaigns with get all option
-     */
-    public function test_fcpoGetKlarnaCampaigns_GetAll() 
-    {
-        $oMockCurrency          = new stdClass();
-        $oMockCurrency->name    = 'someName';
-        
-        $oMockLang = $this->getMock('oxLang', array('getLanguageAbbr'));
-        $oMockLang->expects($this->any())->method('getLanguageAbbr')->will($this->returnValue('someValue'));
-        
-        $oMockConfig = $this->getMock('oxConfig', array('getActShopCurrencyObject'));
-        $oMockConfig->expects($this->any())->method('getActShopCurrencyObject')->will($this->returnValue($oMockCurrency));
-        
-        $aMockCountries                 = array();
-        $oMockUser                      = new stdClass();
-        $oMockUser->oxuser__oxcountryid = new oxField('someCountryId');
-        
-        $oTestObject = $this->getMock('fcPayOnePayment', array('_fcGetCountries', 'getUser'));
-        $oTestObject->expects($this->any())->method('_fcGetCountries')->will($this->returnValue($aMockCountries));
-        $oTestObject->expects($this->any())->method('getUser')->will($this->returnValue($oMockUser));
-
-        $aMockResult    = array(array('someValue','someValue','someValue','someValue', 'someValue'));
-        $oMockDatabase  = $this->getMock('oxDb', array('getAll'));
-        $oMockDatabase->expects($this->any())->method('getAll')->will($this->returnValue($aMockResult));
-
-        $oMockConfig = $this->getMock('oxConfig', array('getActShopCurrencyObject'));
-        $oMockConfig->expects($this->any())->method('getActShopCurrencyObject')->will($this->returnValue($oMockCurrency));
-        
-        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
-        $oHelper->expects($this->any())->method('fcpoGetConfig')->will($this->returnValue($oMockConfig));
-        $oHelper->expects($this->any())->method('fcpoGetLang')->will($this->returnValue($oMockLang));
-        
-        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
-        $this->invokeSetAttribute($oTestObject, '_oFcpoDb', $oMockDatabase);
-        
-        $aResponse = $aExpect = $oTestObject->fcpoGetKlarnaCampaigns(true);
-        
-        $this->assertEquals($aExpect, $aResponse);
-    }
-    
-    
     /**
      * Testing fcpoGetMode coverage
      */

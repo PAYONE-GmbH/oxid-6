@@ -150,9 +150,6 @@ function resetErrorContainers() {
     if(document.getElementById('fcpo_klv_confirmation_missing')) {
         document.getElementById('fcpo_klv_confirmation_missing').style.display = '';
     }
-    if(document.getElementById('fcpo_klarna_campaign_invalid')) {
-        document.getElementById('fcpo_klarna_campaign_invalid').style.display = '';
-    }
     if(document.getElementById('fcpo_kls_fon_invalid')) {
         document.getElementById('fcpo_kls_fon_invalid').style.display = '';
     }

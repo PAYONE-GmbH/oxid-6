@@ -368,14 +368,8 @@ class fcpayone_main extends fcpayone_admindetails
         }
 
         // add storeids, campaigns and logos if set
-        $this->_fcpoCheckAndAddStoreId();
-        $this->_fcpoCheckAndAddCampaign();
         $this->_fcpoCheckAndAddLogos();
 
-        // fill storeids and campaigns  if set
-        $this->_fcpoInsertStoreIds();
-        $this->_fcpoInsertCampaigns();
-        
         // add ratepay profiles if set
         $this->_fcpoCheckAndAddRatePayProfile();
         $this->_fcpoInsertProfiles();
@@ -519,30 +513,6 @@ class fcpayone_main extends fcpayone_admindetails
     }
 
     /**
-     * Inserts added campaigns
-     * 
-     * @param  void
-     * @return void
-     */
-    protected function _fcpoInsertCampaigns() 
-    {
-        $aCampaigns = $this->_oFcpoHelper->fcpoGetRequestParameter('aCampaigns');
-        $this->_oFcpoKlarna->fcpoInsertCampaigns($aCampaigns);
-    }
-
-    /**
-     * Inserts added storeids
-     * 
-     * @param  void
-     * @return void
-     */
-    protected function _fcpoInsertStoreIds() 
-    {
-        $aStoreIds = $this->_oFcpoHelper->fcpoGetRequestParameter('aStoreIds');
-        $this->_oFcpoKlarna->fcpoInsertStoreIds($aStoreIds);
-    }
-    
-    /**
      * Insert Ratepay profile
      * 
      * @param  void
@@ -555,20 +525,6 @@ class fcpayone_main extends fcpayone_admindetails
             foreach ($aRatePayProfiles as $sOxid=>$aRatePayData) {
                 $this->_oFcpoRatePay->fcpoInsertProfile($sOxid, $aRatePayData);
             }
-        }
-    }
-
-    /**
-     * Check and add strore id and set message flag
-     * 
-     * @param  void
-     * @return void
-     */
-    protected function _fcpoCheckAndAddStoreId() 
-    {
-        if ($this->_oFcpoHelper->fcpoGetRequestParameter('addStoreId')) {
-            $this->_oFcpoKlarna->fcpoAddKlarnaStoreId();
-            $this->_aAdminMessages["blStoreIdAdded"] = true;
         }
     }
 
@@ -645,20 +601,6 @@ class fcpayone_main extends fcpayone_admindetails
     }
 
     /**
-     * Check if campaign shall be added. Set flag true in case
-     * 
-     * @param  void
-     * @return void
-     */
-    protected function _fcpoCheckAndAddCampaign() 
-    {
-        if ($this->_oFcpoHelper->fcpoGetRequestParameter('addCampaign')) {
-            $this->_oFcpoKlarna->fcpoAddKlarnaCampaign();
-            $this->_aAdminMessages["blCampaignAdded"] = true;
-        }
-    }
-
-    /**
      * Check if logo shall be added. Adds it and set flag true in case
      * 
      * @param  void
@@ -703,46 +645,6 @@ class fcpayone_main extends fcpayone_admindetails
     }
 
     /**
-     * Template getter for requesting if campaign has recently been added
-     * 
-     * @param  void
-     * @return bool
-     */
-    public function fcpoIsCampaignAdded() 
-    {
-        return  (
-            isset($this->_aAdminMessages["blCampaignAdded"]) &&
-            $this->_aAdminMessages["blCampaignAdded"] === true
-        );
-    }
-
-    /**
-     * Template getter for requesting if campaign has recently been added
-     * 
-     * @param  void
-     * @return bool
-     */
-    public function fcpoIsStoreIdAdded() 
-    {
-        $blStoreIdAdded = ( isset($this->_aAdminMessages["blStoreIdAdded"]) && $this->_aAdminMessages["blStoreIdAdded"] === true ) ? true : false;
-
-        return $blStoreIdAdded;
-    }
-
-    /**
-     * Returns configured storeids for klarna payment
-     * 
-     * @param  void
-     * @return array
-     */
-    public function fcpoGetStoreIds() 
-    {
-        $aStoreIds = $this->_oFcpoKlarna->fcpoGetStoreIds();
-
-        return $aStoreIds;
-    }
-    
-    /**
      * Returns configured ratepay profiles
      * 
      * @param  void
@@ -753,18 +655,6 @@ class fcpayone_main extends fcpayone_admindetails
         $aReturn = $this->_oFcpoRatePay->fcpoGetRatePayProfiles();
 
         return $aReturn;
-    }
-
-    /**
-     * Returns configured klarna campaigns
-     * 
-     * @param  void
-     * @return array
-     */
-    public function fcpoKlarnaCampaigns() 
-    {
-        $oPayment = oxNew('oxpayment');
-        return $oPayment->fcpoGetKlarnaCampaigns(true);
     }
 
     /**

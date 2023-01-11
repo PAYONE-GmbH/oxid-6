@@ -587,22 +587,6 @@ class Unit_fcPayOne_Application_Models_fcpoexportconfig extends OxidTestCaseComp
     }
 
     /**
-     * Creates some entries in fcpoklarnastoreids table
-     *
-     * @param  void
-     * @return void
-     */
-    protected function _fcpoPrepareKlarnaStoreIdTable() 
-    {
-        $this->_fcpoTruncateTable('fcpoklarnastoreids');
-        $sQuery = "
-            INSERT INTO `fcpoklarnastoreids` (`OXID`, `FCPO_STOREID`) VALUES ('1', 'samplestoreid')
-        ";
-
-        oxDb::getDb()->Execute($sQuery);
-    }
-
-    /**
      * Adds a payment to be used for unit testings
      *
      * @param  string $sOxFromBoni

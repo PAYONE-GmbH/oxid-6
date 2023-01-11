@@ -191,7 +191,6 @@ $aLang = array(
     'FCPO_HELP_STARTLIMIT_BONICHECK'            => 'Bonitätsprüfung wird nur ausgeführt wenn der Warenwert höher als der hier konfigurierte Wert ist.<br><br>Wenn die Bonitätsprüfung immer durchgeführt werden soll, lassen Sie dieses Feld leer.',
     'FCPO_HELP_ASSIGNCOUNTRIES'                 => 'Wenn keine Länder zugewiesen sind, gilt die Zahlungsart für alle Länder.<br><br>Wenn Länder zugewiesen sind gelten die Zahlungsarten nur für die zugewiesenen Länder.<br><br>geprüft werden Rechnungsland und Lieferland.',
     'FCPO_HELP_ASSIGNCOUNTRIES_2'               => 'Wenn keine Länder zugewiesen sind, gilt die Zahlungsart für alle Länder.<br><br>Wenn Länder zugewiesen sind gelten die Zahlungsarten nur für die zugewiesenen Länder.<br><br>geprüft werden Rechnungsland und Lieferland.',
-    'FCPO_HELP_ASSIGNCOUNTRIES_3'               => 'Wenn keine Länder zugewiesen sind, gilt die Zahlungsart für alle Länder.<br><br>Wenn Länder zugewiesen sind gelten die Zahlungsarten nur für die zugewiesenen Länder.<br><br>geprüft werden Rechnungsland und Lieferland.',
     'fcpo_receivable_appointed1'                => 'Reservierung',
     'fcpo_receivable_appointed2'                => 'Forderung (Autorisierung)',
     'fcpo_receivable_capture'                   => 'Forderung (Capture)',
@@ -283,24 +282,13 @@ $aLang = array(
     'fcpo_status_transfer'                      => "Umbuchung (TRANSFER)",
     'fcpo_status_invoice'                       => "Erzeugung eines Belegs (INVOICE)",
 
-    'FCPO_KLARNA_STORE_ID_ADMIN' => "StoreIDs",
-    'FCPO_KLARNA_ADD_STORE_ID'   => "weitere StoreID hinzufügen",
-
     'FCPO_CONFIG_GROUP_CONN'             => "Verbindungs-Einstellungen",
     'FCPO_CONFIG_GROUP_GENERAL'          => "Allgemein",
     'FCPO_CONFIG_GROUP_DEBITNOTE'        => "Lastschrift",
     'FCPO_CONFIG_GROUP_CREDITCARD'       => "Kreditkarte",
-    'FCPO_CONFIG_GROUP_KLARNA'           => "Klarna StoreIDs",
-    'FCPO_CONFIG_GROUP_KLARNA_CAMPAIGNS' => "Klarna Kampagnen",
 
     'FCPO_CONFIG_GROUP_PP_EXPRESS_LOGOS' => "PayPal",
     'FCPO_CONFIG_ADD_PP_EXPRESS_LOGO'    => "Weitere Sprache hinzuf&uuml;gen",
-
-    'FCPO_KLARNA_CAMPAIGNS'       => "Kampagnen",
-    'FCPO_KLARNA_CAMPAIGN_CODE'   => "Kampagnen-Code",
-    'FCPO_KLARNA_CAMPAIGN_TITLE'  => "Titel",
-    'FCPO_KLARNA_ADD_CAMPAIGN'    => "weitere Kampagne hinzuf&uuml;gen",
-    'FCPO_KLARNA_DELETE_STORE_ID' => "Löschen",
 
     'FCPO_CONFIG_DEBIT_BANKDATA'        => "Eingabe der Bankdaten",
     'FCPO_CONFIG_DEBIT_MULTISELECT'     => "Liste der unterstützten Kontolländer.<br>für Mehrfachmarkierung STRG-Taste gedrückt halten.",
@@ -321,13 +309,6 @@ $aLang = array(
     'FCPO_MANDATE_DOWNLOAD' => "Download",
 
     'FCPO_EXPORT_CONFIG' => "Konfiguration exportieren",
-
-    'FCPO_ASSIGN_COUNTRIES' => "L&auml;nder zuordnen",
-    'FCPO_COUNTRIES'        => "L&auml;nder",
-    'FCPO_LANGUAGE'         => "Sprache",
-    'FCPO_CURRENCY'         => "W&auml;hrung",
-
-    'FCPO_HELP_KLARNA_CAMPAIGNS' => "Die Bestellungen werden bei Klarna nur akzeptiert, wenn die Kombination aus Land, Sprache und W&auml;hrung zusammen passt.<br>Sie m&uuml;ssen diese Kombinationen hier auch hinterlegen und der Kunde bekommt dann nur die passenden Kampagnen angezeigt.",
 
     'FCPO_PAYPAL_DELADDRESS'         => 'Rechnungsadresse bei fehlender Lieferadresse als Lieferadresse &uuml;bergeben.',
     'FCPO_HELP_PAYPAL_DELADDRESS'    => 'Wird f&uuml;r den PayPal Verk&auml;uferschutz ben&ouml;tigt.',

@@ -1126,8 +1126,10 @@ $(document).ready(function() {
         fcpoGetAplOrderInfo(fcpoPlaceOrderButtonForm);
     }
 
-    var paymentForm = $('#payment');
-    if (paymentForm && paymentForm.length > 0) {
+    if ($('body').hasClass('cl-basket')
+        || $('body').hasClass('cl-user')
+        || $('body').hasClass('cl-payment')
+    ) {
         fcpoAplCheckDevice(payoneAjaxControllerUrl);
     }
 });

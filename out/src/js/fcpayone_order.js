@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-function editThisStatus( sID, sOxid ) {
+function fcpoEditThisStatus( sID, sOxid ) {
     var oTransfer = top.basefrm.edit.document.getElementById("transfer");
     oTransfer.status_oxid.value = sID;
     oTransfer.oxid.value = sOxid;
@@ -18,7 +18,7 @@ function editThisStatus( sID, sOxid ) {
     oSearch.submit();
 }
 
-function toggleBankaccount() {
+function fcpoToggleBankaccount() {
     if(top.basefrm.edit.document.getElementById('fcBankAccount1').style.display == 'none') {
         top.basefrm.edit.document.getElementById('fcBankAccount1').style.display = '';
         top.basefrm.edit.document.getElementById('fcBankAccount2').style.display = '';
@@ -36,7 +36,7 @@ function toggleBankaccount() {
     }
 }
 
-function onClickCapture(oElement) {
+function fcpoOnClickCapture(oElement) {
     var dCaptureAmount          = parseFloat(document.getElementById('fc_capture_amount').value.replace(',', '.'));;
     var sErrorMessageCapture    = document.getElementById('fc_error_message_capture_greater_null').value;
     var sConfirmSure            = document.getElementById('fc_confirm_message').value;
@@ -51,7 +51,7 @@ function onClickCapture(oElement) {
     }
 }
 
-function onClickDebit(oElement) {
+function fcpoOnClickDebit(oElement) {
     var dCaptureAmount          = parseFloat(document.getElementById('fc_debit_amount').value.replace(',', '.'));;
     var sConfirmSure            = document.getElementById('fc_confirm_message').value;
 

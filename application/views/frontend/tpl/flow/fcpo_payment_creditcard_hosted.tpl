@@ -57,7 +57,7 @@
                                class="form-control"
                                size="20" maxlength="50" id="fcpo_cc_cardholder" name="dynvalue[fcpo_kkcardholder]"
                                value="[{$dynvalue.fcpo_kkcardholder}]"
-                               onkeyup="validateCardholder()"
+                               onkeyup="fcpoValidateCardholder()"
                         >
                         <span class="help-block">[{oxmultilang ident="FCPO_CC_CARDHOLDER_HELPTEXT"}]</span>
                         <div id="fcpo_cc_cardholder_invalid" class="fcpo_check_error">

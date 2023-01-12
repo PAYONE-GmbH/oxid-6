@@ -238,7 +238,7 @@
                                 </td>
                                 <td class="edittext">
                                     <input id="fc_capture_amount" type="text" name="capture_amount" value="0,00">
-                                    <input type="button" onclick="onClickCapture(this);" value="[{oxmultilang ident="FCPO_EXECUTE"}]" style="padding: 0 4px 0 4px;">
+                                    <input type="button" onclick="fcpoOnClickCapture(this);" value="[{oxmultilang ident="FCPO_EXECUTE"}]" style="padding: 0 4px 0 4px;">
                                 </td>
                             </tr>
                         [{/if}]
@@ -265,10 +265,10 @@
                                 <tr>
                                     <td class="edittext" colspan="2" style="width: 300px;">[{oxmultilang ident="FCPO_HEADER_BANKACCOUNT"}] -
                                         <span id="fcShowBankaccount" style="width: 100px;">
-                                            <a href="#" onclick="toggleBankaccount();return false;">[{oxmultilang ident="FCPO_SHOW"}]</a>
+                                            <a href="#" onclick="fcpoToggleBankaccount();return false;">[{oxmultilang ident="FCPO_SHOW"}]</a>
                                         </span>
                                         <span id="fcHideBankaccount" style="display: none;width: 100px;">
-                                            <a href="#" onclick="toggleBankaccount();return false;">[{oxmultilang ident="FCPO_HIDE"}]</a>
+                                            <a href="#" onclick="fcpoToggleBankaccount();return false;">[{oxmultilang ident="FCPO_HIDE"}]</a>
                                         </span>
                                     </td>
                                 </tr>
@@ -1010,7 +1010,7 @@
                                 <tr class="paid-details" style="">
                                     <td>
                                         <span>[{oxmultilang ident="FCPO_PAID_AMOUNT"}]</span>
-                                        <a href="Javascript:editThisStatus('[{$entry.oxid}]', '[{$oxid}]');">[{$entry.date}]</a>
+                                        <a href="Javascript:fcpoEditThisStatus('[{$entry.oxid}]', '[{$oxid}]');">[{$entry.date}]</a>
                                     </td>
                                     <td style="text-align: right; padding-right: 10px">[{$entry.amount|number_format:2:",":""}] [{$edit->oxorder__oxcurrency->value}]</td>
                                 </tr>
@@ -1040,7 +1040,7 @@
                                 </tr>
                                 [{foreach from=$captureDebitEntries.capture item=entry name=captured}]
                                 <tr class="capture-details" style="display: none">
-                                    <td><a href="Javascript:editThisStatus('[{$entry.oxid}]', '[{$oxid}]');">[{$entry.date}]</a></td>
+                                    <td><a href="Javascript:fcpoEditThisStatus('[{$entry.oxid}]', '[{$oxid}]');">[{$entry.date}]</a></td>
                                     <td style="text-align: right; padding-right: 10px">[{$entry.amount|number_format:2:",":""}] [{$edit->oxorder__oxcurrency->value}]</td>
                                 </tr>
                                 [{/foreach}]
@@ -1062,7 +1062,7 @@
                                 </tr>
                                 [{foreach from=$captureDebitEntries.debit item=entry name=refunded}]
                                 <tr class="debit-details" style="display: none">
-                                    <td><a href="Javascript:editThisStatus('[{$entry.oxid}]', '[{$oxid}]');">[{$entry.date}]</a></td>
+                                    <td><a href="Javascript:fcpoEditThisStatus('[{$entry.oxid}]', '[{$oxid}]');">[{$entry.date}]</a></td>
                                     <td style="text-align: right; padding-right: 10px; color: red">[{$entry.amount|number_format:2:",":""}] [{$edit->oxorder__oxcurrency->value}]</td>
                                 </tr>
                                 [{/foreach}]

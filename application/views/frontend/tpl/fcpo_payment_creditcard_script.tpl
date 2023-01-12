@@ -1,6 +1,6 @@
 <script>
-    var request, config;
-    config = {
+    var oFcpoRequest, oFcpoConfig;
+    oFcpoConfig = {
         fields: {
             cardpan: {
                 selector: "cardpan", // put name of your div-container here
@@ -89,7 +89,7 @@
             [{assign var='sLangAbbr' value=$oViewConf->fcpoGetLangAbbrById($sLangId)}]
             Payone.ClientApi.Language.[{$sLangAbbr}].[{$oMapping->sErrorCode}] = '[{$oMapping->sMappedMessage}]';
         [{/foreach}]
-        var iframes = fcInitCCIframes();
+        var oFcpoIframes = fcInitCCIframes();
     [{/capture}]
     [{oxscript add=$smarty.capture.fcpoCCIframes}]
 </script>

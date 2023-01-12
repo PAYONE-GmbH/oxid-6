@@ -17,7 +17,7 @@ window.onload = function ()
     [{ /if}]
 }
 
-function editThisStatus( sOxid ) {
+function fcpoEditThisStatus( sOxid ) {
     var oTransfer = top.basefrm.edit.document.getElementById( "transfer" );
     oTransfer.oxid.value = sOxid;
     oTransfer.cl.value = 'fcpayone_log';

@@ -2241,7 +2241,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
      */
     public function test_fcpoGetBasketSum_Coverage()
     {
-        $oTestObject = oxNew('fcPayOnePaymentView', array('fcpoGetDBasketSum'));
+        $oTestObject = $this->getMock('fcPayOnePaymentView', array('fcpoGetDBasketSum'));
         $oTestObject->expects($this->any())->method('fcpoGetDBasketSum')->will($this->returnValue(5.99));
 
         $this->assertEquals('5,99', $oTestObject->fcpoGetBasketSum());

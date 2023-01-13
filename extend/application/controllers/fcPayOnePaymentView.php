@@ -1260,7 +1260,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
             return false;
         }
 
-        $dBasketValue = $this->fcpoGetBasketSum();
+        $dBasketValue = str_replace('.', '', $this->fcpoGetBasketSum());
         $blBasketValueMatches = (
             $dBasketValue <= $aRatepayMatchData['basketvalue_max'] &&
             $dBasketValue >= $aRatepayMatchData['basketvalue_min']

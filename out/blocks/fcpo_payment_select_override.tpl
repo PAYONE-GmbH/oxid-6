@@ -32,7 +32,7 @@
 [{elseif $sPaymentID == "fcporp_debitnote"}]
     [{assign var="sFcPoTemplatePath" value=$sFcPoTemplatePath|cat:'/fcpo_payment_ratepay_debitnote.tpl'}]
     [{include file=$oViewConf->fcpoGetAbsModuleTemplateFrontendPath($sFcPoTemplatePath)}]
-    [{elseif $sPaymentID == "fcporp_installment"}]
+[{elseif $sPaymentID == "fcporp_installment"}]
     [{assign var="sFcPoTemplatePath" value=$sFcPoTemplatePath|cat:'/fcpo_payment_ratepay_installment.tpl'}]
     [{include file=$oViewConf->fcpoGetAbsModuleTemplateFrontendPath($sFcPoTemplatePath)}]
 [{elseif $sPaymentID == "fcpo_secinvoice"}]

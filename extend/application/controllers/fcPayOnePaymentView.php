@@ -1260,7 +1260,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
             return false;
         }
 
-        $dBasketValue = str_replace('.', '', $this->fcpoGetBasketSum());
+        $dBasketValue = $this->fcpoGetDBasketSum();
         $blBasketValueMatches = (
             $dBasketValue <= $aRatepayMatchData['basketvalue_max'] &&
             $dBasketValue >= $aRatepayMatchData['basketvalue_min']
@@ -1852,18 +1852,26 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      * Returns the sum of basket
      * 
      * @param  void
-     * @return decimal
+     * @return string
      */
     public function fcpoGetBasketSum() 
+    {
+        return number_format($this->fcpoGetDBasketSum(), 2, ',', '.');
+    }
+
+    /**
+     * Returns the sum of basket
+     *
+     * @param  void
+     * @return float
+     */
+    public function fcpoGetDBasketSum()
     {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $sShopVersion = $oConfig->getVersion();
         $oSession = $this->_oFcpoHelper->fcpoGetSession();
         $oBasket = $oSession->getBasket();
-        $dBruttoSum = (version_compare($sShopVersion, '4.7.0', '>=')) ? $oBasket->getBruttoSum() : $oBasket->getProductsPrice()->getBruttoSum();
-        $sBruttoSum = number_format($dBruttoSum, 2, ',', '.');
-
-        return $sBruttoSum;
+        return (version_compare($sShopVersion, '4.7.0', '>=')) ? $oBasket->getBruttoSum() : $oBasket->getProductsPrice()->getBruttoSum();
     }
 
     /**

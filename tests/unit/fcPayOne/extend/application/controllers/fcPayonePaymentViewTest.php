@@ -1337,6 +1337,10 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
         $oTestObject
             ->expects($this->any())
             ->method('fcpoGetBasketSum')
+            ->will($this->returnValue("10"));
+        $oTestObject
+            ->expects($this->any())
+            ->method('fcpoGetDBasketSum')
             ->will($this->returnValue(10));
         $oTestObject
             ->expects($this->any())

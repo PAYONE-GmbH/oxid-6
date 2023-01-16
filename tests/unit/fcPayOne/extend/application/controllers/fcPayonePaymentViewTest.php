@@ -1326,6 +1326,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
     {
         $oTestObject = $this->getMock('fcPayOnePaymentView', array(
             'fcpoGetBasketSum',
+            'fcpoGetDBasketSum',
             'fcGetBillCountry',
             'getActCurrency'
         ));
@@ -1337,6 +1338,10 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
         $oTestObject
             ->expects($this->any())
             ->method('fcpoGetBasketSum')
+            ->will($this->returnValue("10"));
+        $oTestObject
+            ->expects($this->any())
+            ->method('fcpoGetDBasketSum')
             ->will($this->returnValue(10));
         $oTestObject
             ->expects($this->any())
@@ -2208,9 +2213,9 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
     }
 
     /**
-     * Testing fcpoGetBasketSum for coverage
+     * Testing fcpoGetDBasketSum for coverage
      */
-    public function test_fcpoGetBasketSum_Coverage()
+    public function test_fcpoGetDBasketSum_Coverage()
     {
         $oTestObject = oxNew('fcPayOnePaymentView');
 
@@ -2227,6 +2232,17 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
         $oHelper->expects($this->any())->method('fcpoGetConfig')->will($this->returnValue($oMockConfig));
         $oHelper->expects($this->any())->method('fcpoGetSession')->will($this->returnValue($oMockSession));
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
+
+        $this->assertEquals(5.99, $oTestObject->fcpoGetDBasketSum());
+    }
+
+    /**
+     * Testing fcpoGetBasketSum for coverage
+     */
+    public function test_fcpoGetBasketSum_Coverage()
+    {
+        $oTestObject = $this->getMock('fcPayOnePaymentView', array('fcpoGetDBasketSum'));
+        $oTestObject->expects($this->any())->method('fcpoGetDBasketSum')->will($this->returnValue(5.99));
 
         $this->assertEquals('5,99', $oTestObject->fcpoGetBasketSum());
     }

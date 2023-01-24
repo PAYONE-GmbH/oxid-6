@@ -527,6 +527,7 @@ Das kleinere Textfeld wird verwendet, um die Zieldatei oder den Pfad zu einer vo
 
     'PAYONE Alipay' => 'PAYONE Alipay',
     'PAYONE Amazon Pay' => 'PAYONE Amazon Pay',
+    'PAYONE Apple Pay' => 'PAYONE Apple Pay',
     'PAYONE Bancontact' => 'PAYONE Bancontact',
     'PAYONE Barzahlen' => 'PAYONE Barzahlen',
     'PAYONE eps Überweisung' => 'PAYONE eps Überweisung',

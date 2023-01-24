@@ -536,6 +536,7 @@ The smaller text field is used to name the destination file, or path to an exist
 
     'PAYONE Alipay' => 'PAYONE Alipay',
     'PAYONE Amazon Pay' => 'PAYONE Amazon Pay',
+    'PAYONE Apple Pay' => 'PAYONE Apple Pay',
     'PAYONE Bancontact' => 'PAYONE Bancontact',
     'PAYONE Barzahlen' => 'PAYONE Barzahlen',
     'PAYONE eps Überweisung' => 'PAYONE eps',

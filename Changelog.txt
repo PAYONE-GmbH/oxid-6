@@ -26,7 +26,7 @@ New Features
 * Ratepay installment
 * Renaming paymentmethods
  
-Bugfix(es)
+Bugfixes
  
 * hiding secure invoice by different delivery adress
 * update iDeals banklist
@@ -39,7 +39,7 @@ Maintenance
 
 ==1.6.2==
 
-Bugfixes
+Bugfix
  
 * Creditcard bugs fixed
  

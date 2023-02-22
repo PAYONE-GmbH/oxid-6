@@ -172,6 +172,9 @@ function fcpoResetErrorContainers() {
     if(document.getElementById('fcpopl_secinstallment_iban_invalid')) {
         document.getElementById('fcpopl_secinstallment_iban_invalid').style.display = '';
     }
+    if(document.getElementById('fcpopl_secdebitnote_iban_invalid')) {
+        document.getElementById('fcpopl_secdebitnote_iban_invalid').style.display = '';
+    }
 }
 
 function fcpoGetCreditcardType() {
@@ -305,16 +308,16 @@ function fcpoGetElvCountry() {
     return sElvCountry;
 }
 
-function fcpoValidateBNPLIban() {
-    resetErrorContainers();
-    var oForm = getPaymentForm();
+function fcpoValidateBNPLIban(method) {
+    fcpoResetErrorContainers();
+    var oForm = fcpoGetPaymentForm();
 
-    if(oForm['dynvalue[fcpopl_secinstallment_iban]']) {
-        oForm['dynvalue[fcpopl_secinstallment_iban]'].value = fcpoGetCleanedNumberIBAN(oForm['dynvalue[fcpopl_secinstallment_iban]'].value);
+    if(oForm['dynvalue[' + method + '_iban]']) {
+        oForm['dynvalue[' + method + '_iban]'].value = fcpoGetCleanedNumberIBAN(oForm['dynvalue[' + method + '_iban]'].value);
     }
 
-    if(oForm['dynvalue[fcpopl_secinstallment_iban]'].value == '') {
-        document.getElementById('fcpopl_secinstallment_iban_invalid').style.display = 'block';
+    if(oForm['dynvalue[' + method + '_iban]'].value == '') {
+        document.getElementById(method + '_iban_invalid').style.display = 'block';
         return false;
     }
 
@@ -435,8 +438,8 @@ function fcCheckPaymentSelection() {
             return fcpoStartCCRequest();
         } else if(sCheckedValue == 'fcpodebitnote') {
             return fcpoStartELVRequest(true);
-        } else if(sCheckedValue == 'fcpopl_secinstallment') {
-            return fcpoValidateBNPLIban();
+        } else if(sCheckedValue == 'fcpopl_secinstallment' || sCheckedValue == 'fcpopl_secdebitnote') {
+            return fcpoValidateBNPLIban(sCheckedValue);
         }
     }
     return true;

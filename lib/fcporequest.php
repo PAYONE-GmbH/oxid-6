@@ -278,6 +278,7 @@ class fcpoRequest extends oxSuperCfg
         $blIsBNPLPayment = (
             $oOrder->oxorder__oxpaymenttype->value == 'fcpopl_secinvoice'
             || $oOrder->oxorder__oxpaymenttype->value == 'fcpopl_secinstallment'
+            || $oOrder->oxorder__oxpaymenttype->value == 'fcpopl_secdebitnote'
         );
 
         if ($oOrder->oxorder__oxdellname->value != '') {
@@ -578,6 +579,9 @@ class fcpoRequest extends oxSuperCfg
             case 'fcpopl_secinstallment':
                 $this->_fcpoAddBNPLSecInstallmentParameters($oOrder, $aDynvalue);
                 break;
+            case 'fcpopl_secdebitnote':
+                $this->_fcpoAddBNPLSecDirectDebitParameters($oOrder, $aDynvalue);
+                break;
             case 'fcpo_alipay':
                 $this->addParameter('clearingtype', 'wlt'); //Payment method
                 $this->addParameter('wallettype', 'ALP');
@@ -710,6 +714,32 @@ class fcpoRequest extends oxSuperCfg
         $sWorkorderId = $this->_oFcpoHelper->fcpoGetSessionVariable('fcpopl_secinstallment_workorderid');
         if ($sWorkorderId !== null) {
             $this->addParameter('workorderid', $sWorkorderId);
+        }
+
+        return true;
+    }
+
+    public function _fcpoAddBNPLSecDirectDebitParameters($oOrder, $aDynvalue = [])
+    {
+        $this->_fcpoAddBNPLPortalParameters();
+
+        $this->addParameter('clearingtype', 'fnc');
+        $this->addParameter('financingtype', 'PDD');
+
+        $blIsB2B = $this->_fcpoIsOrderB2B($oOrder);
+        $sBusinessRelation = ($blIsB2B) ? 'b2b' : 'b2c';
+        $this->addParameter('businessrelation', $sBusinessRelation);
+
+        if (isset($aDynvalue['fcpopl_secdebitnote_iban'])) {
+            $this->addParameter('iban', $aDynvalue['fcpopl_secdebitnote_iban']);
+        }
+
+        if (isset($aDynvalue['fcpopl_secdebitnote_account_holder'])) {
+            $this->addParameter('bankaccountholder', $aDynvalue['fcpopl_secdebitnote_account_holder']);
+        }
+
+        if (isset($aDynvalue['fcpopl_device_token'])) {
+            $this->addParameter('add_paydata[device_token]', $aDynvalue['fcpopl_device_token']);
         }
 
         return true;
@@ -2552,6 +2582,9 @@ class fcpoRequest extends oxSuperCfg
         if ($sPaymentId == 'fcpopl_secinstallment') {
             $this->_fcpoAddBNPLSecInstallmentParameters($oOrder);
         }
+        if ($sPaymentId == 'fcpopl_secdebitnote') {
+            $this->_fcpoAddBNPLSecDirectDebitParameters($oOrder);
+        }
 
         $aResponse = $this->send();
 
@@ -2587,12 +2620,13 @@ class fcpoRequest extends oxSuperCfg
     {
         $sPaymentId =
             (string) $oOrder->oxorder__oxpaymenttype->value;
-        $blPaymentMatches = ($sPaymentId === 'fcpo_secinvoice' || $sPaymentId === 'fcpopl_secinvoice' || $sPaymentId === 'fcpopl_secinstallment');
+        $blPaymentMatches = ($sPaymentId === 'fcpo_secinvoice'
+            || $sPaymentId === 'fcpopl_secinvoice' || $sPaymentId === 'fcpopl_secinstallment' || $sPaymentId === 'fcpopl_secdebitnote');
 
         if (!$blPaymentMatches) return;
 
         $oConfig = $this->getConfig();
-        if ($sPaymentId === 'fcpopl_secinvoice' || $sPaymentId === 'fcpopl_secinstallment') {
+        if ($sPaymentId === 'fcpopl_secinvoice' || $sPaymentId === 'fcpopl_secinstallment' || $sPaymentId === 'fcpopl_secdebitnote') {
             $sFCPOSecinvoicePortalId = $oConfig->getConfigParam('sFCPOPLPortalId');
             $sFCPOSecinvoicePortalKey = $oConfig->getConfigParam('sFCPOPLPortalKey');
         } else {
@@ -2677,6 +2711,9 @@ class fcpoRequest extends oxSuperCfg
         }
         if ($sPaymentId == 'fcpopl_secinstallment') {
             $this->_fcpoAddBNPLSecInstallmentParameters($oOrder);
+        }
+        if ($sPaymentId == 'fcpopl_secdebitnote') {
+            $this->_fcpoAddBNPLSecDirectDebitParameters($oOrder);
         }
 
         $aResponse = $this->send();
@@ -3677,7 +3714,7 @@ class fcpoRequest extends oxSuperCfg
      */
     protected function fcpoGetPosPr($dInitialPr, $sPaymentId, $blDebit = false)
     {
-        if (!$blDebit || !in_array($sPaymentId, array('fcpopl_secinvoice', 'fcpopl_secinstallment'))) {
+        if (!$blDebit || !in_array($sPaymentId, array('fcpopl_secinvoice', 'fcpopl_secinstallment', 'fcpopl_secdebitnote'))) {
             return $dInitialPr;
         }
 

@@ -76,6 +76,7 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         'fcporp_installment',
         'fcpopl_secinvoice',
         'fcpopl_secinstallment',
+        'fcpopl_secdebitnote',
     );
 
     protected static $_aRedirectPayments = array(

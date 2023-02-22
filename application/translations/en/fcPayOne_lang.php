@@ -261,6 +261,7 @@ The smaller text field is used to name the destination file, or path to an exist
 'PAYONE Gesicherter Rechnungskauf' => 'PAYONE Secure Invoice',
 'PAYONE Gesicherter Rechnungskauf (neu)' => 'PAYONE Secured Invoice',
 'PAYONE Gesicherter Ratenkauf' => 'PAYONE Secured Installment',
+'PAYONE Gesicherte Lastschrift' => 'PAYONE Secured Direct Debit',
 'PAYONE Giropay' => 'PAYONE Giropay',
 'PAYONE iDEAL' => 'PAYONE iDEAL',
 'PAYONE Klarna Ratenkauf' => 'PAYONE Klarna Ratenkauf',

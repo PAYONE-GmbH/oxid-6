@@ -211,7 +211,7 @@ $aLang = array(
     'FCPO_KLARNA_NOT_AGREED'                              => 'Sie müssen der Übermittlung ihrer Daten zustimmen, um mit Klarna zu bezahlen.',
     'FCPO_KLARNA_NO_AUTHORIZATION'                        => 'Es ist ein unerwarteter Fehler aufgetreten.',
 
-    'FCPO_BNPL_TNC_DATAPROTECTION_NOTICE'                 => 'Mit dieser Bestellung erkläre ich mich mit den zusätzlichen Zahlungsbedingungen und der <b><a href="https://legal.paylater.payone.com/de/terms-of-payment.html">Risikobewertung für die gewählte Zahlungsart</a></b> einverstanden. Ich habe den <b><a href="https://legal.paylater.payone.com/de/data-protection-payments.html">zusätzlichen Datenschutzhinweis</a></b> zur Kenntnis genommen.',
+    'FCPO_BNPL_TNC_DATAPROTECTION_NOTICE'                 => 'Mit dieser Bestellung erkläre ich mich mit den zusätzlichen Zahlungsbedingungen und der <b><a href="https://legal.paylater.payone.com/de/terms-of-payment.html" target="_blank" rel="noreferrer noopener">Risikobewertung für die gewählte Zahlungsart</a></b> einverstanden. Ich habe den <b><a href="https://legal.paylater.payone.com/de/data-protection-payments.html" target="_blank" rel="noreferrer noopener">zusätzlichen Datenschutzhinweis</a></b> zur Kenntnis genommen.',
     'FCPO_BNPL_FON'                                       => 'Telefonnummer',
     'FCPO_BNPL_IBAN'                                      => 'IBAN',
     'FCPO_BNPL_SECINSTALLMENT_UNAVAILABLE'                => 'Gesicherter Ratenkauf wird für Ihren aktuellen Warenkorb nicht unterstützt. Bitte wählen Sie eine andere Zahlart.',

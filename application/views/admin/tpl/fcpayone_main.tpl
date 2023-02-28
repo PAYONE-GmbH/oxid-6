@@ -335,9 +335,7 @@
                                         [{assign var="sFieldIdent" value="sFCPOCC"|cat:$sField|cat:"CSS"}]
                                         <input id="input_css_[{$sField}]" type="text" class="txt" size="50" name="confstrs[[{$sFieldIdent}]]" value="[{$confstrs.$sFieldIdent}]" [{$readonly}] [{if $confstrs.$sFieldIdentCSS != "custom"}]disabled[{/if}]>
                                         [{if $sFieldIdent=='sFCPOCCCVCCSS'}]
-                                            &nbsp;
-                                            <input type="hidden" name="confbools[blFCPOCCUseCvc]" value="false">
-                                            <input type="checkbox" name="confbools[blFCPOCCUseCvc]" value="true"  [{if ($confbools.blFCPOCCUseCvc)}]checked[{/if}]> [{oxmultilang ident="FCPO_CC_USE_CVC"}]
+                                            <input type="hidden" name="confbools[blFCPOCCUseCvc]" value="true">
                                         [{/if}]
                                     </td>
                                 </tr>

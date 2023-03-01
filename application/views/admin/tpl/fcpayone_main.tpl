@@ -917,22 +917,6 @@
 
     <div class="groupExp">
         <div>
-            <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="FCPO_CONFIG_GROUP_PAYDIREKT"}]</b></a>
-            <dl>
-                <dt>
-                    <input type="text" class="txt" name="confstrs[sPaydirektShippingTermsUrl]" value="[{$confstrs.sPaydirektShippingTermsUrl}]">
-                    [{oxinputhelp ident="FCPO_HELP_PAYDIREKT_SHIPPING_TERMS_URL"}]
-                </dt>
-                <dd>
-                    [{oxmultilang ident="FCPO_PAYDIREKT_SHIPPING_TERMS_URL"}]
-                </dd>
-                <div class="spacer"></div>
-            </dl>
-        </div>
-    </div>
-
-    <div class="groupExp">
-        <div>
             <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="FCPO_FORWARD_REDIRECTS"}]</b></a>
             <dl>
                 <dt>

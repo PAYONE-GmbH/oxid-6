@@ -345,19 +345,6 @@ class Unit_fcPayOne_Application_Models_fcpoexportconfig extends OxidTestCaseComp
     }
 
     /**
-     * Testing _fcpoGetShopXmlProtect for coverage
-     *
-     * @param  void
-     * @return void
-     */
-    public function test__fcpoGetShopXmlProtect_Coverage() 
-    {
-        $oTestObject = oxNew('fcpoconfigexport');
-        $aResponse = $aExpect = $this->invokeMethod($oTestObject, '_fcpoGetShopXmlProtect');
-        $this->assertEquals($aExpect, $aResponse);
-    }
-
-    /**
      * Testing _fcpoGetShopXmlMisc for coverage
      *
      * @param  void

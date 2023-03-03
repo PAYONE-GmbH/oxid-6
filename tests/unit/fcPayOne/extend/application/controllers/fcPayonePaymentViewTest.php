@@ -1555,47 +1555,6 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
     }
 
     /**
-     * Testing fcGetApprovalText for coverage
-     *
-     * @param  void
-     * @return void
-     */
-    public function test_fcGetApprovalText_Coverage()
-    {
-        $oMockConfig = $this->getMock('oxConfig', array('getConfigParam'));
-        $oMockConfig->expects($this->any())->method('getConfigParam')->will($this->returnValue('someValue'));
-
-        $oTestObject = $this->getMock('fcPayOnePaymentView', array('fcGetLangId'));
-        $oTestObject->expects($this->any())->method('fcGetLangId')->will($this->returnValue('0'));
-
-        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
-        $oHelper->expects($this->any())->method('fcpoGetConfig')->will($this->returnValue($oMockConfig));
-        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
-
-        $this->assertEquals('someValue', $oTestObject->fcGetApprovalText());
-    }
-
-    /**
-     * Testing fcShowApprovalMessage for coverage
-     *
-     * @param  void
-     * @return void
-     */
-    public function test_fcShowApprovalMessage_Coverage()
-    {
-        $oMockConfig = $this->getMock('oxConfig', array('getConfigParam'));
-        $oMockConfig->expects($this->any())->method('getConfigParam')->will($this->returnValue('after'));
-
-        $oTestObject = oxNew('fcPayOnePaymentView');
-
-        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
-        $oHelper->expects($this->any())->method('fcpoGetConfig')->will($this->returnValue($oMockConfig));
-        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
-
-        $this->assertEquals(true, $oTestObject->fcShowApprovalMessage());
-    }
-
-    /**
      * Testing getIntegratorid for coverage
      *
      * @param  void

@@ -2306,20 +2306,6 @@ class fcpoRequest extends oxSuperCfg
     }
 
     /**
-     * Returns url to shipping terms url
-     *
-     * @param void
-     * @return string
-     */
-    protected function _fcpoGetPaydirektShippingTermsUrl()
-    {
-        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
-        $sShippingTermUrl =
-            (string) $oConfig->getConfigParam('sPaydirektShippingTermsUrl');
-        return $sShippingTermUrl;
-    }
-
-    /**
      * Sending start session call
      *
      * @param $sPaymentId

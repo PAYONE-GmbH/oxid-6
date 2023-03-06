@@ -314,11 +314,11 @@ class fcpayone_order extends fcpayone_admindetails
             $sBankCode = $this->_oFcpoHelper->fcpoGetRequestParameter('debit_bankcode');
             $sBankaccountholder = $this->_oFcpoHelper->fcpoGetRequestParameter('debit_bankaccountholder');
             $sAmount = $this->_oFcpoHelper->fcpoGetRequestParameter('debit_amount');
-            $sCancellationReason = $this->_oFcpoHelper->fcpoGetRequestParameter('bnpl_cancellation_reason');
+            $sCancellationReason = $this->_oFcpoHelper->fcpoGetRequestParameter('bnpl_debit_cancellation_reason');
 
             $oPORequest = $this->_oFcpoHelper->getFactoryObject('fcporequest');
 
-            if (in_array($oOrder->oxorder__oxpaymenttype->value, array('fcpopl_secinvoice', 'fcpopl_secinstallment'))) {
+            if (in_array($oOrder->oxorder__oxpaymenttype->value, array('fcpopl_secinvoice', 'fcpopl_secinstallment', 'fcpopl_secdebitnote'))) {
                 $oPORequest->addParameter('addPayData[cancellation_reason]', $sCancellationReason);
             }
 

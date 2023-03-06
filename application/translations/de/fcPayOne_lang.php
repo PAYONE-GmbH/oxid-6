@@ -211,7 +211,7 @@ $aLang = array(
     'FCPO_KLARNA_NOT_AGREED'                              => 'Sie müssen der Übermittlung ihrer Daten zustimmen, um mit Klarna zu bezahlen.',
     'FCPO_KLARNA_NO_AUTHORIZATION'                        => 'Es ist ein unerwarteter Fehler aufgetreten.',
 
-    'FCPO_BNPL_TNC_DATAPROTECTION_NOTICE'                 => 'Mit dieser Bestellung erkläre ich mich mit den zusätzlichen Zahlungsbedingungen und der <b><a href="https://legal.paylater.payone.com/de/terms-of-payment.html">Risikobewertung für die gewählte Zahlungsart</a></b> einverstanden. Ich habe den <b><a href="https://legal.paylater.payone.com/de/data-protection-payments.html">zusätzlichen Datenschutzhinweis</a></b> zur Kenntnis genommen.',
+    'FCPO_BNPL_TNC_DATAPROTECTION_NOTICE'                 => 'Mit Abschluss dieser Bestellung erkläre ich mich mit den <b><a href="https://legal.paylater.payone.com/de/terms-of-payment.html" target="_blank" rel="noreferrer noopener">ergänzenden Zahlungsbedingungen</a></b> und der Durchführung einer Risikoprüfung für die ausgewählte Zahlungsart einverstanden. Den <b><a href="https://legal.paylater.payone.com/de/data-protection-payments.html" target="_blank" rel="noreferrer noopener">ergänzenden Datenschutzhinweis</a></b> habe ich zur Kenntnis genommen.',
     'FCPO_BNPL_FON'                                       => 'Telefonnummer',
     'FCPO_BNPL_IBAN'                                      => 'IBAN',
     'FCPO_BNPL_SECINSTALLMENT_UNAVAILABLE'                => 'Gesicherter Ratenkauf wird für Ihren aktuellen Warenkorb nicht unterstützt. Bitte wählen Sie eine andere Zahlart.',
@@ -223,7 +223,7 @@ $aLang = array(
     'FCPO_BNPL_SECINSTALLMENT_OVW_INTEREST'               => 'Zinssatz',
     'FCPO_BNPL_SECINSTALLMENT_OVW_EFFECTIVEINTEREST'      => 'Effektivzinssatz',
     'FCPO_BNPL_SECINSTALLMENT_OVW_MONTHLYRATE'            => 'Monatliche Rate',
-    'FCPO_BNPL_SECINSTALLMENT_OVW_DL_CREDINFO'            => '&gt;&nbsp;Ratenkauf Mustervertrag herunterladen',
+    'FCPO_BNPL_SECINSTALLMENT_OVW_DL_CREDINFO'            => '&gt;&nbsp;Ratenkauf Informationen herunterladen',
     'FCPO_BNPL_SECINSTALLMENT_PLAN_INVALID'               => 'Bitte wählen Sie Ihre gewünschte Anzahl von Raten',
 
     'FCPO_CONFIG_GROUP_APPLE_PAY'                      => "Apple Pay",
@@ -253,6 +253,7 @@ Das kleinere Textfeld wird verwendet, um die Zieldatei oder den Pfad zu einer vo
     'PAYONE Gesicherter Rechnungskauf' => 'PAYONE Gesicherter Rechnungskauf',
     'PAYONE Gesicherter Rechnungskauf (neu)' => 'PAYONE Gesicherter Rechnungskauf',
     'PAYONE Gesicherter Ratenkauf' => 'PAYONE Gesicherter Ratenkauf',
+    'PAYONE Gesicherte Lastschrift' => 'PAYONE Gesicherte Lastschrift',
     'PAYONE Giropay' => 'PAYONE Giropay',
     'PAYONE iDEAL' => 'PAYONE iDEAL',
     'PAYONE Klarna Ratenkauf' => 'PAYONE Klarna Ratenkauf',

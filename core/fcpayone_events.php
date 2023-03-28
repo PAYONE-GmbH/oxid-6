@@ -431,6 +431,7 @@ class fcpayone_events
         'fcporp_installment' => 'PAYONE Ratepay Ratenkauf',
         'fcpopl_secinvoice' => 'PAYONE Gesicherter Rechnungskauf (neu)',
         'fcpopl_secinstallment' => 'PAYONE Gesicherter Ratenkauf',
+        'fcpopl_secdebitnote' => 'PAYONE Gesicherte Lastschrift',
 
     );
 

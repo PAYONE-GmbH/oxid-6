@@ -210,7 +210,7 @@ $aLang = array(
 'FCPO_KLARNA_NOT_AGREED'                        => 'You have to agree to submit your data to pay with klarna.',
 'FCPO_KLARNA_NO_AUTHORIZATION'                  => 'An unexpected error occurred.',
 
-'FCPO_BNPL_TNC_DATAPROTECTION_NOTICE'           => 'By placing this order, I agree to the supplementary payment terms and <b><a href="https://legal.paylater.payone.com/en/terms-of-payment.html">the risk assessment for the selected payment method</a></b>. I am aware of the <b><a href="https://legal.paylater.payone.com/en/data-protection-payments.html">additional data protection</a></b> notice.',
+'FCPO_BNPL_TNC_DATAPROTECTION_NOTICE'           => 'By placing this order, I agree to the <b><a href="https://legal.paylater.payone.com/en/terms-of-payment.html" target="_blank" rel="noreferrer noopener">supplementary payment terms</a></b> and the performance of a risk assessment for the selected payment method. I am aware of the <b><a href="https://legal.paylater.payone.com/en/data-protection-payments.html" target="_blank" rel="noreferrer noopener">supplementary data protection notice</a></b>.',
 'FCPO_BNPL_FON'                                 => 'Phone',
 'FCPO_BNPL_IBAN'                                => 'IBAN',
 'FCPO_BNPL_SECINSTALLMENT_UNAVAILABLE'          => 'Safe installment is not available for your current basket. Please choose another payment method.',
@@ -222,7 +222,7 @@ $aLang = array(
 'FCPO_BNPL_SECINSTALLMENT_OVW_INTEREST'             => 'Interest rate',
 'FCPO_BNPL_SECINSTALLMENT_OVW_EFFECTIVEINTEREST'    => 'Effective interest rate',
 'FCPO_BNPL_SECINSTALLMENT_OVW_MONTHLYRATE'          => 'Monthly amount',
-'FCPO_BNPL_SECINSTALLMENT_OVW_DL_CREDINFO'          => '&gt;&nbsp;Download Installment contract template',
+'FCPO_BNPL_SECINSTALLMENT_OVW_DL_CREDINFO'          => '&gt;&nbsp;Download Installment information',
 'FCPO_BNPL_SECINSTALLMENT_PLAN_INVALID'             => 'Please select the desired installment plan',
 
 'FCPO_CONFIG_GROUP_APPLE_PAY'                      => "Apple Pay",
@@ -252,6 +252,7 @@ The smaller text field is used to name the destination file, or path to an exist
 'PAYONE Gesicherter Rechnungskauf' => 'PAYONE Secure Invoice',
 'PAYONE Gesicherter Rechnungskauf (neu)' => 'PAYONE Secured Invoice',
 'PAYONE Gesicherter Ratenkauf' => 'PAYONE Secured Installment',
+'PAYONE Gesicherte Lastschrift' => 'PAYONE Secured Direct Debit',
 'PAYONE Giropay' => 'PAYONE Giropay',
 'PAYONE iDEAL' => 'PAYONE iDEAL',
 'PAYONE Klarna Ratenkauf' => 'PAYONE Klarna Ratenkauf',

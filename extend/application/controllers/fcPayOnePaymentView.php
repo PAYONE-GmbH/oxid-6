@@ -181,7 +181,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         $blShowAsRegularPaymentSelection =
             $oPayment->fcpoShowAsRegularPaymentSelection();
 
-        if ($blShowAsRegularPaymentSelection && in_array($sPaymentId, ['fcpopl_secinvoice', 'fcpopl_secinstallment'])) {
+        if ($blShowAsRegularPaymentSelection && in_array($sPaymentId, ['fcpopl_secinvoice', 'fcpopl_secinstallment', 'fcpopl_secdebitnote'])) {
             $blShowAsRegularPaymentSelection = $this->fcpoShowBNPLPaymentSelection();
         }
 
@@ -1558,6 +1558,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         if ((!$blDiffShippingAllowed && $blshowshipaddress == 1) || $blIsB2B) {
             $this->_fcpoRemovePaymentFromFrontend('fcpopl_secinvoice');
             $this->_fcpoRemovePaymentFromFrontend('fcpopl_secinstallment');
+            $this->_fcpoRemovePaymentFromFrontend('fcpopl_secdebitnote');
         }
     }
 
@@ -2526,7 +2527,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      */
     public function _fcpoBNPLSaveRequestedValues($mReturn, $sPaymentId)
     {
-        $blIsBNPL = ($sPaymentId == 'fcpopl_secinvoice' || $sPaymentId == 'fcpopl_secinstallment');
+        $blIsBNPL = ($sPaymentId == 'fcpopl_secinvoice' || $sPaymentId == 'fcpopl_secinstallment' || $sPaymentId == 'fcpopl_secdebitnote');
         if (!$blIsBNPL) return $mReturn;
 
         $aRequestedValues = $this->_oFcpoHelper->fcpoGetRequestParameter('dynvalue');
@@ -2724,6 +2725,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
             case 'fcpo_secinvoice':
             case 'fcpopl_secinvoice':
             case 'fcpopl_secinstallment':
+            case 'fcpopl_secdebitnote':
                 $blB2CMode = ! $this->fcpoIsB2BPov();
                 $blFieldPresence = isset($aRequestedValues['fcpopl_secinvoice_birthdate_day'])
                     && isset($aRequestedValues['fcpopl_secinvoice_birthdate_month'])
@@ -2785,6 +2787,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
             case 'fcpo_secinvoice':
             case 'fcpopl_secinvoice':
             case 'fcpopl_secinstallment':
+            case 'fcpopl_secdebitnote':
                 $sRequestBirthdate = $aRequestedValues[$sPaymentId . '_birthdate_year'] .
                     "-" . $aRequestedValues[$sPaymentId . '_birthdate_month'] .
                     "-" . $aRequestedValues[$sPaymentId . '_birthdate_day'];

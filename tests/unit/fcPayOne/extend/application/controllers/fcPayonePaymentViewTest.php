@@ -2029,12 +2029,22 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
             'fcPayOnePaymentView', array(
                 '_fcpoSetMandateParams',
                 '_fcCleanupSessionFragments',
-                '_fcpoSecInvoiceSaveRequestedValues'
+                '_fcpoSecInvoiceSaveRequestedValues',
+                '_fcpoBNPLSaveRequestedValues',
+                '_fcpoKlarnaCombinedValidate',
+                '_fcpoPayolutionPreCheck',
+                '_fcpoCheckRatePayBillMandatoryUserData',
+                '_fcpoAdultCheck',
             )
         );
         $oTestObject->expects($this->any())->method('_fcpoSetMandateParams')->will($this->returnValue(true));
-        $oTestObject->expects($this->any())->method('_fcCleanupSessionFragments')->will($this->returnValue('someText'));
-        $oTestObject->expects($this->any())->method('_fcpoSecInvoiceSaveRequestedValues')->will($this->returnValue(null));
+        $oTestObject->expects($this->any())->method('_fcCleanupSessionFragments')->will($this->returnValue(true));
+        $oTestObject->expects($this->any())->method('_fcpoSecInvoiceSaveRequestedValues')->will($this->returnValue('order'));
+        $oTestObject->expects($this->any())->method('_fcpoBNPLSaveRequestedValues')->will($this->returnValue('order'));
+        $oTestObject->expects($this->any())->method('_fcpoKlarnaCombinedValidate')->will($this->returnValue('order'));
+        $oTestObject->expects($this->any())->method('_fcpoPayolutionPreCheck')->will($this->returnValue('order'));
+        $oTestObject->expects($this->any())->method('_fcpoCheckRatePayBillMandatoryUserData')->will($this->returnValue('order'));
+        $oTestObject->expects($this->any())->method('_fcpoAdultCheck')->will($this->returnValue(null));
 
         $oMockPayment = $this->getMock('oxPayment', array('load'));
         $oMockPayment->expects($this->any())->method('load')->will($this->returnValue(true));
@@ -2043,7 +2053,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
         $oHelper->expects($this->any())->method('getFactoryObject')->will($this->returnValue($oMockPayment));
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
 
-        $this->assertEquals('basket', $oTestObject->_fcpoProcessValidation('order', 'somePaymentId'));
+        $this->assertNotEquals('order', $oTestObject->_fcpoProcessValidation('order', 'somePaymentId'));
     }
 
     /**

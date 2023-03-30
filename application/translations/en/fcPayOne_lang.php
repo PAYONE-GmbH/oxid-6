@@ -210,7 +210,7 @@ $aLang = array(
 'FCPO_KLARNA_NOT_AGREED'                        => 'You have to agree to submit your data to pay with klarna.',
 'FCPO_KLARNA_NO_AUTHORIZATION'                  => 'An unexpected error occurred.',
 
-'FCPO_BNPL_TNC_DATAPROTECTION_NOTICE'           => 'By placing this order, I agree to the <b><a href="https://legal.paylater.payone.com/en/terms-of-payment.html" target="_blank" rel="noreferrer noopener">supplementary payment terms</a></b> and the performance of a risk assessment for the selected payment method. I am aware of the <b><a href="https://legal.paylater.payone.com/en/data-protection-payments.html" target="_blank" rel="noreferrer noopener">supplementary data protection notice</a></b>.',
+'FCPO_BNPL_TNC_DATAPROTECTION_NOTICE'           => 'By placing this order, I agree to the <span style="color: black; font-weight: bold; text-decoration: underline"><a href="https://legal.paylater.payone.com/en/terms-of-payment.html" target="_blank" rel="noreferrer noopener">supplementary payment terms</a></span> and the performance of a risk assessment for the selected payment method. I am aware of the <span style="color: black; font-weight: bold; text-decoration: underline"><a href="https://legal.paylater.payone.com/en/data-protection-payments.html" target="_blank" rel="noreferrer noopener">supplementary data protection notice</a></span>.',
 'FCPO_BNPL_FON'                                 => 'Phone',
 'FCPO_BNPL_IBAN'                                => 'IBAN',
 'FCPO_BNPL_SECINSTALLMENT_UNAVAILABLE'          => 'Safe installment is not available for your current basket. Please choose another payment method.',

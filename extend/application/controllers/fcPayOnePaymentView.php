@@ -499,19 +499,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     }
 
     /**
-     * checks if chosen payment method is allowed according to
-     * consumer score setting
-     *
-     * @param $oPayment
-     * @return bool
-     */
-    public function isPaymentMethodAllowedByBoniCheck($oPayment)
-    {
-        $oUser = $this->_fcpoGetUserFromSession();
-        return ((int)$oPayment->oxpayments__oxfromboni->value <= (int)$oUser->oxuser__oxboni->value);
-    }
-
-    /**
      * Returns if given paymentid represents an active payment
      *
      * @param $sPaymentId
@@ -521,9 +508,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     {
         $oPayment = $this->_oFcpoHelper->getFactoryObject('oxPayment');
         $oPayment->load($sPaymentId);
-        $blPaymentActive = (bool) ($oPayment->oxpayments__oxactive->value);
-        $blPaymentAllowed = $this->isPaymentMethodAllowedByBoniCheck($oPayment);
-        return ($blPaymentActive && $blPaymentAllowed );
+        return (bool) ($oPayment->oxpayments__oxactive->value);
     }
 
     /**
@@ -1017,26 +1002,11 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     {
         $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoordernotchecked');
         if ($this->_oPaymentList === null) {
-            $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
-            $oUser = $this->getUser();
-            $sBoniCheckMoment = $oConfig->getConfigParam('sFCPOBonicheckMoment');
-
-            if ($oUser) {
-                $blContinue = $sBoniCheckMoment != 'after' ? $oUser->checkAddressAndScore() : $oUser->checkAddressAndScore(true, false);
-            } else {
-                $blContinue = true;
-            }
-
-            if ($blContinue === true) {
-                parent::getPaymentList();
-                $this->_fcpoCheckPaypalExpressRemoval();
-                $this->_fcpoRemoveForbiddenPaymentsByUser();
-                $this->_fcpoCheckSecInvoiceRemoval();
-                $this->_fcpoCheckBNPLRemoval();
-            } else {
-                $oUtils = $this->_oFcpoHelper->fcpoGetUtils();
-                $oUtils->redirect($this->_oFcpoHelper->fcpoGetConfig()->getShopHomeURL() . 'cl=user', false);
-            }
+            parent::getPaymentList();
+            $this->_fcpoCheckPaypalExpressRemoval();
+            $this->_fcpoRemoveForbiddenPaymentsByUser();
+            $this->_fcpoCheckSecInvoiceRemoval();
+            $this->_fcpoCheckBNPLRemoval();
         }
         return $this->_oPaymentList;
     }
@@ -1718,14 +1688,8 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
             $oPayment->load($sPaymentId);
             $mReturn = $this->_fcpoSecInvoiceSaveRequestedValues($mReturn, $sPaymentId);
             $mReturn = $this->_fcpoBNPLSaveRequestedValues($mReturn, $sPaymentId);
-            $blContinue = $this->_fcpoCheckBoniMoment($oPayment);
 
-            if ($blContinue !== true) {
-                $this->_fcpoSetBoniErrorValues($sPaymentId);
-                $mReturn = 'basket';
-            } else {
-                $this->_fcpoSetMandateParams($oPayment);
-            }
+            $this->_fcpoSetMandateParams($oPayment);
 
             $this->_fcCleanupSessionFragments($oPayment);
 
@@ -3149,130 +3113,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     }
 
     /**
-     * Takes care of error handling for case that boni check is negative
-     * 
-     * @param  string $sPaymentId
-     * @return void
-     */
-    protected function _fcpoSetBoniErrorValues($sPaymentId) 
-    {
-        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
-        $iLangId = $this->fcGetLangId();
-
-        // $this->_oFcpoHelper->fcpoSetSessionVariable( 'payerror', $oPayment->getPaymentErrorNumber() );
-        $this->_oFcpoHelper->fcpoSetSessionVariable('payerror', -20);
-        $this->_oFcpoHelper->fcpoSetSessionVariable('payerrortext', $oConfig->getConfigParam('sFCPODenialText_' . $iLangId));
-
-        //#1308C - delete paymentid from session, and save selected it just for view
-        $this->_oFcpoHelper->fcpoDeleteSessionVariable('paymentid');
-        if (!($sPaymentId = $this->_oFcpoHelper->fcpoGetRequestParameter('paymentid'))) {
-            $sPaymentId = $this->_oFcpoHelper->fcpoGetSessionVariable('paymentid');
-        }
-        $this->_oFcpoHelper->fcpoSetSessionVariable('_selected_paymentid', $sPaymentId);
-        $this->_oFcpoHelper->fcpoDeleteSessionVariable('stsprotection');
-
-        $oSession = $this->_oFcpoHelper->fcpoGetSession();
-    }
-
-    /**
-     * Check configuration for boni check moment and triggers check if moment has been set to now
-     * Method will return if checkout progress can be continued or not
-     * 
-     * @param  object $oPayment
-     * @return boolean
-     */
-    protected function _fcpoCheckBoniMoment($oPayment) 
-    {
-        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
-        $blContinue = true;
-
-        if ($oConfig->getConfigParam('sFCPOBonicheckMoment') == 'after') {
-            $blContinue = $this->_fcpoCheckAddressAndScore($oPayment);
-        }
-
-        return $blContinue;
-    }
-
-    /**
-     * Checks the address and boni values
-     * 
-     * @param  bool      $blApproval
-     * @param  bool      $blBoniCheckNeeded
-     * @param  oxPayment $oPayment
-     * @return boolean
-     */
-    protected function _fcpoCheckAddressAndScore($oPayment) 
-    {
-        $oUser = $this->getUser();
-        $sPaymentId = $oPayment->getId();
-        $aApproval = $this->_oFcpoHelper->fcpoGetRequestParameter('fcpo_bonicheckapproved');
-        $blApproval = $this->_fcpoValidateApproval($sPaymentId, $aApproval);
-        $blBoniCheckNeeded = $oPayment->fcBoniCheckNeeded();
-
-        if ($blBoniCheckNeeded === true && $blApproval === true) {
-            $blContinue = $oUser->checkAddressAndScore(false);
-            $blContinue = $this->_fcpoCheckUserBoni($blContinue, $oPayment);
-        } elseif ($blBoniCheckNeeded === true && $blApproval === false) {
-            $this->_fcpoSetNotChecked($blBoniCheckNeeded, $blApproval);
-            $oUser->fcpoSetScoreOnNonApproval();
-            $blContinue = false;
-        } else {
-            $this->_fcpoSetNotChecked($blBoniCheckNeeded, $blApproval);
-            $blContinue = true;
-        }
-
-        return $blContinue;
-    }
-
-    /**
-     * Check if session flag fcpoordernotchecked will be set
-     * 
-     * @param  bool $blBoniCheckNeeded
-     * @param  bool $blApproval
-     * @return void
-     */
-    protected function _fcpoSetNotChecked($blBoniCheckNeeded, $blApproval) 
-    {
-        if ($blBoniCheckNeeded === true && $blApproval === false) {
-            $this->_oFcpoHelper->fcpoSetSessionVariable('fcpoordernotchecked', 1);
-        }
-    }
-
-    /**
-     * Compares user boni which could cause a denial on continuing process
-     * 
-     * @param  boolean   $blContinue
-     * @param  oxPayment $oPayment
-     * @return boolean
-     */
-    protected function _fcpoCheckUserBoni($blContinue, $oPayment) 
-    {
-        $oUser = $this->getUser();
-        if ($oUser->oxuser__oxboni->value < $oPayment->oxpayments__oxfromboni->value) {
-            $blContinue = false;
-        }
-
-        return $blContinue;
-    }
-
-    /**
-     * Checks approval data to be valid and returns result
-     * 
-     * @param  string $sPaymentId
-     * @param  array  $aApproval
-     * @return boolean
-     */
-    protected function _fcpoValidateApproval($sPaymentId, $aApproval) 
-    {
-        $blApproval = true;
-        if ($aApproval && array_key_exists($sPaymentId, $aApproval) && $aApproval[$sPaymentId] == 'false') {
-            $blApproval = false;
-        }
-
-        return $blApproval;
-    }
-
-    /**
      * Returns paymentid wether from request parameter or session
      * 
      * @param  void
@@ -3327,32 +3167,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     protected function _processParentReturnValue($sReturn) 
     {
         return $sReturn;
-    }
-
-    /**
-     * Returns the cn
-     * 
-     * @param  void
-     * @return mixed
-     */
-    public function fcGetApprovalText() 
-    {
-        $iLangId = $this->fcGetLangId();
-        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
-        return $oConfig->getConfigParam('sFCPOApprovalText_' . $iLangId);
-    }
-
-    /**
-     * Check if approval message should be displayed
-     * 
-     * @param  void
-     * @return bool
-     */
-    public function fcShowApprovalMessage() 
-    {
-        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
-        $blReturn = ($oConfig->getConfigParam('sFCPOBonicheckMoment') == 'after') ? true : false;
-        return $blReturn;
     }
 
     /**
@@ -3739,32 +3553,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     }
 
     /**
-     * Extends oxid standard method _setValues
-     * Extends it with the approval checkbox in the longdesc property
-     * 
-     * Calculate payment cost for each payment. Sould be removed later
-     *
-     * @param array    &$aPaymentList payments array
-     * @param oxBasket $oBasket       basket object
-     *
-     * @return null
-     */
-    protected function _setValues(& $aPaymentList, $oBasket = null) 
-    {
-        parent::_setValues($aPaymentList, $oBasket);
-
-        if (is_array($aPaymentList)) {
-            foreach ($aPaymentList as $index => $oPayment) {
-                if ($this->fcIsPayOnePaymentType($oPayment->getId()) && $this->fcShowApprovalMessage() && $oPayment->fcBoniCheckNeeded()) {
-                    $test = $oPayment->oxpayments__oxlongdesc->value;
-                    $sApprovalLongdesc = '<br><table><tr><td><input type="hidden" name="fcpo_bonicheckapproved[' . $oPayment->getId() . ']" value="false"><input type="checkbox" name="fcpo_bonicheckapproved[' . $oPayment->getId() . ']" value="true" style="margin-bottom:0px;margin-right:10px;"></td><td>' . $this->fcGetApprovalText() . '</td></tr></table>';
-                    $oPayment->oxpayments__oxlongdesc->rawValue .= $sApprovalLongdesc;
-                }
-            }
-        }
-    }
-
-    /**
      * Get current version number as 4 digit integer e.g. Oxid 4.5.9 is 4590
      * 
      * @return integer
@@ -3772,33 +3560,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     protected function _fcGetCurrentVersion() 
     {
         return $this->_oFcpoHelper->fcpoGetIntShopVersion();
-    }
-
-    /**
-     * Extends oxid standard method _setDeprecatedValues
-     * Extends it with the approval checkbox in the longdesc property
-     * 
-     * Calculate payment cost for each payment. Sould be removed later
-     *
-     * @param array    &$aPaymentList payments array
-     * @param oxBasket $oBasket       basket object
-     *
-     * @return null
-     */
-    protected function _setDeprecatedValues(& $aPaymentList, $oBasket = null) 
-    {
-        if ($this->_fcGetCurrentVersion() <= 4700) {
-            parent::_setDeprecatedValues($aPaymentList, $oBasket);
-            if (is_array($aPaymentList)) {
-                $oLang = $this->_oFcpoHelper->fcpoGetLang();
-                foreach ($aPaymentList as $oPayment) {
-                    if ($this->fcIsPayOnePaymentType($oPayment->getId()) && $this->fcShowApprovalMessage() && $oPayment->fcBoniCheckNeeded()) {
-                        $sApprovalLongdesc = '<br><table><tr><td><input type="hidden" name="fcpo_bonicheckapproved[' . $oPayment->getId() . ']" value="false"><input type="checkbox" name="fcpo_bonicheckapproved[' . $oPayment->getId() . ']" value="true" style="margin-bottom:0px;margin-right:10px;"></td><td>' . $this->fcGetApprovalText() . '</td></tr></table>';
-                        $oPayment->oxpayments__oxlongdesc->value .= $sApprovalLongdesc;
-                    }
-                }
-            }
-        }
     }
 
     /**

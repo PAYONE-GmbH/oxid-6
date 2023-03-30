@@ -362,12 +362,10 @@ class fcpayone_events
     public static $sQueryAlterTxStatusClearing10 = "ALTER TABLE fcpotransactionstatus ADD COLUMN FCPO_CLEARING_INSTRUCTIONNOTE VARCHAR(255) CHARSET utf8 COLLATE utf8_general_ci DEFAULT '' NOT NULL;";
     public static $sQueryAlterOxuserPersonalId = "ALTER TABLE oxuser ADD COLUMN FCPOPERSONALID VARCHAR(32) CHARSET utf8 COLLATE utf8_general_ci DEFAULT '' NOT NULL;";
     public static $sQueryAlterOxuserCurrentMalus = "ALTER TABLE oxuser ADD COLUMN FCPOCURRMALUS INT(11) DEFAULT '0' NOT NULL;";
-    public static $sQueryAlterOxuserRealBoni = "ALTER TABLE oxuser ADD COLUMN FCPOREALBONI INT(11) DEFAULT NULL;";
     public static $sQueryAlterFcporefnr = "ALTER TABLE fcporefnr ADD COLUMN FCPO_REFPREFIX VARCHAR(32) CHARSET utf8 COLLATE utf8_general_ci DEFAULT '' NOT NULL, DROP PRIMARY KEY, ADD PRIMARY KEY(FCPO_REFNR, FCPO_REFPREFIX);";
     public static $sQueryChangeFcporequestlog = "ALTER TABLE fcporequestlog CHANGE FCPO_REFNR FCPO_REFNR VARCHAR(32) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '0' NOT NULL;";
     public static $sQueryAlterCampaign1 = "ALTER TABLE fcpoklarnacampaigns ADD FCPO_CAMPAIGN_LANGUAGE VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '';";
     public static $sQueryAlterCampaign2 = "ALTER TABLE fcpoklarnacampaigns ADD FCPO_CAMPAIGN_CURRENCY VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '';";
-    public static $sQueryAlterOxuser = "ALTER TABLE oxuser ADD COLUMN FCPOBONICHECKDATE DATETIME DEFAULT '0000-00-00 00:00:00' NOT NULL;";
     public static $sQueryAlterOxpaymentsLiveMode = "ALTER TABLE oxpayments ADD COLUMN FCPOLIVEMODE TINYINT(1) DEFAULT '0' NOT NULL;";
     public static $sQueryAlterOxpaymentsIsPayone = "ALTER TABLE oxpayments ADD COLUMN FCPOISPAYONE TINYINT(1) DEFAULT '0' NOT NULL;";
     public static $sQueryAlterOxorderarticlesCapturedAmount = "ALTER TABLE oxorderarticles ADD COLUMN FCPOCAPTUREDAMOUNT INT(11) DEFAULT '0' NOT NULL;";
@@ -518,7 +516,7 @@ class fcpayone_events
 
         foreach (self::$aPaymentMethods as $sPaymentOxid => $sPaymentName) {
             //INSERT PAYMENT METHOD
-            $blMethodCreated = self::insertRowIfNotExists('oxpayments', array('OXID' => $sPaymentOxid), "INSERT INTO oxpayments(OXID,OXACTIVE,OXDESC,OXADDSUM,OXADDSUMTYPE,OXFROMBONI,OXFROMAMOUNT,OXTOAMOUNT,OXVALDESC,OXCHECKED,OXDESC_1,OXVALDESC_1,OXDESC_2,OXVALDESC_2,OXDESC_3,OXVALDESC_3,OXLONGDESC,OXLONGDESC_1,OXLONGDESC_2,OXLONGDESC_3,OXSORT,FCPOISPAYONE,FCPOAUTHMODE,FCPOLIVEMODE) VALUES ('{$sPaymentOxid}', 0, '{$sPaymentName}', 0, 'abs', 0, 0, 1000000, '', 0, '{$sPaymentName}', '', '', '', '', '', '', '', '', '', 0, 1, 'preauthorization', 0);");
+            $blMethodCreated = self::insertRowIfNotExists('oxpayments', array('OXID' => $sPaymentOxid), "INSERT INTO oxpayments(OXID,OXACTIVE,OXDESC,OXADDSUM,OXADDSUMTYPE,OXFROMAMOUNT,OXTOAMOUNT,OXVALDESC,OXCHECKED,OXDESC_1,OXVALDESC_1,OXDESC_2,OXVALDESC_2,OXDESC_3,OXVALDESC_3,OXLONGDESC,OXLONGDESC_1,OXLONGDESC_2,OXLONGDESC_3,OXSORT,FCPOISPAYONE,FCPOAUTHMODE,FCPOLIVEMODE) VALUES ('{$sPaymentOxid}', 0, '{$sPaymentName}', 0, 'abs', 0, 1000000, '', 0, '{$sPaymentName}', '', '', '', '', '', '', '', '', '', 0, 1, 'preauthorization', 0);");
 
             // If method go created, user groups are assigned, otherwise we keep what is already set
             if ($blMethodCreated) {
@@ -612,10 +610,8 @@ class fcpayone_events
         self::addColumnIfNotExists('oxpayments', 'FCPOAUTHMODE', self::$sQueryAlterOxpaymentsAuthMode);
         self::addColumnIfNotExists('oxpayments', 'FCPOLIVEMODE', self::$sQueryAlterOxpaymentsLiveMode);
 
-        self::addColumnIfNotExists('oxuser', 'FCPOBONICHECKDATE', self::$sQueryAlterOxuser);
         self::addColumnIfNotExists('oxuser', 'FCPOPERSONALID', self::$sQueryAlterOxuserPersonalId);
         self::addColumnIfNotExists('oxuser', 'FCPOCURRMALUS', self::$sQueryAlterOxuserCurrentMalus);
-        self::addColumnIfNotExists('oxuser', 'FCPOREALBONI', self::$sQueryAlterOxuserRealBoni);
 
         self::addColumnIfNotExists('fcporefnr', 'FCPO_REFPREFIX', self::$sQueryAlterFcporefnr);
 

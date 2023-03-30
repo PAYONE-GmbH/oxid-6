@@ -345,19 +345,6 @@ class Unit_fcPayOne_Application_Models_fcpoexportconfig extends OxidTestCaseComp
     }
 
     /**
-     * Testing _fcpoGetShopXmlProtect for coverage
-     *
-     * @param  void
-     * @return void
-     */
-    public function test__fcpoGetShopXmlProtect_Coverage() 
-    {
-        $oTestObject = oxNew('fcpoconfigexport');
-        $aResponse = $aExpect = $this->invokeMethod($oTestObject, '_fcpoGetShopXmlProtect');
-        $this->assertEquals($aExpect, $aResponse);
-    }
-
-    /**
      * Testing _fcpoGetShopXmlMisc for coverage
      *
      * @param  void
@@ -412,34 +399,6 @@ class Unit_fcPayOne_Application_Models_fcpoexportconfig extends OxidTestCaseComp
     {
         $oTestObject = oxNew('fcpoconfigexport');
         $aResponse = $aExpect = $this->invokeMethod($oTestObject, '_getPaymentTypes');
-        $this->assertEquals($aExpect, $aResponse);
-    }
-
-    /**
-     * Testing _getRedPayments for coverage
-     *
-     * @param  void
-     * @return void
-     */
-    public function test__getRedPayments_Coverage() 
-    {
-        $oTestObject = oxNew('fcpoconfigexport');
-        $aResponse = $aExpect = $this->invokeMethod($oTestObject, '_getRedPayments');
-        $this->assertEquals($aExpect, $aResponse);
-    }
-
-    /**
-     * Testing _getYellowPayments for coverage
-     *
-     * @param  void
-     * @return void
-     */
-    public function test__getYellowPayments_Coverage() 
-    {
-        $oTestObject = oxNew('fcpoconfigexport');
-        $this->_fcpoAddSamplePayment('150');
-        $aResponse = $aExpect = $this->invokeMethod($oTestObject, '_getYellowPayments');
-        $this->_fcpoRemoveSamplePayment();
         $this->assertEquals($aExpect, $aResponse);
     }
 
@@ -589,10 +548,9 @@ class Unit_fcPayOne_Application_Models_fcpoexportconfig extends OxidTestCaseComp
     /**
      * Adds a payment to be used for unit testings
      *
-     * @param  string $sOxFromBoni
      * @return void
      */
-    protected function _fcpoAddSamplePayment($sOxFromBoni) 
+    protected function _fcpoAddSamplePayment()
     {
         $this->_fcpoRemoveSamplePayment();
         $sQuery = "
@@ -603,7 +561,6 @@ class Unit_fcPayOne_Application_Models_fcpoexportconfig extends OxidTestCaseComp
                 `OXADDSUM` ,
                 `OXADDSUMTYPE` ,
                 `OXADDSUMRULES` ,
-                `OXFROMBONI` ,
                 `OXFROMAMOUNT` ,
                 `OXTOAMOUNT` ,
                 `OXVALDESC` ,
@@ -625,7 +582,7 @@ class Unit_fcPayOne_Application_Models_fcpoexportconfig extends OxidTestCaseComp
                 `FCPOLIVEMODE`
             )
             VALUES (
-                'fcpounittest',  '1',  'Testzahlart',  '0',  'abs',  '0',  '{$sOxFromBoni}',  '0',  '1000000',  'Kreditkarte Channel Frontend',  '0',  '',  '',  '',  '',  '',  '', 'Kreditkarte Channel Frontend',  '',  '',  '',  '0', 
+                'fcpounittest',  '1',  'Testzahlart',  '0',  'abs',  '0',  '0',  '1000000',  'Kreditkarte Channel Frontend',  '0',  '',  '',  '',  '',  '',  '', 'Kreditkarte Channel Frontend',  '',  '',  '',  '0', 
                 CURRENT_TIMESTAMP ,  '1',  'preauthorization',  '0'
             )
 ";
@@ -670,7 +627,6 @@ class Unit_fcPayOne_Application_Models_fcpoexportconfig extends OxidTestCaseComp
     /**
      * Removes the sample payment
      *
-     * @param  string $sOxFromBoni
      * @return void
      */
     protected function _fcpoRemoveSamplePayment() 

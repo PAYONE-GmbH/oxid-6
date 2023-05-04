@@ -223,17 +223,6 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOnePaymentTest extends OxidTe
         $this->assertEquals($aExpectDynValues, $oTestObject->_fcGetDynValues(null));
     }
     
-    
-    /**
-     * Testing fcBoniCheckNeeded for coverage
-     */
-    public function test_fcBoniCheckNeeded_Coverage() 
-    {
-        $oTestObject = oxNew('fcPayOnePayment'); 
-        $this->assertEquals(false, $oTestObject->fcBoniCheckNeeded());
-    }
-    
-    
     /**
      * Testing fcpoGetMandateText for coverage
      */

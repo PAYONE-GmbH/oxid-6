@@ -335,9 +335,7 @@
                                         [{assign var="sFieldIdent" value="sFCPOCC"|cat:$sField|cat:"CSS"}]
                                         <input id="input_css_[{$sField}]" type="text" class="txt" size="50" name="confstrs[[{$sFieldIdent}]]" value="[{$confstrs.$sFieldIdent}]" [{$readonly}] [{if $confstrs.$sFieldIdentCSS != "custom"}]disabled[{/if}]>
                                         [{if $sFieldIdent=='sFCPOCCCVCCSS'}]
-                                            &nbsp;
-                                            <input type="hidden" name="confbools[blFCPOCCUseCvc]" value="false">
-                                            <input type="checkbox" name="confbools[blFCPOCCUseCvc]" value="true"  [{if ($confbools.blFCPOCCUseCvc)}]checked[{/if}]> [{oxmultilang ident="FCPO_CC_USE_CVC"}]
+                                            <input type="hidden" name="confbools[blFCPOCCUseCvc]" value="true">
                                         [{/if}]
                                     </td>
                                 </tr>
@@ -911,22 +909,6 @@
                 </dt>
                 <dd>
                     [{oxmultilang ident="FCPO_BNPL_ALLOW_DIFF_ADDRESS"}]
-                </dd>
-                <div class="spacer"></div>
-            </dl>
-        </div>
-    </div>
-
-    <div class="groupExp">
-        <div>
-            <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="FCPO_CONFIG_GROUP_PAYDIREKT"}]</b></a>
-            <dl>
-                <dt>
-                    <input type="text" class="txt" name="confstrs[sPaydirektShippingTermsUrl]" value="[{$confstrs.sPaydirektShippingTermsUrl}]">
-                    [{oxinputhelp ident="FCPO_HELP_PAYDIREKT_SHIPPING_TERMS_URL"}]
-                </dt>
-                <dd>
-                    [{oxmultilang ident="FCPO_PAYDIREKT_SHIPPING_TERMS_URL"}]
                 </dd>
                 <div class="spacer"></div>
             </dl>

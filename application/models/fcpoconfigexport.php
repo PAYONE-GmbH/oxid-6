@@ -194,7 +194,6 @@ class fcpoconfigexport extends oxBase
             $sXml .= $this->_fcpoGetShopXmlSystem($aShopConfVars);
             $sXml .= $this->_fcpoGetShopXmlGlobal($aShopConfVars);
             $sXml .= $this->_fcpoGetShopXmlClearingTypes($aShopConfVars);
-            $sXml .= $this->_fcpoGetShopXmlProtect();
             $sXml .= $this->_fcpoGetShopXmlMisc();
             $sXml .= $this->_fcpoGetShopXmlChecksums();
             $sXml .= $this->_sT . '</shop>' . $this->_sN;
@@ -394,39 +393,6 @@ class fcpoconfigexport extends oxBase
     }
 
     /**
-     * Returns shop specific protect block of xml
-     *
-     * @param  void
-     * @return string
-     */
-    protected function _fcpoGetShopXmlProtect() 
-    {
-        $oConf = $this->getConfig();
-        $sXml = $this->_sT . $this->_sT . "<protect>" . $this->_sN;
-        $sXml .= $this->_sT . $this->_sT . $this->_sT . "<consumerscore>" . $this->_sN;
-        $sXml .= $this->_sT . $this->_sT . $this->_sT . $this->_sT . "<active>" . ($oConf->getShopConfVar('sFCPOBonicheck', $sShopId) == '-1' ? '0' : '1') . "</active>" . $this->_sN;
-        $sXml .= $this->_sT . $this->_sT . $this->_sT . $this->_sT . "<mode>{$oConf->getShopConfVar('sFCPOBoniOpMode', $sShopId)}</mode>" . $this->_sN;
-        $sXml .= $this->_sT . $this->_sT . $this->_sT . $this->_sT . "<min_order_total>{$oConf->getShopConfVar('sFCPOStartlimitBonicheck', $sShopId)}</min_order_total>" . $this->_sN;
-        $sXml .= $this->_sT . $this->_sT . $this->_sT . $this->_sT . "<max_order_total>1000000</max_order_total>" . $this->_sN;
-        $sXml .= $this->_sT . $this->_sT . $this->_sT . $this->_sT . "<addresscheck></addresscheck>" . $this->_sN;
-        $sXml .= $this->_sT . $this->_sT . $this->_sT . $this->_sT . "<red>{$this->_getRedPayments()}</red>" . $this->_sN;
-        $sXml .= $this->_sT . $this->_sT . $this->_sT . $this->_sT . "<yellow>{$this->_getYellowPayments()}</yellow>" . $this->_sN;
-        $sXml .= $this->_sT . $this->_sT . $this->_sT . $this->_sT . "<duetime>" . ((int) $oConf->getShopConfVar('sFCPODurabilityBonicheck', $sShopId) * (60 * 60 * 24)) . "</duetime>" . $this->_sN;
-        $sXml .= $this->_sT . $this->_sT . $this->_sT . "</consumerscore>" . $this->_sN;
-        $sXml .= $this->_sT . $this->_sT . $this->_sT . "<addresscheck>" . $this->_sN;
-        $sXml .= $this->_sT . $this->_sT . $this->_sT . $this->_sT . "<active>" . ($oConf->getShopConfVar('sFCPOAddresscheck', $sShopId) == 'NO' ? '0' : '1') . "</active>" . $this->_sN;
-        $sXml .= $this->_sT . $this->_sT . $this->_sT . $this->_sT . "<mode>{$oConf->getShopConfVar('sFCPOBoniOpMode', $sShopId)}</mode>" . $this->_sN;
-        $sXml .= $this->_sT . $this->_sT . $this->_sT . $this->_sT . "<min_order_total>{$oConf->getShopConfVar('sFCPOStartlimitBonicheck', $sShopId)}</min_order_total>" . $this->_sN;
-        $sXml .= $this->_sT . $this->_sT . $this->_sT . $this->_sT . "<max_order_total>1000000</max_order_total>" . $this->_sN;
-        $sXml .= $this->_sT . $this->_sT . $this->_sT . $this->_sT . "<checkbilling>" . ($oConf->getShopConfVar('sFCPOAddresscheck', $sShopId) == 'NO' ? 'NO' : 'YES') . "</checkbilling>" . $this->_sN;
-        $sXml .= $this->_sT . $this->_sT . $this->_sT . $this->_sT . "<checkshipping>" . ($oConf->getShopConfVar('blFCPOCheckDelAddress', $sShopId) == 0 ? 'NO' : 'YES') . "</checkshipping>" . $this->_sN;
-        $sXml .= $this->_sT . $this->_sT . $this->_sT . "</addresscheck>" . $this->_sN;
-        $sXml .= $this->_sT . $this->_sT . "</protect>" . $this->_sN;
-
-        return $sXml;
-    }
-
-    /**
      * Returns miscelanous
      *
      * @param  void
@@ -537,6 +503,7 @@ class fcpoconfigexport extends oxBase
             'fcpo_secinvoice' => 'rec',
             'fcpopl_secinvoice' => 'fnc',
             'fcpopl_secinstallment' => 'fnc',
+            'fcpopl_secdebitnote' => 'fnc',
             'fcpopaydirekt_express' => 'wlt',
             'fcpo_sofort' => 'sb',
             'fcpo_giropay' => 'sb',
@@ -596,6 +563,7 @@ class fcpoconfigexport extends oxBase
             'fcpo_secinvoice' => 'POV',
             'fcpopl_secinvoice' => 'PIV',
             'fcpopl_secinstallment' => 'PIN',
+            'fcpopl_secdebitnote' => 'PDD',
             'fcpo_sofort' => 'PNT',
             'fcpo_giropay' => 'GPY',
             'fcpo_eps' => 'EPS',
@@ -615,34 +583,6 @@ class fcpoconfigexport extends oxBase
         }
 
         return $sAbbr;
-    }
-
-    /**
-     * Returning red payments
-     *
-     * @param  void
-     * @return string
-     */
-    protected function _getRedPayments() 
-    {
-        $oPayment = $this->_oFcpoHelper->getFactoryObject('oxPayment');
-        $sRedPayments = $oPayment->fcpoGetRedPayments();
-
-        return $sRedPayments;
-    }
-
-    /**
-     * Returning yellow payments
-     *
-     * @param  void
-     * @return string
-     */
-    protected function _getYellowPayments() 
-    {
-        $oPayment = $this->_oFcpoHelper->getFactoryObject('oxPayment');
-        $sYellowPayments = $oPayment->fcpoGetYellowPayments();
-
-        return $sYellowPayments;
     }
 
     /**

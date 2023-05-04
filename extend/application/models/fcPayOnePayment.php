@@ -76,6 +76,7 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         'fcporp_installment',
         'fcpopl_secinvoice',
         'fcpopl_secinstallment',
+        'fcpopl_secdebitnote',
     );
 
     protected static $_aRedirectPayments = array(
@@ -373,18 +374,6 @@ class fcPayOnePayment extends fcPayOnePayment_parent
     }
 
     /**
-     * Check if a creditworthiness check has to be done
-     * ( Has to be done if from boni is greater zero )
-     * 
-     * @return bool
-     */
-    public function fcBoniCheckNeeded() 
-    {
-        $blReturn = ($this->oxpayments__oxfromboni->value > 0) ? true : false;
-        return $blReturn;
-    }
-
-    /**
      * Returns mandate text from session if available
      * 
      * @return mixed
@@ -492,46 +481,6 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         }
 
         return $aPaymentTypes;
-    }
-
-    /**
-     * Returning red payments
-     * 
-     * @param  void
-     * @return string
-     */
-    public function fcpoGetRedPayments() 
-    {
-        $sPayments = '';
-        $sQuery = 'SELECT oxid FROM oxpayments WHERE fcpoispayone = 1 AND oxfromboni <= 100';
-        $aRows = $this->_oFcpoDb->getAll($sQuery);
-        foreach($aRows as $aRow) {
-            $sPayment = (isset($aRow[0])) ? $aRow[0] : $aRow['oxid'];
-            $sPayments .= $sPayment . ',';
-        }
-        $sPayments = rtrim($sPayments, ',');
-
-        return $sPayments;
-    }
-
-    /**
-     * Returning yellow payments
-     * 
-     * @param  void
-     * @return void
-     */
-    public function fcpoGetYellowPayments() 
-    {
-        $sPayments = '';
-        $sQuery = 'SELECT oxid FROM oxpayments WHERE fcpoispayone = 1 AND oxfromboni > 100 AND oxfromboni <= 300';
-        $aRows = $this->_oFcpoDb->getAll($sQuery);
-        foreach($aRows as $aRow) {
-            $sPayment = (isset($aRow[0])) ? $aRow[0] : $aRow['oxid'];
-            $sPayments .= $sPayment . ',';
-        }
-        $sPayments = rtrim($sPayments, ',');
-
-        return $sPayments;
     }
     
     /**

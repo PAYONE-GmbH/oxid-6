@@ -867,15 +867,14 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Adds a payment to be used for unit testings
      *
-     * @param  string $sOxFromBoni
      * @return void
      */
-    protected function _fcpoAddSamplePayment($sOxFromBoni) 
+    protected function _fcpoAddSamplePayment()
     {
         $this->_fcpoRemoveSamplePayment();
         $sQuery = "
-            INSERT INTO `oxpayments` (`OXID`, `OXACTIVE`, `OXDESC`, `OXADDSUM`, `OXADDSUMTYPE`, `OXADDSUMRULES`, `OXFROMBONI`, `OXFROMAMOUNT`, `OXTOAMOUNT`, `OXVALDESC`, `OXCHECKED`, `OXDESC_1`, `OXVALDESC_1`, `OXDESC_2`, `OXVALDESC_2`, `OXDESC_3`, `OXVALDESC_3`, `OXLONGDESC`, `OXLONGDESC_1`, `OXLONGDESC_2`, `OXLONGDESC_3`, `OXSORT`, `OXTSPAYMENTID`, `OXTIMESTAMP`, `FCPOISPAYONE`, `FCPOAUTHMODE`, `FCPOLIVEMODE`) VALUES
-            ('fcpounittest', 1, 'Testzahlart', 0, 'abs', 0, '{$sOxFromBoni}', 0, 1000000, '', 0, 'Kreditkarte Channel Frontend', '', '', '', '', '', '', '', '', '', 0, '', '2016-04-27 15:37:25', 1, 'preauthorization', 0);
+            INSERT INTO `oxpayments` (`OXID`, `OXACTIVE`, `OXDESC`, `OXADDSUM`, `OXADDSUMTYPE`, `OXADDSUMRULES`, `OXFROMAMOUNT`, `OXTOAMOUNT`, `OXVALDESC`, `OXCHECKED`, `OXDESC_1`, `OXVALDESC_1`, `OXDESC_2`, `OXVALDESC_2`, `OXDESC_3`, `OXVALDESC_3`, `OXLONGDESC`, `OXLONGDESC_1`, `OXLONGDESC_2`, `OXLONGDESC_3`, `OXSORT`, `OXTSPAYMENTID`, `OXTIMESTAMP`, `FCPOISPAYONE`, `FCPOAUTHMODE`, `FCPOLIVEMODE`) VALUES
+            ('fcpounittest', 1, 'Testzahlart', 0, 'abs', 0, 0, 1000000, '', 0, 'Kreditkarte Channel Frontend', '', '', '', '', '', '', '', '', '', 0, '', '2016-04-27 15:37:25', 1, 'preauthorization', 0);
         ";
 
         oxDb::getDb()->Execute($sQuery);
@@ -918,7 +917,6 @@ class Unit_fcPayOne_Application_Controllers_Admin_fcpayone_main extends OxidTest
     /**
      * Removes the sample payment
      *
-     * @param  string $sOxFromBoni
      * @return void
      */
     protected function _fcpoRemoveSamplePayment() 

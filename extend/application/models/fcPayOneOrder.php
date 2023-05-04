@@ -1255,6 +1255,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
                 'fcporp_installment',
                 'fcpopl_secinvoice',
                 'fcpopl_secinstallment',
+                'fcpopl_secdebitnote',
             )
         );
 
@@ -1273,6 +1274,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
             array(
                 'fcpopl_secinvoice',
                 'fcpopl_secinstallment',
+                'fcpopl_secdebitnote',
             )
         );
     }

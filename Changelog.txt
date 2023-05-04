@@ -1,3 +1,24 @@
+==1.9.0==
+
+New Features
+ 
+* New payment method: PAYONE Secured Direct Debit   
+
+Bugfix
+ 
+* Fix bug in order validation
+ 
+Maintenance
+ 
+* Remove option "Use CVC as mandatory field"
+* Removal of Paydirekt Express configuration
+* Removal of Simple Protect
+* Updated iDeal issuer list
+ 
+tested with
+Version 6.5
+PHP 8.1
+
 ==1.8.0==
 
 New Features

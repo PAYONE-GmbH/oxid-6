@@ -1,3 +1,24 @@
+==1.9.0==
+
+New Features
+ 
+* New payment method: PAYONE Secured Direct Debit   
+
+Bugfix
+ 
+* Fix bug in order validation
+ 
+Maintenance
+ 
+* Remove option "Use CVC as mandatory field"
+* Removal of Paydirekt Express configuration
+* Removal of Simple Protect
+* Updated iDeal issuer list
+ 
+tested with
+Version 6.5
+PHP 8.1
+
 ==1.8.0==
 
 New Features
@@ -49,7 +70,6 @@ Maintenance
 
 ==1.6.1==
 
-
 New Features
  
 * Change Version of Javascript
@@ -57,8 +77,8 @@ New Features
 Bugfix(es)
  
 * check of manipulated basket
- 
 
+Maintenance
  
 tested with v 6.4
 
@@ -68,7 +88,7 @@ New Features
  
 * new payment method: Apple Pay
  
-Bugfix(es)
+Bugfix
  
 * fixes for PHP8
  
@@ -92,8 +112,8 @@ Maintenance
 * compatibilty checked to 6.4.0
 * tested with Oxid 6.4.0
 
-
 ==1.5.0==
+
 New Features
 
 * Support for Ratepay Device Fingerprinting
@@ -107,14 +127,14 @@ Bugfixes
 * better discount handling
 * increased default timeout for transactionstatus forwarding
 
-
 Maintenance
 
 * cardholder name is now required for better exemption handling with 3D Secure 2.0
 * tested with Oxid 6.2.3
 
 ==1.4.0==
-New Feature(s)
+
+New Feature
  
 * New Klarna implementation, now supporting Klarna Debit, Invoice and Installment
 
@@ -133,6 +153,7 @@ Warning(s)
 * Klarna legacy will be shut down by the end of Sep 2020. Only upgrade if you are either not using Klarna or have been set up with the new Klarna Connector on the PAYONE platform
 
 ==1.3.2==
+
 New Features
 
 * we made transactionstatus forwardings a lot stabler, so hopefully no more missing forwarded statuses
@@ -148,6 +169,7 @@ Maintenance
 * we deprecated the cc type discover, as it is now processed as diners
 
 ==1.2.1==
+
 Bugfixes
 
 * fixed issues with items becoming unavailable during a redirect checkout
@@ -158,6 +180,7 @@ Maintenance
 * added missing edit symbol for billing addresses
 
 ==1.2.0==
+
 Features
 
 *Added Safe Invoice
@@ -183,6 +206,7 @@ At the time of Release, only Amazon Pay requires code changes to be compatible w
 since we've dropped support for the mobile theme, please make sure to use a newer responsive theme before updating!
 
 ==1.1.0==
+
 Features:
 
 * Amazon Pay
@@ -203,11 +227,13 @@ Maintenance:
 * Wave theme compatibility
 
 ==1.0.10==
+
 Bugfixes
 
 * fixed unit tests
 
 ==1.0.9.==
+
 New Features
 
 * added generic error for failed redirect payments

@@ -395,6 +395,12 @@ class fcpayone_events
     public static $sQueryFcpotransactionstatusCopyTimestampData = "UPDATE fcpotransactionstatus SET OXTIMESTAMP = FCPO_TIMESTAMP;";
     public static $sQueryFcpocheckedaddressesCopyTimestampData = "UPDATE fcpocheckedaddresses SET OXTIMESTAMP = fcpo_checkdate;";
     public static $sQueryAlterFcpoShadowBasketFcbasketChangeToLongText = "ALTER TABLE fcposhadowbasket MODIFY FCPOBASKET LONGTEXT;";
+    public static $sQueryAlterOxorderTxidIndex = "ALTER TABLE oxorder ADD INDEX FCPOTXID (`FCPOTXID`)";
+    public static $sQueryAlterFcpotransactionstatusTxidIndex = "ALTER TABLE fcpotransactionstatus ADD INDEX FCPO_TXID (`FCPO_TXID`)";
+    public static $sQueryAlterFcpotransactionstatusTxactionIndex = "ALTER TABLE fcpotransactionstatus ADD INDEX FCPO_TXACTION (`FCPO_TXACTION`)";
+    public static $sQueryAlterFcpotransactionstatusSequencenumberIndex = "ALTER TABLE fcpotransactionstatus ADD INDEX FCPO_SEQUENCENUMBER (`FCPO_SEQUENCENUMBER`)";
+    public static $sQueryAlterFcporequestlogRefnrIndex = "ALTER TABLE fcporequestlog ADD INDEX FCPO_REFNR (`FCPO_REFNR`)";
+    public static $sQueryAlterFcporequestlogRequesttypeIndex = "ALTER TABLE fcporequestlog ADD INDEX FCPO_REQUESTTYPE (`FCPO_REQUESTTYPE`)";
 
     public static $aPaymentMethods = array(
         'fcpoinvoice' => 'PAYONE Rechnungskauf',
@@ -670,6 +676,14 @@ class fcpayone_events
 
         // OX6-127: CHANGE SHADOW BASKET TYPE
         self::changeColumnTypeIfWrong('fcposhadowbasket', 'FCPOBASKET', 'LONGTEXT', self::$sQueryAlterFcpoShadowBasketFcbasketChangeToLongText);
+
+        // OX6-147: ADD PERFORMANCE INDEXES
+        self::addIndexIfNotExists('oxorder', 'FCPOTXID', self::$sQueryAlterOxorderTxidIndex);
+        self::addIndexIfNotExists('fcpotransactionstatus', 'FCPO_TXID', self::$sQueryAlterFcpotransactionstatusTxidIndex);
+        self::addIndexIfNotExists('fcpotransactionstatus', 'FCPO_TXACTION', self::$sQueryAlterFcpotransactionstatusTxactionIndex);
+        self::addIndexIfNotExists('fcpotransactionstatus', 'FCPO_SEQUENCENUMBER', self::$sQueryAlterFcpotransactionstatusSequencenumberIndex);
+        self::addIndexIfNotExists('fcporequestlog', 'FCPO_REFNR', self::$sQueryAlterFcporequestlogRefnrIndex);
+        self::addIndexIfNotExists('fcporequestlog', 'FCPO_REQUESTTYPE', self::$sQueryAlterFcporequestlogRequesttypeIndex);
     }
 
     /**
@@ -801,6 +815,26 @@ class fcpayone_events
             oxDb::getDb()->Execute($sQuery);
             return true;
         }
+        return false;
+    }
+
+    /**
+     * Add a database index.
+     *
+     * @param string $sTable database table name
+     * @param string $sIndex database index name
+     * @param string $sQuery sql-query to execute
+     *
+     * @return boolean true or false
+     */
+    public static function addIndexIfNotExists($sTable, $sIndex, $sQuery)
+    {
+        $sExisting = oxDb::getDb()->getOne("SHOW KEYS FROM {$sTable} WHERE Key_name = '{$sIndex}'");
+        if (!$sExisting) {
+            oxDb::getDb()->Execute($sQuery);
+            return true;
+        }
+
         return false;
     }
 

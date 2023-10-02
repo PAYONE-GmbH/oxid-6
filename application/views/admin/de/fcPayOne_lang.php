@@ -381,6 +381,7 @@ $aLang = array(
     'FCPO_SECINVOICE_PORTAL_KEY'                       => 'PAYONE Portal Key (für Zahlart Gesicherter Rechnungskauf)',
     'FCPO_BNPL_PORTAL_KEY'                             => 'PAYONE Portal Key (für Zahlart BNPL)',
     'FCPO_BNPL_ALLOW_DIFF_ADDRESS'                     => 'Abweichende Lieferadresse zulassen',
+    'FCPO_HELP_BNPL_ALLOW_DIFF_ADDRESS'                => 'Muss im PAYONE-Konto freigeschaltet sein!',
     'FCPO_BNPL_ADMIN_DEBIT_REASON_TITLE'               => 'Stornierungsgrund',
     'FCPO_BNPL_CANCELLATION_REASON_CRQ'                => 'Der Verbraucher hat eine Stornierung der Bestellung beantragt',
     'FCPO_BNPL_CANCELLATION_REASON_DUP'                => 'Die Bestellung wurde versehentlich zweimal erstellt',

@@ -48,7 +48,7 @@
                 </li>
             [{/if}]
 
-            [{if $oView->fcpoBNPLShowFon()}]
+            [{if $oView->fcpoBNPLShowFon($sPaymentID)}]
                 <li>
                     <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BNPL_FON"}]:</label>
                     <div class="col-lg-9">

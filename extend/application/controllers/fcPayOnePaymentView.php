@@ -2727,9 +2727,9 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
             case 'fcpopl_secinstallment':
             case 'fcpopl_secdebitnote':
                 $blB2CMode = ! $this->fcpoIsB2BPov();
-                $blFieldPresence = isset($aRequestedValues['fcpopl_secinvoice_birthdate_day'])
-                    && isset($aRequestedValues['fcpopl_secinvoice_birthdate_month'])
-                    && isset($aRequestedValues['fcpopl_secinvoice_birthdate_year']);
+                $blFieldPresence = isset($aRequestedValues[$sPaymentId . '_birthdate_day'])
+                    && isset($aRequestedValues[$sPaymentId . '_birthdate_month'])
+                    && isset($aRequestedValues[$sPaymentId . '_birthdate_year']);
                 $blBirthdayRequired = $blB2CMode && $blFieldPresence;
                 $blValidBirthdateData = $this->_fcpoValidateSecInvoiceBirthdayData($sPaymentId, $aRequestedValues);
                 break;

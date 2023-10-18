@@ -188,6 +188,7 @@ $aLang = array(
 'FCPO_AMAZON_ERROR_SHIPPING_ADDRESS_NOT_SET'    => 'Please choose an address',
 'FCPO_AMAZON_ERROR_900'                         => 'Please choose another payment method.',
 'FCPO_SECINVOICE_BIRTHDATE'                     => 'Please enter your birthday',
+'FCPO_SECINVOICE_BIRTHDATE_B2B'                 => 'Date of birth of the subscriber',
 'FCPO_SECINVOICE_USTID'                         => 'Tax Identification Number',
 'FCPO_SECINVOICE_NO_COMPANY'                    => 'Not a company? Click <a href="index.php?cl=account_user" style="color:green;">here</a> for changing your address.',
 'FCPO_NOT_ADULT'                                => 'Due to your age you are not allowed to use this payment. Please select another payment method',
@@ -212,6 +213,7 @@ $aLang = array(
 
 'FCPO_BNPL_TNC_DATAPROTECTION_NOTICE'           => 'By placing this order, I agree to the <span style="color: black; font-weight: bold; text-decoration: underline"><a href="https://legal.paylater.payone.com/en/terms-of-payment.html" target="_blank" rel="noreferrer noopener">supplementary payment terms</a></span> and the performance of a risk assessment for the selected payment method. I am aware of the <span style="color: black; font-weight: bold; text-decoration: underline"><a href="https://legal.paylater.payone.com/en/data-protection-payments.html" target="_blank" rel="noreferrer noopener">supplementary data protection notice</a></span>.',
 'FCPO_BNPL_FON'                                 => 'Phone',
+'FCPO_BNPL_FON_B2B'                             => 'Phone number of the subscriber',
 'FCPO_BNPL_IBAN'                                => 'IBAN',
 'FCPO_BNPL_SECINSTALLMENT_UNAVAILABLE'          => 'Safe installment is not available for your current basket. Please choose another payment method.',
 'FCPO_BNPL_SECINSTALLMENT_SELECTION'            => 'Desired installment plan',
@@ -224,6 +226,8 @@ $aLang = array(
 'FCPO_BNPL_SECINSTALLMENT_OVW_MONTHLYRATE'          => 'Monthly amount',
 'FCPO_BNPL_SECINSTALLMENT_OVW_DL_CREDINFO'          => '&gt;&nbsp;Download Installment information',
 'FCPO_BNPL_SECINSTALLMENT_PLAN_INVALID'             => 'Please select the desired installment plan',
+'FCPO_BNPL_USTID'                                   => 'Tax Identification Number',
+'FCPO_BNPL_NO_COMPANY'                              => 'Not a company? Click <a href="index.php?cl=account_user" style="color:green;">here</a> for changing your address.',
 
 'FCPO_CONFIG_GROUP_APPLE_PAY'                      => "Apple Pay",
 'FCPO_HELP_APPLE_PAY_MERCHANT_ID'                  => "Merchant ID",

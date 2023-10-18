@@ -7,36 +7,62 @@
         <input type="hidden" name="fcpo_mode_[{$sPaymentID}]" value="[{$paymentmethod->fcpoGetOperationMode()}]">
         <ul class="form">
         [{if $oView->fcpoBNPLShowBirthdate()}]
-	    <li>
-                <label>[{oxmultilang ident="FCPO_SECINVOICE_BIRTHDATE"}]:</label>
-                    <select name="dynvalue[fcpopl_secinvoice_birthdate_day]">
-                        [{foreach from=$oView->fcpoGetDayRange() item='sDay'}]
-                            <option value="[{$sDay}]" [{if $sDay == $oView->fcpoGetBirthdayField('day')}]selected[{/if}]>[{$sDay}]</option>
-                        [{/foreach}]
-                    </select>
-                    &nbsp;
-                    <select name="dynvalue[fcpopl_secinvoice_birthdate_month]">
-                        [{foreach from=$oView->fcpoGetMonthRange() item='sMonth'}]
-                            <option value="[{$sMonth}]" [{if $sMonth == $oView->fcpoGetBirthdayField('month')}]selected[{/if}]>[{$sMonth}]</option>
-                        [{/foreach}]
-                    </select>
-                    &nbsp;
-                    <select name="dynvalue[fcpopl_secinvoice_birthdate_year]">
-                        [{foreach from=$oView->fcpoGetYearRange() item='sYear'}]
-                            <option value="[{$sYear}]" [{if $sYear == $oView->fcpoGetBirthdayField('year')}]selected[{/if}]>[{$sYear}]</option>
-                        [{/foreach}]
-                    </select>
+            <li>
+                [{if $oView->fcpoIsB2BPov()}]
+                <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_SECINVOICE_BIRTHDATE_B2B"}]:</label>
+                [{else}]
+                <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_SECINVOICE_BIRTHDATE"}]:</label>
+                [{/if}]
+                &nbsp;
+                <select style="width:15%" name="dynvalue[fcpopl_secinvoice_birthdate_day]">
+                    [{foreach from=$oView->fcpoGetDayRange() item='sDay'}]
+                        <option value="[{$sDay}]" [{if $sDay == $oView->fcpoGetBirthdayField('day')}]selected[{/if}]>[{$sDay}]</option>
+                    [{/foreach}]
+                </select>
+                &nbsp;
+                <select style="width:15%" name="dynvalue[fcpopl_secinvoice_birthdate_month]">
+                    [{foreach from=$oView->fcpoGetMonthRange() item='sMonth'}]
+                        <option value="[{$sMonth}]" [{if $sMonth == $oView->fcpoGetBirthdayField('month')}]selected[{/if}]>[{$sMonth}]</option>
+                    [{/foreach}]
+                </select>
+                &nbsp;
+                <select style="width:15%" name="dynvalue[fcpopl_secinvoice_birthdate_year]">
+                    [{foreach from=$oView->fcpoGetYearRange() item='sYear'}]
+                        <option value="[{$sYear}]" [{if $sYear == $oView->fcpoGetBirthdayField('year')}]selected[{/if}]>[{$sYear}]</option>
+                    [{/foreach}]
+                </select>
                 </li>
         [{/if}]
 
-        [{if $oView->fcpoBNPLShowFon()}]
+        [{if $oView->fcpoBNPLShowFon($sPaymentID)}]
             <li>
+                [{if $oView->fcpoIsB2BPov()}]
+                <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BNPL_FON_B2B"}]:</label>
+                [{else}]
                 <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BNPL_FON"}]:</label>
+                [{/if}]
                 <div class="col-lg-9">
                     <input placeholder="[{oxmultilang ident="FCPO_BNPL_FON"}]" class="form-control" type="text" size="20" maxlength="64" name="dynvalue[fcpopl_secinvoice_fon]" value="[{$oView->fcpoGetUserValue('oxfon')}]" required="required">
                 </div>
             </li>
         [{/if}]
+
+        [{if $oView->fcpoIsB2BPov()}]
+            [{if ! $oView->fcpoGetUserValue('oxustid')}]
+            <li>
+                <label class="control-label col-lg-3" style="word-break: break-word">[{oxmultilang ident="FCPO_BNPL_USTID"}]:</label>
+                <div class="col-lg-7">
+                    <input placeholder="[{oxmultilang ident="FCPO_BNPL_USTID"}]" class="form-control" type="text" size="20" maxlength="64" name="dynvalue[fcpopl_secinvoice_ustid]" value="[{$oView->fcpoGetUserValue('oxustid')}]">
+                </div>
+            </li>
+            <li>
+                <p class="col-lg-12" style="padding-left: 25px">
+                    [{oxmultilang ident="FCPO_BNPL_NO_COMPANY"}]
+                </p>
+            </li>
+            [{/if}]
+        [{/if}]
+
         </ul>
 
         [{oxid_include_dynamic file=$oViewConf->fcpoGetAbsModuleTemplateFrontendPath('fcpo_payment_bnpl_snippet.tpl')}]

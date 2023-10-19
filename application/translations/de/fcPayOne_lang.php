@@ -178,6 +178,7 @@ $aLang = array(
     'FCPO_AMAZON_ERROR_900'                               => 'Entschuldigung, die Transaktion mit Amazon Pay war nicht erfolgreich. Bitte wählen Sie eine andere Zahlart.',
     'FCPO_AMAZON_LOGIN'                                   => 'Mit Amazon einloggen.',
     'FCPO_SECINVOICE_BIRTHDATE'                           => 'Geburtsdatum',
+    'FCPO_SECINVOICE_BIRTHDATE_B2B'                       => 'Geburtsdatum des Bestellers',
     'FCPO_SECINVOICE_USTID'                               => 'Umsatzsteueridentifiationsnummer',
     'FCPO_SECINVOICE_NO_COMPANY'                          => 'Keine Firma? Klicken Sie <a href="index.php?cl=account_user" style="color:green;">hier</a> um Ihre Addresse zu ändern.',
     'FCPO_NOT_ADULT'                                      => 'Sie sind aufgrund Ihres Alters leider nicht berechtigt die gewählte Zahlart zu verwenden. Bitte wählen Sie eine andere Zahlart.',
@@ -201,6 +202,7 @@ $aLang = array(
 
     'FCPO_BNPL_TNC_DATAPROTECTION_NOTICE'                 => 'Mit Abschluss dieser Bestellung erkläre ich mich mit den <span style="color: black; font-weight: bold; text-decoration: underline"><a href="https://legal.paylater.payone.com/de/terms-of-payment.html" target="_blank" rel="noreferrer noopener">ergänzenden Zahlungsbedingungen</a></span> und der Durchführung einer Risikoprüfung für die ausgewählte Zahlungsart einverstanden. Den <span style="color: black; font-weight: bold; text-decoration: underline"><a href="https://legal.paylater.payone.com/de/data-protection-payments.html" target="_blank" rel="noreferrer noopener">ergänzenden Datenschutzhinweis</a></span> habe ich zur Kenntnis genommen.',
     'FCPO_BNPL_FON'                                       => 'Telefonnummer',
+    'FCPO_BNPL_FON_B2B'                                   => 'Telefonnummer des Bestellers',
     'FCPO_BNPL_IBAN'                                      => 'IBAN',
     'FCPO_BNPL_SECINSTALLMENT_UNAVAILABLE'                => 'Gesicherter Ratenkauf wird für Ihren aktuellen Warenkorb nicht unterstützt. Bitte wählen Sie eine andere Zahlart.',
     'FCPO_BNPL_SECINSTALLMENT_SELECTION'                  => 'Anzahl von Raten',
@@ -213,6 +215,8 @@ $aLang = array(
     'FCPO_BNPL_SECINSTALLMENT_OVW_MONTHLYRATE'            => 'Monatliche Rate',
     'FCPO_BNPL_SECINSTALLMENT_OVW_DL_CREDINFO'            => '&gt;&nbsp;Ratenkauf Informationen herunterladen',
     'FCPO_BNPL_SECINSTALLMENT_PLAN_INVALID'               => 'Bitte wählen Sie Ihre gewünschte Anzahl von Raten',
+    'FCPO_BNPL_USTID'                                     => 'Umsatzsteueridentifiationsnummer',
+    'FCPO_BNPL_NO_COMPANY'                                => 'Keine Firma? Klicken Sie <a href="index.php?cl=account_user" style="color:green;">hier</a> um Ihre Addresse zu ändern.',
 
     'FCPO_CONFIG_GROUP_APPLE_PAY'                      => "Apple Pay",
     'FCPO_HELP_APPLE_PAY_MERCHANT_ID'                  => "Merchant ID",

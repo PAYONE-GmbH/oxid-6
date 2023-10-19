@@ -8,7 +8,7 @@
         <input type="hidden" name="dynvalue[fcpopl_secdebitnote_account_holder]" value="[{$oView->fcpoGetAccountHolder()}]" />
         <ul class="form">
         [{if $oView->fcpoBNPLShowBirthdate()}]
-	    <li>
+        <li>
                 <label>[{oxmultilang ident="FCPO_SECINVOICE_BIRTHDATE"}]:</label>
                     <select name="dynvalue[fcpopl_secdebitnote_birthdate_day]">
                         [{foreach from=$oView->fcpoGetDayRange() item='sDay'}]
@@ -30,7 +30,7 @@
                 </li>
         [{/if}]
 
-        [{if $oView->fcpoBNPLShowFon()}]
+        [{if $oView->fcpoBNPLShowFon($sPaymentID)}]
             <li>
                 <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BNPL_FON"}]:</label>
                 <div class="col-lg-9">

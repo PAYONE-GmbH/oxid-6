@@ -899,12 +899,10 @@
                 </dd>
                 <div class="spacer"></div>
             </dl>
-            <!-- OX6-133 : Remove css hidding to show this feature *}] -->
-            <dl style="display:none;">
+            <dl>
                 <dt>
                     <input type="hidden" name="confbools[blFCPOPLAllowDiffAddress]" value="false">
-                    <!-- OX6-133 : Replace below the value="false" by value="true" to allow usage of this feature -->
-                    <input type="checkbox" name="confbools[blFCPOPLAllowDiffAddress]" value="false" [{if ($confbools.blFCPOPLAllowDiffAddress)}]checked[{/if}] [{$readonly}]>
+                    <input type="checkbox" name="confbools[blFCPOPLAllowDiffAddress]" value="true" [{if ($confbools.blFCPOPLAllowDiffAddress)}]checked[{/if}] [{$readonly}]>
                     [{oxinputhelp ident="FCPO_HELP_BNPL_ALLOW_DIFF_ADDRESS"}]
                 </dt>
                 <dd>

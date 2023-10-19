@@ -49,7 +49,7 @@
             </div>
             [{/if}]
 
-            [{if $oView->fcpoBNPLShowFon()}]
+            [{if $oView->fcpoBNPLShowFon($sPaymentID)}]
             <div class="form-group">
                 <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BNPL_FON"}]:</label>
                 <div class="col-lg-9">

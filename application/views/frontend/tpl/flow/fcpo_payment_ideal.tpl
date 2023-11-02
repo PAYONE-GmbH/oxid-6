@@ -8,20 +8,20 @@
             <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANKGROUPTYPE"}]:</label>
             <div class="col-lg-9">
                 <select name="dynvalue[fcpo_so_bankgrouptype_idl]" class="form-control selectpicker">
-                    <option value="ABNANL2A" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "ABNANL2A"}]selected[{/if}]>ABN AMRO</option>
-                    <option value="ASNBNL21" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "ASNBNL21"}]selected[{/if}]>ASN Bank</option>
-                    <option value="BUNQNL2A" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "BUNQNL2A"}]selected[{/if}]>bunq</option>
-                    <option value="INGBNL2A" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "INGBNL2A"}]selected[{/if}]>ING</option>
-                    <option value="KNABNL2H" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "KNABNL2H"}]selected[{/if}]>Knab</option>
-                    <option value="NTSBDEB1" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "NTSBDEB1"}]selected[{/if}]>N26</option>
-                    <option value="NNBANL2G" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "NNBANL2G"}]selected[{/if}]>Nationale-Nederlanden</option>
-                    <option value="RABONL2U" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "RABONL2U"}]selected[{/if}]>Rabobank</option>
-                    <option value="RBRBNL21" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "RBRBNL21"}]selected[{/if}]>RegioBank</option>
-                    <option value="REVOLT21" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "REVOLT21"}]selected[{/if}]>Revolut</option>
-                    <option value="SNSBNL2A" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "SNSBNL2A"}]selected[{/if}]>SNS</option>
-                    <option value="TRIONL2U" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "TRIONL2U"}]selected[{/if}]>Triodos Bank</option>
-                    <option value="FVLBNL22" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "FVLBNL22"}]selected[{/if}]>Van Lanschot Kempen</option>
-                    <option value="BITSNL2A" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "BITSNL2A"}]selected[{/if}]>Yoursafe</option>
+                    <option value="ABN_AMRO_BANK" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "ABN_AMRO_BANK"}]selected[{/if}]>ABN Amro Bank</option>
+                    <option value="ASN_BANK" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "ASN_BANK"}]selected[{/if}]>ASN Bank</option>
+                    <option value="BUNQ_BANK" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "BUNQ_BANK"}]selected[{/if}]>Bunq Bank</option>
+                    <option value="ING_BANK" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "ING_BANK"}]selected[{/if}]>ING Bank</option>
+                    <option value="KNAB_BANK" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "KNAB_BANK"}]selected[{/if}]>Knab Bank</option>
+                    <option value="N26" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "N26"}]selected[{/if}]>N26</option>
+                    <option value="NATIONALE_NEDERLANDEN" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "NATIONALE_NEDERLANDEN"}]selected[{/if}]>Nationale-Nederlanden</option>
+                    <option value="RABOBANK" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "RABOBANK"}]selected[{/if}]>Rabobank</option>
+                    <option value="SNS_REGIO_BANK" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "SNS_REGIO_BANK"}]selected[{/if}]>SNS Regio Bank</option>
+                    <option value="REVOLUT" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "REVOLUT"}]selected[{/if}]>Revolut</option>
+                    <option value="SNS_BANK" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "SNS_BANK"}]selected[{/if}]>SNS Bank</option>
+                    <option value="TRIODOS_BANK" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "TRIODOS_BANK"}]selected[{/if}]>Triodos Bank</option>
+                    <option value="VAN_LANSCHOT_BANKIERS" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "VAN_LANSCHOT_BANKIERS"}]selected[{/if}]>Van Lanschot Kempen</option>
+                    <option value="YOURSAFE" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "YOURSAFE"}]selected[{/if}]>Yoursafe</option>
                 </select>
             </div>
         </div>

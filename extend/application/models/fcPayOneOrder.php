@@ -1696,7 +1696,14 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         $oPayment->load($this->oxorder__oxpaymenttype->value);
         $sAuthorizationType = $oPayment->oxpayments__fcpoauthmode->value;
 
-        $sRefNr = $oPORequest->getRefNr($this);
+        if (
+            $this->oxorder__oxpaymenttype->value === 'fcpoamazonpay'
+            && !empty($this->_oFcpoHelper->fcpoGetSessionVariable('fcpoRefNr'))
+        ) {
+            $sRefNr = $oPORequest->getRefNr(false, true);
+        } else {
+            $sRefNr = $oPORequest->getRefNr($this);
+        }
 
         $aResponse = $oPORequest->sendRequestAuthorization($sAuthorizationType, $this, $this->getOrderUser(), $aDynvalue, $sRefNr);
         $sMode = $oPayment->fcpoGetMode($aDynvalue);

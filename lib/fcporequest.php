@@ -3322,6 +3322,7 @@ class fcpoRequest extends oxSuperCfg
         if ($blUseSessionRefNr) {
             $sRefNrComplete = ($blAddPrefixToSession) ?
                 $sRawPrefix . $sSessionRefNr : $sSessionRefNr;
+            $this->_oFcpoHelper->fcpoUpdateRefNr($sSessionRefNr, false);
             return $sRefNrComplete;
         }
 
@@ -3330,6 +3331,7 @@ class fcpoRequest extends oxSuperCfg
 
         if ($oOrder && !empty($oOrder->oxorder__oxordernr->value)) {
             $sRefNr = $oOrder->oxorder__oxordernr->value;
+            $this->_oFcpoHelper->fcpoUpdateRefNr($sRefNr, false);
         } else {
             $sQuery = "SELECT MAX(fcpo_refnr) FROM fcporefnr WHERE fcpo_refprefix = {$sPrefix}";
             $iMaxRefNr = $oDb->GetOne($sQuery);

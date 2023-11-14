@@ -643,4 +643,47 @@ class fcpohelper extends oxBase
         return self::$_blUseRegistry;
     }
 
+    /**
+     * Method that updates fcporefnr table if combination Prefix+RefNr isn't there yet
+     *
+     * @param string $sRefNr
+     * @param bool $blIncludesPrefix
+     * @return int
+     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
+     */
+    public function fcpoUpdateRefNr($sRefNr, $blIncludesPrefix = true)
+    {
+        try {
+            $iRet = 0;
+
+            $sRawPrefix = (string) $this->getConfig()->getConfigParam('sFCPORefPrefix');
+            $sBasePrefix = $blIncludesPrefix ? substr($sRefNr, 0, strlen($sRawPrefix)) : '';
+            if ($blIncludesPrefix && $sRawPrefix !== $sBasePrefix) {
+                // abort, the $sRefNr was built with a different prefix. Not possible to extract incremental part
+                return -1;
+            }
+            $sRawIncrement = $blIncludesPrefix ? substr($sRefNr, strlen($sRawPrefix)) : $sRefNr;
+
+            $oDb = oxDb::getDb();
+            $sPrefix = $oDb->quote($sRawPrefix);
+            $sIncrement = $oDb->quote($sRawIncrement);
+
+            $sQuery = "SELECT fcpo_refnr FROM fcporefnr WHERE fcpo_refprefix = {$sPrefix} AND fcpo_refnr = {$sIncrement}";
+            $sExistingRefNr = $oDb->GetOne($sQuery);
+
+            if ($sExistingRefNr) {
+                return $iRet;
+            }
+
+            $sQuery = "INSERT INTO fcporefnr (fcpo_refnr, fcpo_txid, fcpo_refprefix)  VALUES ({$sIncrement}, '', {$sPrefix})";
+            $oResult = $oDb->Execute($sQuery);
+            if ($oResult) {
+                $iRet = 1;
+            }
+
+            return $iRet;
+        } catch (Exception $oEx) {
+            return -1;
+        }
+    }
 }

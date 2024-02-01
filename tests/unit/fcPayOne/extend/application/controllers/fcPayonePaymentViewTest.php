@@ -1093,7 +1093,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
         $oTestObject->expects($this->any())->method('getPortalId')->will($this->returnValue('somePortalId'));
         $oTestObject->expects($this->any())->method('getPortalKey')->will($this->returnValue('somePortalKey'));
 
-        $sExpectHash = md5('someSubaccountIdsomeChecktypesomeEncodingsomeMerchantIdtestsomePortalIdbankaccountcheckJSONsomePortalKey');
+        $sExpectHash = hash_hmac('sha384', 'someSubaccountIdsomeChecktypesomeEncodingsomeMerchantIdtestsomePortalIdbankaccountcheckJSON', 'somePortalKey');
 
         $this->assertEquals($sExpectHash, $this->invokeMethod($oTestObject, 'getHashELVWithChecktype'));
     }
@@ -1131,7 +1131,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
         $oTestObject->expects($this->any())->method('getPortalId')->will($this->returnValue('somePortalId'));
         $oTestObject->expects($this->any())->method('getPortalKey')->will($this->returnValue('somePortalKey'));
 
-        $sExpectHash = md5('someSubaccountIdsomeEncodingsomeMerchantIdtestsomePortalIdbankaccountcheckJSONsomePortalKey');
+        $sExpectHash = hash_hmac('sha384', 'someSubaccountIdsomeEncodingsomeMerchantIdtestsomePortalIdbankaccountcheckJSON', 'somePortalKey');
 
         $this->assertEquals($sExpectHash, $this->invokeMethod($oTestObject, 'getHashELVWithoutChecktype'));
     }

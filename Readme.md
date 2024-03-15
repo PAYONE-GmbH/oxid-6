@@ -33,7 +33,7 @@ After that, just activate the module in the Oxid backend.
 - Supports simplified PCI DSS conformity in accordance with SAQ A
 
 ## Documentation
-You can check [the documentation on our website here](https://docs.payone.com/display/public/INT/Oxid+6+Extension).
+You can find our documentation here: https://docs.payone.com/integration/plugins/integration-guide-oxid-6.
 
 More information can be found [on FATCHIP site](https://www.fatchip.de/Plugins/OXID-eShop/OXID-PAYONE-Connector.html).
 

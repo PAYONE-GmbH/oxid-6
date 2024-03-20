@@ -47,7 +47,8 @@ class fcpayone_events
         'fcpobillsafe',
         'fcpoonlineueberweisung',
         'fcpoklarna',
-        'fcpopaydirekt_express'
+        'fcpopaydirekt_express',
+        'fcpo_giropay'
     );
 
     /**
@@ -414,7 +415,7 @@ class fcpayone_events
         'fcpoklarna_installments' => 'PAYONE Klarna Ratenkauf',
         'fcpoklarna_directdebit' => 'PAYONE Klarna Sofort bezahlen',
         'fcpobarzahlen' => 'PAYONE Barzahlen',
-        'fcpopaydirekt' => 'PAYONE paydirekt',
+        'fcpopaydirekt' => 'PAYONE Giropay',
         'fcpopo_bill' => 'PAYONE Unzer Rechnungskauf',
         'fcpopo_debitnote' => 'PAYONE Unzer Lastschrift',
         'fcpopo_installment' => 'PAYONE Unzer Ratenkauf',
@@ -422,7 +423,6 @@ class fcpayone_events
         'fcpoamazonpay' => 'PAYONE Amazon Pay',
         'fcpo_secinvoice' => 'PAYONE Gesicherter Rechnungskauf',
         'fcpo_sofort' => 'PAYONE Sofort Überweisung',
-        'fcpo_giropay' => 'PAYONE Giropay',
         'fcpo_eps' => 'PAYONE eps Überweisung',
         'fcpo_pf_finance' => 'PAYONE PostFinance E-Finance',
         'fcpo_pf_card' => 'PAYONE PostFinance Card',
@@ -1021,6 +1021,10 @@ class fcpayone_events
 
         if (!$oConfig->getConfigParam('sFCPOAddresscheck')) {
             $oConfig->saveShopConfVar('str', 'sFCPOAddresscheck', 'NO');
+        }
+
+        if (is_null($oConfig->getConfigParam('blFCPOPaydirektSecuredPreorder'))) {
+            $oConfig->saveShopConfVar('bool', 'blFCPOPaydirektSecuredPreorder', false);
         }
     }
 

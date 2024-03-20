@@ -321,7 +321,7 @@ class fcpoRequest extends oxSuperCfg
             }
         }
 
-        $blPaymentTypeKnown = $this->setPaymentParameters($oOrder, $aDynvalue, $sRefNr);
+        $blPaymentTypeKnown = $this->setPaymentParameters($oOrder, $aDynvalue, $sRefNr, $blIsPreauthorization);
 
         $blAddProductInfo = $oOrder->isDetailedProductInfoNeeded();
 
@@ -465,7 +465,7 @@ class fcpoRequest extends oxSuperCfg
      *
      * @return bool
      */
-    protected function setPaymentParameters($oOrder, $aDynvalue, $sRefNr)
+    protected function setPaymentParameters($oOrder, $aDynvalue, $sRefNr, $blIsPreauthorization = false)
     {
         $blAddRedirectUrls = false;
         $oConfig = $this->getConfig();
@@ -553,6 +553,14 @@ class fcpoRequest extends oxSuperCfg
                         $this->addParameter('add_paydata[over_capture]','yes');
                     }
                 }
+                $blIsSecuredPreorder = $blIsPreauthorization
+                    && $oConfig->getConfigParam('blFCPOPaydirektSecuredPreorder');
+                if ($blIsSecuredPreorder) {
+                    $iPaydirektGuaranteePeriod = (int) $oConfig->getConfigParam('sFCPOPaydirektSecuredPreorderGuaranteePeriod');
+                    $this->addParameter('add_paydata[order_secured]', 'yes');
+                    $this->addParameter('add_paydata[preauthorization_validity]', $iPaydirektGuaranteePeriod);
+                }
+
                 $blAddRedirectUrls = true;
                 break;
             case 'fcpopo_bill':

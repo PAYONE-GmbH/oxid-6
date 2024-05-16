@@ -233,6 +233,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
             unset($oOrder);
         }
         $this->_oFcpoHelper->fcpoDeleteSessionVariable('sess_challenge');
+        $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoRedirectOnGoing');
 
         parent::init();
     }

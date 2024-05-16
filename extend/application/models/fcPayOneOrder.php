@@ -747,11 +747,15 @@ class fcPayOneOrder extends fcPayOneOrder_parent
             $this->_checkOrderExist($sGetChallenge)
         );
 
-        if ($blSaveAfterRedirect === false && $this->_checkOrderExist($sGetChallenge)) {
-            $oUtils = $this->_oFcpoHelper->fcpoGetUtils();
-            $oUtils->logger('BLOCKER');
-            // we might use this later, this means that somebody klicked like mad on order button
-            return self::ORDER_STATE_ORDEREXISTS;
+        $blIsRedirectionOnGoing = (bool) $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoRedirectOnGoing');
+        if ($blSaveAfterRedirect === false && !$blIsRedirectionOnGoing) {
+            if ($this->_checkOrderExist($sGetChallenge)) {
+                $oUtils = $this->_oFcpoHelper->fcpoGetUtils();
+                $oUtils->logger('BLOCKER');
+                // we might use this later, this means that somebody klicked like mad on order button
+
+                return self::ORDER_STATE_ORDEREXISTS;
+            }
         }
 
         // check if basket is still the same as it was before
@@ -1059,6 +1063,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoRefNr');
         $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoAuthMode');
         $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoRedirectUrl');
+        $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoRedirectOnGoing');
     }
 
     /**
@@ -1894,6 +1899,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
             } else {
                 $sRedirectUrl = $aResponse['redirecturl'];
             }
+            $this->_oFcpoHelper->fcpoSetSessionVariable('fcpoRedirectOnGoing', '1');
             $oUtils->redirect($sRedirectUrl, false);
         }
     }

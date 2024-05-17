@@ -148,7 +148,7 @@ class fcpoRequest extends oxSuperCfg
 
         $this->addParameter('mid', $oConfig->getConfigParam('sFCPOMerchantID')); //PayOne Merchant ID
         $this->addParameter('portalid', $oConfig->getConfigParam('sFCPOPortalID')); //PayOne Portal ID
-        $this->addParameter('key', md5($oConfig->getConfigParam('sFCPOPortalKey'))); //PayOne Portal Key
+        $this->addParameter('key', hash('sha384', $oConfig->getConfigParam('sFCPOPortalKey'))); //PayOne Portal Key
         if ($oConfig->isUtf()) {
             $this->addParameter('encoding', 'UTF-8'); //Encoding
         }
@@ -638,7 +638,7 @@ class fcpoRequest extends oxSuperCfg
         $oConfig = $this->getConfig();
 
         $sSecinvoicePortalId = $oConfig->getConfigParam('sFCPOSecinvoicePortalId');
-        $sSecinvoicePortalKeyHash = md5($oConfig->getConfigParam('sFCPOSecinvoicePortalKey'));
+        $sSecinvoicePortalKeyHash = hash('sha384', $oConfig->getConfigParam('sFCPOSecinvoicePortalKey'));
         $this->addParameter('portalid', $sSecinvoicePortalId);
         $this->addParameter('key', $sSecinvoicePortalKeyHash);
 
@@ -659,7 +659,7 @@ class fcpoRequest extends oxSuperCfg
         $oConfig = $this->getConfig();
 
         $sPortalId = $oConfig->getConfigParam('sFCPOPLPortalId');
-        $sPortalKeyHash = md5($oConfig->getConfigParam('sFCPOPLPortalKey'));
+        $sPortalKeyHash = hash('sha384', $oConfig->getConfigParam('sFCPOPLPortalKey'));
         $this->addParameter('portalid', $sPortalId);
         $this->addParameter('key', $sPortalKeyHash);
     }
@@ -2629,7 +2629,7 @@ class fcpoRequest extends oxSuperCfg
         }
 
         $this->addParameter('portalid', $sFCPOSecinvoicePortalId);
-        $this->addParameter('key', md5($sFCPOSecinvoicePortalKey));
+        $this->addParameter('key', hash('sha384', $sFCPOSecinvoicePortalKey));
     }
 
     /**

@@ -262,7 +262,7 @@ class fcPayOneTransactionStatusHandler extends fcPayOneTransactionStatusBase
         $sShopUrl = $oConfig->getShopUrl();
         $sSslShopUrl = $oConfig->getSslShopUrl();
         $sConfTimeout = $oConfig->getConfigParam('sTransactionRedirectTimeout');
-        $iTimeout = ($sConfTimeout) ? (int) $sConfTimeout : 5500;
+        $iTimeout = ($sConfTimeout) ? (int) $sConfTimeout : 10;
         $sParams = substr($sParams,1);
         $sBaseUrl = (empty($sSslShopUrl)) ? $sShopUrl : $sSslShopUrl;
 
@@ -277,7 +277,7 @@ class fcPayOneTransactionStatusHandler extends fcPayOneTransactionStatusBase
         curl_setopt($oCurl, CURLOPT_SSL_VERIFYHOST, false);
 
         curl_setopt($oCurl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($oCurl, CURLOPT_TIMEOUT_MS, $iTimeout);
+        curl_setopt($oCurl, CURLOPT_TIMEOUT, $iTimeout);
 
         curl_exec($oCurl);
         $aResult = curl_getinfo($oCurl);

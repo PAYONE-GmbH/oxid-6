@@ -308,6 +308,24 @@ $aLang = array(
     'FCPO_CONFIG_GROUP_PP_EXPRESS_LOGOS' => "PayPal",
     'FCPO_CONFIG_ADD_PP_EXPRESS_LOGO'    => "Add another language",
 
+    'FCPO_CONFIG_GROUP_PAYPALV2'        => "PayPal V2",
+    'FCPO_PAYPALV2_BNPL'                => "Show Buy Now Pay Later Button",
+
+    'FCPO_PAYPALV2_MERCHANT_ID'         => "PayPal Merchant ID",
+    'FCPO_HELP_PAYPALV2_MERCHANT_ID'    => "NOT needed in test mode. A predefined Payone Merchant ID is used in that case.",
+
+    'FCPO_PAYPALV2_BUTTON_COLOR'        => "Express Button Color",
+    'FCPO_PAYPALV2_BUTTON_GOLD'         => "Gold",
+    'FCPO_PAYPALV2_BUTTON_BLUE'         => "Blue",
+    'FCPO_PAYPALV2_BUTTON_SILVER'       => "Silver",
+    'FCPO_PAYPALV2_BUTTON_WHITE'        => "White",
+    'FCPO_PAYPALV2_BUTTON_BLACK'        => "Black",
+
+    'FCPO_PAYPALV2_BUTTON_SHAPE'        => "Express Button Shape",
+    'FCPO_PAYPALV2_BUTTON_RECT'         => "Default button shape",
+    'FCPO_PAYPALV2_BUTTON_PILL'         => "Rounded corners",
+    'FCPO_PAYPALV2_BUTTON_SHARP'        => "Sharp corners",
+
     'FCPO_HELP_REFPREFIX' => "A unique referencenumber has to be transferred to PAYONE with every request. This is a consecutive number, normally starting at 1. When operating multiple shops ( e.g. live- and test-shop ) with the same PAYONE account-data there will be problems when the current referencenumber was already used. This can be avoided by using different prefixes on different shops.",
     'FCPO_REFPREFIX'      => "Referencenumber prefix ( optional )",
 
@@ -479,6 +497,8 @@ The smaller text field is used to name the destination file, or path to an exist
     'PAYONE paydirekt' => 'PAYONE Giropay',
     'PAYONE PayPal Express' => 'PAYONE PayPal Express',
     'PAYONE PayPal' => 'PAYONE PayPal',
+    'PAYONE PayPal Express V2' => 'PAYONE PayPal Express V2',
+    'PAYONE PayPal V2' => 'PAYONE PayPal V2',
     'PAYONE PostFinance Card' => 'PAYONE PostFinance Card',
     'PAYONE PostFinance E-Finance' => 'PAYONE PostFinance E-Finance',
     'PAYONE Przelewy24' => 'PAYONE Przelewy24',

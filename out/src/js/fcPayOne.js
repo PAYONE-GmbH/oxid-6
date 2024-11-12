@@ -695,6 +695,20 @@ $('#fcpo_klarna_combined_agreed, #klarna_payment_selector').change(
     }
 );
 
+// >>> PayPal Express V2
+
+function fcpoStartPayPalExpress() {
+    return $.ajax({
+        url: payoneAjaxControllerUrl,
+        method: 'POST',
+        type: 'POST',
+        data: {
+            paymentid: 'fcpopaypalv2_express',
+            action: "start_paypal_express",
+            params: "{}"
+        }
+    });
+}
 
 // >>> APPLE PAY
 

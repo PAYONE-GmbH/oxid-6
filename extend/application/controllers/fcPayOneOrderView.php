@@ -110,9 +110,19 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
     public function fcpoHandlePayPalExpress() 
     {
         try {
-            $this->_handlePayPalExpressCall();
-        } 
-        catch (oxException $oExcp) {
+            $this->_handlePayPalExpressCall(fcpopaypalhelper::PPE_EXPRESS);
+        } catch (oxException $oExcp) {
+            $oUtilsView = $this->_oFcpoHelper->fcpoGetUtilsView();
+            $oUtilsView->addErrorToDisplay($oExcp);
+            return "basket";
+        }
+    }
+
+    public function fcpoHandlePayPalExpressV2()
+    {
+        try {
+            $this->_handlePayPalExpressCall(fcpopaypalhelper::PPE_V2_EXPRESS);
+        } catch (oxException $oExcp) {
             $oUtilsView = $this->_oFcpoHelper->fcpoGetUtilsView();
             $oUtilsView->addErrorToDisplay($oExcp);
             return "basket";
@@ -128,21 +138,13 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
     protected function _fcpoDoesExpressUserAlreadyExist($sEmail) {
         $sPaymentId = $this->_oFcpoHelper->fcpoGetSessionVariable('paymentid');
         $oOrder = $this->_oFcpoHelper->getFactoryObject('oxOrder');
+
         $blReturn = $oOrder->fcpoDoesUserAlreadyExist($sEmail);
-
-        $blIsExpressException = (
-            $blReturn !== false &&
-            (
-                $sPaymentId == 'fcpopaypal_express'
-            )
-        );
-
-        if ($blIsExpressException) {
+        if ($blReturn !== false && in_array($sPaymentId, [fcpopaypalhelper::PPE_EXPRESS, fcpopaypalhelper::PPE_V2_EXPRESS])) { // is express exception
             // always using the address that has been
             // sent by express service is mandatory
             $blReturn = false;
         }
-
         return $blReturn;
     }
 
@@ -156,14 +158,12 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
     {
         $sPaymentId = $this->_oFcpoHelper->fcpoGetSessionVariable('paymentid');
         $oOrder = $this->_oFcpoHelper->getFactoryObject('oxOrder');
-        $blReturn = $blReturn = $oOrder->fcpoDoesUserAlreadyExist($sEmail);
-        $blIsPaypalExpressException = ($blReturn !== false && $sPaymentId == 'fcpopaypal_express');
 
-        if ($blIsPaypalExpressException) {
+        $blReturn = $oOrder->fcpoDoesUserAlreadyExist($sEmail);
+        if ($blReturn !== false && in_array($sPaymentId, [fcpopaypalhelper::PPE_EXPRESS, fcpopaypalhelper::PPE_V2_EXPRESS])) { // is paypal express exception
             // always using the address that has been sent by paypal express is mandatory
             $blReturn = false;
         }
-
         return $blReturn;
     }
 
@@ -190,7 +190,7 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
         $sPaymentId = $this->_oFcpoHelper->fcpoGetSessionVariable('paymentid');
 
         $aMap = array(
-            'fcpopaypal_express'=>'basket'
+            fcpopaypalhelper::PPE_EXPRESS => 'basket',
         );
 
         $sReturn = (isset($aMap[$sPaymentId])) ?
@@ -212,7 +212,7 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
         $sPaymentId = $this->_oFcpoHelper->fcpoGetSessionVariable('paymentid');
 
         $aMap = array(
-            'fcpopaypal_express'=>'fcpoUsePayPalExpress'
+            fcpopaypalhelper::PPE_EXPRESS => 'fcpoUsePayPalExpress',
         );
 
         $sReturn = (isset($aMap[$sPaymentId])) ?
@@ -484,7 +484,8 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
         $sPaymentId = $this->_oFcpoHelper->fcpoGetSessionVariable('paymentid');
 
         switch($sPaymentId) {
-            case 'fcpopaypal_express':
+            case fcpopaypalhelper::PPE_EXPRESS:
+            case fcpopaypalhelper::PPE_V2_EXPRESS:
                 $aStreetAndNumber =
                     $this->_fcpoSplitAddress($aResponse['add_paydata[shipping_street]']);
                 break;
@@ -519,16 +520,16 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
      * @param void
      * @return void
      */
-    protected function _handlePayPalExpressCall() {
+    protected function _handlePayPalExpressCall($sPaymentId) {
         $sWorkorderId = $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoWorkorderId');
-        if($sWorkorderId) {
-            $oRequest   = $this->_oFcpoHelper->getFactoryObject('fcporequest');
-            $aOutput    = $oRequest->sendRequestGenericPayment($sWorkorderId);
-            $this->_oFcpoHelper->fcpoSetSessionVariable('paymentid', "fcpopaypal_express");
+        if ($sWorkorderId) {
+            $oRequest = $this->_oFcpoHelper->getFactoryObject('fcporequest');
+            $aOutput = $oRequest->sendRequestGenericPayment($sPaymentId, $sWorkorderId);
+            $this->_oFcpoHelper->fcpoSetSessionVariable('paymentid', $sPaymentId);
             $oUser = $this->_fcpoHandleExpressUser($aOutput);
 
-            if($oUser) {
-                $this->_fcpoUpdateUserOfExpressBasket($oUser, "fcpopaypal_express");
+            if ($oUser) {
+                $this->_fcpoUpdateUserOfExpressBasket($oUser, $sPaymentId);
             }
         }
     }

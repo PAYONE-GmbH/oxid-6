@@ -403,6 +403,11 @@ class fcpayone_events
     public static $sQueryAlterFcporequestlogRefnrIndex = "ALTER TABLE fcporequestlog ADD INDEX FCPO_REFNR (`FCPO_REFNR`)";
     public static $sQueryAlterFcporequestlogRequesttypeIndex = "ALTER TABLE fcporequestlog ADD INDEX FCPO_REQUESTTYPE (`FCPO_REQUESTTYPE`)";
 
+    /**
+     * List of all Payone payment methods to add to the database
+     *
+     * @var string[]
+     */
     public static $aPaymentMethods = array(
         'fcpoinvoice' => 'PAYONE Rechnungskauf',
         'fcpopayadvance' => 'PAYONE Vorkasse',
@@ -411,6 +416,8 @@ class fcpayone_events
         'fcpocreditcard' => 'PAYONE Kreditkarte',
         'fcpopaypal' => 'PAYONE PayPal',
         'fcpopaypal_express' => 'PAYONE PayPal Express',
+        'fcpopaypalv2' => 'PAYONE PayPal V2',
+        'fcpopaypalv2_express' => 'PAYONE PayPal Express V2',
         'fcpoklarna_invoice' => 'PAYONE Klarna Rechnung',
         'fcpoklarna_installments' => 'PAYONE Klarna Ratenkauf',
         'fcpoklarna_directdebit' => 'PAYONE Klarna Sofort bezahlen',
@@ -438,7 +445,6 @@ class fcpayone_events
         'fcpopl_secinvoice' => 'PAYONE Gesicherter Rechnungskauf (neu)',
         'fcpopl_secinstallment' => 'PAYONE Gesicherter Ratenkauf',
         'fcpopl_secdebitnote' => 'PAYONE Gesicherte Lastschrift',
-
     );
 
     /**

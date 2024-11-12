@@ -507,9 +507,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      */
     public function fcpoPaymentActive($sPaymentId)
     {
-        $oPayment = $this->_oFcpoHelper->getFactoryObject('oxPayment');
-        $oPayment->load($sPaymentId);
-        return (bool) ($oPayment->oxpayments__oxactive->value);
+        return fcpopaymenthelper::getInstance()->isPaymentMethodActive($sPaymentId);
     }
 
     /**
@@ -1500,7 +1498,8 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      */
     protected function _fcpoCheckPaypalExpressRemoval() 
     {
-        $this->_fcpoRemovePaymentFromFrontend('fcpopaypal_express');
+        $this->_fcpoRemovePaymentFromFrontend(fcpopaypalhelper::PPE_EXPRESS);
+        $this->_fcpoRemovePaymentFromFrontend(fcpopaypalhelper::PPE_V2_EXPRESS);
         //&& !$this->_oFcpoHelper->fcpoGetSessionVariable('fcpoWorkorderId')
     }
 

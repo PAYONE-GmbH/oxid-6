@@ -106,14 +106,24 @@ class fcPayOneBasketView extends fcPayOneBasketView_parent
 
     /**
      * Returns wether paypal express is active or not
-     * 
+     *
      * @param  void
      * @return boolean
      */
-    protected function _fcpoIsPayPalExpressActive() 
+    protected function _fcpoIsPayPalExpressActive()
     {
-        $oBasket = $this->_oFcpoHelper->getFactoryObject('oxBasket');
-        return $oBasket->fcpoIsPayPalExpressActive();
+        return fcpopaymenthelper::getInstance()->isPaymentMethodActive(fcpopaypalhelper::PPE_EXPRESS);
+    }
+
+    /**
+     * Returns wether paypal express is active or not
+     *
+     * @param  void
+     * @return boolean
+     */
+    protected function _fcpoIsPayPalExpressV2Active()
+    {
+        return fcpopaymenthelper::getInstance()->isPaymentMethodActive(fcpopaypalhelper::PPE_V2_EXPRESS);
     }
 
     /**
@@ -126,14 +136,26 @@ class fcPayOneBasketView extends fcPayOneBasketView_parent
     {
         if ($this->_sPayPalExpressPic === null) {
             $this->_sPayPalExpressPic = false;
-            if ($this->_fcpoIsPayPalExpressActive()) {
+            if ($this->_fcpoIsPayPalExpressActive() === true && $this->_fcpoIsPayPalExpressV2Active() === false) {
                 $this->_sPayPalExpressPic = $this->_fcpoGetPayPalExpressPic();
             }
         }
 
         return $this->_sPayPalExpressPic;
     }
-    
+
+    /**
+     * Loads paypal express pic from db
+     *
+     * @return string
+     */
+    protected function _fcpoGetPayPalExpressPicFromDb()
+    {
+        $iLangId = $this->_oFcpoHelper->fcpoGetLang()->getBaseLanguage();
+        $sQuery = "SELECT fcpo_logo FROM fcpopayoneexpresslogos WHERE fcpo_logo != '' AND fcpo_langid = '{$iLangId}' ORDER BY fcpo_default DESC";
+        return $this->_oFcpoHelper->fcpoGetDb()->GetOne($sQuery);
+    }
+
     /**
      * Finally fetches needed values and set attribute value
      * 
@@ -143,8 +165,8 @@ class fcPayOneBasketView extends fcPayOneBasketView_parent
     protected function _fcpoGetPayPalExpressPic() 
     {
         $sPayPalExpressPic = false;
-        $oBasket = $this->_oFcpoHelper->getFactoryObject('oxBasket');
-        $sPic = $oBasket->fcpoGetPayPalExpressPic();
+
+        $sPic = $this->_fcpoGetPayPalExpressPicFromDb();
 
         $sPaypalExpressLogoPath = getShopBasePath() . $this->_sPayPalExpressLogoPath . $sPic;
         $blLogoPathExists = $this->_oFcpoHelper->fcpoFileExists($sPaypalExpressLogoPath);
@@ -167,7 +189,7 @@ class fcPayOneBasketView extends fcPayOneBasketView_parent
     public function fcpoUsePayPalExpress() 
     {
         $oRequest = $this->_oFcpoHelper->getFactoryObject('fcporequest');
-        $aOutput = $oRequest->sendRequestGenericPayment();
+        $aOutput = $oRequest->sendRequestGenericPayment(fcpopaypalhelper::PPE_EXPRESS);
 
         if ($aOutput['status'] == 'ERROR') {
             $this->_iLastErrorNo = $aOutput['errorcode'];

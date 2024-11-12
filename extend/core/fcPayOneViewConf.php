@@ -310,29 +310,59 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent
     /**
      * Returns if amazonpay is active and though button can be displayed
      *
-     * @param void
      * @return bool
      */
     public function fcpoCanDisplayAmazonPayButton()
     {
-        $blIsActive = $this->_fcpoPaymentIsActive('fcpoamazonpay');
-
-        return $blIsActive;
+        return fcpopaymenthelper::getInstance()->isPaymentMethodActive('fcpoamazonpay');
     }
 
     /**
-     * Checks is given payment is active
+     * Returns if paypal is active and therefor button can be displayed
      *
-     * @param $sPaymentId
      * @return bool
      */
-    protected function _fcpoPaymentIsActive($sPaymentId)
+    public function fcpoCanDisplayPayPalExpressV2Button()
     {
-        $oPayment = $this->_oFcpoHelper->getFactoryObject('oxpayment');
-        $oPayment->load($sPaymentId);
-        $blIsActive = (bool) $oPayment->oxpayments__oxactive->value;
+        return fcpopaymenthelper::getInstance()->isPaymentMethodActive(fcpopaypalhelper::PPE_V2_EXPRESS);
+    }
 
-        return $blIsActive;
+    /**
+     * Returns PayPal V2 Express Button Javascript URL
+     *
+     * @return string
+     */
+    public function fcpoGetPayPalExpressV2JavascriptUrl()
+    {
+        return fcpopaypalhelper::getInstance()->getJavascriptUrl();
+    }
+
+    /**
+     * Returns PayPal V2 Express Button color
+     *
+     * @return string
+     */
+    public function fcpoGetPayPalExpressButtonColor()
+    {
+        return fcpopaypalhelper::getInstance()->getButtonColor();
+    }
+
+    /**
+     * Returns PayPal V2 Express Button shape
+     *
+     * @return string
+     */
+    public function fcpoGetPayPalExpressButtonShape()
+    {
+        return fcpopaypalhelper::getInstance()->getButtonShape();
+    }
+
+    /**
+     * @return string
+     */
+    public function fcpoGetPayPalExpressSuccessUrl()
+    {
+        return fcporedirecthelper::getInstance()->getSuccessUrl(false, 'fcpoHandlePayPalExpressV2');
     }
 
     /**
@@ -340,12 +370,8 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent
      */
     public function fcpoGetAmazonWidgetsUrl()
     {
-        $oPayment = $this->_oFcpoHelper->getFactoryObject('oxpayment');
-        $oPayment->load('fcpoamazonpay');
-        $blIsLive = $oPayment->oxpayments__fcpolivemode->value;
-
         $sAmazonWidgetsUrl = 'https://static-eu.payments-amazon.com/OffAmazonPayments/eur/sandbox/lpa/js/Widgets.js';
-        if ($blIsLive) {
+        if (fcpopaymenthelper::getInstance()->isLiveMode('fcpoamazonpay') === true) {
             $sAmazonWidgetsUrl = 'https://static-eu.payments-amazon.com/OffAmazonPayments/eur/lpa/js/Widgets.js';
         }
 
@@ -852,13 +878,17 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent
         return $sPaylaPartnerId . "_" . $sPartnerMerchantId . "_" . $sUUIDv4;
     }
 
+    /**
+     * @param  string $sPaymentId
+     * @return string
+     */
     public function fcpoGetPayoneSecureEnvironment($sPaymentId)
     {
-        $oPayment = $this->_oFcpoHelper->getFactoryObject('oxpayment');
-        $oPayment->load($sPaymentId);
-        $blIsLive = $oPayment->oxpayments__fcpolivemode->value;
-
-        return $blIsLive ? 'p' : 't';
+        $sEnvironment = 't'; // test
+        if (fcpopaymenthelper::getInstance()->isLiveMode($sPaymentId) === true) {
+            $sEnvironment = 'p'; // production/live
+        }
+        return $sEnvironment;
     }
 
     public function fcpoGetMerchantId()

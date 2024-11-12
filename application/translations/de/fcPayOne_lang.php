@@ -257,6 +257,8 @@ Das kleinere Textfeld wird verwendet, um die Zieldatei oder den Pfad zu einer vo
     'PAYONE paydirekt' => 'PAYONE Giropay',
     'PAYONE PayPal Express' => 'PAYONE PayPal Express',
     'PAYONE PayPal' => 'PAYONE PayPal',
+    'PAYONE PayPal Express V2' => 'PAYONE PayPal Express V2',
+    'PAYONE PayPal V2' => 'PAYONE PayPal V2',
     'PAYONE PostFinance Card' => 'PAYONE PostFinance Card',
     'PAYONE PostFinance E-Finance' => 'PAYONE PostFinance E-Finance',
     'PAYONE Przelewy24' => 'PAYONE Przelewy24',

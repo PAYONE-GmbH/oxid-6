@@ -268,6 +268,8 @@ The smaller text field is used to name the destination file, or path to an exist
 'PAYONE paydirekt' => 'PAYONE Giropay',
 'PAYONE PayPal Express' => 'PAYONE PayPal Express',
 'PAYONE PayPal' => 'PAYONE PayPal',
+'PAYONE PayPal Express V2' => 'PAYONE PayPal Express V2',
+'PAYONE PayPal V2' => 'PAYONE PayPal V2',
 'PAYONE PostFinance Card' => 'PAYONE PostFinance Card',
 'PAYONE PostFinance E-Finance' => 'PAYONE PostFinance E-Finance',
 'PAYONE Przelewy24' => 'PAYONE Przelewy24',

@@ -231,6 +231,24 @@ $aLang = array(
     'FCPO_CONFIG_GROUP_PP_EXPRESS_LOGOS' => "PayPal",
     'FCPO_CONFIG_ADD_PP_EXPRESS_LOGO'    => "Weitere Sprache hinzuf&uuml;gen",
 
+    'FCPO_CONFIG_GROUP_PAYPALV2'        => "PayPal V2",
+    'FCPO_PAYPALV2_BNPL'                => "Später Bezahlen Express Button anzeigen",
+
+    'FCPO_PAYPALV2_MERCHANT_ID'         => "PayPal Merchant ID",
+    'FCPO_HELP_PAYPALV2_MERCHANT_ID'    => "Im Testmodus NICHT erforderlich. Da wird eine feste ID von Payone verwendet.",
+
+    'FCPO_PAYPALV2_BUTTON_COLOR'        => "Express Button Farbe",
+    'FCPO_PAYPALV2_BUTTON_GOLD'         => "Gold",
+    'FCPO_PAYPALV2_BUTTON_BLUE'         => "Blau",
+    'FCPO_PAYPALV2_BUTTON_SILVER'       => "Silber",
+    'FCPO_PAYPALV2_BUTTON_WHITE'        => "Wei&szlig;",
+    'FCPO_PAYPALV2_BUTTON_BLACK'        => "Schwarz",
+
+    'FCPO_PAYPALV2_BUTTON_SHAPE'        => "Express Button Form",
+    'FCPO_PAYPALV2_BUTTON_RECT'         => "Standard Button Form",
+    'FCPO_PAYPALV2_BUTTON_PILL'         => "Runde Ecken",
+    'FCPO_PAYPALV2_BUTTON_SHARP'        => "Spitze Ecken",
+
     'FCPO_CONFIG_DEBIT_BANKDATA'        => "Eingabe der Bankdaten",
     'FCPO_CONFIG_DEBIT_MULTISELECT'     => "Liste der unterstützten Kontolländer.<br>für Mehrfachmarkierung STRG-Taste gedrückt halten.",
     'FCPO_CONFIG_DEBIT_GER'             => "Nur bei Deutschen Konten",
@@ -470,6 +488,8 @@ Das kleinere Textfeld wird verwendet, um die Zieldatei oder den Pfad zu einer vo
     'PAYONE paydirekt' => 'PAYONE Giropay',
     'PAYONE PayPal Express' => 'PAYONE PayPal Express',
     'PAYONE PayPal' => 'PAYONE PayPal',
+    'PAYONE PayPal Express V2' => 'PAYONE PayPal Express V2',
+    'PAYONE PayPal V2' => 'PAYONE PayPal V2',
     'PAYONE PostFinance Card' => 'PAYONE PostFinance Card',
     'PAYONE PostFinance E-Finance' => 'PAYONE PostFinance E-Finance',
     'PAYONE Przelewy24' => 'PAYONE Przelewy24',

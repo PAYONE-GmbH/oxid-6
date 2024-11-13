@@ -60,7 +60,7 @@ class fcpopaypalhelper extends fcpobasehelper
     /**
      * @return bool
      */
-    protected function showBNPLButton()
+    public function showBNPLButton()
     {
         $blReturn = false;
         if ((bool)$this->getMainHelper()->fcpoGetConfig()->getConfigParam('blFCPOPayPalV2BNPL') === true) {
@@ -138,7 +138,7 @@ class fcpopaypalhelper extends fcpobasehelper
      */
     public function getJavascriptUrl()
     {
-        $sUrl = "https://www.paypal.com/sdk/js?client-id=".$this->getClientId()."&merchant-id=".$this->getMerchantId()."&currency=".$this->getCurrency()."&intent=".$this->getIntent()."&locale=".$this->getLocale()."&commit=true&vault=false&disable-funding=card,sepa,bancontact";
+        $sUrl = "https://www.paypal.com/sdk/js?client-id=".$this->getClientId()."&merchant-id=".$this->getMerchantId()."&currency=".$this->getCurrency()."&intent=".$this->getIntent()."&locale=".$this->getLocale()."&commit=false&vault=false&disable-funding=card,sepa,bancontact";
         if ($this->showBNPLButton() === true) {
             $sUrl .= "&enable-funding=paylater";
         }

@@ -1260,6 +1260,8 @@ class fcPayOneOrder extends fcPayOneOrder_parent
             'fcpopl_secinvoice',
             'fcpopl_secinstallment',
             'fcpopl_secdebitnote',
+            'fcpopl_secdebitnote',
+            fcpopaypalhelper::PPE_V2_EXPRESS,
         ])) {
             return true;
         }

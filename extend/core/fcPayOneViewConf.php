@@ -328,6 +328,20 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent
     }
 
     /**
+     * Returns PayPal V2 Express Button ID
+     *
+     * @return string
+     */
+    public function fcpoGetPayPalExpressV2GetButtonId($sPosition)
+    {
+        $sButtonId = "fcpoPayPalExpressV2";
+        if (fcpopaypalhelper::getInstance()->showBNPLButton() === true) {
+            $sButtonId .= "PayLater";
+        }
+        return $sButtonId.$sPosition;
+    }
+
+    /**
      * Returns PayPal V2 Express Button Javascript URL
      *
      * @return string

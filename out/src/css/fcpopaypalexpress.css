@@ -3,3 +3,9 @@
     float: right;
     padding-right: 12px;
 }
+
+#fcpoPayPalExpressV2PayLaterBasketTop, #fcpoPayPalExpressV2PayLaterBasketBottom {
+    width: 444px;
+    float: right;
+    padding-right: 4px;
+}

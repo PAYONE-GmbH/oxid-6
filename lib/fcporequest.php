@@ -2394,9 +2394,7 @@ class fcpoRequest extends oxSuperCfg
             }
             $this->addParameter('add_paydata[payment_action]', $sPaymentAction);
 
-            if ((bool)$this->_oFcpoHelper->fcpoGetConfig()->getConfigParam('blFCPOSendArticlelist') === true) {
-                $this->_fcpoAddBasketItemsFromSession();
-            }
+            $this->_fcpoAddBasketItemsFromSession();
         }
 
         $this->_addRedirectUrls('basket', false, 'fcpoHandlePayPalExpress');

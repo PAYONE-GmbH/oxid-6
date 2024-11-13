@@ -1,4 +1,4 @@
-[{assign var="buttonId" value='fcpoPayPalExpressV2'|cat:$_payone_position}]
+[{assign var="buttonId" value=$oViewConf->fcpoGetPayPalExpressV2GetButtonId($_payone_position)}]
 
 <div id="[{$buttonId}]"></div>
 

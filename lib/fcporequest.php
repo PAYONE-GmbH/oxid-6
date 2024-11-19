@@ -1459,7 +1459,7 @@ class fcpoRequest extends oxSuperCfg
         }
 
         $sGiftcardCosts = $this->_fcpoFetchCostsFromBasket($oBasket, 'oxgiftcard');
-        $sGiftcardCosts = (double) str_replace(',', '.', $sWrappingCosts);
+        $sGiftcardCosts = (double) str_replace(',', '.', $sGiftcardCosts);
         if ($sGiftcardCosts > 0) {
             $this->addInvoicePosition($iIndex, 'giftcard', $sGiftcardCosts, 'goods', 1, $oLang->translateString('FCPO_GIFTCARD', null, false), $this->_fcpoFetchVatCostsFromBasket($oBasket, 'oxgiftcard'));
             $iIndex++;

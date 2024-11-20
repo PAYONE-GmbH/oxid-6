@@ -128,9 +128,8 @@ class fcpopaypalhelper extends fcpobasehelper
      */
     protected function getLocale()
     {
-        $sCurrentLocal = "de_DE"; ///@TODO
-        $sPayPalLocal = $this->getSupportedLocaleCode($sCurrentLocal);
-        return $sPayPalLocal;
+        $sCurrentLocal = $this->getMainHelper()->fcpoGetLang()->translateString('FCPO_LOCALE', null, false);
+        return $this->getSupportedLocaleCode($sCurrentLocal);
     }
 
     /**

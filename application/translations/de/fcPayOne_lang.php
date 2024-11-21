@@ -24,6 +24,7 @@ $sLangName = "Deutsch";
 // -------------------------------
 $aLang = array(
     'charset'                                             => 'UTF-8',
+    'FCPO_LOCALE'                                         => 'de_DE',
     'FCPO_IBAN_INVALID'                                   => 'Bitte geben Sie eine korrekte IBAN ein.',
     'FCPO_BIC_INVALID'                                    => 'Bitte geben Sie eine korrekte BIC ein.',
     'FCPO_BLZ_INVALID'                                    => 'Bitte geben Sie eine korrekte Bankleitzahl ein.',
@@ -257,6 +258,8 @@ Das kleinere Textfeld wird verwendet, um die Zieldatei oder den Pfad zu einer vo
     'PAYONE paydirekt' => 'PAYONE Giropay',
     'PAYONE PayPal Express' => 'PAYONE PayPal Express',
     'PAYONE PayPal' => 'PAYONE PayPal',
+    'PAYONE PayPal Express V2' => 'PAYONE PayPal Express V2',
+    'PAYONE PayPal V2' => 'PAYONE PayPal V2',
     'PAYONE PostFinance Card' => 'PAYONE PostFinance Card',
     'PAYONE PostFinance E-Finance' => 'PAYONE PostFinance E-Finance',
     'PAYONE Przelewy24' => 'PAYONE Przelewy24',

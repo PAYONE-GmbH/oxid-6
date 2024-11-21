@@ -198,6 +198,32 @@ class fcpayone_ajax extends oxBase
         $this->_fcpoHandleSetOrderReferenceDetails($sAmazonReferenceId, $sAmazonLoginAccessToken);
     }
 
+    public function fcpoStartPayPalExpress()
+    {
+        $aJsonResponse = [
+            'success' => false,
+        ];
+
+        /** @var fcpoRequest $oRequest */
+        $oRequest = $this->_oFcpoHelper->getFactoryObject('fcporequest');
+        $aResponse = $oRequest->sendRequestGenericPayment(fcpopaypalhelper::PPE_V2_EXPRESS);
+
+        if (isset($aResponse['status'], $aResponse['workorderid'], $aResponse['add_paydata[orderId]']) && $aResponse['status'] == 'REDIRECT') {
+            $aJsonResponse['success'] = true;
+            $aJsonResponse['order_id'] = $aResponse['add_paydata[orderId]'];
+
+            if (!empty($aResponse['workorderid'])) {
+                $this->_oFcpoHelper->fcpoSetSessionVariable('fcpoWorkorderId', $aResponse['workorderid']);
+            }
+        }
+
+        if (isset($aResponse['status'], $aResponse['customermessage']) && $aResponse['status'] == 'ERROR') {
+            $aJsonResponse['errormessage'] = $aResponse['customermessage'];
+        }
+
+        return json_encode($aJsonResponse);
+    }
+
     /**
      *
      *
@@ -938,6 +964,9 @@ if ($sPaymentId) {
         echo $oPayoneAjax->fcpoRatepayCalculation($sParamsJson);
     }
 
+    if ($sAction == 'start_paypal_express' && $sPaymentId == fcpopaypalhelper::PPE_V2_EXPRESS) {
+        echo $oPayoneAjax->fcpoStartPayPalExpress();
+    }
 
     $blConfirmAmazonOrder = (
         $sAction == 'confirm_amazon_pay_order' &&

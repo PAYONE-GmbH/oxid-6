@@ -10,6 +10,11 @@
     </form>
 [{/if}]
 
+[{if $oViewConf->fcpoCanDisplayPayPalExpressV2Button()}]
+    [{oxstyle include=$oViewConf->fcpoGetModuleCssPath('fcpopaypalexpress.css')}]
+    [{oxid_include_dynamic file="fcpo_paypal_express_v2.tpl" type="payone" position="BasketTop" layout="horizontal"}]
+[{/if}]
+
 [{if $oViewConf->fcpoCanDisplayAmazonPayButton()}]
     [{assign var="sFcPoTemplatePathAmazon" value=$sFcPoTemplatePath|cat:'/fcpayone_amazon_paybutton.tpl'}]
     [{include
@@ -18,4 +23,3 @@
         sAmazonButtonClass='payone_basket_amazon_btn_flow'
     }]
 [{/if}]
-

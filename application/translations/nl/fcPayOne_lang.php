@@ -24,6 +24,7 @@ $sLangName = "Dutch";
 // -------------------------------
 $aLang = array(
     'charset' => 'ISO-8859-15',
+    'FCPO_LOCALE' => 'nl_NL',
     'FCPO_IBAN_INVALID' => 'Please enter a valid IBAN.',
     'FCPO_BIC_INVALID' => 'Please enter a valid BIC.',
     'FCPO_BLZ_INVALID' => 'Please enter a valid bank identification number.',

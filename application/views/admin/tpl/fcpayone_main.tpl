@@ -469,9 +469,9 @@
             </dl>
         </div>
     </div>
-    
+
     <div class="groupExp">
-        <div[{if $oView->fcpoIsLogoAdded()}] class="exp"[{/if}]>
+        <div [{if $oView->fcpoIsLogoAdded()}] class="exp"[{/if}]>
             <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="FCPO_CONFIG_GROUP_PP_EXPRESS_LOGOS"}]</b></a>
             <dl>
                 <dt>
@@ -534,7 +534,64 @@
                     <input type="submit" class="edittext" name="addPayPalLogo" value="[{oxmultilang ident="FCPO_CONFIG_ADD_PP_EXPRESS_LOGO"}]" onClick="Javascript:document.myedit.fnc.value='save'" [{$readonly}]>
                 </dd>
                 <div class="spacer"></div>
-            </dl>    
+            </dl>
+        </div>
+    </div>
+
+    <div class="groupExp">
+        <div [{if $oView->fcpoIsLogoAdded()}] class="exp"[{/if}]>
+            <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="FCPO_CONFIG_GROUP_PAYPALV2"}]</b></a>
+            <dl>
+                <dt>
+                    <input type="hidden" name="confbools[blFCPOPayPalV2BNPL]" value="false">
+                    <input type="checkbox" name="confbools[blFCPOPayPalV2BNPL]" value="true" [{if ($confbools.blFCPOPayPalV2BNPL)}]checked[{/if}]>
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_PAYPALV2_BNPL"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+
+            <dl>
+                <dt>
+                    <input type="text" class="txt" name="confstrs[blFCPOPayPalV2MerchantID]" value="[{$confstrs.blFCPOPayPalV2MerchantID}]" [{$readonly}]>
+                    [{oxinputhelp ident="FCPO_HELP_PAYPALV2_MERCHANT_ID"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_PAYPALV2_MERCHANT_ID"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+
+            <dl>
+                <dt>
+                    <select name="confstrs[blFCPOPayPalV2ButtonColor]">
+                        <option value="gold" [{if $confstrs.blFCPOPayPalV2ButtonColor == "gold"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_PAYPALV2_BUTTON_GOLD"}]</option>
+                        <option value="blue" [{if $confstrs.blFCPOPayPalV2ButtonColor == "blue"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_PAYPALV2_BUTTON_BLUE"}]</option>
+                        <option value="silver" [{if $confstrs.blFCPOPayPalV2ButtonColor == "silver"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_PAYPALV2_BUTTON_SILVER"}]</option>
+                        <option value="white" [{if $confstrs.blFCPOPayPalV2ButtonColor == "white"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_PAYPALV2_BUTTON_WHITE"}]</option>
+                        <option value="black" [{if $confstrs.blFCPOPayPalV2ButtonColor == "black"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_PAYPALV2_BUTTON_BLACK"}]</option>
+                    </select>
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_PAYPALV2_BUTTON_COLOR"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+
+            <dl>
+                <dt>
+                    <select name="confstrs[blFCPOPayPalV2ButtonShape]">
+                        <option value="rect" [{if $confstrs.blFCPOPayPalV2ButtonShape == "rect"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_PAYPALV2_BUTTON_RECT"}]</option>
+                        <option value="pill" [{if $confstrs.blFCPOPayPalV2ButtonShape == "pill"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_PAYPALV2_BUTTON_PILL"}]</option>
+                        <option value="sharp" [{if $confstrs.blFCPOPayPalV2ButtonShape == "sharp"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_PAYPALV2_BUTTON_SHARP"}]</option>
+                    </select>
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_PAYPALV2_BUTTON_SHAPE"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
         </div>
     </div>
                 

@@ -98,10 +98,16 @@ $aModule = array(
         'fcpoparamsparser'                  => 'fc/fcpayone/lib/fcpoparamsparser.php',
         // core
         'fcpayone_events'                   => 'fc/fcpayone/core/fcpayone_events.php',
+        // helpers
+        'fcpobasehelper'                    => 'fc/fcpayone/application/helper/fcpobasehelper.php',
+        'fcpopaymenthelper'                 => 'fc/fcpayone/application/helper/fcpopaymenthelper.php',
+        'fcpopaypalhelper'                  => 'fc/fcpayone/application/helper/fcpopaypalhelper.php',
+        'fcporedirecthelper'                => 'fc/fcpayone/application/helper/fcporedirecthelper.php',
     ),
     'templates' => array(
         // frontend
         'fcpayoneiframe.tpl'                => 'fc/fcpayone/application/views/frontend/tpl/fcpayoneiframe.tpl',
+        'fcpo_paypal_express_v2.tpl'        => 'fc/fcpayone/application/views/frontend/tpl/fcpo_paypal_express_v2.tpl',
         // admin
         'fcpayone_popup_main.tpl'           => 'fc/fcpayone/application/views/admin/tpl/popups/fcpayone_popup_main.tpl',
         'fcpayone.tpl'                      => 'fc/fcpayone/application/views/admin/tpl/fcpayone.tpl',

@@ -1246,30 +1246,26 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      */
     public function isDetailedProductInfoNeeded() 
     {
-        $blForcedByPaymentMethod = in_array(
-            $this->oxorder__oxpaymenttype->value,
-            array(
-                'fcpobillsafe',
-                'fcpoklarna',
-                'fcpoklarna_invoice',
-                'fcpoklarna_installments',
-                'fcpoklarna_directdebit',
-                'fcpo_secinvoice',
-                'fcporp_bill',
-                'fcporp_debitnote',
-                'fcporp_installment',
-                'fcpopl_secinvoice',
-                'fcpopl_secinstallment',
-                'fcpopl_secdebitnote',
-            )
-        );
-
-        if ($blForcedByPaymentMethod) return true;
-
-        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
-        $blSendArticleList = $oConfig->getConfigParam('blFCPOSendArticlelist');
-
-        return $blSendArticleList;
+        if ((bool)$this->_oFcpoHelper->fcpoGetConfig()->getConfigParam('blFCPOSendArticlelist') === true ||
+            in_array($this->oxorder__oxpaymenttype->value, [
+            'fcpobillsafe',
+            'fcpoklarna',
+            'fcpoklarna_invoice',
+            'fcpoklarna_installments',
+            'fcpoklarna_directdebit',
+            'fcpo_secinvoice',
+            'fcporp_bill',
+            'fcporp_debitnote',
+            'fcporp_installment',
+            'fcpopl_secinvoice',
+            'fcpopl_secinstallment',
+            'fcpopl_secdebitnote',
+            'fcpopl_secdebitnote',
+            fcpopaypalhelper::PPE_V2_EXPRESS,
+        ])) {
+            return true;
+        }
+        return false;
     }
 
     public function isCancellationReasonNeeded()
@@ -1667,7 +1663,12 @@ class fcPayOneOrder extends fcPayOneOrder_parent
     public function fcIsPayPalOrder() 
     {
         $blReturn = false;
-        if ($this->oxorder__oxpaymenttype->value == 'fcpopaypal' || $this->oxorder__oxpaymenttype->value == 'fcpopaypal_express') {
+        if (in_array($this->oxorder__oxpaymenttype->value, [
+            'fcpopaypal',
+            'fcpopaypalv2',
+            fcpopaypalhelper::PPE_EXPRESS,
+            fcpopaypalhelper::PPE_V2_EXPRESS,
+        ])) {
             $blReturn = true;
         }
         return $blReturn;

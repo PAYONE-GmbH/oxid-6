@@ -487,6 +487,8 @@ class fcpoconfigexport extends oxBase
             'fcpoinvoice' => 'rec',
             'fcpopaypal' => 'wlt',
             'fcpopaypal_express' => 'wlt',
+            'fcpopaypalv2' => 'wlt',
+            'fcpopaypalv2_express' => 'wlt',
             'fcpoklarna' => 'fnc',
             'fcpoklarna_invoice' => 'fnc',
             'fcpoklarna_directdebit' => 'fnc',
@@ -545,6 +547,8 @@ class fcpoconfigexport extends oxBase
             'fcpoinvoice' => 'REC', // has no subtype use clearingtype instead
             'fcpopaypal' => 'PPE',
             'fcpopaypal_express' => 'PPE',
+            'fcpopaypalv2' => 'PAL',
+            'fcpopaypalv2_express' => 'PAL',
             'fcpoklarna_invoice' => 'KIV',
             'fcpoklarna' => 'KLV',
             'fcpoklarna_directdebit' => 'KDD',

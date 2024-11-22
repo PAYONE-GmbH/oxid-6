@@ -15,6 +15,7 @@
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">../application/models</directory>
+            <directory suffix=".php">../application/helper</directory>
             <directory suffix=".php">../application/controllers</directory>
             <directory suffix=".php">../extend</directory>
             <exclude>

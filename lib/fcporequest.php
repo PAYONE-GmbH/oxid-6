@@ -956,8 +956,6 @@ class fcpoRequest extends oxSuperCfg
 
     }
 
-    # protected function addInvoicePosition($sId, $dPrice, $sItemType, $iAmount, $sDesc, $dVat, $sCategoryUrl = false)
-
     protected function addInvoicePosition($iIndex, $sId, $dPrice, $sItemType, $dItemAmount, $sDesc, $dVat)
     {
         $this->addParameter('id[' . $iIndex . ']', $sId);
@@ -1413,12 +1411,8 @@ class fcpoRequest extends oxSuperCfg
 
     /**
      * Adding products from basket session into call
-     * Adding products from basket session into call
      *
-     *
-     * @param void
      * @param string $sDeliverySetId
-     * @return void
      * @return object
      */
     protected function _fcpoAddBasketItemsFromSession($sDeliverySetId = false)
@@ -1541,7 +1535,7 @@ class fcpoRequest extends oxSuperCfg
             $dBruttoPricePosSum = $oPrice->getBruttoPrice();
             $dAmount = $mValue->getAmount();
             $dBruttoPrice = round($dBruttoPricePosSum/$dAmount, 2);
-        } else if (is_float($mValue)) {
+        } else if (is_numeric($mValue)) {
             $dBruttoPrice = round($mValue, 2);
         }
 
@@ -2397,7 +2391,11 @@ class fcpoRequest extends oxSuperCfg
             $this->_fcpoAddBasketItemsFromSession();
         }
 
-        $this->_addRedirectUrls('basket', false, 'fcpoHandlePayPalExpress');
+        $sRedirectFuntion = 'fcpoHandlePayPalExpress';
+        if ($sPaymentType == fcpopaypalhelper::PPE_V2_EXPRESS) {
+            $sRedirectFuntion = 'fcpoHandlePayPalExpressV2';
+        }
+        $this->_addRedirectUrls('basket', false, $sRedirectFuntion);
 
         return $this->send();
     }

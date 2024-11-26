@@ -17,8 +17,9 @@
  * @copyright (C) Payone GmbH
  * @version   OXID eShop CE
  */
- 
- 
+
+use OxidEsales\Eshop\Core\UtilsObject;
+
 class Unit_fcPayOne_Extend_Core_fcPayOneViewConf extends OxidTestCase
 {
 
@@ -207,16 +208,18 @@ class Unit_fcPayOne_Extend_Core_fcPayOneViewConf extends OxidTestCase
      * @throws exception
      */
     public function test_fcpoCanDisplayAmazonPayButton_Coverage() {
+        fcpopaymenthelper::destroyInstance();
+
+        $oPaymentHelper = $this->getMockBuilder(fcpopaymenthelper::class)->disableOriginalConstructor()->getMock();
+        $oPaymentHelper->method('isPaymentMethodActive')->willReturn(true);
+
+        UtilsObject::setClassInstance(fcpopaymenthelper::class, $oPaymentHelper);
+
         $oTestObject = oxNew('fcPayOneViewConf');
-        $oMockPayment = $this->getMock('oxPayment', array('load'));
-        $oMockPayment->expects($this->any())->method('load')->will($this->returnValue(true));
-        $oMockPayment->oxpayments__oxactive = new oxField('1');
-
-        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
-        $oHelper->expects($this->any())->method('getFactoryObject')->will($this->returnValue($oMockPayment));
-        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
-
         $this->assertEquals(true, $oTestObject->fcpoCanDisplayAmazonPayButton());
+
+        UtilsObject::resetClassInstances();
+        fcpopaymenthelper::destroyInstance();
     }
 
     /**
@@ -227,18 +230,21 @@ class Unit_fcPayOne_Extend_Core_fcPayOneViewConf extends OxidTestCase
      * @throws exception
      */
     public function test_fcpoGetAmazonWidgetsUrl_Coverage() {
-        $oTestObject = oxNew('fcPayOneViewConf');
-        $oMockPayment = $this->getMock('oxPayment', array('load'));
-        $oMockPayment->expects($this->any())->method('load')->will($this->returnValue(true));
-        $oMockPayment->oxpayments__fcpolivemode = new oxField('1');
+        fcpopaymenthelper::destroyInstance();
 
-        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
-        $oHelper->expects($this->any())->method('getFactoryObject')->will($this->returnValue($oMockPayment));
-        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
+        $oTestObject = oxNew('fcPayOneViewConf');
+
+        $oPaymentHelper = $this->getMockBuilder(fcpopaymenthelper::class)->disableOriginalConstructor()->getMock();
+        $oPaymentHelper->method('isLiveMode')->willReturn(true);
+
+        UtilsObject::setClassInstance(fcpopaymenthelper::class, $oPaymentHelper);
 
         $sExpect = 'https://static-eu.payments-amazon.com/OffAmazonPayments/eur/lpa/js/Widgets.js';
 
         $this->assertEquals($sExpect, $oTestObject->fcpoGetAmazonWidgetsUrl());
+
+        UtilsObject::resetClassInstances();
+        fcpopaymenthelper::destroyInstance();
     }
 
     /**
@@ -612,4 +618,111 @@ class Unit_fcPayOne_Extend_Core_fcPayOneViewConf extends OxidTestCase
         $this->assertEquals(4, $oTestObject->_fcpoGetExpectedButtonAmount());
     }
 
+    public function testFcpoCanDisplayPayPalExpressV2Button()
+    {
+        fcpopaymenthelper::destroyInstance();
+
+        $oPaymentHelper = $this->getMockBuilder(fcpopaymenthelper::class)->disableOriginalConstructor()->getMock();
+        $oPaymentHelper->method('isPaymentMethodActive')->willReturn(true);
+
+        UtilsObject::setClassInstance(fcpopaymenthelper::class, $oPaymentHelper);
+
+        $oTestObject = oxNew('fcPayOneViewConf');
+        $result = $oTestObject->fcpoCanDisplayPayPalExpressV2Button();
+
+        $this->assertTrue($result);
+
+        UtilsObject::resetClassInstances();
+        fcpopaymenthelper::destroyInstance();
+    }
+
+    public function testFcpoGetPayPalExpressV2GetButtonId()
+    {
+        fcpopaypalhelper::destroyInstance();
+
+        $expected = "fcpoPayPalExpressV2PayLaterPosi";
+
+        $oPayPalHelper = $this->getMockBuilder(fcpopaypalhelper::class)->disableOriginalConstructor()->getMock();
+        $oPayPalHelper->method('showBNPLButton')->willReturn(true);
+
+        UtilsObject::setClassInstance(fcpopaypalhelper::class, $oPayPalHelper);
+
+        $oTestObject = oxNew('fcPayOneViewConf');
+        $result = $oTestObject->fcpoGetPayPalExpressV2GetButtonId("Posi");
+
+        $this->assertEquals($expected, $result);
+
+        UtilsObject::resetClassInstances();
+        fcpopaypalhelper::destroyInstance();
+    }
+
+    public function testFcpoGetPayPalExpressV2Values()
+    {
+        fcpopaypalhelper::destroyInstance();
+
+        $expected = "stringValue";
+
+        $oPayPalHelper = $this->getMockBuilder(fcpopaypalhelper::class)->disableOriginalConstructor()->getMock();
+        $oPayPalHelper->method('getJavascriptUrl')->willReturn($expected);
+        $oPayPalHelper->method('getButtonColor')->willReturn($expected);
+        $oPayPalHelper->method('getButtonShape')->willReturn($expected);
+
+        UtilsObject::setClassInstance(fcpopaypalhelper::class, $oPayPalHelper);
+
+        $oTestObject = oxNew('fcPayOneViewConf');
+
+        $result = $oTestObject->fcpoGetPayPalExpressV2JavascriptUrl();
+        $this->assertEquals($expected, $result);
+
+        $result = $oTestObject->fcpoGetPayPalExpressButtonColor();
+        $this->assertEquals($expected, $result);
+
+        $result = $oTestObject->fcpoGetPayPalExpressButtonShape();
+        $this->assertEquals($expected, $result);
+
+        $result = $oTestObject->fcpoGetPayPalExpressV2JavascriptUrl();
+        $this->assertEquals($expected, $result);
+
+        UtilsObject::resetClassInstances();
+        fcpopaypalhelper::destroyInstance();
+    }
+
+    public function testFcpoGetPayPalExpressSuccessUrl()
+    {
+        fcporedirecthelper::destroyInstance();
+
+        $expected = "successUrl";
+
+        $oRedirectHelper = $this->getMockBuilder(fcporedirecthelper::class)->disableOriginalConstructor()->getMock();
+        $oRedirectHelper->method('getSuccessUrl')->willReturn($expected);
+
+        UtilsObject::setClassInstance(fcporedirecthelper::class, $oRedirectHelper);
+
+        $oTestObject = oxNew('fcPayOneViewConf');
+        $result = $oTestObject->fcpoGetPayPalExpressSuccessUrl();
+        $this->assertEquals($expected, $result);
+
+        UtilsObject::resetClassInstances();
+        fcporedirecthelper::destroyInstance();
+    }
+
+    public function testFcpoGetPayoneSecureEnvironment()
+    {
+        fcpopaymenthelper::destroyInstance();
+
+        $expected = 'p';
+
+        $oPaymentHelper = $this->getMockBuilder(fcpopaymenthelper::class)->disableOriginalConstructor()->getMock();
+        $oPaymentHelper->method('isLiveMode')->willReturn(true);
+
+        UtilsObject::setClassInstance(fcpopaymenthelper::class, $oPaymentHelper);
+
+        $oTestObject = oxNew('fcPayOneViewConf');
+        $result = $oTestObject->fcpoGetPayoneSecureEnvironment('test');
+
+        $this->assertEquals($expected, $result);
+
+        UtilsObject::resetClassInstances();
+        fcpopaymenthelper::destroyInstance();
+    }
 }

@@ -1576,11 +1576,11 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrder extends OxidTestCase
 
     /**
      * Testing isDetailedProductInfoNeeded for coverage
-     * 
+     *
      * @param  void
      * @return void
      */
-    public function test_isDetailedProductInfoNeeded_Coverage() 
+    public function test_isDetailedProductInfoNeeded_Coverage()
     {
         $oTestObject = oxNew('fcPayOneOrder');
         $oTestObject->oxorder__oxpaymenttype = new oxField('somePaymentNotOnExceptionList');
@@ -1596,6 +1596,30 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrder extends OxidTestCase
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
 
         $this->assertEquals(true, $oTestObject->isDetailedProductInfoNeeded());
+    }
+
+    /**
+     * Testing isDetailedProductInfoNeeded for coverage
+     *
+     * @param  void
+     * @return void
+     */
+    public function test_isDetailedProductInfoNeededFalse_Coverage()
+    {
+        $oTestObject = oxNew('fcPayOneOrder');
+        $oTestObject->oxorder__oxpaymenttype = new oxField('somePaymentNotOnExceptionList');
+
+        $oMockConfig = $this->getMock('oxConfig', array('getConfigParam'));
+        $oMockConfig
+            ->expects($this->any())
+            ->method('getConfigParam')
+            ->will($this->returnValue(false));
+
+        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
+        $oHelper->expects($this->any())->method('fcpoGetConfig')->will($this->returnValue($oMockConfig));
+        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
+
+        $this->assertEquals(false, $oTestObject->isDetailedProductInfoNeeded());
     }
 
     /**

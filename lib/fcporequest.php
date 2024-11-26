@@ -1025,7 +1025,7 @@ class fcpoRequest extends oxSuperCfg
             if ($oOrder->oxorder__oxpaycost->value != 0 && ($aPositions === false || ($blDebit === false || array_key_exists('oxpaycost', $aPositions) !== false))) {
                 $sPayDesc = $oLang->translateString('FCPO_DEDUCTION', null, false);
                 if ($oOrder->oxorder__oxpaycost->value > 0) {
-                    $sPayDesc .= $oLang->translateString('FCPO_SURCHARGE', null, false);
+                    $sPayDesc = $oLang->translateString('FCPO_SURCHARGE', null, false);
                 }
                 $sPayDesc .= ' ' . str_replace(':', '', $oLang->translateString('FCPO_PAYMENTTYPE', null, false));
 
@@ -1464,7 +1464,7 @@ class fcpoRequest extends oxSuperCfg
         if ($sPaymentCosts != 0) {
             $sPayDesc = $oLang->translateString('FCPO_DEDUCTION', null, false);
             if ($sPaymentCosts > 0) {
-                $sPayDesc .= $oLang->translateString('FCPO_SURCHARGE', null, false);
+                $sPayDesc = $oLang->translateString('FCPO_SURCHARGE', null, false);
             }
             $sPayDesc .= ' ' . str_replace(':', '', $oLang->translateString('FCPO_PAYMENTTYPE', null, false));
 

@@ -271,8 +271,8 @@ class fcpoRequest extends oxSuperCfg
 
         $blIsWalletTypePaymentWithDelAddress = (
             $oOrder->oxorder__oxpaymenttype->value == 'fcpopaydirekt' ||
-            $oOrder->fcIsPayPalOrder() === true &&
-            $this->getConfig()->getConfigParam('blFCPOPayPalDelAddress') === true
+            ($oOrder->fcIsPayPalOrder() === true && $this->getConfig()->getConfigParam('blFCPOPayPalDelAddress') === true) ||
+            ($oOrder->fcIsPayPalV2Order() === true && $this->getConfig()->getConfigParam('blFCPOPayPalV2DelAddress') === true)
         );
 
         $blIsBNPLPayment = (

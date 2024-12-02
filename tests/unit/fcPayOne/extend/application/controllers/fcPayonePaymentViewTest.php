@@ -18,6 +18,8 @@
  * @version   OXID eShop CE
  */
 
+use OxidEsales\Eshop\Core\UtilsObject;
+
 class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends OxidTestCaseCompatibilityWrapper
 {
 
@@ -3618,5 +3620,23 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
         $oExpect = $oMockUser;
 
         $this->assertEquals($oExpect, $oTestObject->_fcpoGetUserFromSession());
+    }
+
+    public function testFcpoPaymentActive()
+    {
+        fcpopaymenthelper::destroyInstance();
+
+        $oPaymentHelper = $this->getMockBuilder(fcpopaymenthelper::class)->disableOriginalConstructor()->getMock();
+        $oPaymentHelper->method('isPaymentMethodActive')->willReturn(true);
+
+        UtilsObject::setClassInstance(fcpopaymenthelper::class, $oPaymentHelper);
+
+        $oTestObject = oxNew('fcPayOnePaymentView');
+        $result = $oTestObject->fcpoPaymentActive('test');
+
+        $this->assertTrue($result);
+
+        UtilsObject::resetClassInstances();
+        fcpopaymenthelper::destroyInstance();
     }
 }

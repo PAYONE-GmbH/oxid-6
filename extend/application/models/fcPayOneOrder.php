@@ -756,6 +756,8 @@ class fcPayOneOrder extends fcPayOneOrder_parent
 
                 return self::ORDER_STATE_ORDEREXISTS;
             }
+        } elseif ( $blSaveAfterRedirect === false && $blIsRedirectionOnGoing ) {
+            $this->_oFcpoHelper->fcpoGetUtils()->redirect($this->_oFcpoHelper->fcpoGetConfig()->getShopUrl() . 'index.php?cl=payment&type=error');
         }
 
         // check if basket is still the same as it was before

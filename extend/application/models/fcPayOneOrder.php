@@ -1876,6 +1876,10 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      */
     protected function _fcpoHandleAuthorizationRedirect($aResponse, $sRefNr, $sAuthorizationType, $sMode, $blReturnRedirectUrl) 
     {
+        if ($aResponse['status'] == 'REDIRECT' && in_array($this->oxorder__oxpaymenttype->value, [fcpopaypalhelper::PPE_EXPRESS, fcpopaypalhelper::PPE_V2_EXPRESS])) {
+            $this->_oFcpoHelper->fcpoSetSessionVariable('blFcpoPayonePayPalExpressRetry', true);
+        }
+
         $this->_fcpoFlagOrderPaymentAsRedirect();
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $oUtils = $this->_oFcpoHelper->fcpoGetUtils();

@@ -130,7 +130,9 @@ class fcporedirecthelper extends fcpobasehelper
         if (empty($sDeliveryMD5) && $this->getMainHelper()->fcpoGetRequestParameter('sDeliveryAddressMD5')) {
             $sDeliveryMD5 = $this->getMainHelper()->fcpoGetRequestParameter('sDeliveryAddressMD5');
         }
-        $sAddParams .= '&sDeliveryAddressMD5=' . $sDeliveryMD5;
+        if (!empty($sDeliveryMD5)) {
+            $sAddParams .= '&sDeliveryAddressMD5='.$sDeliveryMD5;
+        }
 
         if ($this->getMainHelper()->fcpoGetRequestParameter('oxdownloadableproductsagreement')) {
             $sAddParams .= '&fcdpa=1'; // rewrite for oxdownloadableproductsagreement-param because of length-restriction

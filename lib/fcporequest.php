@@ -634,6 +634,11 @@ class fcpoRequest extends oxSuperCfg
         if ($blAddRedirectUrls === true) {
             $this->_addRedirectUrls('payment', $sRefNr);
         }
+
+        if (in_array($sPaymentId, [fcpopaypalhelper::PPE_EXPRESS, fcpopaypalhelper::PPE_V2_EXPRESS])) {
+            $this->_oFcpoHelper->fcpoSetSessionVariable('blFcpoPayonePayPalSuccessUrl', $this->getParameter('successurl'));
+        }
+
         return true;
     }
 

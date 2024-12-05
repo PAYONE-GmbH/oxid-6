@@ -538,4 +538,46 @@ class Unit_fcPayOne_Application_Models_fcpayone_ajax extends OxidTestCase
         $this->assertEquals($sExpect, $sResponse);
     }
 
+    public function testFcpoStartPayPalExpress()
+    {
+        $oTestObject = oxNew('fcpayone_ajax');
+
+        $aResponse = [
+            'status' => 'REDIRECT',
+            'workorderid' => '4711',
+            'add_paydata[orderId]' => '47110815',
+        ];
+
+        $oRequest = $this->getMockBuilder(fcpoRequest::class)->disableOriginalConstructor()->getMock();
+        $oRequest->method('sendRequestGenericPayment')->willReturn($aResponse);
+        
+        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
+        $oHelper->method('getFactoryObject')->willReturn($oRequest);
+        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
+
+        $sResult = $oTestObject->fcpoStartPayPalExpress();
+
+        $this->assertStringContainsString('47110815', $sResult);
+    }
+
+    public function testFcpoStartPayPalExpressError()
+    {
+        $oTestObject = oxNew('fcpayone_ajax');
+
+        $aResponse = [
+            'status' => 'ERROR',
+            'customermessage' => 'ERRORTEST',
+        ];
+
+        $oRequest = $this->getMockBuilder(fcpoRequest::class)->disableOriginalConstructor()->getMock();
+        $oRequest->method('sendRequestGenericPayment')->willReturn($aResponse);
+
+        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
+        $oHelper->method('getFactoryObject')->willReturn($oRequest);
+        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
+
+        $sResult = $oTestObject->fcpoStartPayPalExpress();
+
+        $this->assertStringContainsString('ERRORTEST', $sResult);
+    }
 }

@@ -543,6 +543,17 @@
             <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="FCPO_CONFIG_GROUP_PAYPALV2"}]</b></a>
             <dl>
                 <dt>
+                    <input type="hidden" name="confbools[blFCPOPayPalV2DelAddress]" value="false">
+                    <input type="checkbox" name="confbools[blFCPOPayPalV2DelAddress]" value="true" [{if $oView->isPayPalV2DelAddressActive()}]checked[{/if}]>
+                    [{oxinputhelp ident="FCPO_HELP_PAYPALV2_DELADDRESS"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_PAYPALV2_DELADDRESS"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+            <dl>
+                <dt>
                     <input type="hidden" name="confbools[blFCPOPayPalV2BNPL]" value="false">
                     <input type="checkbox" name="confbools[blFCPOPayPalV2BNPL]" value="true" [{if ($confbools.blFCPOPayPalV2BNPL)}]checked[{/if}]>
                 </dt>

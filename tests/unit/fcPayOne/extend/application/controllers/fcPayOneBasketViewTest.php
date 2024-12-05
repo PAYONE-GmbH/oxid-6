@@ -18,9 +18,11 @@
  * @copyright (C) Payone GmbH
  * @version   OXID eShop CE
  */
+
+use OxidEsales\Eshop\Core\UtilsObject;
+
 class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneBasketView extends OxidTestCase
 {
-
     /**
      * Call protected/private method of a class.
      *
@@ -139,16 +141,18 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneBasketView extends Ox
      */
     public function test__fcpoIsPayPalExpressActive_Coverage() 
     {
+        fcpopaymenthelper::destroyInstance();
+
+        $oPaymentHelper = $this->getMockBuilder(fcpopaymenthelper::class)->disableOriginalConstructor()->getMock();
+        $oPaymentHelper->method('isPaymentMethodActive')->willReturn(true);
+
+        UtilsObject::setClassInstance(fcpopaymenthelper::class, $oPaymentHelper);
+
         $oTestObject = oxNew('fcPayOneBasketView');
-
-        $oMockBasket = $this->getMock('oxBasket', array('fcpoIsPayPalExpressActive'));
-        $oMockBasket->expects($this->any())->method('fcpoIsPayPalExpressActive')->will($this->returnValue(true));
-
-        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
-        $oHelper->expects($this->any())->method('getFactoryObject')->will($this->returnValue($oMockBasket));
-        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
-
         $this->assertEquals(true, $oTestObject->_fcpoIsPayPalExpressActive());
+
+        UtilsObject::resetClassInstances();
+        fcpopaymenthelper::destroyInstance();
     }
 
     /**
@@ -177,8 +181,10 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneBasketView extends Ox
      */
     public function test__fcpoGetPayPalExpressPic_Coverage() 
     {
-        $oMockBasket = $this->getMock('oxBasket', array('fcpoGetPayPalExpressPic'));
-        $oMockBasket->expects($this->any())->method('fcpoGetPayPalExpressPic')->will($this->returnValue('somePic.jpg'));
+        \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute('DELETE FROM fcpopayoneexpresslogos WHERE 1');
+
+        $expected = 'somePic.jpg';
+        \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute('INSERT INTO fcpopayoneexpresslogos (oxid, fcpo_active, fcpo_langid, fcpo_logo, fcpo_default) VALUES ("unitTestLogo", 1, 0, "'.$expected.'", "1")');
 
         $oMockConfig = $this->getMock('oxConfig', array('getCurrentShopUrl'));
         $oMockConfig->expects($this->any())->method('getCurrentShopUrl')->will($this->returnValue('http://someurl.com/'));
@@ -187,16 +193,17 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneBasketView extends Ox
         $oTestObject->expects($this->any())->method('getConfig')->will($this->returnValue($oMockConfig));
 
         $oHelper = $this->getMock('fcpohelper', array('getFactoryObject', 'fcpoFileExists'));
-        $oHelper->expects($this->any())->method('getFactoryObject')->will($this->returnValue($oMockBasket));
         $oHelper->expects($this->any())->method('fcpoFileExists')->will($this->returnValue(true));
 
         $this->invokeSetAttribute($oTestObject, '_sPayPalExpressLogoPath', 'somePath/');
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
 
         $sResponse = $this->invokeMethod($oTestObject, '_fcpoGetPayPalExpressPic');
-        $sExpect = 'http://someurl.com/somePath/somePic.jpg';
+        $sExpect = 'http://someurl.com/somePath/'.$expected;
 
         $this->assertEquals($sExpect, $sResponse);
+
+        \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute('DELETE FROM fcpopayoneexpresslogos WHERE oxid = "unitTestLogo"');
     }
 
     /**

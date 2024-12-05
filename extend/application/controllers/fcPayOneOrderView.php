@@ -524,8 +524,9 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
     {
         if ($this->_oFcpoHelper->fcpoGetSessionVariable('blFcpoPayonePayPalExpressRetry') === true && !empty($this->_oFcpoHelper->fcpoGetSessionVariable('blFcpoPayonePayPalSuccessUrl'))) {
             $this->_oFcpoHelper->fcpoDeleteSessionVariable('blFcpoPayonePayPalExpressRetry');
+            $sRedirectUrl = $this->_oFcpoHelper->fcpoGetSessionVariable('blFcpoPayonePayPalSuccessUrl');
             $this->_oFcpoHelper->fcpoDeleteSessionVariable('blFcpoPayonePayPalSuccessUrl');
-            $this->_oFcpoHelper->fcpoGetUtils()->redirect($this->_oFcpoHelper->fcpoGetSessionVariable('blFcpoPayonePayPalSuccessUrl'), false);
+            $this->_oFcpoHelper->fcpoGetUtils()->redirect($sRedirectUrl, false);
         }
 
         $sWorkorderId = $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoWorkorderId');

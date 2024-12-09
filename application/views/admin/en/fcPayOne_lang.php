@@ -335,7 +335,9 @@ $aLang = array(
     'FCPO_EXPORT_CONFIG' => "Export configuration",
 
     'FCPO_PAYPAL_DELADDRESS'         => 'Transmit the billing-address as delivery-address if delivery-address is missing.',
+    'FCPO_PAYPALV2_DELADDRESS'       => 'Transmit the billing-address as delivery-address if delivery-address is missing.',
     'FCPO_HELP_PAYPAL_DELADDRESS'    => 'This is used for the PayPal seller protection.',
+    'FCPO_HELP_PAYPALV2_DELADDRESS'  => 'This is used for the PayPal seller protection.',
     'FCPO_PAYPAL_LOGOS'              => 'You can upload the PayPal Express logos here.',
     'FCPO_PAYPAL_LOGOS_ACTIVE'       => 'active',
     'FCPO_PAYPAL_LOGOS_LANG'         => 'language',

@@ -271,8 +271,8 @@ class fcpoRequest extends oxSuperCfg
 
         $blIsWalletTypePaymentWithDelAddress = (
             $oOrder->oxorder__oxpaymenttype->value == 'fcpopaydirekt' ||
-            $oOrder->fcIsPayPalOrder() === true &&
-            $this->getConfig()->getConfigParam('blFCPOPayPalDelAddress') === true
+            ($oOrder->fcIsPayPalOrder() === true && $this->getConfig()->getConfigParam('blFCPOPayPalDelAddress') === true) ||
+            ($oOrder->fcIsPayPalV2Order() === true && $this->getConfig()->getConfigParam('blFCPOPayPalV2DelAddress') === true)
         );
 
         $blIsBNPLPayment = (
@@ -633,6 +633,10 @@ class fcpoRequest extends oxSuperCfg
 
         if ($blAddRedirectUrls === true) {
             $this->_addRedirectUrls('payment', $sRefNr);
+
+            if (in_array($sPaymentId, [fcpopaypalhelper::PPE_EXPRESS, fcpopaypalhelper::PPE_V2_EXPRESS]) && !empty($this->getParameter('successurl'))) {
+                $this->_oFcpoHelper->fcpoSetSessionVariable('blFcpoPayonePayPalSuccessUrl', $this->getParameter('successurl'));
+            }
         }
         return true;
     }
@@ -956,8 +960,6 @@ class fcpoRequest extends oxSuperCfg
 
     }
 
-    # protected function addInvoicePosition($sId, $dPrice, $sItemType, $iAmount, $sDesc, $dVat, $sCategoryUrl = false)
-
     protected function addInvoicePosition($iIndex, $sId, $dPrice, $sItemType, $dItemAmount, $sDesc, $dVat)
     {
         $this->addParameter('id[' . $iIndex . ']', $sId);
@@ -1027,7 +1029,7 @@ class fcpoRequest extends oxSuperCfg
             if ($oOrder->oxorder__oxpaycost->value != 0 && ($aPositions === false || ($blDebit === false || array_key_exists('oxpaycost', $aPositions) !== false))) {
                 $sPayDesc = $oLang->translateString('FCPO_DEDUCTION', null, false);
                 if ($oOrder->oxorder__oxpaycost->value > 0) {
-                    $sPayDesc .= $oLang->translateString('FCPO_SURCHARGE', null, false);
+                    $sPayDesc = $oLang->translateString('FCPO_SURCHARGE', null, false);
                 }
                 $sPayDesc .= ' ' . str_replace(':', '', $oLang->translateString('FCPO_PAYMENTTYPE', null, false));
 
@@ -1413,12 +1415,8 @@ class fcpoRequest extends oxSuperCfg
 
     /**
      * Adding products from basket session into call
-     * Adding products from basket session into call
      *
-     *
-     * @param void
      * @param string $sDeliverySetId
-     * @return void
      * @return object
      */
     protected function _fcpoAddBasketItemsFromSession($sDeliverySetId = false)
@@ -1470,7 +1468,7 @@ class fcpoRequest extends oxSuperCfg
         if ($sPaymentCosts != 0) {
             $sPayDesc = $oLang->translateString('FCPO_DEDUCTION', null, false);
             if ($sPaymentCosts > 0) {
-                $sPayDesc .= $oLang->translateString('FCPO_SURCHARGE', null, false);
+                $sPayDesc = $oLang->translateString('FCPO_SURCHARGE', null, false);
             }
             $sPayDesc .= ' ' . str_replace(':', '', $oLang->translateString('FCPO_PAYMENTTYPE', null, false));
 
@@ -1541,7 +1539,7 @@ class fcpoRequest extends oxSuperCfg
             $dBruttoPricePosSum = $oPrice->getBruttoPrice();
             $dAmount = $mValue->getAmount();
             $dBruttoPrice = round($dBruttoPricePosSum/$dAmount, 2);
-        } else if (is_float($mValue)) {
+        } else if (is_numeric($mValue)) {
             $dBruttoPrice = round($mValue, 2);
         }
 
@@ -2397,7 +2395,11 @@ class fcpoRequest extends oxSuperCfg
             $this->_fcpoAddBasketItemsFromSession();
         }
 
-        $this->_addRedirectUrls('basket', false, 'fcpoHandlePayPalExpress');
+        $sRedirectFuntion = 'fcpoHandlePayPalExpress';
+        if ($sPaymentType == fcpopaypalhelper::PPE_V2_EXPRESS) {
+            $sRedirectFuntion = 'fcpoHandlePayPalExpressV2';
+        }
+        $this->_addRedirectUrls('basket', false, $sRedirectFuntion);
 
         return $this->send();
     }

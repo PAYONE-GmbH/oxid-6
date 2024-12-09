@@ -100,29 +100,29 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
         
         $this->assertEquals($mExpect, $mResponse);
     }
-    
+
     /**
      * Testing fcpoHandlePayPalExpress for PositiveCall
-     *  
+     *
      * @param  void
      * @return void
      */
-    public function test_fcpoHandlePayPalExpress_PositiveCall() 
+    public function test_fcpoHandlePayPalExpress_PositiveCall()
     {
         $oTestObject = $this->getMock('fcPayOneOrderView', array('_handlePayPalExpressCall'));
         $oTestObject->expects($this->any())->method('_handlePayPalExpressCall')->will($this->returnValue(true));
-        
+
         $oMockUtilsView = $this->getMock('oxUtilsView', array('addErrorToDisplay'));
         $oMockUtilsView->expects($this->any())->method('addErrorToDisplay')->will($this->returnValue(null));
-        
+
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
         $oHelper->expects($this->any())->method('fcpoGetUtilsView')->will($this->returnValue($oMockUtilsView));
-        
+
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
-        
+
         $this->assertEquals(null, $oTestObject->fcpoHandlePayPalExpress());
+        $this->assertEquals(null, $oTestObject->fcpoHandlePayPalExpressV2());
     }
-    
     
     /**
      * Testing fcpoHandlePayPalExpress for Exception
@@ -148,6 +148,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
         $sExpect = 'basket';
         
         $this->assertEquals($sExpect, $oTestObject->fcpoHandlePayPalExpress());
+        $this->assertEquals($sExpect, $oTestObject->fcpoHandlePayPalExpressV2());
     }
 
     /**
@@ -770,7 +771,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
 
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
         
-        $mResponse = $mExpect = $this->invokeMethod($oTestObject, '_handlePayPalExpressCall');
+        $mResponse = $mExpect = $this->invokeMethod($oTestObject, '_handlePayPalExpressCall', [fcpopaypalhelper::PPE_EXPRESS]);
         
         $this->assertEquals($mExpect, $mResponse);
     }

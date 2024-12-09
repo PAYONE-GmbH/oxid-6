@@ -1155,4 +1155,13 @@ class fcpayone_main extends fcpayone_admindetails
         }
     }
 
+    public function isPayPalV2DelAddressActive()
+    {
+        $aConfBools = $this->fcpoGetConfBools();
+        $sConfigOptionName = "blFCPOPayPalV2DelAddress";
+        if (!isset($aConfBools[$sConfigOptionName]) || $aConfBools[$sConfigOptionName] === true) {
+            return true;
+        }
+        return false;
+    }
 }

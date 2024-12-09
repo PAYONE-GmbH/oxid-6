@@ -270,7 +270,9 @@ $aLang = array(
     'FCPO_EXPORT_CONFIG' => "Konfiguration exportieren",
 
     'FCPO_PAYPAL_DELADDRESS'         => 'Rechnungsadresse bei fehlender Lieferadresse als Lieferadresse &uuml;bergeben.',
+    'FCPO_PAYPALV2_DELADDRESS'       => 'Rechnungsadresse bei fehlender Lieferadresse als Lieferadresse &uuml;bergeben.',
     'FCPO_HELP_PAYPAL_DELADDRESS'    => 'Wird f&uuml;r den PayPal Verk&auml;uferschutz ben&ouml;tigt.',
+    'FCPO_HELP_PAYPALV2_DELADDRESS'  => 'Wird f&uuml;r den PayPal Verk&auml;uferschutz ben&ouml;tigt.',
     'FCPO_PAYPAL_LOGOS'              => 'Hier k&ouml;nnen Sie die verwendeten PayPal Express Logos hinterlegen.',
     'FCPO_PAYPAL_LOGOS_ACTIVE'       => 'Aktiv',
     'FCPO_PAYPAL_LOGOS_LANG'         => 'Sprache',

@@ -712,24 +712,22 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
 
     /**
      * Splits street and number from concatenated combofield
-     * 
+     *
      * @param  string $sPayPalStreet
      * @return array
      */
-    protected function _fcpoSplitAddress($sPayPalStreet) 
+    protected function _fcpoSplitAddress($sStreetAndStreetNr)
     {
-        $sStreetNr = '';
-        if(preg_match('/\s\d/', $sPayPalStreet, $match)) {
-            $iEndOfStreetPos = strpos($sPayPalStreet, $match[0]);
-            $iStartOfStreetNrPos = $iEndOfStreetPos +1; // skip space between street and street nr
-            $sStreetNr = substr($sPayPalStreet, $iStartOfStreetNrPos);
-            $sPayPalStreet = substr($sPayPalStreet, 0, $iEndOfStreetPos);
+        preg_match('/^([^\d]*[^\d\s]) *(\d.*)$/', $sStreetAndStreetNr, $matches);
+        $sStreet = $sStreetAndStreetNr; // fallback for when splitting doesnt deliver results
+        $sStreetNr = "";
+        if (is_array($matches) && count($matches) >= 2) {
+            $sStreet = $matches[1];
+            $sStreetNr = $matches[2];
         }
-
-        return array($sPayPalStreet, $sStreetNr);
+        return array($sStreet, $sStreetNr);
     }
 
-    
     /**
      * Searches an existing addressid by extracting response of payone
      * 

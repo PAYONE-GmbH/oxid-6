@@ -1,3 +1,39 @@
+==1.11.0==
+
+New Features
+ 
+* New payment method: PayPal v2
+* New payment method: PayPal Express v2
+ 
+Bugfix
+ 
+* Fixed translations
+
+Maintenance
+
+* Add session variable and safety check for browser history
+* Remove iDEAL banklist in frontend
+* tested with 6.5.4
+
+
+==1.10.0==
+
+New Feature
+ 
+* Implement B2B payments for BNPL Secured Invoice
+ 
+Bugfix
+ 
+* Fixed birthday validation for secure invoice
+ 
+Maintenance
+ 
+* Performance optimization
+* Update iDEAL bank list
+* tested with
+Version 6.5
+PHP 8.1
+
 ==1.9.0==
 
 New Features

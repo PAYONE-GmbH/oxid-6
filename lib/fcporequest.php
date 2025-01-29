@@ -1943,9 +1943,9 @@ class fcpoRequest extends oxSuperCfg
     protected function _fcpoGetPayolutionPaymentTypeById($sPaymentId)
     {
         $aPayolutionPaymentMap = array(
-            'fcpopo_bill' => 'Payolution-Invoicing',
-            'fcpopo_debitnote' => 'Payolution-Debit',
-            'fcpopo_installment' => 'Payolution-Installment',
+            'fcpopo_bill' => 'Unzer-Invoicing',
+            'fcpopo_debitnote' => 'Unzer-Debit',
+            'fcpopo_installment' => 'Unzer-Installment',
         );
 
         if (isset($aPayolutionPaymentMap[$sPaymentId])) {

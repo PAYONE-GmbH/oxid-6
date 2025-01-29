@@ -109,7 +109,7 @@ class fcpopopup_content extends oxBase
             $mInfo = curl_getinfo($resCurl);
             if ($mInfo['http_code'] == '401') {
                 $blCurlError = true;
-                $sContent = $this->_fcpoReturnErrorMessage('Authentication failure! Please check your credentials in payolution settings.');
+                $sContent = $this->_fcpoReturnErrorMessage('Authentication failure! Please check your credentials in Unzer settings.');
             }
             
         } catch (oxException $oEx) {

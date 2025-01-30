@@ -39,9 +39,8 @@ More information can be found [on FATCHIP site](https://www.fatchip.de/Plugins/O
 
 ## Contact
 PAYONE GmbH<br>
-Office Kiel<br>
-Fraunhoferstraße 2-4<br>
-24118 Kiel, Germany<br>
+Lyoner Straße 9<br>
+60528 Frankfurt am Main, Germany<br>
 Phone +49 431 25968-400<br>
 sales@payone.com<br>
 tech.support@payone.com<br>

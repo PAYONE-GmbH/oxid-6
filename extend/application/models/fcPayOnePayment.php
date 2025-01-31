@@ -54,7 +54,6 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         'fcpoklarna_invoice',
         'fcpoklarna_installments',
         'fcpoklarna_directdebit',
-        'fcpobarzahlen',
         'fcpopaydirekt',
         'fcpopo_bill',
         'fcpopo_debitnote',
@@ -72,7 +71,6 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         'fcpo_bancontact',
         'fcporp_debitnote',
         'fcpo_alipay',
-        'fcpo_trustly',
         'fcpo_wechatpay',
         'fcpo_apple_pay',
         'fcporp_installment',
@@ -116,7 +114,6 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         'fcpo_ideal',
         'fcpo_p24',
         'fcpo_bancontact',
-        'fcpo_trustly',
     );
     
     protected static $_aIframePaymentTypes = array(
@@ -125,7 +122,6 @@ class fcPayOnePayment extends fcPayOnePayment_parent
     );
     
     protected $_aPaymentsNoAuthorize = array(
-        'fcpobarzahlen',
         'fcpopo_bill',
         'fcpopo_debitnote',
         'fcporp_bill',

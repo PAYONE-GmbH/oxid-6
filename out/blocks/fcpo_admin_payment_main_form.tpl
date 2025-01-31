@@ -4,9 +4,6 @@
         <td class="edittext" colspan="2">
             <img src="[{$oViewConf->fcpoGetAdminModuleImgUrl()}]logo_payone_new.gif" alt="PAYONE"><br><br>
             [{oxmultilang ident="FC_IS_PAYONE"}]
-            [{if $edit->oxpayments__oxid->value == 'fcpobarzahlen'}]
-                    <input type="hidden" name="editval[oxpayments__fcpoauthmode]" value="preauthorization">
-            [{/if}]
         </td>
     </tr>
     <tr>
@@ -51,18 +48,6 @@
             <td>
                 <input type=hidden name="confbools[blFCPOSofoShowIban]" value="0">
                 <input type="checkbox" name="confbools[blFCPOSofoShowIban]" value="1"  [{if ($confbools.blFCPOSofoShowIban)}]checked[{/if}]>
-            </td>
-        </tr>
-    [{/if}]
-    [{if $edit->getId() == 'fcpo_trustly'}]
-        [{assign var="confbools" value=$oView->fcpoGetConfBools()}]
-        <tr>
-            <td class="edittext" width="70">
-                [{oxmultilang ident="FCPO_SHOW_IBAN_FIELDS"}]
-            </td>
-            <td>
-                <input type=hidden name="confbools[blFCPOTrustlyShowIban]" value="0">
-                <input type="checkbox" name="confbools[blFCPOTrustlyShowIban]" value="1"  [{if ($confbools.blFCPOTrustlyShowIban)}]checked[{/if}]>
             </td>
         </tr>
     [{/if}]

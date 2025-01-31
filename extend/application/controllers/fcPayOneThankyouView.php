@@ -42,13 +42,6 @@ class fcPayOneThankyouView extends fcPayOneThankyouView_parent
      * @var string
      */
     protected $_sMandatePdfUrl = null;
-    
-    /**
-     * Html for Barzahlen
-     *
-     * @var string
-     */
-    protected $_sBarzahlenHtml = null;
 
     /**
      * Flag indicates if current order is/was of type amazon
@@ -217,24 +210,6 @@ class fcPayOneThankyouView extends fcPayOneThankyouView_parent
         }
 
         return $blReturn;
-    }
-
-    
-    /**
-     * Returns the html of barzahlen instructions
-     * 
-     * @param  void
-     * @return mixed
-     */
-    public function fcpoGetBarzahlenHtml() 
-    {
-        if ($this->_sBarzahlenHtml === null ) {
-            $this->_sBarzahlenHtml = $this->_oFcpoHelper->fcpoGetSessionVariable('sFcpoBarzahlenHtml');
-            // delete this from session after we have the result for one time displaying
-            $this->_oFcpoHelper->fcpoDeleteSessionVariable('sFcpoBarzahlenHtml');
-        }
-        
-        return $this->_sBarzahlenHtml;
     }
 
     /**

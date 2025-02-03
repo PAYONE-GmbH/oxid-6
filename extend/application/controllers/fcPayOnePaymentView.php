@@ -579,7 +579,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
             ),
             'sb' => array(
                 $this->getSofortUeberweisung(),
-                $this->getGiropay(),
                 $this->getPostFinanceEFinance(),
                 $this->getPostFinanceCard(),
                 $this->getIdeal(),
@@ -661,16 +660,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     public function getSofortUeberweisung() 
     {
         return ($this->getConfigParam('blFCPOSofoActivated') && $this->isPaymentMethodAvailableToUser('PNT', 'sb'));
-    }
-
-    /**
-     * Check if sub payment method Giropay is available to the user
-     * 
-     * @return bool
-     */
-    public function getGiropay() 
-    {
-        return ($this->getConfigParam('blFCPOgiroActivated') && $this->isPaymentMethodAvailableToUser('GPY', 'sb'));
     }
 
     /**
@@ -846,9 +835,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
 
         if ($this->getSofortUeberweisung()) {
             $aPaymentMetaData[] = $this->_fcpoGetOnlinePaymentData('PNT');
-        }
-        if ($this->getGiropay()) {
-            $aPaymentMetaData[] = $this->_fcpoGetOnlinePaymentData('GPY');
         }
         if ($this->getEPS()) {
             $aPaymentMetaData[] = $this->_fcpoGetOnlinePaymentData('EPS');
@@ -1392,7 +1378,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
 
         $aCaptions = array(
             'PNT' => 'SOFORT &Uuml;berweisung',
-            'GPY' => 'giropay',
             'EPS' => 'eps - Online-&Uuml;berweisung',
             'PFF' => 'PostFinance E-Finance',
             'PFC' => 'PostFinance Card',

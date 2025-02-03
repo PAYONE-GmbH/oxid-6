@@ -499,10 +499,6 @@ class fcpoRequest extends oxSuperCfg
                 $this->addParametersOnlineSofort($oOrder, $aDynvalue);
                 $blAddRedirectUrls = true;
                 break;
-            case 'fcpo_giropay':
-                $this->addParametersOnlineGiropay($aDynvalue);
-                $blAddRedirectUrls = true;
-                break;
             case 'fcpo_eps':
                 $this->addParametersOnlineEps($aDynvalue);
                 $blAddRedirectUrls = true;
@@ -812,21 +808,6 @@ class fcpoRequest extends oxSuperCfg
         $oBillCountry = oxNew('oxcountry');
         $oBillCountry->load($oOrder->oxorder__oxbillcountryid->value);
         $this->addParameter('bankcountry', $oBillCountry->oxcountry__oxisoalpha2->value);
-    }
-
-    /**
-     * Add parameters needed for giropay
-     *
-     * @param $aDynvalue
-     * @return void
-     */
-    protected function addParametersOnlineGiropay($aDynvalue)
-    {
-        $this->addParameter('clearingtype', 'sb'); //Payment method
-        $this->addParameter('onlinebanktransfertype', 'GPY');
-        $this->addParameter('bankcountry', 'DE');
-        $this->addParameter('iban', $aDynvalue['fcpo_ou_iban_gpy']);
-        $this->addParameter('bic', $aDynvalue['fcpo_ou_bic_gpy']);
     }
 
     /**

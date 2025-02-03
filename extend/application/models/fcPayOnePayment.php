@@ -62,7 +62,6 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         'fcpoamazonpay',
         'fcpo_secinvoice',
         'fcpo_sofort',
-        'fcpo_giropay',
         'fcpo_eps',
         'fcpo_pf_finance',
         'fcpo_pf_card',
@@ -90,7 +89,6 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         'fcpoklarna_directdebit',
         'fcpopaydirekt',
         'fcpo_sofort',
-        'fcpo_giropay',
         'fcpo_eps',
         'fcpo_pf_finance',
         'fcpo_pf_card',
@@ -107,7 +105,6 @@ class fcPayOnePayment extends fcPayOnePayment_parent
      */
     protected static $_aOnlinePayments = array(
         'fcpo_sofort',
-        'fcpo_giropay',
         'fcpo_eps',
         'fcpo_pf_finance',
         'fcpo_pf_card',

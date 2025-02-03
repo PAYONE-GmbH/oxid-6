@@ -48,7 +48,9 @@ class fcpayone_events
         'fcpoonlineueberweisung',
         'fcpoklarna',
         'fcpopaydirekt_express',
-        'fcpo_giropay'
+        'fcpo_giropay',
+        'fcpo_trustly',
+        'fcpobarzahlen',
     );
 
     /**

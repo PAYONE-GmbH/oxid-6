@@ -246,7 +246,6 @@ Das kleinere Textfeld wird verwendet, um die Zieldatei oder den Pfad zu einer vo
     'PAYONE Gesicherter Rechnungskauf (neu)' => 'PAYONE Gesicherter Rechnungskauf',
     'PAYONE Gesicherter Ratenkauf' => 'PAYONE Gesicherter Ratenkauf',
     'PAYONE Gesicherte Lastschrift' => 'PAYONE Gesicherte Lastschrift',
-    'PAYONE Giropay' => 'PAYONE Giropay',
     'PAYONE iDEAL' => 'PAYONE iDEAL',
     'PAYONE Klarna Ratenkauf' => 'PAYONE Klarna Ratenkauf',
     'PAYONE Klarna Rechnung' => 'PAYONE Klarna Rechnung',

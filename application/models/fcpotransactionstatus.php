@@ -123,8 +123,6 @@ class fcpoTransactionStatus extends oxBase
             'A' => 'Amex',
             'D' => 'Diners',
             'J' => 'JCB',
-            'O' => 'Maestro International',
-            'U' => 'Maestro UK',
             'B' => 'Carte Bleue',
         );
 

@@ -575,8 +575,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
                 $this->getAmex(),
                 $this->getDiners(),
                 $this->getJCB(),
-                $this->getMaestroInternational(),
-                $this->getMaestroUK(),
                 $this->getCarteBleue(),
             ),
             'sb' => array(
@@ -643,26 +641,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     public function getJCB() 
     {
         return ($this->getConfigParam('blFCPOJCBActivated') && $this->isPaymentMethodAvailableToUser('J', 'cc'));
-    }
-
-    /**
-     * Check if sub payment method MaestroInternational is available to the user
-     * 
-     * @return bool
-     */
-    public function getMaestroInternational() 
-    {
-        return ($this->getConfigParam('blFCPOMaestroIntActivated') && $this->isPaymentMethodAvailableToUser('O', 'cc'));
-    }
-
-    /**
-     * Check if sub payment method MaestroUK is available to the user
-     * 
-     * @return bool
-     */
-    public function getMaestroUK() 
-    {
-        return ($this->getConfigParam('blFCPOMaestroUKActivated') && $this->isPaymentMethodAvailableToUser('U', 'cc'));
     }
 
     /**
@@ -851,8 +829,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         $this->_fcpoSetCCMetaData($oPayment, 'A', 'American Express');
         $this->_fcpoSetCCMetaData($oPayment, 'D', 'Diners Club');
         $this->_fcpoSetCCMetaData($oPayment, 'J', 'JCB');
-        $this->_fcpoSetCCMetaData($oPayment, 'O', 'Maestro International');
-        $this->_fcpoSetCCMetaData($oPayment, 'U', 'Maestro UK');
         $this->_fcpoSetCCMetaData($oPayment, 'B', 'Carte Bleue');
 
         return $this->_aPaymentCCMetaData;
@@ -1395,8 +1371,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
             'A' => $this->getAmex(),
             'D' => $this->getDiners(),
             'J' => $this->getJCB(),
-            'O' => $this->getMaestroInternational(),
-            'U' => $this->getMaestroUK(),
             'B' => $this->getCarteBleue(),
         );
 

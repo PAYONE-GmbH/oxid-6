@@ -202,30 +202,6 @@
                 <div class="spacer"></div>
             </dl> 
             <dl>
-                <dt>Maestro International</dt>
-                <dd style="margin-top: 4px; margin-left: 150px;">
-                    <input type="hidden" name="confbools[blFCPOMaestroIntActivated]" value="false">
-                    <input type="checkbox" name="confbools[blFCPOMaestroIntActivated]" value="true"  [{if ($confbools.blFCPOMaestroIntActivated)}]checked[{/if}]>
-                    <input type="button" onclick="JavaScript:showDialog('[{$oView->fcGetAdminSeperator()}]cl=fcpayone_main&amp;aoc=1&amp;oxid=O&amp;type=cc');" class="" value="[{oxmultilang ident="GENERAL_ASSIGNCOUNTRIES"}]">
-                    [{oxinputhelp ident="FCPO_HELP_ASSIGNCOUNTRIES"}]
-                    <input type="radio" name="confbools[blFCPOCCOLive]" value="1" [{if $confbools.blFCPOCCOLive == '1'}]checked[{/if}]> <strong>Live</strong>
-                    <input type="radio" name="confbools[blFCPOCCOLive]" value="0" [{if $confbools.blFCPOCCOLive == '0' || !$confbools.blFCPOCCOLive}]checked[{/if}]> Test
-                </dd>
-                <div class="spacer"></div>
-            </dl>
-            <dl>
-                <dt>Maestro UK</dt>
-                <dd style="margin-top: 4px; margin-left: 150px;">
-                    <input type="hidden" name="confbools[blFCPOMaestroUKActivated]" value="false">
-                    <input type="checkbox" name="confbools[blFCPOMaestroUKActivated]" value="true"  [{if ($confbools.blFCPOMaestroUKActivated)}]checked[{/if}]>
-                    <input type="button" onclick="JavaScript:showDialog('[{$oView->fcGetAdminSeperator()}]cl=fcpayone_main&amp;aoc=1&amp;oxid=U&amp;type=cc');" class="" value="[{oxmultilang ident="GENERAL_ASSIGNCOUNTRIES"}]">
-                    [{oxinputhelp ident="FCPO_HELP_ASSIGNCOUNTRIES"}]
-                    <input type="radio" name="confbools[blFCPOCCULive]" value="1" [{if $confbools.blFCPOCCULive == '1'}]checked[{/if}]> <strong>Live</strong>
-                    <input type="radio" name="confbools[blFCPOCCULive]" value="0" [{if $confbools.blFCPOCCULive == '0' || !$confbools.blFCPOCCULive}]checked[{/if}]> Test
-                </dd>
-                <div class="spacer"></div>
-            </dl>
-            <dl>
                 <dt>Carte Bleue</dt>
                 <dd style="margin-top: 4px; margin-left: 150px;">
                 <input type="hidden" name="confbools[blFCPOCarteBleueActivated]" value="false">

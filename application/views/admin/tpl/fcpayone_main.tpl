@@ -946,48 +946,6 @@
 
     <div class="groupExp">
         <div>
-            <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="FCPO_CONFIG_GROUP_PAYDIREKT"}]</b></a>
-            <dl>
-                <dt>
-                    <select name="confbools[blFCPOPaydirektSecuredPreorder]" onchange="fcpoTogglePaydirektGuaranteePeriod(this, 'fcpoPaydirektGuaranteePeriod')">
-                        <option value="false">
-                            [{oxmultilang ident="FCPO_PAYDIREKT_SECURED_PREORDER_NO"}]
-                        </option>
-                        <option value="true" [{if $confbools.blFCPOPaydirektSecuredPreorder}]SELECTED[{/if}]>
-                            [{oxmultilang ident="FCPO_PAYDIREKT_SECURED_PREORDER_YES"}]
-                        </option>
-                    </select>
-                    [{oxinputhelp ident="FCPO_HELP_PAYDIREKT_SECURED_PREORDER"}]
-                </dt>
-                <dd>
-                    [{oxmultilang ident="FCPO_PAYDIREKT_SECURED_PREORDER"}]
-                </dd>
-                <div class="spacer"></div>
-            </dl>
-
-            <div id="fcpoPaydirektGuaranteePeriod" style="[{if $confbools.blFCPOPaydirektSecuredPreorder == false}] display:none [{/if}]">
-                <dl>
-                    <dt>
-                        <select name="confstrs[sFCPOPaydirektSecuredPreorderGuaranteePeriod]">
-                            [{section name=day start=1 loop=16 step=1}]
-                                <option value="[{$smarty.section.day.index}]" [{if $confstrs.sFCPOPaydirektSecuredPreorderGuaranteePeriod == $smarty.section.day.index}]SELECTED[{/if}]>
-                                    [{$smarty.section.day.index}]
-                                </option>
-                            [{/section}]
-                        </select>
-                        [{oxinputhelp ident="FCPO_HELP_PAYDIREKT_SECURED_PREORDER_GUARANTEE_PERIOD"}]
-                    </dt>
-                    <dd>
-                        [{oxmultilang ident="FCPO_PAYDIREKT_SECURED_PREORDER_GUARANTEE_PERIOD"}]
-                    </dd>
-                    <div class="spacer"></div>
-                </dl>
-            </div>
-        </div>
-    </div>
-
-    <div class="groupExp">
-        <div>
             <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="FCPO_FORWARD_REDIRECTS"}]</b></a>
             <dl>
                 <dt>

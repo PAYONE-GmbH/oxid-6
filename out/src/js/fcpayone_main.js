@@ -70,11 +70,3 @@ function fcpoHandleCss(oSelect, sRowName) {
         fcpoInputDisable('input_css_' + sRowName);
     }
 }
-
-function fcpoTogglePaydirektGuaranteePeriod(oSelect, sFieldId) {
-    if (oSelect.options[oSelect.selectedIndex].value === 'true') {
-        document.getElementById(sFieldId).style.display = 'block';
-    } else {
-        document.getElementById(sFieldId).style.display = 'none';
-    }
-}

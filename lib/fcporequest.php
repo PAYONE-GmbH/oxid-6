@@ -270,7 +270,6 @@ class fcpoRequest extends oxSuperCfg
         }
 
         $blIsWalletTypePaymentWithDelAddress = (
-            $oOrder->oxorder__oxpaymenttype->value == 'fcpopaydirekt' ||
             ($oOrder->fcIsPayPalOrder() === true && $this->getConfig()->getConfigParam('blFCPOPayPalDelAddress') === true) ||
             ($oOrder->fcIsPayPalV2Order() === true && $this->getConfig()->getConfigParam('blFCPOPayPalV2DelAddress') === true)
         );
@@ -537,31 +536,6 @@ class fcpoRequest extends oxSuperCfg
             case 'fcpoklarna_installments':
             case 'fcpoklarna_directdebit':
                 $blAddRedirectUrls = $this->_setPaymentParamsKlarna($oOrder);
-                break;
-            case 'fcpopaydirekt':
-                $this->addParameter('clearingtype', 'wlt'); //Payment method
-                $this->addParameter('wallettype', 'PDT');
-                if (strlen($sRefNr) <= 37) {// 37 is the max in this parameter for paydirekt - otherwise the request will fail
-                    $this->addParameter('narrative_text', $sRefNr);
-                }
-                $blAllowOvercapture = (
-                    $oConfig->getConfigParam('blFCPOAllowOvercapture') &&
-                    $sPaymentId == 'fcpopaydirekt'
-                );
-                if ($blAllowOvercapture) {
-                    if ($blAllowOvercapture) {
-                        $this->addParameter('add_paydata[over_capture]','yes');
-                    }
-                }
-                $blIsSecuredPreorder = $blIsPreauthorization
-                    && $oConfig->getConfigParam('blFCPOPaydirektSecuredPreorder');
-                if ($blIsSecuredPreorder) {
-                    $iPaydirektGuaranteePeriod = (int) $oConfig->getConfigParam('sFCPOPaydirektSecuredPreorderGuaranteePeriod');
-                    $this->addParameter('add_paydata[order_secured]', 'yes');
-                    $this->addParameter('add_paydata[preauthorization_validity]', $iPaydirektGuaranteePeriod);
-                }
-
-                $blAddRedirectUrls = true;
                 break;
             case 'fcpopo_bill':
             case 'fcpopo_debitnote':
@@ -2137,18 +2111,6 @@ class fcpoRequest extends oxSuperCfg
         $this->_addRedirectUrls('basket',false, false, $sToken, $sDeliveryMD5, true);
 
         return $this->send();
-    }
-
-    /**
-     * Adding params for getting status
-     *
-     * @param $sWorkorderId
-     * @return void
-     */
-    protected function _fcpoAddPaydirektGetStatusParams($sWorkorderId)
-    {
-        $this->addParameter('add_paydata[action]', 'getstatus');
-        $this->addParameter('workorderid', $sWorkorderId);
     }
 
     /**

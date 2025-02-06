@@ -20,7 +20,7 @@
                 </li>
                 <li>
                     <label>[{oxmultilang ident="FCPO_CREDITCARD"}]:</label>
-                    <select name="dynvalue[fcpo_kktype]" [{if $oView->getMaestroUK()}]onchange="fcCheckType(this); return false;"[{/if}]>
+                    <select name="dynvalue[fcpo_kktype]">
                         [{foreach from=$aFcPoCCPaymentMetaData item="oFcPoCCPaymentMetaData"}]
                             <option value="[{$oFcPoCCPaymentMetaData->sPaymentTag}]" [{if $oFcPoCCPaymentMetaData->blSelected}]selected[{/if}]>[{$oFcPoCCPaymentMetaData->sPaymentName}]</option>
                         [{/foreach}]
@@ -91,12 +91,6 @@
                     <div class="clear"></div>
                     <div class="note">[{oxmultilang ident="FCPO_CARD_SECURITY_CODE_DESCRIPTION"}]</div>
                 </li>
-                [{if $oView->getMaestroUK()}]
-                    <li id="fcpo_kkcsn_row" style="display: none;">
-                        <label>[{oxmultilang ident="FCPO_CARDSEQUENCENUMBER"}]:</label>
-                        <input placeholder="[{oxmultilang ident="FCPO_CARDSEQUENCENUMBER"}]" autocomplete="off" type="text" class="payment_text" size="20" maxlength="64" name="dynvalue[fcpo_kkcsn]" value="[{$dynvalue.fcpo_kkcsn}]">
-                    </li>
-                [{/if}]
             </ul>
             [{block name="checkout_payment_longdesc"}]
                 [{if $paymentmethod->oxpayments__oxlongdesc->value}]

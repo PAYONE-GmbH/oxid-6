@@ -1967,10 +1967,6 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         $this->oxorder__fcpomode = new oxField($sMode, oxField::T_RAW);
         $this->oxorder__fcpoordernotchecked = new oxField($iOrderNotChecked, oxField::T_RAW);
         $this->_oFcpoDb->Execute("UPDATE fcporefnr SET fcpo_txid = '{$aResponse['txid']}' WHERE fcpo_refnr = '" . $sRefNr . "'");
-        if ($sPaymentId == 'fcpobarzahlen' && isset($aResponse['add_paydata[instruction_notes]'])) {
-            $sBarzahlenHtml = urldecode($aResponse['add_paydata[instruction_notes]']);
-            $this->_oFcpoHelper->fcpoSetSessionVariable('sFcpoBarzahlenHtml', $sBarzahlenHtml);
-        }
 
         $this->_fcpoSaveWorkorderId($sPaymentId, $aResponse);
         $this->_fcpoSaveClearingReference($sPaymentId, $aResponse);

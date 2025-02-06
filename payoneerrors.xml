@@ -324,12 +324,7 @@ List of all error codes
 		<error_code>884</error_code>
 		<error_message_en>The sort code is invalid</error_message_en>
 		<error_message_de>The sort code is invalid</error_message_de>
-	    </entry>
-    <entry>
-		<error_code>885</error_code>
-		<error_message_en>Bank is not supported by giropay</error_message_en>
-		<error_message_de>Bank is not supported by giropay</error_message_de>
-	</entry>
+    </entry>
     <entry>
 		<error_code>886</error_code>
 		<error_message_en>Online transfer type not supported</error_message_en>	

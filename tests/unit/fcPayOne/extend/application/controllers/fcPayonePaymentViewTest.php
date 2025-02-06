@@ -455,11 +455,8 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
                 'getAmex',
                 'getDiners',
                 'getJCB',
-                'getMaestroInternational',
-                'getMaestroUK',
                 'getCarteBleue',
                 'getSofortUeberweisung',
-                'getGiropay',
                 'getEPS',
                 'getPostFinanceEFinance',
                 'getPostFinanceCard',
@@ -473,11 +470,8 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
         $oTestObject->expects($this->any())->method('getAmex')->will($this->returnValue(false));
         $oTestObject->expects($this->any())->method('getDiners')->will($this->returnValue(false));
         $oTestObject->expects($this->any())->method('getJCB')->will($this->returnValue(false));
-        $oTestObject->expects($this->any())->method('getMaestroInternational')->will($this->returnValue(false));
-        $oTestObject->expects($this->any())->method('getMaestroUK')->will($this->returnValue(false));
         $oTestObject->expects($this->any())->method('getCarteBleue')->will($this->returnValue(false));
         $oTestObject->expects($this->any())->method('getSofortUeberweisung')->will($this->returnValue(false));
-        $oTestObject->expects($this->any())->method('getGiropay')->will($this->returnValue(false));
         $oTestObject->expects($this->any())->method('getEPS')->will($this->returnValue(false));
         $oTestObject->expects($this->any())->method('getPostFinanceCard')->will($this->returnValue(false));
         $oTestObject->expects($this->any())->method('getIdeal')->will($this->returnValue(false));
@@ -500,11 +494,8 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
                 'getAmex',
                 'getDiners',
                 'getJCB',
-                'getMaestroInternational',
-                'getMaestroUK',
                 'getCarteBleue',
                 'getSofortUeberweisung',
-                'getGiropay',
                 'getEPS',
                 'getPostFinanceEFinance',
                 'getPostFinanceCard',
@@ -518,11 +509,8 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
         $oTestObject->expects($this->any())->method('getAmex')->will($this->returnValue(false));
         $oTestObject->expects($this->any())->method('getDiners')->will($this->returnValue(false));
         $oTestObject->expects($this->any())->method('getJCB')->will($this->returnValue(false));
-        $oTestObject->expects($this->any())->method('getMaestroInternational')->will($this->returnValue(false));
-        $oTestObject->expects($this->any())->method('getMaestroUK')->will($this->returnValue(false));
         $oTestObject->expects($this->any())->method('getCarteBleue')->will($this->returnValue(false));
         $oTestObject->expects($this->any())->method('getSofortUeberweisung')->will($this->returnValue(false));
-        $oTestObject->expects($this->any())->method('getGiropay')->will($this->returnValue(false));
         $oTestObject->expects($this->any())->method('getEPS')->will($this->returnValue(false));
         $oTestObject->expects($this->any())->method('getPostFinanceCard')->will($this->returnValue(false));
         $oTestObject->expects($this->any())->method('getIdeal')->will($this->returnValue(false));
@@ -601,34 +589,6 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
     }
 
     /**
-     * Testing getMaestroInternational vor Coverage
-     *
-     * @param  void
-     * @return void
-     */
-    public function test_getMaestroInternational_Coverage()
-    {
-        $oTestObject = $this->getMock('fcPayOnePaymentView', array('getConfigParam', 'isPaymentMethodAvailableToUser'));
-        $oTestObject->expects($this->any())->method('getConfigParam')->will($this->returnValue(true));
-        $oTestObject->expects($this->any())->method('isPaymentMethodAvailableToUser')->will($this->returnValue(true));
-        $this->assertEquals(true, $oTestObject->getMaestroInternational());
-    }
-
-    /**
-     * Testing getMaestroUK vor Coverage
-     *
-     * @param  void
-     * @return void
-     */
-    public function test_getMaestroUK_Coverage()
-    {
-        $oTestObject = $this->getMock('fcPayOnePaymentView', array('getConfigParam', 'isPaymentMethodAvailableToUser'));
-        $oTestObject->expects($this->any())->method('getConfigParam')->will($this->returnValue(true));
-        $oTestObject->expects($this->any())->method('isPaymentMethodAvailableToUser')->will($this->returnValue(true));
-        $this->assertEquals(true, $oTestObject->getMaestroUK());
-    }
-
-    /**
      * Testing getCarteBleue vor Coverage
      *
      * @param  void
@@ -654,20 +614,6 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
         $oTestObject->expects($this->any())->method('getConfigParam')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('isPaymentMethodAvailableToUser')->will($this->returnValue(true));
         $this->assertEquals(true, $oTestObject->getSofortUeberweisung());
-    }
-
-    /**
-     * Testing getGiropay vor Coverage
-     *
-     * @param  void
-     * @return void
-     */
-    public function test_getGiropay_Coverage()
-    {
-        $oTestObject = $this->getMock('fcPayOnePaymentView', array('getConfigParam', 'isPaymentMethodAvailableToUser'));
-        $oTestObject->expects($this->any())->method('getConfigParam')->will($this->returnValue(true));
-        $oTestObject->expects($this->any())->method('isPaymentMethodAvailableToUser')->will($this->returnValue(true));
-        $this->assertEquals(true, $oTestObject->getGiropay());
     }
 
     /**
@@ -877,8 +823,6 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
                 'getAmex',
                 'getDiners',
                 'getJCB',
-                'getMaestroInternational',
-                'getMaestroUK',
                 'getCarteBleue',
                 '_fcpoGetCCPaymentMetaData',
             )
@@ -889,14 +833,10 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
         $oTestObject->expects($this->any())->method('getAmex')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('getDiners')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('getJCB')->will($this->returnValue(true));
-        $oTestObject->expects($this->any())->method('getMaestroInternational')->will($this->returnValue(true));
-        $oTestObject->expects($this->any())->method('getMaestroUK')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('getCarteBleue')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcpoGetCCPaymentMetaData')->will($this->returnValue('someValue'));
 
         $aExpect = array(
-            'someValue',
-            'someValue',
             'someValue',
             'someValue',
             'someValue',
@@ -920,7 +860,6 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
         $oTestObject = $this->getMock(
             'fcPayOnePaymentView', array(
                 'getSofortUeberweisung',
-                'getGiropay',
                 'getEPS',
                 'getPostFinanceEFinance',
                 'getPostFinanceCard',
@@ -932,7 +871,6 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
         );
 
         $oTestObject->expects($this->any())->method('getSofortUeberweisung')->will($this->returnValue(true));
-        $oTestObject->expects($this->any())->method('getGiropay')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('getEPS')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('getPostFinanceEFinance')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('getPostFinanceCard')->will($this->returnValue(true));

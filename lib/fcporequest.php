@@ -270,7 +270,6 @@ class fcpoRequest extends oxSuperCfg
         }
 
         $blIsWalletTypePaymentWithDelAddress = (
-            $oOrder->oxorder__oxpaymenttype->value == 'fcpopaydirekt' ||
             ($oOrder->fcIsPayPalOrder() === true && $this->getConfig()->getConfigParam('blFCPOPayPalDelAddress') === true) ||
             ($oOrder->fcIsPayPalV2Order() === true && $this->getConfig()->getConfigParam('blFCPOPayPalV2DelAddress') === true)
         );
@@ -499,10 +498,6 @@ class fcpoRequest extends oxSuperCfg
                 $this->addParametersOnlineSofort($oOrder, $aDynvalue);
                 $blAddRedirectUrls = true;
                 break;
-            case 'fcpo_giropay':
-                $this->addParametersOnlineGiropay($aDynvalue);
-                $blAddRedirectUrls = true;
-                break;
             case 'fcpo_eps':
                 $this->addParametersOnlineEps($aDynvalue);
                 $blAddRedirectUrls = true;
@@ -542,36 +537,6 @@ class fcpoRequest extends oxSuperCfg
             case 'fcpoklarna_directdebit':
                 $blAddRedirectUrls = $this->_setPaymentParamsKlarna($oOrder);
                 break;
-            case 'fcpobarzahlen':
-                $this->addParameter('clearingtype', 'csh'); //Payment method
-                $this->addParameter('cashtype', 'BZN');
-                $this->addParameter('api_version', '3.10');
-                break;
-            case 'fcpopaydirekt':
-                $this->addParameter('clearingtype', 'wlt'); //Payment method
-                $this->addParameter('wallettype', 'PDT');
-                if (strlen($sRefNr) <= 37) {// 37 is the max in this parameter for paydirekt - otherwise the request will fail
-                    $this->addParameter('narrative_text', $sRefNr);
-                }
-                $blAllowOvercapture = (
-                    $oConfig->getConfigParam('blFCPOAllowOvercapture') &&
-                    $sPaymentId == 'fcpopaydirekt'
-                );
-                if ($blAllowOvercapture) {
-                    if ($blAllowOvercapture) {
-                        $this->addParameter('add_paydata[over_capture]','yes');
-                    }
-                }
-                $blIsSecuredPreorder = $blIsPreauthorization
-                    && $oConfig->getConfigParam('blFCPOPaydirektSecuredPreorder');
-                if ($blIsSecuredPreorder) {
-                    $iPaydirektGuaranteePeriod = (int) $oConfig->getConfigParam('sFCPOPaydirektSecuredPreorderGuaranteePeriod');
-                    $this->addParameter('add_paydata[order_secured]', 'yes');
-                    $this->addParameter('add_paydata[preauthorization_validity]', $iPaydirektGuaranteePeriod);
-                }
-
-                $blAddRedirectUrls = true;
-                break;
             case 'fcpopo_bill':
             case 'fcpopo_debitnote':
             case 'fcpopo_installment':
@@ -602,10 +567,6 @@ class fcpoRequest extends oxSuperCfg
             case 'fcpo_alipay':
                 $this->addParameter('clearingtype', 'wlt'); //Payment method
                 $this->addParameter('wallettype', 'ALP');
-                $blAddRedirectUrls = true;
-                break;
-            case 'fcpo_trustly':
-                $this->fcpoAddParametersOnlineTrustly($oOrder, $aDynvalue);
                 $blAddRedirectUrls = true;
                 break;
             case 'fcpo_wechatpay':
@@ -767,35 +728,6 @@ class fcpoRequest extends oxSuperCfg
     }
 
     /**
-     * Add parameters needed for Bancontact
-     *
-     * @param $oOrder
-     * @param $aDynvalue
-     * @return void
-     */
-    protected function fcpoAddParametersOnlineTrustly($oOrder, $aDynvalue)
-    {
-        $this->addParameter('clearingtype', 'sb'); //Payment method
-        $this->addParameter('onlinebanktransfertype', 'TRL');
-
-        $blUseSepaData = (
-            isset($aDynvalue['fcpo_ou_iban']) &&
-            $aDynvalue['fcpo_ou_iban'] != '' &&
-            isset($aDynvalue['fcpo_ou_bic']) &&
-            $aDynvalue['fcpo_ou_bic'] != ''
-        );
-
-        if ($blUseSepaData) {
-            $this->addParameter('iban', $aDynvalue['fcpo_ou_iban']);
-            $this->addParameter('bic', $aDynvalue['fcpo_ou_bic']);
-        }
-
-        $oBillCountry = oxNew('oxcountry');
-        $oBillCountry->load($oOrder->oxorder__oxbillcountryid->value);
-        $this->addParameter('bankcountry', $oBillCountry->oxcountry__oxisoalpha2->value);
-    }
-
-    /**
      * Adding redirect urls
      *
      * @param string $sAbortClass
@@ -850,21 +782,6 @@ class fcpoRequest extends oxSuperCfg
         $oBillCountry = oxNew('oxcountry');
         $oBillCountry->load($oOrder->oxorder__oxbillcountryid->value);
         $this->addParameter('bankcountry', $oBillCountry->oxcountry__oxisoalpha2->value);
-    }
-
-    /**
-     * Add parameters needed for giropay
-     *
-     * @param $aDynvalue
-     * @return void
-     */
-    protected function addParametersOnlineGiropay($aDynvalue)
-    {
-        $this->addParameter('clearingtype', 'sb'); //Payment method
-        $this->addParameter('onlinebanktransfertype', 'GPY');
-        $this->addParameter('bankcountry', 'DE');
-        $this->addParameter('iban', $aDynvalue['fcpo_ou_iban_gpy']);
-        $this->addParameter('bic', $aDynvalue['fcpo_ou_bic_gpy']);
     }
 
     /**
@@ -2194,18 +2111,6 @@ class fcpoRequest extends oxSuperCfg
         $this->_addRedirectUrls('basket',false, false, $sToken, $sDeliveryMD5, true);
 
         return $this->send();
-    }
-
-    /**
-     * Adding params for getting status
-     *
-     * @param $sWorkorderId
-     * @return void
-     */
-    protected function _fcpoAddPaydirektGetStatusParams($sWorkorderId)
-    {
-        $this->addParameter('add_paydata[action]', 'getstatus');
-        $this->addParameter('workorderid', $sWorkorderId);
     }
 
     /**

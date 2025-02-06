@@ -404,20 +404,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     }
 
     /**
-     * Returns matching notiication string if sofo is configured to show iban
-     *
-     * @param  void
-     * @return bool
-     */
-    public function fcpoGetTrustlyShowIban()
-    {
-        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
-        $blFCPOSofoShowIban = $oConfig->getConfigParam('blFCPOTrustlyShowIban');
-
-        return (bool) $blFCPOSofoShowIban;
-    }
-
-    /**
      * Method checks if deprecated bankdata should be requested instead of
      * IBAN/BIC
      *
@@ -589,13 +575,10 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
                 $this->getAmex(),
                 $this->getDiners(),
                 $this->getJCB(),
-                $this->getMaestroInternational(),
-                $this->getMaestroUK(),
                 $this->getCarteBleue(),
             ),
             'sb' => array(
                 $this->getSofortUeberweisung(),
-                $this->getGiropay(),
                 $this->getPostFinanceEFinance(),
                 $this->getPostFinanceCard(),
                 $this->getIdeal(),
@@ -660,26 +643,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     }
 
     /**
-     * Check if sub payment method MaestroInternational is available to the user
-     * 
-     * @return bool
-     */
-    public function getMaestroInternational() 
-    {
-        return ($this->getConfigParam('blFCPOMaestroIntActivated') && $this->isPaymentMethodAvailableToUser('O', 'cc'));
-    }
-
-    /**
-     * Check if sub payment method MaestroUK is available to the user
-     * 
-     * @return bool
-     */
-    public function getMaestroUK() 
-    {
-        return ($this->getConfigParam('blFCPOMaestroUKActivated') && $this->isPaymentMethodAvailableToUser('U', 'cc'));
-    }
-
-    /**
      * Check if sub payment method CarteBleue is available to the user
      * 
      * @return bool
@@ -697,16 +660,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     public function getSofortUeberweisung() 
     {
         return ($this->getConfigParam('blFCPOSofoActivated') && $this->isPaymentMethodAvailableToUser('PNT', 'sb'));
-    }
-
-    /**
-     * Check if sub payment method Giropay is available to the user
-     * 
-     * @return bool
-     */
-    public function getGiropay() 
-    {
-        return ($this->getConfigParam('blFCPOgiroActivated') && $this->isPaymentMethodAvailableToUser('GPY', 'sb'));
     }
 
     /**
@@ -865,8 +818,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         $this->_fcpoSetCCMetaData($oPayment, 'A', 'American Express');
         $this->_fcpoSetCCMetaData($oPayment, 'D', 'Diners Club');
         $this->_fcpoSetCCMetaData($oPayment, 'J', 'JCB');
-        $this->_fcpoSetCCMetaData($oPayment, 'O', 'Maestro International');
-        $this->_fcpoSetCCMetaData($oPayment, 'U', 'Maestro UK');
         $this->_fcpoSetCCMetaData($oPayment, 'B', 'Carte Bleue');
 
         return $this->_aPaymentCCMetaData;
@@ -884,9 +835,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
 
         if ($this->getSofortUeberweisung()) {
             $aPaymentMetaData[] = $this->_fcpoGetOnlinePaymentData('PNT');
-        }
-        if ($this->getGiropay()) {
-            $aPaymentMetaData[] = $this->_fcpoGetOnlinePaymentData('GPY');
         }
         if ($this->getEPS()) {
             $aPaymentMetaData[] = $this->_fcpoGetOnlinePaymentData('EPS');
@@ -1409,8 +1357,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
             'A' => $this->getAmex(),
             'D' => $this->getDiners(),
             'J' => $this->getJCB(),
-            'O' => $this->getMaestroInternational(),
-            'U' => $this->getMaestroUK(),
             'B' => $this->getCarteBleue(),
         );
 
@@ -1432,7 +1378,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
 
         $aCaptions = array(
             'PNT' => 'SOFORT &Uuml;berweisung',
-            'GPY' => 'giropay',
             'EPS' => 'eps - Online-&Uuml;berweisung',
             'PFF' => 'PostFinance E-Finance',
             'PFC' => 'PostFinance Card',
@@ -3425,7 +3370,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
 
         $aPayments2SessionVariables = array(
             'fcpodebitnote' => array('fcpoMandate'),
-            'fcpobarzahlen' => array('sFcpoBarzahlenHtml'),
             'fcpoklarna' => array('fcpo_klarna_campaign'),
         );
 

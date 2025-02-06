@@ -313,24 +313,5 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneThankyouView extends 
         $this->assertEquals(true, $oTestObject->_fcpoDetermineAmazonOrder());
     }
     
-    /**
-     * Testing fcpoGetBarzahlenHtml for coverage
-     * 
-     * @param  void
-     * @return void
-     */
-    public function test_fcpoGetBarzahlenHtml_Coverage() 
-    {
-        $oTestObject = oxNew('fcPayOneThankyouView');
-        $this->invokeSetAttribute($oTestObject, '_sBarzahlenHtml', null);
-        
-        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
-        $oHelper->expects($this->any())->method('fcpoGetSessionVariable')->will($this->returnValue('someHtml'));
-        
-        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
-        
-        $this->assertEquals('someHtml', $oTestObject->fcpoGetBarzahlenHtml());
-    }
-    
     
 }

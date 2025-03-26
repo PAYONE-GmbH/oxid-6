@@ -275,13 +275,11 @@ class fcPayOneTransactionStatusForwarder extends fcPayOneTransactionStatusBase {
      */
     protected function _forwardRequest($sQueueId, $sForwardId, $sStatusmessageId) {
         try {
-            $oConfig = $this->getConfig();
-            $sConfTimeout = $oConfig->getConfigParam('sTransactionRedirectTimeout');
-            $iTimeout = ($sConfTimeout) ? (int) $sConfTimeout : 10;
             $aParams = $this->_fetchPostParams($sStatusmessageId);
             $sParams = $aParams['string'];
             $aRequest = $aParams['array'];
             $aForwardData = $this->_getForwardData($sForwardId);
+            $iTimeout = $aForwardData['timeout'] ? (int) $aForwardData['timeout'] : 10;
 
             $sUrl = $aForwardData['url'];
             $this->_logForwardMessage('Trying to forward to url: '.$sUrl.'...');

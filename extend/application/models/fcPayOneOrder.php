@@ -1814,6 +1814,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
 
         $blShow = (
         ($this->oxorder__fcpoauthmode == 'authorization' && $sPaymentId == 'fcpoinvoice') ||
+        ($this->oxorder__fcpoauthmode == 'authorization' && $sPaymentId == 'fcpopl_secinvoice') ||
         ($sPaymentId === 'fcpopayadvance')
 
         );

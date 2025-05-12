@@ -611,8 +611,8 @@ class fcpayone_ajax extends oxBase
         $aCreditCardMapping = array(
             'visa' => 'V',
             'mastercard' => 'M',
-            'amex' => 'M',
-            'discover' => 'D'
+            'amex' => 'A',
+            'girocard' => 'G',
         );
 
         $oSession = $this->_oFcpoHelper->fcpoGetSession();
@@ -668,7 +668,7 @@ class fcpayone_ajax extends oxBase
             'V' => "visa",
             'M' => "masterCard",
             'A' => "amex",
-            'D' => "discover"
+            'G' => "girocard"
         ];
 
         $aSupportedNetwork = [];

@@ -494,6 +494,14 @@ class fcpayone_main extends fcpayone_admindetails
                 'name' => 'Mastercard',
                 'selected' => $this->_aConfArrs["aFCPOAplCreditCards"] && in_array('M', $this->_aConfArrs["aFCPOAplCreditCards"]) ? 1 : 0
             ])),
+            'A' => json_decode(json_encode([
+                'name' => 'American Express',
+                'selected' => $this->_aConfArrs["aFCPOAplCreditCards"] && in_array('A', $this->_aConfArrs["aFCPOAplCreditCards"]) ? 1 : 0
+            ])),
+            'G' => json_decode(json_encode([
+                'name' => 'Girocard',
+                'selected' => $this->_aConfArrs["aFCPOAplCreditCards"] && in_array('G', $this->_aConfArrs["aFCPOAplCreditCards"]) ? 1 : 0
+            ])),
         ];
     }
 

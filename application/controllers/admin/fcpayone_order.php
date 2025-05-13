@@ -258,8 +258,7 @@ class fcpayone_order extends fcpayone_admindetails
     /**
      * Triggers capture request to PAYONE API and displays the result
      *
-     * @param  void
-     * @return null
+     * @return void
      */
     public function capture() 
     {
@@ -267,6 +266,7 @@ class fcpayone_order extends fcpayone_admindetails
         if ($sOxid != "-1" && isset($sOxid)) {
             $oOrder = $this->_oFcpoHelper->getFactoryObject("oxorder");
             $oOrder->load($sOxid);
+            $sPaymentId = $oOrder->oxorder__oxpaymenttype->value;
 
             $blSettleAccount = $this->_oFcpoHelper->fcpoGetRequestParameter("capture_settleaccount");
             $blSettleAccount = ($blSettleAccount === null) ? true : (bool) $blSettleAccount;
@@ -293,6 +293,7 @@ class fcpayone_order extends fcpayone_admindetails
             $this->_sResponsePrefix = 'FCPO_CAPTURE_';
             $this->_aResponse = $oResponse;
             $oOrder->fcpoSendClearingDataAfterCapture();
+            $oOrder->fcpoSaveClearingDataAfterCapture($sPaymentId, $oResponse);
         }
     }
 

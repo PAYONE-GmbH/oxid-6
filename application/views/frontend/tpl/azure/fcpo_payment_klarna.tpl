@@ -21,8 +21,8 @@
                 [{/if}]
                 [{if $oView->fcpoKlarnaIsTelephoneNumberNeeded()}]
                     <li>
-                        <label>[{oxmultilang ident="FCPO_KLV_TELEPHONENUMBER"}]:</label>
-                        <input placeholder="[{oxmultilang ident="FCPO_KLV_TELEPHONENUMBER"}]" autocomplete="off" type="text" size="20" maxlength="64" [{if $blKlv}]name="dynvalue[fcpo_klv_fon]" value="[{$dynvalue.fcpo_klv_fon}]"[{else}]name="dynvalue[fcpo_kls_fon]" value="[{$dynvalue.fcpo_kls_fon}]"[{/if}]>
+                        <label for="fcpo_klv_fon">[{oxmultilang ident="FCPO_KLV_TELEPHONENUMBER"}]:</label>
+                        <input id="fcpo_klv_fon" placeholder="[{oxmultilang ident="FCPO_KLV_TELEPHONENUMBER"}]" autocomplete="off" type="text" size="20" maxlength="64" [{if $blKlv}]name="dynvalue[fcpo_klv_fon]" value="[{$dynvalue.fcpo_klv_fon}]"[{else}]name="dynvalue[fcpo_kls_fon]" value="[{$dynvalue.fcpo_kls_fon}]"[{/if}]>
                         <div [{if $blKlv}]id="fcpo_klv_fon_invalid"[{else}]id="fcpo_kls_fon_invalid"[{/if}] class="fcpo_check_error">
                             <p class="oxValidateError" style="display: block;">
                                 [{oxmultilang ident="FCPO_KLV_TELEPHONENUMBER_INVALID"}]
@@ -33,9 +33,9 @@
                 [{if $oView->fcpoKlarnaIsBirthdayNeeded()}]
                     <li style="width: 850px;">
                         <label>[{oxmultilang ident="FCPO_KLV_BIRTHDAY"}]:</label>
-                        <input placeholder="DD" autocomplete="off" type="text" size="3" maxlength="2" style="width:auto;margin-right:10px;" [{if $blKlv}]name="dynvalue[fcpo_klv_birthday][day]" value="[{$dynvalue.fcpo_klv_birthday.day}]"[{else}]name="dynvalue[fcpo_kls_birthday][day]" value="[{$dynvalue.fcpo_kls_birthday.day}]"[{/if}] >
-                        <input placeholder="MM" autocomplete="off" type="text" size="3" maxlength="2" style="width:auto;margin-right:10px;" [{if $blKlv}]name="dynvalue[fcpo_klv_birthday][month]" value="[{$dynvalue.fcpo_klv_birthday.month}]"[{else}]name="dynvalue[fcpo_kls_birthday][month]" value="[{$dynvalue.fcpo_kls_birthday.month}]"[{/if}]>
-                        <input placeholder="YYYY" autocomplete="off" type="text" size="8" maxlength="4" style="width:auto;margin-right:10px;" [{if $blKlv}]name="dynvalue[fcpo_klv_birthday][year]" value="[{$dynvalue.fcpo_klv_birthday.year}]"[{else}]name="dynvalue[fcpo_kls_birthday][year]" value="[{$dynvalue.fcpo_kls_birthday.year}]"[{/if}]> (DD.MM.YYYY)
+                        <input aria-label="[{oxmultilang ident="FCPO_DAY"}]" placeholder="DD" autocomplete="off" type="text" size="3" maxlength="2" style="width:auto;margin-right:10px;" [{if $blKlv}]name="dynvalue[fcpo_klv_birthday][day]" value="[{$dynvalue.fcpo_klv_birthday.day}]"[{else}]name="dynvalue[fcpo_kls_birthday][day]" value="[{$dynvalue.fcpo_kls_birthday.day}]"[{/if}] >
+                        <input aria-label="[{oxmultilang ident="FCPO_MONTH"}]" placeholder="MM" autocomplete="off" type="text" size="3" maxlength="2" style="width:auto;margin-right:10px;" [{if $blKlv}]name="dynvalue[fcpo_klv_birthday][month]" value="[{$dynvalue.fcpo_klv_birthday.month}]"[{else}]name="dynvalue[fcpo_kls_birthday][month]" value="[{$dynvalue.fcpo_kls_birthday.month}]"[{/if}]>
+                        <input aria-label="[{oxmultilang ident="FCPO_YEAR"}]" placeholder="YYYY" autocomplete="off" type="text" size="8" maxlength="4" style="width:auto;margin-right:10px;" [{if $blKlv}]name="dynvalue[fcpo_klv_birthday][year]" value="[{$dynvalue.fcpo_klv_birthday.year}]"[{else}]name="dynvalue[fcpo_kls_birthday][year]" value="[{$dynvalue.fcpo_kls_birthday.year}]"[{/if}]> (DD.MM.YYYY)
                         <div [{if $blKlv}]id="fcpo_klv_birthday_invalid"[{else}]id="fcpo_kls_birthday_invalid"[{/if}] class="fcpo_check_error">
                             <p class="oxValidateError" style="display: block;">
                                 [{oxmultilang ident="FCPO_KLV_BIRTHDAY_INVALID"}]
@@ -45,8 +45,8 @@
                 [{/if}]
                 [{if $oView->fcpoKlarnaIsAddressAdditionNeeded()}]
                     <li>
-                        <label>[{oxmultilang ident="FCPO_KLV_ADDINFO"}]:</label>
-                        <input placeholder="[{oxmultilang ident="FCPO_KLV_ADDINFO"}]" autocomplete="off" type="text" size="20" maxlength="64" [{if $blKlv}]name="dynvalue[fcpo_klv_addinfo]" value="[{$dynvalue.fcpo_klv_addinfo}]"[{else}]name="dynvalue[fcpo_kls_addinfo]" value="[{$dynvalue.fcpo_kls_addinfo}]"[{/if}]>
+                        <label for="fcpo_klv_addinfo">[{oxmultilang ident="FCPO_KLV_ADDINFO"}]:</label>
+                        <input id="fcpo_klv_addinfo" placeholder="[{oxmultilang ident="FCPO_KLV_ADDINFO"}]" autocomplete="off" type="text" size="20" maxlength="64" [{if $blKlv}]name="dynvalue[fcpo_klv_addinfo]" value="[{$dynvalue.fcpo_klv_addinfo}]"[{else}]name="dynvalue[fcpo_kls_addinfo]" value="[{$dynvalue.fcpo_kls_addinfo}]"[{/if}]>
                         <div [{if $blKlv}]id="fcpo_klv_addinfo_invalid"[{else}]id="fcpo_kls_addinfo_invalid"[{/if}] class="fcpo_check_error">
                             <p class="oxValidateError" style="display: block;">
                                 [{oxmultilang ident="FCPO_KLV_ADDINFO_INVALID"}]
@@ -56,8 +56,8 @@
                 [{/if}]
                 [{if $oView->fcpoKlarnaIsDelAddressAdditionNeeded()}]
                     <li>
-                        <label>[{oxmultilang ident="FCPO_KLV_ADDINFO_DEL"}]:</label>
-                        <input placeholder="[{oxmultilang ident="FCPO_KLV_ADDINFO_DEL"}]" autocomplete="off" type="text" size="20" maxlength="64" [{if $blKlv}]name="dynvalue[fcpo_klv_del_addinfo]" value="[{$dynvalue.fcpo_klv_del_addinfo}]"[{else}]name="dynvalue[fcpo_kls_del_addinfo]" value="[{$dynvalue.fcpo_kls_del_addinfo}]"[{/if}]>
+                        <label for="fcpo_klv_del_addinfo">[{oxmultilang ident="FCPO_KLV_ADDINFO_DEL"}]:</label>
+                        <input id="fcpo_klv_del_addinfo" placeholder="[{oxmultilang ident="FCPO_KLV_ADDINFO_DEL"}]" autocomplete="off" type="text" size="20" maxlength="64" [{if $blKlv}]name="dynvalue[fcpo_klv_del_addinfo]" value="[{$dynvalue.fcpo_klv_del_addinfo}]"[{else}]name="dynvalue[fcpo_kls_del_addinfo]" value="[{$dynvalue.fcpo_kls_del_addinfo}]"[{/if}]>
                         <div [{if $blKlv}]id="fcpo_klv_del_addinfo_invalid"[{else}]id="fcpo_kls_del_addinfo_invalid"[{/if}] class="fcpo_check_error">
                             <p class="oxValidateError" style="display: block;">
                                 [{oxmultilang ident="FCPO_KLV_ADDINFO_INVALID"}]
@@ -77,8 +77,8 @@
                 [{/if}]
                 [{if $oView->fcpoKlarnaIsPersonalIdNeeded()}]
                     <li>
-                        <label>[{oxmultilang ident="FCPO_KLV_PERSONALID"}]:</label>
-                        <input placeholder="[{oxmultilang ident="FCPO_KLV_PERSONALID"}]" autocomplete="off" type="text" size="20" maxlength="64" [{if $blKlv}]name="dynvalue[fcpo_klv_personalid]" value="[{$dynvalue.fcpo_klv_personalid}]"[{else}]name="dynvalue[fcpo_kls_personalid]" value="[{$dynvalue.fcpo_kls_personalid}]"[{/if}]>
+                        <label for="fcpo_klv_personalid">[{oxmultilang ident="FCPO_KLV_PERSONALID"}]:</label>
+                        <input id="fcpo_klv_personalid" placeholder="[{oxmultilang ident="FCPO_KLV_PERSONALID"}]" autocomplete="off" type="text" size="20" maxlength="64" [{if $blKlv}]name="dynvalue[fcpo_klv_personalid]" value="[{$dynvalue.fcpo_klv_personalid}]"[{else}]name="dynvalue[fcpo_kls_personalid]" value="[{$dynvalue.fcpo_kls_personalid}]"[{/if}]>
                         <div [{if $blKlv}]id="fcpo_klv_personalid_invalid"[{else}]id="fcpo_kls_personalid_invalid"[{/if}] class="fcpo_check_error">
                             <p class="oxValidateError" style="display: block;">
                                 [{oxmultilang ident="FCPO_KLV_PERSONALID_INVALID"}]
@@ -93,10 +93,10 @@
                     <div style="float:left;width: 32px;">
                         [{if $blKlv}]
                             <input type="hidden"   name="dynvalue[fcpo_klv_confirm]" value="false">
-                            <input type="checkbox" name="dynvalue[fcpo_klv_confirm]" value="true" [{if $dynvalue.fcpo_klv_confirm}]checked[{/if}]>
+                            <input aria-label="Klarna Invoice confirmation" type="checkbox" name="dynvalue[fcpo_klv_confirm]" value="true" [{if $dynvalue.fcpo_klv_confirm}]checked[{/if}]>
                         [{else}]
                             <input type="hidden"   name="dynvalue[fcpo_kls_confirm]" value="false">
-                            <input type="checkbox" name="dynvalue[fcpo_kls_confirm]" value="true" [{if $dynvalue.fcpo_kls_confirm}]checked[{/if}]>
+                            <input aria-label="Klarna Installment confirmation" type="checkbox" name="dynvalue[fcpo_kls_confirm]" value="true" [{if $dynvalue.fcpo_kls_confirm}]checked[{/if}]>
                         [{/if}]
                     </div>
                     <div style="float:left;width: 800px;">

@@ -8,9 +8,9 @@
         [{if $oView->fcpoGetSofoShowIban()}]
             [{if $oView->fcpoForceDeprecatedBankData()}]
                 <div class="form-group" id="fcpo_ou_blz">
-                    <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_CODE"}]:</label>
+                    <label for="fcpo_bank_blz" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_CODE"}]:</label>
                     <div class="col-lg-9">
-                        <input placeholder="[{oxmultilang ident="FCPO_BANK_CODE"}]" class="form-control" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_ou_blz]" value="[{$dynvalue.fcpo_ou_blz}]">
+                        <input id="fcpo_bank_blz" placeholder="[{oxmultilang ident="FCPO_BANK_CODE"}]" class="form-control" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_ou_blz]" value="[{$dynvalue.fcpo_ou_blz}]">
                         <div id="fcpo_ou_blz_invalid" class="fcpo_check_error">
                                     <span class="help-block ">
                                         <ul role="alert" class="list-unstyled text-danger">
@@ -21,9 +21,9 @@
                     </div>
                 </div>
                 <div class="form-group" id="fcpo_ou_ktonr" style="display: none;">
-                    <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_ACCOUNT_NUMBER"}]:</label>
+                    <label for="fcpo_bank_ktonr" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_ACCOUNT_NUMBER"}]:</label>
                     <div class="col-lg-9">
-                        <input placeholder="[{oxmultilang ident="FCPO_BANK_ACCOUNT_NUMBER"}]" class="form-control" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_ou_ktonr]" value="[{$dynvalue.fcpo_ou_ktonr}]">
+                        <input id="fcpo_bank_ktonr" placeholder="[{oxmultilang ident="FCPO_BANK_ACCOUNT_NUMBER"}]" class="form-control" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_ou_ktonr]" value="[{$dynvalue.fcpo_ou_ktonr}]">
                         <div id="fcpo_ou_ktonr_invalid" class="fcpo_check_error">
                                     <span class="help-block ">
                                         <ul role="alert" class="list-unstyled text-danger">
@@ -35,9 +35,9 @@
                 </div>
             [{else}]
                 <div class="form-group" id="fcpo_ou_iban">
-                    <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_IBAN"}]:</label>
+                    <label for="fcpo_bank_iban" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_IBAN"}]:</label>
                     <div class="col-lg-9">
-                        <input placeholder="[{oxmultilang ident="FCPO_BANK_IBAN"}]" class="form-control" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_ou_iban]" value="[{$dynvalue.fcpo_ou_iban}]">
+                        <input id="fcpo_bank_iban" placeholder="[{oxmultilang ident="FCPO_BANK_IBAN"}]" class="form-control" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_ou_iban]" value="[{$dynvalue.fcpo_ou_iban}]">
                         <div id="fcpo_ou_iban_invalid" class="fcpo_check_error">
                                     <span class="help-block ">
                                         <ul role="alert" class="list-unstyled text-danger">
@@ -48,9 +48,9 @@
                     </div>
                 </div>
                 <div class="form-group" id="fcpo_ou_bic">
-                    <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_BIC"}]:</label>
+                    <label for="fcpo_bank_bic" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_BIC"}]:</label>
                     <div class="col-lg-9">
-                        <input placeholder="[{oxmultilang ident="FCPO_BANK_BIC"}]" class="form-control" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_ou_bic]" value="[{$dynvalue.fcpo_ou_bic}]">
+                        <input id="fcpo_bank_bic" placeholder="[{oxmultilang ident="FCPO_BANK_BIC"}]" class="form-control" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_ou_bic]" value="[{$dynvalue.fcpo_ou_bic}]">
                         <div id="fcpo_ou_bic_invalid" class="fcpo_check_error">
                                     <span class="help-block ">
                                         <ul role="alert" class="list-unstyled text-danger">

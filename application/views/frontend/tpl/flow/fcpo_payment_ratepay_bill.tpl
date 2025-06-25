@@ -28,9 +28,9 @@
             </object>
             [{if $oView->fcpoRatePayShowUstid()}]
                 <div class="form-group fcporp_bill_ustid">
-                    <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_RATEPAY_USTID"}]:</label>
+                    <label for="fcporp_bill_ustid" id="fcporp_bill_ustid_label" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_RATEPAY_USTID"}]:</label>
                     <div class="col-lg-9">
-                        <input placeholder="[{oxmultilang ident="FCPO_RATEPAY_USTID"}]" class="form-control" type="text" size="20" maxlength="64" name="dynvalue[fcporp_bill_ustid]" value="[{$oView->fcpoGetUserValue('oxustid')}]">
+                        <input id="fcporp_bill_ustid" placeholder="[{oxmultilang ident="FCPO_RATEPAY_USTID"}]" class="form-control" type="text" size="20" maxlength="64" name="dynvalue[fcporp_bill_ustid]" value="[{$oView->fcpoGetUserValue('oxustid')}]">
                     </div>
                 </div>
             [{/if}]
@@ -38,19 +38,19 @@
                 <div class="form-group fcporp_bill_birthdate">
                     <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_RATEPAY_BIRTHDATE"}]:</label>
                     <div class="col-lg-9">
-                        <select name="dynvalue[fcporp_bill_birthdate_day]">
+                        <select aria-label="[{oxmultilang ident="FCPO_DAY"}]" name="dynvalue[fcporp_bill_birthdate_day]">
                             [{foreach from=$oView->fcpoGetDayRange() item='sDay'}]
                                 <option value="[{$sDay}]" [{if $sDay == $oView->fcpoGetBirthdayField('day')}]selected[{/if}]>[{$sDay}]</option>
                             [{/foreach}]
                         </select>
                         &nbsp;
-                        <select name="dynvalue[fcporp_bill_birthdate_month]">
+                        <select aria-label="[{oxmultilang ident="FCPO_MONTH"}]" name="dynvalue[fcporp_bill_birthdate_month]">
                             [{foreach from=$oView->fcpoGetMonthRange() item='sMonth'}]
                                 <option value="[{$sMonth}]" [{if $sMonth == $oView->fcpoGetBirthdayField('month')}]selected[{/if}]>[{$sMonth}]</option>
                             [{/foreach}]
                         </select>
                         &nbsp;
-                        <select name="dynvalue[fcporp_bill_birthdate_year]">
+                        <select aria-label="[{oxmultilang ident="FCPO_YEAR"}]" name="dynvalue[fcporp_bill_birthdate_year]">
                             [{foreach from=$oView->fcpoGetYearRange() item='sYear'}]
                                 <option value="[{$sYear}]" [{if $sYear == $oView->fcpoGetBirthdayField('year')}]selected[{/if}]>[{$sYear}]</option>
                             [{/foreach}]
@@ -60,9 +60,9 @@
             [{/if}]
             [{if $oView->fcpoRatePayShowFon()}]
                 <div class="form-group fcporp_bill_fon">
-                    <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_RATEPAY_FON"}]:</label>
+                    <label for="fcporp_bill_fon" id="fcporp_bill_fon_label" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_RATEPAY_FON"}]:</label>
                     <div class="col-lg-9">
-                        <input placeholder="[{oxmultilang ident="FCPO_RATEPAY_FON"}]" class="form-control" type="text" size="20" maxlength="64" name="dynvalue[fcporp_bill_fon]" value="[{$oView->fcpoGetUserValue('oxfon')}]">
+                        <input id="fcporp_bill_fon" placeholder="[{oxmultilang ident="FCPO_RATEPAY_FON"}]" class="form-control" type="text" size="20" maxlength="64" name="dynvalue[fcporp_bill_fon]" value="[{$oView->fcpoGetUserValue('oxfon')}]">
                     </div>
                 </div>
             [{/if}]

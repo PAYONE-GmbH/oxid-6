@@ -51,48 +51,48 @@ function fcpoEditThisStatus( sOxid ) {
             <tr class="listitem">
                 <td valign="top" class="listfilter first" height="20">
                     <div class="r1"><div class="b1">
-                        <input class="listedit" type="text" size="20" maxlength="128" name="[{$oView->fcGetInputName('fcpotransactionstatus', 'oxtimestamp')}]" value="[{$oView->fcGetWhereValue('fcpotransactionstatus', 'oxtimestamp')}]">
+                        <input aria-label="Filter timestamp" class="listedit" type="text" size="20" maxlength="128" name="[{$oView->fcGetInputName('fcpotransactionstatus', 'oxtimestamp')}]" value="[{$oView->fcGetWhereValue('fcpotransactionstatus', 'oxtimestamp')}]">
                     </div></div>
                 </td>
                 <td valign="top" class="listfilter">
                     <div class="r1"><div class="b1">
-                        <input class="listedit" type="text" size="20" maxlength="128" name="[{$oView->fcGetInputName('fcpotransactionstatus', 'fcpo_ordernr')}]" value="[{$oView->fcGetWhereValue('fcpotransactionstatus', 'fcpo_ordernr')}]">
+                        <input aria-label="Filter order number" class="listedit" type="text" size="20" maxlength="128" name="[{$oView->fcGetInputName('fcpotransactionstatus', 'fcpo_ordernr')}]" value="[{$oView->fcGetWhereValue('fcpotransactionstatus', 'fcpo_ordernr')}]">
                     </div></div>
                 </td>
                 <td valign="top" class="listfilter">
                     <div class="r1"><div class="b1">
-                        <input class="listedit" type="text" size="20" maxlength="128" name="[{$oView->fcGetInputName('fcpotransactionstatus', 'fcpo_txid')}]" value="[{$oView->fcGetWhereValue('fcpotransactionstatus', 'fcpo_txid')}]">
+                        <input aria-label="Filter transaction id" class="listedit" type="text" size="20" maxlength="128" name="[{$oView->fcGetInputName('fcpotransactionstatus', 'fcpo_txid')}]" value="[{$oView->fcGetWhereValue('fcpotransactionstatus', 'fcpo_txid')}]">
                     </div></div>
                 </td>
                 <td valign="top" class="listfilter">
                     <div class="r1"><div class="b1">
-                        <input class="listedit" type="text" size="10" maxlength="128" name="[{$oView->fcGetInputName('fcpotransactionstatus', 'fcpo_clearingtype')}]" value="[{$oView->fcGetWhereValue('fcpotransactionstatus', 'fcpo_clearingtype')}]">
+                        <input aria-label="Filter clearing type" class="listedit" type="text" size="10" maxlength="128" name="[{$oView->fcGetInputName('fcpotransactionstatus', 'fcpo_clearingtype')}]" value="[{$oView->fcGetWhereValue('fcpotransactionstatus', 'fcpo_clearingtype')}]">
                     </div></div>
                 </td>
                 <td valign="top" class="listfilter">
                     <div class="r1"><div class="b1">
-                        <input class="listedit" type="text" size="20" maxlength="128" name="[{$oView->fcGetInputName('fcpotransactionstatus', 'fcpo_email')}]" value="[{$oView->fcGetWhereValue('fcpotransactionstatus', 'fcpo_email')}]">
+                        <input aria-label="Filter email" class="listedit" type="text" size="20" maxlength="128" name="[{$oView->fcGetInputName('fcpotransactionstatus', 'fcpo_email')}]" value="[{$oView->fcGetWhereValue('fcpotransactionstatus', 'fcpo_email')}]">
                     </div></div>
                 </td>
                 <td valign="top" class="listfilter">
                     <div class="r1"><div class="b1">
-                        <input class="listedit" type="text" size="15" maxlength="128" name="[{$oView->fcGetInputName('fcpotransactionstatus', 'fcpo_price')}]" value="[{$oView->fcGetWhereValue('fcpotransactionstatus', 'fcpo_price')}]">
+                        <input aria-label="Filter price" class="listedit" type="text" size="15" maxlength="128" name="[{$oView->fcGetInputName('fcpotransactionstatus', 'fcpo_price')}]" value="[{$oView->fcGetWhereValue('fcpotransactionstatus', 'fcpo_price')}]">
                     </div></div>
                 </td>
                 <td valign="top" class="listfilter" nowrap>
                     <div class="r1"><div class="b1">
-                        <input class="listedit" type="text" size="5" maxlength="128" name="[{$oView->fcGetInputName('fcpotransactionstatus', 'fcpo_txaction')}]" value="[{$oView->fcGetWhereValue('fcpotransactionstatus', 'fcpo_txaction')}]">
+                        <input aria-label="Filter transaction action" class="listedit" type="text" size="5" maxlength="128" name="[{$oView->fcGetInputName('fcpotransactionstatus', 'fcpo_txaction')}]" value="[{$oView->fcGetWhereValue('fcpotransactionstatus', 'fcpo_txaction')}]">
                     </div></div>
                 </td>
                 <td valign="top" class="listfilter">
                     <div class="r1"><div class="b1">
-                        <input class="listedit" type="text" size="15" maxlength="128" name="[{$oView->fcGetInputName('fcpotransactionstatus', 'fcpo_forward_state')}]" value="[{$oView->fcGetWhereValue('fcpotransactionstatus', 'fcpo_forward_state')}]">
+                        <input aria-label="Filter forward state" class="listedit" type="text" size="15" maxlength="128" name="[{$oView->fcGetInputName('fcpotransactionstatus', 'fcpo_forward_state')}]" value="[{$oView->fcGetWhereValue('fcpotransactionstatus', 'fcpo_forward_state')}]">
                         </div></div>
                 </td>
                 <td valign="top" class="listfilter" colspan="2">
                     <div class="r1"><div class="b1">
                             <div class="find"><input class="listedit" type="submit" name="submitit" value="[{ oxmultilang ident="GENERAL_SEARCH" }]"></div>
-                        <input class="listedit" type="text" size="15" maxlength="128" name="[{$oView->fcGetInputName('fcpotransactionstatus', 'fcpo_forward_tries')}]" value="[{$oView->fcGetWhereValue('fcpotransactionstatus', 'fcpo_forward_tries')}]">
+                        <input aria-label="Filter forward tries" class="listedit" type="text" size="15" maxlength="128" name="[{$oView->fcGetInputName('fcpotransactionstatus', 'fcpo_forward_tries')}]" value="[{$oView->fcGetWhereValue('fcpotransactionstatus', 'fcpo_forward_tries')}]">
                         </div></div>
                 </td>
             </tr>

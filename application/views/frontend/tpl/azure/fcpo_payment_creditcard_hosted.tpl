@@ -16,7 +16,7 @@
             <input type="hidden" name="fcpo_mode_[{$sPaymentID}]" value="[{$paymentmethod->fcpoGetOperationMode()}]">
             <ul class="form">
                 <li>
-                    <label for="cardtypeInput">[{oxmultilang ident="FCPO_CREDITCARD"}]:</label>
+                    <label for="cardtype">[{oxmultilang ident="FCPO_CREDITCARD"}]:</label>
                     <select id="cardtype" name="dynvalue[fcpo_kktype]">
                         <option value="V" data-cardtype="none">[{oxmultilang ident="FCPO_CREDITCARD_CHOOSE"}]</option>
                         [{foreach from=$aFcPoCCPaymentMetaData item="oFcPoCCPaymentMetaData"}]
@@ -42,7 +42,7 @@
                     </span>
                 </li>
                 <li class="form-group">
-                    <label id="fcpo_cc_cardholder_label" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_CC_CARDHOLDER"}]:</label>
+                    <label for="fcpo_cc_cardholder" id="fcpo_cc_cardholder_label" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_CC_CARDHOLDER"}]:</label>
                     <input autocomplete="off" type="text"
                            class="form-control"
                            size="20" maxlength="50" id="fcpo_cc_cardholder" name="dynvalue[fcpo_kkcardholder]"

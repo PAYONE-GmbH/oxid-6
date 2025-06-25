@@ -43,7 +43,7 @@
             <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="FCPO_CONFIG_GROUP_CONN"}]</b></a>
             <dl>
                 <dt>
-                    <input type="text" class="txt" name="confstrs[sFCPOMerchantID]" value="[{$confstrs.sFCPOMerchantID}]" [{$readonly}]>
+                    <input aria-label="Merchand ID" type="text" class="txt" name="confstrs[sFCPOMerchantID]" value="[{$confstrs.sFCPOMerchantID}]" [{$readonly}]>
                     [{oxinputhelp ident="FCPO_HELP_MERCHANTID"}]
                 </dt>
                 <dd>
@@ -53,7 +53,7 @@
             </dl>
             <dl>
                 <dt>
-                    <input type="text" class="txt" name="confstrs[sFCPOPortalID]" value="[{$confstrs.sFCPOPortalID}]" [{$readonly}]>
+                    <input aria-label="Portal ID" type="text" class="txt" name="confstrs[sFCPOPortalID]" value="[{$confstrs.sFCPOPortalID}]" [{$readonly}]>
                     [{oxinputhelp ident="FCPO_HELP_PORTALID"}]
                 </dt>
                 <dd>
@@ -63,7 +63,7 @@
             </dl>
             <dl>
                 <dt>
-                    <input type="text" class="txt" name="confstrs[sFCPOPortalKey]" value="[{$confstrs.sFCPOPortalKey}]" [{$readonly}]>
+                    <input aria-label="Portal key" type="text" class="txt" name="confstrs[sFCPOPortalKey]" value="[{$confstrs.sFCPOPortalKey}]" [{$readonly}]>
                     [{oxinputhelp ident="FCPO_HELP_PORTALKEY"}]
                 </dt>
                 <dd>
@@ -73,7 +73,7 @@
             </dl>
             <dl>
                 <dt>
-                    <input type="text" class="txt" name="confstrs[sFCPOSubAccountID]" value="[{$confstrs.sFCPOSubAccountID}]" [{$readonly}]>
+                    <input aria-label="Sub-account ID" type="text" class="txt" name="confstrs[sFCPOSubAccountID]" value="[{$confstrs.sFCPOSubAccountID}]" [{$readonly}]>
                     [{oxinputhelp ident="FCPO_HELP_SUBACCOUNTID"}]
                 </dt>
                 <dd>
@@ -83,7 +83,7 @@
             </dl>
             <dl>
                 <dt>
-                    <input type="text" class="txt" name="confstrs[sFCPORefPrefix]" value="[{$confstrs.sFCPORefPrefix}]" [{$readonly}]>
+                    <input aria-label="Order reference prefix" type="text" class="txt" name="confstrs[sFCPORefPrefix]" value="[{$confstrs.sFCPORefPrefix}]" [{$readonly}]>
                     [{oxinputhelp ident="FCPO_HELP_REFPREFIX"}]
                 </dt>
                 <dd>
@@ -100,7 +100,7 @@
             <dl>
                 <dt>
                     <input type="hidden" name="confbools[blFCPOSendArticlelist]" value="false">
-                    <input type="checkbox" name="confbools[blFCPOSendArticlelist]" value="true" [{if ($confbools.blFCPOSendArticlelist)}]checked[{/if}]>
+                    <input aria-label="Set Send article list" type="checkbox" name="confbools[blFCPOSendArticlelist]" value="true" [{if ($confbools.blFCPOSendArticlelist)}]checked[{/if}]>
                     [{oxinputhelp ident="FCPO_HELP_SEND_ARTICLELIST"}]
                 </dt>
                 <dd>
@@ -111,7 +111,7 @@
             <dl>
                 <dt>
                     <input type="hidden" name="confbools[blFCPOPresaveOrder]" value="false">
-                    <input type="checkbox" name="confbools[blFCPOPresaveOrder]" value="true" [{if ($confbools.blFCPOPresaveOrder)}]checked[{/if}] onclick="fcpoHandlePresaveOrderCheckbox(this);">
+                    <input aria-label="Set pre-save order" type="checkbox" name="confbools[blFCPOPresaveOrder]" value="true" [{if ($confbools.blFCPOPresaveOrder)}]checked[{/if}] onclick="fcpoHandlePresaveOrderCheckbox(this);">
                     [{oxinputhelp ident="FCPO_HELP_PRESAVE_ORDER"}]
                 </dt>
                 <dd>
@@ -123,8 +123,8 @@
                 <dt></dt>
                 <dd>
                     [{oxmultilang ident="FCPO_REDUCE_STOCK"}] [{oxinputhelp ident="FCPO_HELP_REDUCE_STOCK"}]<br>
-                    <input type="radio" name="confbools[blFCPOReduceStock]" value="0" [{if $confbools.blFCPOReduceStock == '0' || !$confbools.blFCPOReduceStock}]checked[{/if}]> [{oxmultilang ident="FCPO_REDUCE_STOCK_BEFORE"}]<br>
-                    <input type="radio" name="confbools[blFCPOReduceStock]" value="1" [{if $confbools.blFCPOReduceStock == '1'}]checked[{/if}]> [{oxmultilang ident="FCPO_REDUCE_STOCK_AFTER"}]                    
+                    <input aria-label="Set Reduce stock before ordering" type="radio" name="confbools[blFCPOReduceStock]" value="0" [{if $confbools.blFCPOReduceStock == '0' || !$confbools.blFCPOReduceStock}]checked[{/if}]> [{oxmultilang ident="FCPO_REDUCE_STOCK_BEFORE"}]<br>
+                    <input aria-label="Set Reduce stock after ordering" type="radio" name="confbools[blFCPOReduceStock]" value="1" [{if $confbools.blFCPOReduceStock == '1'}]checked[{/if}]> [{oxmultilang ident="FCPO_REDUCE_STOCK_AFTER"}]
                 </dd>
                 <div class="spacer"></div>
             </dl>
@@ -145,11 +145,11 @@
                 <dt>Visa</dt>
                 <dd style="margin-top: 4px; margin-left: 150px;">
                     <input type="hidden" name="confbools[blFCPOVisaActivated]" value="false">
-                    <input type="checkbox" name="confbools[blFCPOVisaActivated]" value="true"  [{if ($confbools.blFCPOVisaActivated)}]checked[{/if}]>
+                    <input aria-label="Set Visa card activated" type="checkbox" name="confbools[blFCPOVisaActivated]" value="true"  [{if ($confbools.blFCPOVisaActivated)}]checked[{/if}]>
                     <input type="button" onclick="JavaScript:showDialog('[{$oView->fcGetAdminSeperator()}]cl=fcpayone_main&amp;aoc=1&amp;oxid=V&amp;type=cc');" class="" value="[{oxmultilang ident="GENERAL_ASSIGNCOUNTRIES"}]">
                     [{oxinputhelp ident="FCPO_HELP_ASSIGNCOUNTRIES"}]
-                    <input type="radio" name="confbools[blFCPOCCVLive]" value="1" [{if $confbools.blFCPOCCVLive == '1'}]checked[{/if}]> <strong>Live</strong>
-                    <input type="radio" name="confbools[blFCPOCCVLive]" value="0" [{if $confbools.blFCPOCCVLive == '0' || !$confbools.blFCPOCCVLive}]checked[{/if}]> Test
+                    <input aria-label="Set Visa card live mode" type="radio" name="confbools[blFCPOCCVLive]" value="1" [{if $confbools.blFCPOCCVLive == '1'}]checked[{/if}]> <strong>Live</strong>
+                    <input aria-label="Set Visa card test mode" type="radio" name="confbools[blFCPOCCVLive]" value="0" [{if $confbools.blFCPOCCVLive == '0' || !$confbools.blFCPOCCVLive}]checked[{/if}]> Test
                 </dd>
                 <div class="spacer"></div>
             </dl>            
@@ -157,11 +157,11 @@
                 <dt>Mastercard</dt>
                 <dd style="margin-top: 4px; margin-left: 150px;">
                     <input type="hidden" name="confbools[blFCPOMastercardActivated]" value="false">
-                    <input type="checkbox" name="confbools[blFCPOMastercardActivated]" value="true"  [{if ($confbools.blFCPOMastercardActivated)}]checked[{/if}]>
+                    <input aria-label="Set Mastercard card activated" type="checkbox" name="confbools[blFCPOMastercardActivated]" value="true"  [{if ($confbools.blFCPOMastercardActivated)}]checked[{/if}]>
                     <input type="button" onclick="JavaScript:showDialog('[{$oView->fcGetAdminSeperator()}]cl=fcpayone_main&amp;aoc=1&amp;oxid=M&amp;type=cc');" class="" value="[{oxmultilang ident="GENERAL_ASSIGNCOUNTRIES"}]">
                     [{oxinputhelp ident="FCPO_HELP_ASSIGNCOUNTRIES"}]
-                    <input type="radio" name="confbools[blFCPOCCMLive]" value="1" [{if $confbools.blFCPOCCMLive == '1'}]checked[{/if}]> <strong>Live</strong>
-                    <input type="radio" name="confbools[blFCPOCCMLive]" value="0" [{if $confbools.blFCPOCCMLive == '0' || !$confbools.blFCPOCCMLive}]checked[{/if}]> Test
+                    <input aria-label="Set Mastercard card live mode" type="radio" name="confbools[blFCPOCCMLive]" value="1" [{if $confbools.blFCPOCCMLive == '1'}]checked[{/if}]> <strong>Live</strong>
+                    <input aria-label="Set Mastercard card test mode" type="radio" name="confbools[blFCPOCCMLive]" value="0" [{if $confbools.blFCPOCCMLive == '0' || !$confbools.blFCPOCCMLive}]checked[{/if}]> Test
                 </dd>
                 <div class="spacer"></div>
             </dl> 
@@ -169,11 +169,11 @@
                 <dt>Amex</dt>
                 <dd style="margin-top: 4px; margin-left: 150px;">
                     <input type="hidden" name="confbools[blFCPOAmexActivated]" value="false">
-                    <input type="checkbox" name="confbools[blFCPOAmexActivated]" value="true"  [{if ($confbools.blFCPOAmexActivated)}]checked[{/if}]>
+                    <input aria-label="Set Amex card activated" type="checkbox" name="confbools[blFCPOAmexActivated]" value="true"  [{if ($confbools.blFCPOAmexActivated)}]checked[{/if}]>
                     <input type="button" onclick="JavaScript:showDialog('[{$oView->fcGetAdminSeperator()}]cl=fcpayone_main&amp;aoc=1&amp;oxid=A&amp;type=cc');" class="" value="[{oxmultilang ident="GENERAL_ASSIGNCOUNTRIES"}]">
                     [{oxinputhelp ident="FCPO_HELP_ASSIGNCOUNTRIES"}]
-                    <input type="radio" name="confbools[blFCPOCCALive]" value="1" [{if $confbools.blFCPOCCALive == '1'}]checked[{/if}]> <strong>Live</strong>
-                    <input type="radio" name="confbools[blFCPOCCALive]" value="0" [{if $confbools.blFCPOCCALive == '0' || !$confbools.blFCPOCCALive}]checked[{/if}]> Test
+                    <input aria-label="Set Amex card live mode" type="radio" name="confbools[blFCPOCCALive]" value="1" [{if $confbools.blFCPOCCALive == '1'}]checked[{/if}]> <strong>Live</strong>
+                    <input aria-label="Set Amex card test mode" type="radio" name="confbools[blFCPOCCALive]" value="0" [{if $confbools.blFCPOCCALive == '0' || !$confbools.blFCPOCCALive}]checked[{/if}]> Test
                 </dd>
                 <div class="spacer"></div>
             </dl> 
@@ -181,11 +181,11 @@
                 <dt>Diners</dt>
                 <dd style="margin-top: 4px; margin-left: 150px;">
                     <input type="hidden" name="confbools[blFCPODinersActivated]" value="false">
-                    <input type="checkbox" name="confbools[blFCPODinersActivated]" value="true"  [{if ($confbools.blFCPODinersActivated)}]checked[{/if}]>
+                    <input aria-label="Set Diners card activated" type="checkbox" name="confbools[blFCPODinersActivated]" value="true"  [{if ($confbools.blFCPODinersActivated)}]checked[{/if}]>
                     <input type="button" onclick="JavaScript:showDialog('[{$oView->fcGetAdminSeperator()}]cl=fcpayone_main&amp;aoc=1&amp;oxid=D&amp;type=cc');" class="" value="[{oxmultilang ident="GENERAL_ASSIGNCOUNTRIES"}]">
                     [{oxinputhelp ident="FCPO_HELP_ASSIGNCOUNTRIES"}]
-                    <input type="radio" name="confbools[blFCPOCCDLive]" value="1" [{if $confbools.blFCPOCCDLive == '1'}]checked[{/if}]> <strong>Live</strong>
-                    <input type="radio" name="confbools[blFCPOCCDLive]" value="0" [{if $confbools.blFCPOCCDLive == '0' || !$confbools.blFCPOCCDLive}]checked[{/if}]> Test
+                    <input aria-label="Set Diners card live mode" type="radio" name="confbools[blFCPOCCDLive]" value="1" [{if $confbools.blFCPOCCDLive == '1'}]checked[{/if}]> <strong>Live</strong>
+                    <input aria-label="Set Diners card test mode" type="radio" name="confbools[blFCPOCCDLive]" value="0" [{if $confbools.blFCPOCCDLive == '0' || !$confbools.blFCPOCCDLive}]checked[{/if}]> Test
                 </dd>
                 <div class="spacer"></div>
             </dl> 
@@ -193,11 +193,11 @@
                 <dt>JCB</dt>
                 <dd style="margin-top: 4px; margin-left: 150px;">
                     <input type="hidden" name="confbools[blFCPOJCBActivated]" value="false">
-                    <input type="checkbox" name="confbools[blFCPOJCBActivated]" value="true"  [{if ($confbools.blFCPOJCBActivated)}]checked[{/if}]>
+                    <input aria-label="Set JCB card activated" type="checkbox" name="confbools[blFCPOJCBActivated]" value="true"  [{if ($confbools.blFCPOJCBActivated)}]checked[{/if}]>
                     <input type="button" onclick="JavaScript:showDialog('[{$oView->fcGetAdminSeperator()}]cl=fcpayone_main&amp;aoc=1&amp;oxid=J&amp;type=cc');" class="" value="[{oxmultilang ident="GENERAL_ASSIGNCOUNTRIES"}]">
                     [{oxinputhelp ident="FCPO_HELP_ASSIGNCOUNTRIES"}]
-                    <input type="radio" name="confbools[blFCPOCCJLive]" value="1" [{if $confbools.blFCPOCCJLive == '1'}]checked[{/if}]> <strong>Live</strong>
-                    <input type="radio" name="confbools[blFCPOCCJLive]" value="0" [{if $confbools.blFCPOCCJLive == '0' || !$confbools.blFCPOCCJLive}]checked[{/if}]> Test
+                    <input aria-label="Set JCB card live mode" type="radio" name="confbools[blFCPOCCJLive]" value="1" [{if $confbools.blFCPOCCJLive == '1'}]checked[{/if}]> <strong>Live</strong>
+                    <input aria-label="Set JCB card test mode" type="radio" name="confbools[blFCPOCCJLive]" value="0" [{if $confbools.blFCPOCCJLive == '0' || !$confbools.blFCPOCCJLive}]checked[{/if}]> Test
                 </dd>
                 <div class="spacer"></div>
             </dl> 
@@ -205,11 +205,11 @@
                 <dt>Carte Bleue</dt>
                 <dd style="margin-top: 4px; margin-left: 150px;">
                 <input type="hidden" name="confbools[blFCPOCarteBleueActivated]" value="false">
-                <input type="checkbox" name="confbools[blFCPOCarteBleueActivated]" value="true"  [{if ($confbools.blFCPOCarteBleueActivated)}]checked[{/if}]>
+                <input aria-label="Set Carte Bleue card activated" type="checkbox" name="confbools[blFCPOCarteBleueActivated]" value="true"  [{if ($confbools.blFCPOCarteBleueActivated)}]checked[{/if}]>
                 <input type="button" onclick="JavaScript:showDialog('[{$oView->fcGetAdminSeperator()}]cl=fcpayone_main&amp;aoc=1&amp;oxid=B&amp;type=cc');" class="" value="[{oxmultilang ident="GENERAL_ASSIGNCOUNTRIES"}]">
                 [{oxinputhelp ident="FCPO_HELP_ASSIGNCOUNTRIES"}]
-                <input type="radio" name="confbools[blFCPOCCBLive]" value="1" [{if $confbools.blFCPOCCBLive == '1'}]checked[{/if}]> <strong>Live</strong>
-                <input type="radio" name="confbools[blFCPOCCBLive]" value="0" [{if $confbools.blFCPOCCBLive == '0' || !$confbools.blFCPOCCBLive}]checked[{/if}]> Test
+                <input aria-label="Set Carte Bleue card live mode" type="radio" name="confbools[blFCPOCCBLive]" value="1" [{if $confbools.blFCPOCCBLive == '1'}]checked[{/if}]> <strong>Live</strong>
+                <input aria-label="Set Carte Bleue card test mode" type="radio" name="confbools[blFCPOCCBLive]" value="0" [{if $confbools.blFCPOCCBLive == '0' || !$confbools.blFCPOCCBLive}]checked[{/if}]> Test
                 </dd>
                 <div class="spacer"></div>
             </dl>
@@ -221,7 +221,7 @@
             <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="FCPO_CONFIG_GROUP_CREDITCARD"}]</b></a>
             <dl>
                 <dt>
-                    <select name="confstrs[sFCPOCCType]">
+                    <select aria-label="Set Credit card form type" name="confstrs[sFCPOCCType]">
                         <option value="hosted" [{if $confstrs.sFCPOCCType == "hosted"}]SELECTED[{/if}]>hosted-Iframe</option>
                         <option value="ajax" [{if $confstrs.sFCPOCCType == "ajax"}]SELECTED[{/if}]>AJAX</option>
                     </select>
@@ -256,7 +256,7 @@
                                     </td>
                                     <td>
                                         [{assign var="sFieldIdent" value="sFCPOCC"|cat:$sField|cat:"Type"}]
-                                        <select name="confstrs[[{$sFieldIdent}]]">
+                                        <select aria-label="Credit card template field" name="confstrs[[{$sFieldIdent}]]">
                                             [{foreach from=$oView->getCCTypes($sField) key=sType item=sTitle}]
                                                 <option value="[{$sType}]" [{if $sType == $confstrs.$sFieldIdent}]selected[{/if}]>[{$sTitle}]</option>
                                             [{/foreach}]
@@ -264,15 +264,15 @@
                                     </td>
                                     <td>
                                         [{assign var="sFieldIdent" value="sFCPOCC"|cat:$sField|cat:"Count"}]                                        
-                                        <input type="text" class="txt" size="4" name="confstrs[[{$sFieldIdent}]]" value="[{$confstrs.$sFieldIdent}]" [{$readonly}]>
+                                        <input aria-label="Credit card template field" type="text" class="txt" size="4" name="confstrs[[{$sFieldIdent}]]" value="[{$confstrs.$sFieldIdent}]" [{$readonly}]>
                                     </td>
                                     <td>
                                         [{assign var="sFieldIdent" value="sFCPOCC"|cat:$sField|cat:"Max"}]
-                                        <input type="text" class="txt" size="4" name="confstrs[[{$sFieldIdent}]]" value="[{$confstrs.$sFieldIdent}]" [{$readonly}]>
+                                        <input aria-label="Credit card template field" type="text" class="txt" size="4" name="confstrs[[{$sFieldIdent}]]" value="[{$confstrs.$sFieldIdent}]" [{$readonly}]>
                                     </td>
                                     <td>
                                         [{assign var="sFieldIdentIframe" value="sFCPOCC"|cat:$sField|cat:"Iframe"}]
-                                        <select name="confstrs[[{$sFieldIdentIframe}]]" onchange="fcpoHandleSizeFields(this, '[{$sField}]')">
+                                        <select aria-label="Credit card template field" name="confstrs[[{$sFieldIdentIframe}]]" onchange="fcpoHandleSizeFields(this, '[{$sField}]')">
                                             [{foreach from=$oView->getCCStyles() key=sType item=sTitle}]
                                                 <option value="[{$sType}]" [{if $sType == $confstrs.$sFieldIdentIframe}]selected[{/if}]>[{$sTitle}]</option>
                                             [{/foreach}]
@@ -280,15 +280,15 @@
                                     </td>
                                     <td>
                                         [{assign var="sFieldIdent" value="sFCPOCC"|cat:$sField|cat:"Width"}]
-                                        <input id="input_width_[{$sField}]" type="text" class="txt" size="4" name="confstrs[[{$sFieldIdent}]]" value="[{$confstrs.$sFieldIdent}]" [{$readonly}] [{if $confstrs.$sFieldIdentIframe != "custom"}]disabled[{/if}]>
+                                        <input aria-label="Credit card template field" id="input_width_[{$sField}]" type="text" class="txt" size="4" name="confstrs[[{$sFieldIdent}]]" value="[{$confstrs.$sFieldIdent}]" [{$readonly}] [{if $confstrs.$sFieldIdentIframe != "custom"}]disabled[{/if}]>
                                     </td>
                                     <td>
                                         [{assign var="sFieldIdent" value="sFCPOCC"|cat:$sField|cat:"Height"}]
-                                        <input id="input_height_[{$sField}]" type="text" class="txt" size="4" name="confstrs[[{$sFieldIdent}]]" value="[{$confstrs.$sFieldIdent}]" [{$readonly}] [{if $confstrs.$sFieldIdentIframe != "custom"}]disabled[{/if}]>
+                                        <input aria-label="Credit card template field" id="input_height_[{$sField}]" type="text" class="txt" size="4" name="confstrs[[{$sFieldIdent}]]" value="[{$confstrs.$sFieldIdent}]" [{$readonly}] [{if $confstrs.$sFieldIdentIframe != "custom"}]disabled[{/if}]>
                                     </td>
                                     <td>
                                         [{assign var="sFieldIdentCSS" value="sFCPOCC"|cat:$sField|cat:"Style"}]
-                                        <select name="confstrs[[{$sFieldIdentCSS}]]" onchange="fcpoHandleCss(this, '[{$sField}]')">
+                                        <select aria-label="Credit card template field" name="confstrs[[{$sFieldIdentCSS}]]" onchange="fcpoHandleCss(this, '[{$sField}]')">
                                             [{foreach from=$oView->getCCStyles() key=sType item=sTitle}]
                                                 <option value="[{$sType}]" [{if $sType == $confstrs.$sFieldIdentCSS}]selected[{/if}]>[{$sTitle}]</option>
                                             [{/foreach}]
@@ -296,7 +296,7 @@
                                     </td>
                                     <td>
                                         [{assign var="sFieldIdent" value="sFCPOCC"|cat:$sField|cat:"CSS"}]
-                                        <input id="input_css_[{$sField}]" type="text" class="txt" size="50" name="confstrs[[{$sFieldIdent}]]" value="[{$confstrs.$sFieldIdent}]" [{$readonly}] [{if $confstrs.$sFieldIdentCSS != "custom"}]disabled[{/if}]>
+                                        <input aria-label="Credit card template field" id="input_css_[{$sField}]" type="text" class="txt" size="50" name="confstrs[[{$sFieldIdent}]]" value="[{$confstrs.$sFieldIdent}]" [{$readonly}] [{if $confstrs.$sFieldIdentCSS != "custom"}]disabled[{/if}]>
                                         [{if $sFieldIdent=='sFCPOCCCVCCSS'}]
                                             <input type="hidden" name="confbools[blFCPOCCUseCvc]" value="true">
                                         [{/if}]
@@ -313,8 +313,8 @@
                             </tr>
                             <tr>
                                 <td>[{oxmultilang ident="FCPO_CC_STANDARD_FIELDS"}]</td>
-                                <td><input type="text" class="txt" size="50" name="confstrs[sFCPOCCStandardInput]" value="[{$confstrs.sFCPOCCStandardInput}]" [{$readonly}]></td>
-                                <td><input type="text" class="txt" size="50" name="confstrs[sFCPOCCStandardOutput]" value="[{$confstrs.sFCPOCCStandardOutput}]" [{$readonly}]></td>
+                                <td><input aria-label="Credit card template field" type="text" class="txt" size="50" name="confstrs[sFCPOCCStandardInput]" value="[{$confstrs.sFCPOCCStandardInput}]" [{$readonly}]></td>
+                                <td><input aria-label="Credit card template field" type="text" class="txt" size="50" name="confstrs[sFCPOCCStandardOutput]" value="[{$confstrs.sFCPOCCStandardOutput}]" [{$readonly}]></td>
                             </tr>
                             <tr>
                                 <td>[{oxmultilang ident="FCPO_CC_STANDARD_IFRAME"}]</td>
@@ -325,8 +325,8 @@
                                             <td>[{oxmultilang ident="FCPO_CC_HEADER_HEIGHT"}]</td>
                                         </tr>
                                         <tr>
-                                            <td><input type="text" class="txt" size="4" name="confstrs[sFCPOCCIframeWidth]" value="[{$confstrs.sFCPOCCIframeWidth}]" [{$readonly}]></td>
-                                            <td><input type="text" class="txt" size="4" name="confstrs[sFCPOCCIframeHeight]" value="[{$confstrs.sFCPOCCIframeHeight}]" [{$readonly}]></td>
+                                            <td><input aria-label="Credit card template field" type="text" class="txt" size="4" name="confstrs[sFCPOCCIframeWidth]" value="[{$confstrs.sFCPOCCIframeWidth}]" [{$readonly}]></td>
+                                            <td><input aria-label="Credit card template field" type="text" class="txt" size="4" name="confstrs[sFCPOCCIframeHeight]" value="[{$confstrs.sFCPOCCIframeHeight}]" [{$readonly}]></td>
                                         </tr>
                                     </table>
                                 </td>
@@ -342,13 +342,13 @@
                                 <td>[{oxmultilang ident="FCPO_CC_ACTIVE"}]</td>
                                 <td>
                                     <input type="hidden" name="confbools[blFCPOCCErrorsActive]" value="false">
-                                    <input type="checkbox" name="confbools[blFCPOCCErrorsActive]" value="true"  [{if ($confbools.blFCPOCCErrorsActive)}]checked[{/if}]>
+                                    <input aria-label="Credit card template field" type="checkbox" name="confbools[blFCPOCCErrorsActive]" value="true"  [{if ($confbools.blFCPOCCErrorsActive)}]checked[{/if}]>
                                 </td>
                             </tr>
                             <tr>
                                 <td>[{oxmultilang ident="FCPO_CC_LANGUAGE"}]</td>
                                 <td>
-                                    <select name="confstrs[sFCPOCCErrorsLang]">
+                                    <select aria-label="Credit card template field" name="confstrs[sFCPOCCErrorsLang]">
                                         <option value="de" [{if $confstrs.sFCPOCCErrorsLang == "de"}]selected[{/if}]>[{oxmultilang ident="FCPO_CC_ERRORLANG_DE"}]</option>
                                         <option value="en" [{if $confstrs.sFCPOCCErrorsLang == "en"}]selected[{/if}]>[{oxmultilang ident="FCPO_CC_ERRORLANG_EN"}]</option>
                                     </select>
@@ -375,7 +375,7 @@
             </dl>
             <dl style="border-top:0px;">
                 <dt>
-                    <select class="select" multiple size="4" name="confarrs[aFCPODebitCountries][]" [{$readonly}]>
+                    <select aria-label="Set direct debit countries" class="select" multiple size="4" name="confarrs[aFCPODebitCountries][]" [{$readonly}]>
                         [{foreach from=$oView->fcpoGetCountryList() item=oCountry}]
                             <option value="[{$oCountry->oxcountry__oxid->value}]"[{if $oCountry->selected}] selected[{/if}]>[{$oCountry->oxcountry__oxtitle->value}]</option>
                         [{/foreach}]
@@ -398,7 +398,7 @@
             <dl style="border-top:0px;">
                 <dt>
                     <input type="hidden" name="confbools[blFCPODebitBICMandatory]" value="false">
-                    <input type="checkbox" name="confbools[blFCPODebitBICMandatory]" value="true"  [{if ($confbools.blFCPODebitBICMandatory)}]checked[{/if}]>
+                    <input aria-label="Set direct debit BIC requested" type="checkbox" name="confbools[blFCPODebitBICMandatory]" value="true"  [{if ($confbools.blFCPODebitBICMandatory)}]checked[{/if}]>
                 </dt>
                 <dd>
                     [{oxmultilang ident="FCPO_CONFIG_DEBIT_BIC_MANDATORY"}]
@@ -417,7 +417,7 @@
             <dl style="border-top:0px;">
                 <dt>
                     <input type="hidden" name="confbools[blFCPOMandateIssuance]" value="false">
-                    <input type="checkbox" name="confbools[blFCPOMandateIssuance]" value="true"  [{if ($confbools.blFCPOMandateIssuance)}]checked[{/if}]>
+                    <input aria-label="Set direct debit mandate issuance" type="checkbox" name="confbools[blFCPOMandateIssuance]" value="true"  [{if ($confbools.blFCPOMandateIssuance)}]checked[{/if}]>
                 </dt>
                 <dd>
                     [{oxmultilang ident="FCPO_CONFIG_DEBIT_MANDATE_ACTIVE"}]
@@ -436,7 +436,7 @@
             <dl style="border-top:0px;">
                 <dt>
                     <input type="hidden" name="confbools[blFCPOMandateDownload]" value="false">
-                    <input type="checkbox" name="confbools[blFCPOMandateDownload]" value="true"  [{if ($confbools.blFCPOMandateDownload)}]checked[{/if}]>
+                    <input aria-label="Set direct debit mandate download" type="checkbox" name="confbools[blFCPOMandateDownload]" value="true"  [{if ($confbools.blFCPOMandateDownload)}]checked[{/if}]>
                 </dt>
                 <dd>
                     [{oxmultilang ident="FCPO_CONFIG_DEBIT_MANDATE_DOWNLOAD_ACTIVE"}]
@@ -452,7 +452,7 @@
             <dl>
                 <dt>
                     <input type="hidden" name="confbools[blFCPOPayPalDelAddress]" value="false">
-                    <input type="checkbox" name="confbools[blFCPOPayPalDelAddress]" value="true" [{if ($confbools.blFCPOPayPalDelAddress)}]checked[{/if}]>
+                    <input aria-label="Set Paypal config field" type="checkbox" name="confbools[blFCPOPayPalDelAddress]" value="true" [{if ($confbools.blFCPOPayPalDelAddress)}]checked[{/if}]>
                     [{oxinputhelp ident="FCPO_HELP_PAYPAL_DELADDRESS"}]
                 </dt>
                 <dd>
@@ -482,10 +482,10 @@
                             <tr>
                                 <td>
                                     <input type="hidden" name="logos[[{$aLogo.oxid}]][active]" value="0">
-                                    <input type="checkbox" name="logos[[{$aLogo.oxid}]][active]" value="1" [{if ($aLogo.active)}]checked[{/if}]>
+                                    <input aria-label="Set Paypal config field" type="checkbox" name="logos[[{$aLogo.oxid}]][active]" value="1" [{if ($aLogo.active)}]checked[{/if}]>
                                 </td>
                                 <td>
-                                    <select name="logos[[{$aLogo.oxid}]][langid]" class="editinput">
+                                    <select aria-label="Set Paypal config field" name="logos[[{$aLogo.oxid}]][langid]" class="editinput">
                                         [{foreach from=$languages item=lang}]
                                             <option value="[{$lang->id}]" [{if $lang->id == $aLogo.langid}]SELECTED[{/if}]>[{$lang->name}]</option>
                                         [{/foreach}]
@@ -495,14 +495,14 @@
                                     [{if $aLogo.logo == ''}]
                                         [{oxmultilang ident="FCPO_PAYPAL_LOGOS_NOT_EXISTING"}]
                                     [{else}]
-                                        <img src="[{$aLogo.logo}]">
+                                        <img alt="Logo" src="[{$aLogo.logo}]">
                                     [{/if}]
                                 </td>
                                 <td>
                                     <input type="file" name="logo_[{$aLogo.oxid}]">
                                 </td>
                                 <td>
-                                    <input type="radio" name="defaultlogo" value="[{$aLogo.oxid}]" [{if $aLogo.default == 1}]CHECKED[{/if}]>
+                                    <input aria-label="Set Paypal config field" type="radio" name="defaultlogo" value="[{$aLogo.oxid}]" [{if $aLogo.default == 1}]CHECKED[{/if}]>
                                 </td>
                             </tr>
                         [{/foreach}]
@@ -520,7 +520,7 @@
             <dl>
                 <dt>
                     <input type="hidden" name="confbools[blFCPOPayPalV2DelAddress]" value="false">
-                    <input type="checkbox" name="confbools[blFCPOPayPalV2DelAddress]" value="true" [{if $oView->isPayPalV2DelAddressActive()}]checked[{/if}]>
+                    <input aria-label="Set Paypal config field" type="checkbox" name="confbools[blFCPOPayPalV2DelAddress]" value="true" [{if $oView->isPayPalV2DelAddressActive()}]checked[{/if}]>
                     [{oxinputhelp ident="FCPO_HELP_PAYPALV2_DELADDRESS"}]
                 </dt>
                 <dd>
@@ -531,7 +531,7 @@
             <dl>
                 <dt>
                     <input type="hidden" name="confbools[blFCPOPayPalV2BNPL]" value="false">
-                    <input type="checkbox" name="confbools[blFCPOPayPalV2BNPL]" value="true" [{if ($confbools.blFCPOPayPalV2BNPL)}]checked[{/if}]>
+                    <input aria-label="Set Paypal config field" type="checkbox" name="confbools[blFCPOPayPalV2BNPL]" value="true" [{if ($confbools.blFCPOPayPalV2BNPL)}]checked[{/if}]>
                 </dt>
                 <dd>
                     [{oxmultilang ident="FCPO_PAYPALV2_BNPL"}]
@@ -541,7 +541,7 @@
 
             <dl>
                 <dt>
-                    <input type="text" class="txt" name="confstrs[blFCPOPayPalV2MerchantID]" value="[{$confstrs.blFCPOPayPalV2MerchantID}]" [{$readonly}]>
+                    <input aria-label="Set Paypal config field" type="text" class="txt" name="confstrs[blFCPOPayPalV2MerchantID]" value="[{$confstrs.blFCPOPayPalV2MerchantID}]" [{$readonly}]>
                     [{oxinputhelp ident="FCPO_HELP_PAYPALV2_MERCHANT_ID"}]
                 </dt>
                 <dd>
@@ -552,7 +552,7 @@
 
             <dl>
                 <dt>
-                    <select name="confstrs[blFCPOPayPalV2ButtonColor]">
+                    <select aria-label="Set Paypal config field" name="confstrs[blFCPOPayPalV2ButtonColor]">
                         <option value="gold" [{if $confstrs.blFCPOPayPalV2ButtonColor == "gold"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_PAYPALV2_BUTTON_GOLD"}]</option>
                         <option value="blue" [{if $confstrs.blFCPOPayPalV2ButtonColor == "blue"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_PAYPALV2_BUTTON_BLUE"}]</option>
                         <option value="silver" [{if $confstrs.blFCPOPayPalV2ButtonColor == "silver"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_PAYPALV2_BUTTON_SILVER"}]</option>
@@ -568,7 +568,7 @@
 
             <dl>
                 <dt>
-                    <select name="confstrs[blFCPOPayPalV2ButtonShape]">
+                    <select aria-label="Set Paypal config field" name="confstrs[blFCPOPayPalV2ButtonShape]">
                         <option value="rect" [{if $confstrs.blFCPOPayPalV2ButtonShape == "rect"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_PAYPALV2_BUTTON_RECT"}]</option>
                         <option value="pill" [{if $confstrs.blFCPOPayPalV2ButtonShape == "pill"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_PAYPALV2_BUTTON_PILL"}]</option>
                         <option value="sharp" [{if $confstrs.blFCPOPayPalV2ButtonShape == "sharp"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_PAYPALV2_BUTTON_SHARP"}]</option>
@@ -588,7 +588,7 @@
             <dl>
                 <dt>
                     <input type="hidden" name="confbools[blFCPOPayolutionB2BMode]" value="false">
-                    <input type="checkbox" class="txt" name="confbools[blFCPOPayolutionB2BMode]" value="true" [{if $confbools.blFCPOPayolutionB2BMode}]checked[{/if}] [{$readonly}]>
+                    <input aria-label="Set Unzer B2B mode" type="checkbox" class="txt" name="confbools[blFCPOPayolutionB2BMode]" value="true" [{if $confbools.blFCPOPayolutionB2BMode}]checked[{/if}] [{$readonly}]>
                     [{oxinputhelp ident="FCPO_HELP_PAYOLUTION_B2BMODE"}]
                 </dt>
                 <dd>
@@ -598,7 +598,7 @@
             </dl>
             <dl>
                 <dt>
-                    <input type="text" class="txt" name="confstrs[sFCPOPayolutionCompany]" value="[{$confstrs.sFCPOPayolutionCompany}]" [{$readonly}]>
+                    <input aria-label="Set Unzer config field" type="text" class="txt" name="confstrs[sFCPOPayolutionCompany]" value="[{$confstrs.sFCPOPayolutionCompany}]" [{$readonly}]>
                     [{oxinputhelp ident="FCPO_HELP_PAYOLUTION_COMPANY"}]
                 </dt>
                 <dd>
@@ -608,7 +608,7 @@
             </dl>
             <dl>
                 <dt>
-                    <input type="text" class="txt" name="confstrs[sFCPOPayolutionAuthUser]" value="[{$confstrs.sFCPOPayolutionAuthUser}]" [{$readonly}]>
+                    <input aria-label="Set Unzer authorization user" type="text" class="txt" name="confstrs[sFCPOPayolutionAuthUser]" value="[{$confstrs.sFCPOPayolutionAuthUser}]" [{$readonly}]>
                     [{oxinputhelp ident="FCPO_HELP_PAYOLUTION_AUTH_USER"}]
                 </dt>
                 <dd>
@@ -618,7 +618,7 @@
             </dl>
             <dl>
                 <dt>
-                    <input type="text" class="txt" name="confstrs[sFCPOPayolutionAuthSecret]" value="[{$confstrs.sFCPOPayolutionAuthSecret}]" [{$readonly}]>
+                    <input aria-label="Set Unzer authorization secret" type="text" class="txt" name="confstrs[sFCPOPayolutionAuthSecret]" value="[{$confstrs.sFCPOPayolutionAuthSecret}]" [{$readonly}]>
                     [{oxinputhelp ident="FCPO_HELP_PAYOLUTION_AUTH_SECRET"}]
                 </dt>
                 <dd>
@@ -641,7 +641,7 @@
             <dl>
                 <dt>
                     <input type="hidden" name="confbools[blFCPORatePayB2BMode]" value="false">
-                    <input type="checkbox" class="txt" name="confbools[blFCPORatePayB2BMode]" value="true" [{if $confbools.blFCPORatePayB2BMode}]checked[{/if}] [{$readonly}]>
+                    <input aria-label="Set Ratepay B2B mode" type="checkbox" class="txt" name="confbools[blFCPORatePayB2BMode]" value="true" [{if $confbools.blFCPORatePayB2BMode}]checked[{/if}] [{$readonly}]>
                     [{oxinputhelp ident="FCPO_HELP_RATEPAY_B2BMODE"}]
                 </dt>
                 <dd>
@@ -651,7 +651,7 @@
             </dl>
             <dl>
                 <dt>
-                    <input type="text" class="txt" name="confstrs[sFCPORatePaySnippetID]" [{if $confstrs.sFCPORatePaySnippetID == '' || $confstrs.sFCPORatePaySnippetID == 'ratepay'  }] value="ratepay" [{else}]  value="[{$confstrs.sFCPORatePaySnippetID}]" [{/if}]>
+                    <input aria-label="Set Ratepay Snippet ID" type="text" class="txt" name="confstrs[sFCPORatePaySnippetID]" [{if $confstrs.sFCPORatePaySnippetID == '' || $confstrs.sFCPORatePaySnippetID == 'ratepay'  }] value="ratepay" [{else}]  value="[{$confstrs.sFCPORatePaySnippetID}]" [{/if}]>
                 </dt>
                 <dd>
                     Ratepay Snippet ID
@@ -669,22 +669,22 @@
                 <dl>
                     <dt style="padding-top: 10px;"></dt>
                     <dd>
-                        Shop-ID: <input type="text" class="edittext" name="aRatepayProfiles[[{$sOxid}]][shopid]" value="[{$aRatePayProfile.shopid}]">&nbsp;
+                        Shop-ID: <input aria-label="Set Ratepay config field" type="text" class="edittext" name="aRatepayProfiles[[{$sOxid}]][shopid]" value="[{$aRatePayProfile.shopid}]">&nbsp;
                         [{oxmultilang ident="FCPO_PROFILES_RATEPAY_CURRENCY"}]: 
-                        <select class="edittext" name="aRatepayProfiles[[{$sOxid}]][currency]">
+                        <select aria-label="Set Ratepay config field" class="edittext" name="aRatepayProfiles[[{$sOxid}]][currency]">
                             [{foreach from=$oView->fcpoGetCurrencyIso() item='sCurrentCurrencyIso'}]
                                 <option value="[{$sCurrentCurrencyIso}]" [{if $aRatePayProfile.currency == $sCurrentCurrencyIso}]selected[{/if}]>[{$sCurrentCurrencyIso}]</option>
                             [{/foreach}]
                         </select>&nbsp;
                         [{oxmultilang ident="FCPO_PROFILES_RATEPAY_PAYMENT"}]: 
-                        <select class="edittext" name="aRatepayProfiles[[{$sOxid}]][paymentid]">
+                        <select aria-label="Set Ratepay config field" class="edittext" name="aRatepayProfiles[[{$sOxid}]][paymentid]">
                             <option value="fcporp_bill" [{if $aRatePayProfile.OXPAYMENTID == 'fcporp_bill'}]selected[{/if}]>Ratepay Rechnung</option>
                             <option value="fcporp_debitnote" [{if $aRatePayProfile.OXPAYMENTID == 'fcporp_debitnote'}]selected[{/if}]>Ratepay Lastschrift</option>
                             <option value="fcporp_installment" [{if $aRatePayProfile.OXPAYMENTID == 'fcporp_installment'}]selected[{/if}]>Ratepay Ratenkauf</option>
                         </select>
                         <input type="submit" class="edittext" name="aRatepayProfiles[[{$sOxid}]][delete]" value="[{oxmultilang ident="FCPO_RATEPAY_DELETE_PROFILE"}]" onClick="Javascript:document.myedit.fnc.value='save'" [{$readonly}]><br>
                         [{if $aRatePayProfile.merchant_name != ''}]
-                            <input type="checkbox" value="[{$sOxid}]" onclick="Javascript:fcpoHandleRatePayShowDetails(this)"> [{oxmultilang ident="FCPO_RATEPAY_PROFILE_TOGGLE_DETAILS"}]
+                            <input aria-label="Set Ratepay config field" type="checkbox" value="[{$sOxid}]" onclick="Javascript:fcpoHandleRatePayShowDetails(this)"> [{oxmultilang ident="FCPO_RATEPAY_PROFILE_TOGGLE_DETAILS"}]
                         [{/if}]
                     </dd>
                     <div class="spacer"></div>
@@ -719,7 +719,7 @@
             <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="FCPO_CONFIG_GROUP_AMAZONPAY"}]</b></a>
             <dl>
                 <dt>
-                    <input type="text" class="txt" name="confstrs[sFCPOAmazonPaySellerId]" value="[{$confstrs.sFCPOAmazonPaySellerId}]" disabled>
+                    <input aria-label="Set AmazonPay seller ID" type="text" class="txt" name="confstrs[sFCPOAmazonPaySellerId]" value="[{$confstrs.sFCPOAmazonPaySellerId}]" disabled>
                     [{oxinputhelp ident="FCPO_HELP_AMAZONPAY_SELLERID"}]
                 </dt>
                 <dd>
@@ -729,7 +729,7 @@
             </dl>
             <dl>
                 <dt>
-                    <input type="text" class="txt" name="confstrs[sFCPOAmazonPayClientId]" value="[{$confstrs.sFCPOAmazonPayClientId}]" disabled>
+                    <input aria-label="Set AmazonPay client ID" type="text" class="txt" name="confstrs[sFCPOAmazonPayClientId]" value="[{$confstrs.sFCPOAmazonPayClientId}]" disabled>
                     [{oxinputhelp ident="FCPO_HELP_AMAZONPAY_CLIENTID"}]
                 </dt>
                 <dd>
@@ -744,7 +744,7 @@
             </dl>
             <dl>
                 <dt>
-                    <select name="confstrs[sFCPOAmazonButtonType]">
+                    <select aria-label="Set AmazonPay button type" name="confstrs[sFCPOAmazonButtonType]">
                         <option value="PwA" [{if $confstrs.sFCPOAmazonButtonType == "PwA"}]selected[{/if}]>[{oxmultilang ident="FCPO_AMAZONPAY_BUTTON_TYPE_PwA"}]</option>
                         <option value="Pay" [{if $confstrs.sFCPOAmazonButtonType == "Pay"}]selected[{/if}]>[{oxmultilang ident="FCPO_AMAZONPAY_BUTTON_TYPE_Pay"}]</option>
                         <option value="A" [{if $confstrs.sFCPOAmazonButtonType == "A"}]selected[{/if}]>[{oxmultilang ident="FCPO_AMAZONPAY_BUTTON_TYPE_A"}]</option>
@@ -757,7 +757,7 @@
             </dl>
             <dl>
                 <dt>
-                    <select name="confstrs[sFCPOAmazonButtonColor]">
+                    <select aria-label="Set AmazonPay button color" name="confstrs[sFCPOAmazonButtonColor]">
                         <option value="Gold" [{if $confstrs.sFCPOAmazonButtonColor == "Gold"}]selected[{/if}]>[{oxmultilang ident="FCPO_AMAZONPAY_BUTTON_COLOR_GOLD"}]</option>
                         <option value="LightGray" [{if $confstrs.sFCPOAmazonButtonColor == "LightGray"}]selected[{/if}]>[{oxmultilang ident="FCPO_AMAZONPAY_BUTTON_TYPE_LIGHT_GRAY"}]</option>
                         <option value="DarkGray" [{if $confstrs.sFCPOAmazonButtonColor == "DarkGray"}]selected[{/if}]>[{oxmultilang ident="FCPO_AMAZONPAY_BUTTON_TYPE_DARKGRAY"}]</option>
@@ -770,7 +770,7 @@
             </dl>
             <dl>
                 <dt>
-                    <select name="confstrs[sFCPOAmazonMode]">
+                    <select aria-label="Set AmazonPay mode" name="confstrs[sFCPOAmazonMode]">
                         <option value="alwayssync" [{if $confstrs.sFCPOAmazonMode == "alwayssync"}]selected[{/if}]>[{oxmultilang ident="FCPO_AMAZONPAY_MODE_ALWAYSSYNC"}]</option>
                         <option value="firstsyncthenasync" [{if $confstrs.sFCPOAmazonMode == "firstsyncthenasync"}]selected[{/if}]>[{oxmultilang ident="FCPO_AMAZONPAY_MODE_FIRSTSYNCTHENSYNC"}]</option>
                     </select>
@@ -782,7 +782,7 @@
             </dl>
             <dl>
                 <dt>
-                    <select name="confstrs[sFCPOAmazonLoginMode]">
+                    <select aria-label="Set AmazonPay login mode" name="confstrs[sFCPOAmazonLoginMode]">
                         <option value="auto" [{if $confstrs.sFCPOAmazonLoginMode == "auto"}]selected[{/if}]>[{oxmultilang ident="FCPO_AMAZONPAY_LOGINMODE_AUTO"}]</option>
                         <option value="popup" [{if $confstrs.sFCPOAmazonLoginMode == "popup"}]selected[{/if}]>[{oxmultilang ident="FCPO_AMAZONPAY_LOGINMODE_POPUP"}]</option>
                         <option value="redirect" [{if $confstrs.sFCPOAmazonLoginMode == "redirect"}]selected[{/if}]>[{oxmultilang ident="FCPO_AMAZONPAY_LOGINMODE_REDIRECT"}]</option>
@@ -802,7 +802,7 @@
 
             <dl>
                 <dt>
-                    <input type="text" class="txt" style="width: 210px" name="confstrs[sFCPOAplMerchantId]" value="[{$confstrs.sFCPOAplMerchantId}]" [{$readonly}]>
+                    <input aria-label="Set Appel Pay merchant ID" type="text" class="txt" style="width: 210px" name="confstrs[sFCPOAplMerchantId]" value="[{$confstrs.sFCPOAplMerchantId}]" [{$readonly}]>
                     [{oxinputhelp ident="FCPO_HELP_APPLE_PAY_MERCHANT_ID"}]
                 </dt>
                 <dd>
@@ -813,7 +813,7 @@
 
             <dl>
                 <dt>
-                    <input type="text" class="txt" style="width: 210px" name="confstrs[sFCPOAplCertificate]" value="[{$confstrs.sFCPOAplCertificate}]" [{$readonly}] id="fcpoAplCertificate">
+                    <input aria-label="Set Appel Pay certificate" type="text" class="txt" style="width: 210px" name="confstrs[sFCPOAplCertificate]" value="[{$confstrs.sFCPOAplCertificate}]" [{$readonly}] id="fcpoAplCertificate">
 
                     <input id="fcpoAplCertificateFile" type="file" accept=".pem" name="fcpoAplCertificateFile">
                     <script type="text/javascript">
@@ -835,7 +835,7 @@
 
             <dl>
                 <dt>
-                    <input type="text" class="txt" style="width: 210px" name="confstrs[sFCPOAplKey]" value="[{$confstrs.sFCPOAplKey}]" [{$readonly}] id="fcpoAplKey">
+                    <input aria-label="Set Appel Pay key" type="text" class="txt" style="width: 210px" name="confstrs[sFCPOAplKey]" value="[{$confstrs.sFCPOAplKey}]" [{$readonly}] id="fcpoAplKey">
                     <input id="fcpoAplKeyFile" type="file" name="fcpoAplKeyFile">
                     <script type="text/javascript">
                         $("fcpoAplKeyFile").onchange = function(e) {
@@ -846,7 +846,7 @@
                     [{oxinputhelp ident="FCPO_HELP_APPLE_PAY_KEY"}]
 
                     <br />
-                    <textarea name="fcpoAplKeyText"></textarea>
+                    <textarea aria-label="Set Appel Pay key content" name="fcpoAplKeyText"></textarea>
                 </dt>
                 <dd>
                     [{oxmultilang ident="FCPO_APPLE_PAY_KEY"}]
@@ -856,7 +856,7 @@
 
             <dl>
                 <dt>
-                    <input type="password" class="txt" style="width: 210px" name="confstrs[sFCPOAplPassword]" value="[{$confstrs.sFCPOAplPassword}]" [{$readonly}]>
+                    <input aria-label="Set Appel Pay password" type="password" class="txt" style="width: 210px" name="confstrs[sFCPOAplPassword]" value="[{$confstrs.sFCPOAplPassword}]" [{$readonly}]>
                     [{oxinputhelp ident="FCPO_HELP_APPLE_PAY_PASSWORD"}]
                 </dt>
                 <dd>
@@ -867,7 +867,7 @@
 
             <dl>
                 <dt>
-                    <select class="select" multiple size="4" name="confarrs[aFCPOAplCreditCards][]" [{$readonly}]>
+                    <select aria-label="Set Appel Pay credit cards" class="select" multiple size="4" name="confarrs[aFCPOAplCreditCards][]" [{$readonly}]>
                         [{foreach from=$oView->fcpoGetAplCreditCards() key=sCreditCardCode item=oCreditCardData}]
                         <option value="[{$sCreditCardCode}]"[{if $oCreditCardData->selected}] selected[{/if}]>[{$oCreditCardData->name}]</option>
                         [{/foreach}]
@@ -886,7 +886,7 @@
             <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="FCPO_CONFIG_GROUP_SECINVOICE"}]</b></a>
             <dl>
                 <dt>
-                    <input type="text" class="txt" name="confstrs[sFCPOSecinvoicePortalId]" value="[{$confstrs.sFCPOSecinvoicePortalId}]" [{$readonly}]>
+                    <input aria-label="Set Secured invoice portal ID" type="text" class="txt" name="confstrs[sFCPOSecinvoicePortalId]" value="[{$confstrs.sFCPOSecinvoicePortalId}]" [{$readonly}]>
                     [{oxinputhelp ident="FCPO_HELP_SECINVOICE_PORTAL_ID"}]
                 </dt>
                 <dd>
@@ -896,7 +896,7 @@
             </dl>
             <dl>
                 <dt>
-                    <input type="text" class="txt" name="confstrs[sFCPOSecinvoicePortalKey]" value="[{$confstrs.sFCPOSecinvoicePortalKey}]" [{$readonly}]>
+                    <input aria-label="Set Secured invoice portal key" type="text" class="txt" name="confstrs[sFCPOSecinvoicePortalKey]" value="[{$confstrs.sFCPOSecinvoicePortalKey}]" [{$readonly}]>
                     [{oxinputhelp ident="FCPO_HELP_SECINVOICE_PORTAL_KEY"}]
                 </dt>
                 <dd>
@@ -912,7 +912,7 @@
             <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="FCPO_CONFIG_GROUP_BNPL"}]</b></a>
             <dl>
                 <dt>
-                    <input type="text" class="txt" name="confstrs[sFCPOPLPortalId]" value="[{$confstrs.sFCPOPLPortalId}]" [{$readonly}]>
+                    <input aria-label="Set BNPL portal ID" type="text" class="txt" name="confstrs[sFCPOPLPortalId]" value="[{$confstrs.sFCPOPLPortalId}]" [{$readonly}]>
                     [{oxinputhelp ident="FCPO_HELP_BNPL_PORTAL_ID"}]
                 </dt>
                 <dd>
@@ -922,7 +922,7 @@
             </dl>
             <dl>
                 <dt>
-                    <input type="text" class="txt" name="confstrs[sFCPOPLPortalKey]" value="[{$confstrs.sFCPOPLPortalKey}]" [{$readonly}]>
+                    <input aria-label="Set BNPL portal key" type="text" class="txt" name="confstrs[sFCPOPLPortalKey]" value="[{$confstrs.sFCPOPLPortalKey}]" [{$readonly}]>
                     [{oxinputhelp ident="FCPO_HELP_BNPL_PORTAL_KEY"}]
                 </dt>
                 <dd>
@@ -933,7 +933,7 @@
             <dl>
                 <dt>
                     <input type="hidden" name="confbools[blFCPOPLAllowDiffAddress]" value="false">
-                    <input type="checkbox" name="confbools[blFCPOPLAllowDiffAddress]" value="true" [{if ($confbools.blFCPOPLAllowDiffAddress)}]checked[{/if}] [{$readonly}]>
+                    <input aria-label="Set BNPL allow different addresses" type="checkbox" name="confbools[blFCPOPLAllowDiffAddress]" value="true" [{if ($confbools.blFCPOPLAllowDiffAddress)}]checked[{/if}] [{$readonly}]>
                     [{oxinputhelp ident="FCPO_HELP_BNPL_ALLOW_DIFF_ADDRESS"}]
                 </dt>
                 <dd>
@@ -949,7 +949,7 @@
             <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="FCPO_FORWARD_REDIRECTS"}]</b></a>
             <dl>
                 <dt>
-                    <select name="confstrs[sTransactionRedirectLogging]">
+                    <select aria-label="Set transaction redirect logging" name="confstrs[sTransactionRedirectLogging]">
                         <option value="none" [{if $confstrs.sTransactionRedirectLogging == "none"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_TRANSACTIONREDIRECTLOGGING_NONE"}]</option>
                         <option value="all" [{if $confstrs.sTransactionRedirectLogging == "all"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_TRANSACTIONREDIRECTLOGGING_ALL"}]</option>
                     </select>
@@ -962,7 +962,7 @@
             </dl>
             <dl>
                 <dt>
-                    <select name="confstrs[sTransactionRedirectMethod]">
+                    <select aria-label="Set transaction redirect method" name="confstrs[sTransactionRedirectMethod]">
                         <option value="direct" [{if $confstrs.sTransactionRedirectMethod == "direct"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_TRANSACTIONREDIRECTMETHOD_DIRECT"}]</option>
                         <option value="cronjob" [{if $confstrs.sTransactionRedirectMethod == "cronjob"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_TRANSACTIONREDIRECTMETHOD_CRONJOB"}]</option>
                     </select>
@@ -975,7 +975,7 @@
             </dl>
             <dl>
                 <dt>
-                    <input type="text" class="txt" name="confstrs[sTransactionRedirectTimeout]" value="[{$confstrs.sTransactionRedirectTimeout}]" [{$readonly}]>
+                    <input aria-label="Set transaction redirect timeout" type="text" class="txt" name="confstrs[sTransactionRedirectTimeout]" value="[{$confstrs.sTransactionRedirectTimeout}]" [{$readonly}]>
                     [{oxinputhelp ident="FCPO_HELP_TRANSACTIONREDIRECT_TIMEOUT"}]
                 </dt>
                 <dd>

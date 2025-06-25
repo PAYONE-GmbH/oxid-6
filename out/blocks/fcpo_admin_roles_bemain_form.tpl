@@ -1,14 +1,14 @@
   <tr>
     <td>[{oxmultilang ident="ROLES_BEMAIN_ACTIVE"}]</td>
     <td>
-        <input class="edittext" type="checkbox" name="editval[oxroles__oxactive]" value="1" [{if $edit->oxroles__oxactive->value}]checked[{/if}] [{$readonly}]>
+        <input aria-label="[{oxmultilang ident="ROLES_BEMAIN_ACTIVE"}]" class="edittext" type="checkbox" name="editval[oxroles__oxactive]" value="1" [{if $edit->oxroles__oxactive->value}]checked[{/if}] [{$readonly}]>
         [{oxinputhelp ident="HELP_ROLES_BEMAIN_ACTIVE"}]
     </td>
   </tr>
   <tr>
     <td>[{oxmultilang ident="ROLES_BEMAIN_TITLE"}]</td>
     <td>
-        <input autocomplete="off" class="edittext" type="text" style="width:215px" name="editval[oxroles__oxtitle]" maxlength="[{$edit->oxroles__oxtitle->fldmax_length}]" value="[{$edit->oxroles__oxtitle->value}]" [{$readonly}]>
+        <input aria-label="[{oxmultilang ident="ROLES_BEMAIN_TITLE"}]" autocomplete="off" class="edittext" type="text" style="width:215px" name="editval[oxroles__oxtitle]" maxlength="[{$edit->oxroles__oxtitle->fldmax_length}]" value="[{$edit->oxroles__oxtitle->value}]" [{$readonly}]>
         [{oxinputhelp ident="HELP_ROLES_BEMAIN_TITLE"}]
     </td>
   </tr>
@@ -49,17 +49,17 @@
             [{oxmultilang ident=$oNode->getAttribute('id') noerror=true}]
           </td>
           <td>
-            <input [{$readonly}] type="radio" [{if $oNode->hasAttribute('idx') && $oNode->getAttribute('idx') < 2}]disabled[{/if}] name="aFields[[{$oNode->getAttribute('id')}]]" onclick="JavaScript:setPerms( this );" value="2" [{if $idx == 2}]checked[{/if}]>
+            <input aria-label="[{oxmultilang ident="Id"}]" [{$readonly}] type="radio" [{if $oNode->hasAttribute('idx') && $oNode->getAttribute('idx') < 2}]disabled[{/if}] name="aFields[[{$oNode->getAttribute('id')}]]" onclick="JavaScript:setPerms( this );" value="2" [{if $idx == 2}]checked[{/if}]>
           </td>
           <td>
-            <input [{$readonly}] type="radio" [{if $oNode->hasAttribute('idx') && $oNode->getAttribute('idx') < 1}]disabled[{/if}] name="aFields[[{$oNode->getAttribute('id')}]]" onclick="JavaScript:setPerms( this );" value="1" [{if $idx == 1}]checked[{/if}]>
+            <input aria-label="[{oxmultilang ident="Id"}]" [{$readonly}] type="radio" [{if $oNode->hasAttribute('idx') && $oNode->getAttribute('idx') < 1}]disabled[{/if}] name="aFields[[{$oNode->getAttribute('id')}]]" onclick="JavaScript:setPerms( this );" value="1" [{if $idx == 1}]checked[{/if}]>
           </td>
           <td>
-            <input [{$readonly}] type="radio" name="aFields[[{$oNode->getAttribute('id')}]]" onclick="JavaScript:setPerms( this );" value="0" [{if !$idx}]checked[{/if}]>
+            <input aria-label="[{oxmultilang ident="Id"}]" [{$readonly}] type="radio" name="aFields[[{$oNode->getAttribute('id')}]]" onclick="JavaScript:setPerms( this );" value="0" [{if !$idx}]checked[{/if}]>
           </td>
           <td>
             [{if $oNode->childNodes->length}]
-              <input readonly disabled type="checkbox" id="aFields[[{$oNode->getAttribute('id')}]]_cust" value="0">
+              <input aria-label="[{oxmultilang ident="Id"}]" readonly disabled type="checkbox" id="aFields[[{$oNode->getAttribute('id')}]]_cust" value="0">
               <script type="text/javascript">
               <!--
                 updateCustInfo(document.getElementById("aFields[[{$oNode->getAttribute('id')}]]_cust"));
@@ -116,13 +116,13 @@
             [{oxmultilang ident='dyn_about' noerror=true}]
           </td>
           <td>
-            <input [{$readonly}] type="radio" [{if $iParentIdx < 2}]disabled[{/if}] name="aFields[dyn_about]" onclick="JavaScript:setPerms( this );" value="2" [{if $idx == 2}]checked[{/if}]>
+            <input aria-label="[{oxmultilang ident="About"}]" [{$readonly}] type="radio" [{if $iParentIdx < 2}]disabled[{/if}] name="aFields[dyn_about]" onclick="JavaScript:setPerms( this );" value="2" [{if $idx == 2}]checked[{/if}]>
           </td>
           <td>
-            <input [{$readonly}] type="radio" [{if $iParentIdx < 1}]disabled[{/if}] name="aFields[dyn_about]" onclick="JavaScript:setPerms( this );" value="1" [{if $idx == 1}]checked[{/if}]>
+            <input aria-label="[{oxmultilang ident="About"}]" [{$readonly}] type="radio" [{if $iParentIdx < 1}]disabled[{/if}] name="aFields[dyn_about]" onclick="JavaScript:setPerms( this );" value="1" [{if $idx == 1}]checked[{/if}]>
           </td>
           <td>
-            <input [{$readonly}] type="radio" name="aFields[dyn_about]" onclick="JavaScript:setPerms( this );" value="0" [{if !$idx}]checked[{/if}]>
+            <input aria-label="[{oxmultilang ident="About"}]" [{$readonly}] type="radio" name="aFields[dyn_about]" onclick="JavaScript:setPerms( this );" value="0" [{if !$idx}]checked[{/if}]>
           </td>
           <td>
           </td>
@@ -147,13 +147,13 @@
             [{oxmultilang ident='dyn_interface' noerror=true}]
           </td>
           <td>
-            <input [{$readonly}] type="radio" [{if $iParentIdx < 2}]disabled[{/if}] name="aFields[dyn_interface]" onclick="JavaScript:setPerms( this );" value="2" [{if $idx == 2}]checked[{/if}]>
+            <input aria-label="[{oxmultilang ident="Interface"}]" [{$readonly}] type="radio" [{if $iParentIdx < 2}]disabled[{/if}] name="aFields[dyn_interface]" onclick="JavaScript:setPerms( this );" value="2" [{if $idx == 2}]checked[{/if}]>
           </td>
           <td>
-            <input [{$readonly}] type="radio" [{if $iParentIdx < 1}]disabled[{/if}] name="aFields[dyn_interface]" onclick="JavaScript:setPerms( this );" value="1" [{if $idx == 1}]checked[{/if}]>
+            <input aria-label="[{oxmultilang ident="Interface"}]" [{$readonly}] type="radio" [{if $iParentIdx < 1}]disabled[{/if}] name="aFields[dyn_interface]" onclick="JavaScript:setPerms( this );" value="1" [{if $idx == 1}]checked[{/if}]>
           </td>
           <td>
-            <input [{$readonly}] type="radio" name="aFields[dyn_interface]" onclick="JavaScript:setPerms( this );" value="0" [{if !$idx}]checked[{/if}]>
+            <input aria-label="[{oxmultilang ident="Interface"}]" [{$readonly}] type="radio" name="aFields[dyn_interface]" onclick="JavaScript:setPerms( this );" value="0" [{if !$idx}]checked[{/if}]>
           </td>
           <td>
           </td>
@@ -166,16 +166,16 @@
         [{oxmultilang ident='dyn_menu' noerror=true}]
       </td>
       <td>
-        <input [{$readonly}] type="radio" [{if isset( $aDynRights.dyn_menu ) && $aDynRights.dyn_menu < 2}]disabled[{/if}] name="aFields[dyn_menu]" onclick="JavaScript:setPerms( this );" value="2" [{if $iParentIdx == 2}]checked[{/if}]>
+        <input aria-label="[{oxmultilang ident="Menu"}]" [{$readonly}] type="radio" [{if isset( $aDynRights.dyn_menu ) && $aDynRights.dyn_menu < 2}]disabled[{/if}] name="aFields[dyn_menu]" onclick="JavaScript:setPerms( this );" value="2" [{if $iParentIdx == 2}]checked[{/if}]>
       </td>
       <td>
-        <input [{$readonly}] type="radio" [{if isset( $aDynRights.dyn_menu ) && $aDynRights.dyn_menu < 1}]disabled[{/if}] name="aFields[dyn_menu]" onclick="JavaScript:setPerms( this );" value="1" [{if $iParentIdx == 1}]checked[{/if}]>
+        <input aria-label="[{oxmultilang ident="Menu"}]" [{$readonly}] type="radio" [{if isset( $aDynRights.dyn_menu ) && $aDynRights.dyn_menu < 1}]disabled[{/if}] name="aFields[dyn_menu]" onclick="JavaScript:setPerms( this );" value="1" [{if $iParentIdx == 1}]checked[{/if}]>
       </td>
       <td>
-        <input [{$readonly}] type="radio" name="aFields[dyn_menu]" onclick="JavaScript:setPerms( this );" value="0" [{if !$iParentIdx}]checked[{/if}]>
+        <input aria-label="[{oxmultilang ident="Menu"}]" [{$readonly}] type="radio" name="aFields[dyn_menu]" onclick="JavaScript:setPerms( this );" value="0" [{if !$iParentIdx}]checked[{/if}]>
       </td>
       <td>
-        <input readonly disabled type="checkbox" id="aFields[dyn_menu]_cust" value="0">
+        <input aria-label="[{oxmultilang ident="Menu"}]" readonly disabled type="checkbox" id="aFields[dyn_menu]_cust" value="0">
         <script type="text/javascript">
         <!--
             updateCustInfo(document.getElementById("aFields[dyn_menu]_cust"));
@@ -204,13 +204,13 @@
             [{oxmultilang ident='fcpo_admin_title' noerror=true}]
           </td>
           <td>
-            <input [{$readonly}] type="radio" [{if isset( $aDynRights.fcpo_admin_title ) && $aDynRights.fcpo_admin_title < 2}]disabled[{/if}] name="aFields[fcpo_admin_title]" value="2" [{if $iParentIdx == 2}]checked[{/if}]>
+            <input aria-label="[{oxmultilang ident="Title"}]" [{$readonly}] type="radio" [{if isset( $aDynRights.fcpo_admin_title ) && $aDynRights.fcpo_admin_title < 2}]disabled[{/if}] name="aFields[fcpo_admin_title]" value="2" [{if $iParentIdx == 2}]checked[{/if}]>
           </td>
           <td>
-            <input [{$readonly}] type="radio" [{if isset( $aDynRights.fcpo_admin_title ) && $aDynRights.fcpo_admin_title < 1}]disabled[{/if}] name="aFields[fcpo_admin_title]" value="1" [{if $iParentIdx == 1}]checked[{/if}]>
+            <input aria-label="[{oxmultilang ident="Title"}]" [{$readonly}] type="radio" [{if isset( $aDynRights.fcpo_admin_title ) && $aDynRights.fcpo_admin_title < 1}]disabled[{/if}] name="aFields[fcpo_admin_title]" value="1" [{if $iParentIdx == 1}]checked[{/if}]>
           </td>
           <td>
-            <input [{$readonly}] type="radio" name="aFields[fcpo_admin_title]" value="0" [{if !$iParentIdx}]checked[{/if}]>
+            <input aria-label="[{oxmultilang ident="Title"}]" [{$readonly}] type="radio" name="aFields[fcpo_admin_title]" value="0" [{if !$iParentIdx}]checked[{/if}]>
           </td>
           <td>
           </td>

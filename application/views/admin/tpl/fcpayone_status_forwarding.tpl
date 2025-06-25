@@ -20,7 +20,7 @@
             [{foreach from=$oForwardings item=oForwarding}]
                 <tr>
                     <td>
-                        <select name="editval[[{$oForwarding->sOxid}]][sPayoneStatus]" style="width:325px;">
+                        <select aria-label="Edit Payone status" name="editval[[{$oForwarding->sOxid}]][sPayoneStatus]" style="width:325px;">
                             [{if $oForwarding->sOxid == 'new'}]
                                 <option value="">---</option>
                             [{/if}]
@@ -30,13 +30,13 @@
                         </select>
                     </td>
                     <td>
-                        <input autocomplete="off" type="text" size="55" name="editval[[{$oForwarding->sOxid}]][sForwardingUrl]" value="[{$oForwarding->sForwardingUrl}]">
+                        <input aria-label="Edit forwarding url" autocomplete="off" type="text" size="55" name="editval[[{$oForwarding->sOxid}]][sForwardingUrl]" value="[{$oForwarding->sForwardingUrl}]">
                     </td>
                     <td>
-                        <input autocomplete="off" type="text" size="5" name="editval[[{$oForwarding->sOxid}]][iForwardingTimeout]" value="[{$oForwarding->iForwardingTimeout}]">
+                        <input aria-label="Edit forwarding timeout" autocomplete="off" type="text" size="5" name="editval[[{$oForwarding->sOxid}]][iForwardingTimeout]" value="[{$oForwarding->iForwardingTimeout}]">
                     </td>
                     <td>
-                        <input value="X [{oxmultilang ident="fcpo_admin_config_delete"}]" name="editval[[{$oForwarding->sOxid}]][delete]" onclick="if(!confirm('[{ oxmultilang ident="fcpo_admin_config_delete_confirm" }]')) {return false;}" type="submit">
+                        <input aria-label="Delete forwarding" value="X [{oxmultilang ident="fcpo_admin_config_delete"}]" name="editval[[{$oForwarding->sOxid}]][delete]" onclick="if(!confirm('[{ oxmultilang ident="fcpo_admin_config_delete_confirm" }]')) {return false;}" type="submit">
                     </td>
                 </tr>
             [{/foreach}]

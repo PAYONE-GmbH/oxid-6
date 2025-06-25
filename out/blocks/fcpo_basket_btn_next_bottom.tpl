@@ -4,7 +4,7 @@
         [{$oViewConf->getHiddenSid()}]
         <input type="hidden" name="cl" value="basket">
         <input type="hidden" name="fnc" value="fcpoUsePayPalExpress">
-        <input type="image" src="[{$oView->fcpoGetPayPalExpressPic()}]" style="float: right;margin-right:10px;">
+        <input alt="Paypal express picture" type="image" src="[{$oView->fcpoGetPayPalExpressPic()}]" style="float: right;margin-right:10px;">
     </form>
 [{/if}]
 

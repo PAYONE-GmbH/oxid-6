@@ -20,7 +20,7 @@
             [{foreach from=$oMappings item=oMapping}]
                 <tr>
                     <td>
-                        <select name="editval[[{$oMapping->sOxid}]][sPaymentType]" style="width:200px;">
+                        <select aria-label="Edit payment type" name="editval[[{$oMapping->sOxid}]][sPaymentType]" style="width:200px;">
                             [{if $oMapping->sOxid == 'new'}]
                                 <option value="">---</option>
                             [{/if}]
@@ -30,7 +30,7 @@
                         </select>
                     </td>
                     <td>
-                        <select name="editval[[{$oMapping->sOxid}]][sPayoneStatus]" style="width:325px;">
+                        <select aria-label="Edit Payone status" name="editval[[{$oMapping->sOxid}]][sPayoneStatus]" style="width:325px;">
                             [{if $oMapping->sOxid == 'new'}]
                                 <option value="">---</option>
                             [{/if}]
@@ -40,7 +40,7 @@
                         </select>
                     </td>
                     <td>
-                        <select name="editval[[{$oMapping->sOxid}]][sShopStatus]" style="width:180px;">
+                        <select aria-label="Edit Shop status" name="editval[[{$oMapping->sOxid}]][sShopStatus]" style="width:180px;">
                             [{if $oMapping->sOxid == 'new'}]
                                 <option value="">---</option>
                             [{/if}]
@@ -50,7 +50,7 @@
                         </select>
                     </td>
                     <td>
-                        <input value="X [{ oxmultilang ident="fcpo_admin_config_delete" }]" name="editval[[{$oMapping->sOxid}]][delete]" onclick="if(!confirm('[{ oxmultilang ident="fcpo_admin_config_delete_confirm" }]')) {return false;}" type="submit">
+                        <input aria-label="Delete mapping" value="X [{ oxmultilang ident="fcpo_admin_config_delete" }]" name="editval[[{$oMapping->sOxid}]][delete]" onclick="if(!confirm('[{ oxmultilang ident="fcpo_admin_config_delete_confirm" }]')) {return false;}" type="submit">
                     </td>
                 </tr>
             [{/foreach}]

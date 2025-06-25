@@ -18,12 +18,12 @@
                 <a class="rp-link" id="fcporp_installment_rp-show-installment-plan-details"
                    onclick="fcpoRpChangeDetails('fcporp_installment')">
                     [{oxmultilang ident='FCPO_RATEPAY_CALCULATION_DETAILS_SHOW'}]
-                    <img src="modules/fc/fcpayone/out/img/icon-enlarge.png" class="rp-details-icon"/>
+                    <img alt="Enlarge" src="modules/fc/fcpayone/out/img/icon-enlarge.png" class="rp-details-icon"/>
                 </a>
                 <a class="rp-link" id="fcporp_installment_rp-hide-installment-plan-details"
                    onclick="fcpoRpChangeDetails('fcporp_installment')">
                     [{oxmultilang ident='FCPO_RATEPAY_CALCULATION_DETAILS_HIDE'}]
-                    <img src="modules/fc/fcpayone/out/img/icon-shrink.png" class="rp-details-icon"/>
+                    <img alt="Shrink" src="modules/fc/fcpayone/out/img/icon-shrink.png" class="rp-details-icon"/>
                 </a>
             </div>
         </div>

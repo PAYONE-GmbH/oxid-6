@@ -15,7 +15,7 @@
         
         <div class="fcpoSEPAMandateCheckbox">
             <label style="float:left; padding-right:10px;" for="mandate_status" class="control-label">[{oxmultilang ident="FCPO_ORDER_MANDATE_CHECKBOX"}]</label>
-            <input type="checkbox" onclick="fcpoHandleMandateCheckbox(this);">
+            <input aria-label="[{oxmultilang ident="FCPO_ORDER_MANDATE_CHECKBOX"}]" type="checkbox" onclick="fcpoHandleMandateCheckbox(this);">
             <div class="clear"></div>
         </div>
     </div>

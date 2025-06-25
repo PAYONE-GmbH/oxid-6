@@ -10,7 +10,7 @@
             [{foreach from=$aDynValues item=value name=PaymentDynValues}]
             <li>
                 <label>[{ $value->name}]</label>
-                <input id="[{$sPaymentID}]_[{$smarty.foreach.PaymentDynValues.iteration}]" type="text" class="textbox" size="20" maxlength="64" name="dynvalue[[{$value->name}]]" value="[{ $value->value}]">
+                <input aria-label="Payone payment" id="[{$sPaymentID}]_[{$smarty.foreach.PaymentDynValues.iteration}]" type="text" class="textbox" size="20" maxlength="64" name="dynvalue[[{$value->name}]]" value="[{ $value->value}]">
             </li>
             [{/foreach}]
         </ul>

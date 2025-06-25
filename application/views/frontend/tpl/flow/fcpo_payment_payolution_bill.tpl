@@ -10,28 +10,28 @@
         <script src="[{$oViewConf->fcpoGetModuleJsPath()}]lightview/lightview.js"></script>
         [{if $oView->fcpoShowPayolutionB2B()}]
             <div class="form-group fcpo_payolution_bill_oxustid">
-                <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_PAYOLUTION_USTID"}]</label>
+                <label for="fcpo_payolution_bill_oxustid" id="fcpo_payolution_bill_oxustid_label" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_PAYOLUTION_USTID"}]</label>
                 <div class="col-lg-9">
-                    <input class="form-control" type="text" size="20" maxlength="64" name="dynvalue[fcpo_payolution_bill_oxustid]" value="[{$oView->fcpoGetUserValue('oxustid')}]">
+                    <input id="fcpo_payolution_bill_oxustid" class="form-control" type="text" size="20" maxlength="64" name="dynvalue[fcpo_payolution_bill_oxustid]" value="[{$oView->fcpoGetUserValue('oxustid')}]">
                 </div>
             </div>
         [{elseif $oView->fcpoShowPayolutionB2C()}]
             <div class="form-group fcpo_payolution_bill_birthdate">
                 <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_PAYOLUTION_BIRTHDATE"}]:</label>
                 <div class="col-lg-9">
-                    <select name="dynvalue[fcpo_payolution_bill_birthdate_day]">
+                    <select aria-label="[{oxmultilang ident="FCPO_DAY"}]" name="dynvalue[fcpo_payolution_bill_birthdate_day]">
                         [{foreach from=$oView->fcpoGetDayRange() item='sDay'}]
                             <option value="[{$sDay}]" [{if $sDay == $oView->fcpoGetBirthdayField('day')}]selected[{/if}]>[{$sDay}]</option>
                         [{/foreach}]
                     </select>
                     &nbsp;
-                    <select name="dynvalue[fcpo_payolution_bill_birthdate_month]">
+                    <select aria-label="[{oxmultilang ident="FCPO_MONTH"}]" name="dynvalue[fcpo_payolution_bill_birthdate_month]">
                         [{foreach from=$oView->fcpoGetMonthRange() item='sMonth'}]
                             <option value="[{$sMonth}]" [{if $sMonth == $oView->fcpoGetBirthdayField('month')}]selected[{/if}]>[{$sMonth}]</option>
                         [{/foreach}]
                     </select>
                     &nbsp;
-                    <select name="dynvalue[fcpo_payolution_bill_birthdate_year]">
+                    <select aria-label="[{oxmultilang ident="FCPO_YEAR"}]" name="dynvalue[fcpo_payolution_bill_birthdate_year]">
                         [{foreach from=$oView->fcpoGetYearRange() item='sYear'}]
                             <option value="[{$sYear}]" [{if $sYear == $oView->fcpoGetBirthdayField('year')}]selected[{/if}]>[{$sYear}]</option>
                         [{/foreach}]
@@ -41,14 +41,14 @@
         [{/if}]
         [{if $oView->fcpoPayolutionBillTelephoneRequired()}]
             <div class="form-group fcpo_payolution_bill_oxfon">
-                <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_PAYOLUTION_PHONE"}]:</label>
+                <label for="fcpo_payolution_bill_oxfon" id="fcpo_payolution_bill_oxfon_label" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_PAYOLUTION_PHONE"}]:</label>
                 <div class="col-lg-9">
-                    <input placeholder="[{oxmultilang ident="FCPO_PAYOLUTION_PHONE"}]" class="form-control" type="text" size="20" maxlength="64" name="dynvalue[fcpo_payolution_bill_oxfon]" value="[{$oView->fcpoGetUserValue('oxfon')}]">
+                    <input id="fcpo_payolution_bill_oxfon" placeholder="[{oxmultilang ident="FCPO_PAYOLUTION_PHONE"}]" class="form-control" type="text" size="20" maxlength="64" name="dynvalue[fcpo_payolution_bill_oxfon]" value="[{$oView->fcpoGetUserValue('oxfon')}]">
                 </div>
             </div>
         [{/if}]
         <div class="alert alert-info col-lg-offset-3 desc">
-            <input name="dynvalue[fcpo_payolution_bill_agreed]" value="agreed" type="checkbox">&nbsp;[{$oView->fcpoGetPoAgreementInit($sPaymentID)}] <a href='[{$oView->fcpoGetPayolutionAgreementLink()}]' class="lightview fcpoPayolutionAgreeRed" data-lightview-type="iframe" data-lightview-options="width: 800, height: 600, viewport: 'scale',background: { color: '#fff', opacity: 1 },skin: 'light'">[{oxmultilang ident="FCPO_PAYOLUTION_AGREE"}]</a> [{oxmultilang ident="FCPO_PAYOLUTION_AGREEMENT_PART_2"}]
+            <input aria-label="Payolution agreement" name="dynvalue[fcpo_payolution_bill_agreed]" value="agreed" type="checkbox">&nbsp;[{$oView->fcpoGetPoAgreementInit($sPaymentID)}] <a href='[{$oView->fcpoGetPayolutionAgreementLink()}]' class="lightview fcpoPayolutionAgreeRed" data-lightview-type="iframe" data-lightview-options="width: 800, height: 600, viewport: 'scale',background: { color: '#fff', opacity: 1 },skin: 'light'">[{oxmultilang ident="FCPO_PAYOLUTION_AGREE"}]</a> [{oxmultilang ident="FCPO_PAYOLUTION_AGREEMENT_PART_2"}]
         </div>
         [{block name="checkout_payment_longdesc"}]
             [{if $paymentmethod->oxpayments__oxlongdesc->value}]

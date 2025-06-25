@@ -35,7 +35,7 @@ window.onload = function ()
             <tr class="listitem">
                 <td valign="top" class="listfilter">
                     <div class="r1"><div class="b1">
-                        <input class="listedit" type="text" size="30" maxlength="128" name="[{$oView->fcGetInputName('fcporequestlog', 'oxtimestamp')}]" value="[{$oView->fcGetWhereValue('fcporequestlog', 'oxtimestamp')}]">
+                        <input aria-label="oxtimestamp" class="listedit" type="text" size="30" maxlength="128" name="[{$oView->fcGetInputName('fcporequestlog', 'oxtimestamp')}]" value="[{$oView->fcGetWhereValue('fcporequestlog', 'oxtimestamp')}]">
                     </div></div>
                 </td>
                 <td valign="top" class="listfilter">
@@ -45,13 +45,13 @@ window.onload = function ()
                 </td>
                 <td valign="top" class="listfilter">
                     <div class="r1"><div class="b1">
-                        <input class="listedit" type="text" size="30" maxlength="128" name="[{$oView->fcGetInputName('fcporequestlog', 'fcpo_request')}]" value="[{$oView->fcGetWhereValue('fcporequestlog', 'fcpo_request')}]"><br>
+                        <input aria-label="fcpo_request" class="listedit" type="text" size="30" maxlength="128" name="[{$oView->fcGetInputName('fcporequestlog', 'fcpo_request')}]" value="[{$oView->fcGetWhereValue('fcporequestlog', 'fcpo_request')}]"><br>
                     </div></div>
                 </td>
                 <td valign="top" class="listfilter" colspan="2" nowrap>
                     <div class="r1"><div class="b1">
                         <div class="find"><input class="listedit" type="submit" name="submitit" value="[{ oxmultilang ident="GENERAL_SEARCH" }]"></div>
-                    <input class="listedit" type="text" size="30" maxlength="128" name="[{$oView->fcGetInputName('fcporequestlog', 'fcpo_response')}]" value="[{$oView->fcGetWhereValue('fcporequestlog', 'fcpo_response')}]">
+                    <input aria-label="fcpo_response" class="listedit" type="text" size="30" maxlength="128" name="[{$oView->fcGetInputName('fcporequestlog', 'fcpo_response')}]" value="[{$oView->fcGetWhereValue('fcporequestlog', 'fcpo_response')}]">
                     </div></div>
                 </td>
             </tr>

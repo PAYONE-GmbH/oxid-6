@@ -20,7 +20,7 @@
             [{foreach from=$oMappings item=oMapping}]
                 <tr>
                     <td>
-                        <select name="editval[[{$oMapping->sOxid}]][sErrorCode]" style="width:200px;">
+                        <select aria-label="Edit error code" name="editval[[{$oMapping->sOxid}]][sErrorCode]" style="width:200px;">
                             [{if $oMapping->sOxid == 'new'}]
                                 <option value="">---</option>
                             [{/if}]
@@ -30,7 +30,7 @@
                         </select>
                     </td>
                     <td>
-                        <select name="editval[[{$oMapping->sOxid}]][sLangId]" style="width:180px;">
+                        <select aria-label="Edit lang id" name="editval[[{$oMapping->sOxid}]][sLangId]" style="width:180px;">
                             [{if $oMapping->sOxid == 'new'}]
                                 <option value="">---</option>
                             [{/if}]
@@ -40,7 +40,7 @@
                         </select>
                     </td>
                     <td>
-                        <input type="text" name="editval[[{$oMapping->sOxid}]][sMappedMessage]" value="[{$oMapping->sMappedMessage}]" style="width:350px;">
+                        <input aria-label="Edit mapped message" type="text" name="editval[[{$oMapping->sOxid}]][sMappedMessage]" value="[{$oMapping->sMappedMessage}]" style="width:350px;">
                     </td>
                     <td>
                         <input value="X [{oxmultilang ident="fcpo_admin_config_delete"}]" name="editval[[{$oMapping->sOxid}]][delete]" onclick="if(!confirm('[{oxmultilang ident="fcpo_admin_config_delete_confirm"}]')) {return false;}" type="submit">
@@ -73,7 +73,7 @@
             [{foreach from=$oIframeMappings item=oMapping}]
                 <tr>
                     <td>
-                        <select name="editval2[[{$oMapping->sOxid}]][sErrorCode]" style="width:200px;">
+                        <select aria-label="Edit error code" name="editval2[[{$oMapping->sOxid}]][sErrorCode]" style="width:200px;">
                             [{if $oMapping->sOxid == 'new'}]
                                 <option value="">---</option>
                             [{/if}]
@@ -83,7 +83,7 @@
                         </select>
                     </td>
                     <td>
-                        <select name="editval2[[{$oMapping->sOxid}]][sLangId]" style="width:180px;">
+                        <select aria-label="Edit lang id" name="editval2[[{$oMapping->sOxid}]][sLangId]" style="width:180px;">
                             [{if $oMapping->sOxid == 'new'}]
                                 <option value="">---</option>
                             [{/if}]
@@ -93,7 +93,7 @@
                         </select>
                     </td>
                     <td>
-                        <input type="text" name="editval2[[{$oMapping->sOxid}]][sMappedMessage]" value="[{$oMapping->sMappedMessage}]" style="width:350px;">
+                        <input aria-label="Edit mapped message" type="text" name="editval2[[{$oMapping->sOxid}]][sMappedMessage]" value="[{$oMapping->sMappedMessage}]" style="width:350px;">
                     </td>
                     <td>
                         <input value="X [{oxmultilang ident="fcpo_admin_config_delete"}]" name="editval2[[{$oMapping->sOxid}]][delete]" onclick="if(!confirm('[{oxmultilang ident="fcpo_admin_config_delete_confirm"}]')) {return false;}" type="submit">

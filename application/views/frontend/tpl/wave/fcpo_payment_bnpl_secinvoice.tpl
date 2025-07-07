@@ -14,19 +14,19 @@
                     <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_SECINVOICE_BIRTHDATE"}]</label>
                     [{/if}]
                     <div class="col-lg-9">
-                        <select name="dynvalue[fcpopl_secinvoice_birthdate_day]">
+                        <select aria-label="[{oxmultilang ident="FCPO_DAY"}]" name="dynvalue[fcpopl_secinvoice_birthdate_day]">
                             [{foreach from=$oView->fcpoGetDayRange() item='sDay'}]
                                 <option value="[{$sDay}]" [{if $sDay == $oView->fcpoGetBirthdayField('day')}]selected[{/if}]>[{$sDay}]</option>
                             [{/foreach}]
                         </select>
                         &nbsp;
-                        <select name="dynvalue[fcpopl_secinvoice_birthdate_month]">
+                        <select aria-label="[{oxmultilang ident="FCPO_MONTH"}]" name="dynvalue[fcpopl_secinvoice_birthdate_month]">
                             [{foreach from=$oView->fcpoGetMonthRange() item='sMonth'}]
                                 <option value="[{$sMonth}]" [{if $sMonth == $oView->fcpoGetBirthdayField('month')}]selected[{/if}]>[{$sMonth}]</option>
                             [{/foreach}]
                         </select>
                         &nbsp;
-                        <select name="dynvalue[fcpopl_secinvoice_birthdate_year]">
+                        <select aria-label="[{oxmultilang ident="FCPO_YEAR"}]" name="dynvalue[fcpopl_secinvoice_birthdate_year]">
                             [{foreach from=$oView->fcpoGetYearRange() item='sYear'}]
                                 <option value="[{$sYear}]" [{if $sYear == $oView->fcpoGetBirthdayField('year')}]selected[{/if}]>[{$sYear}]</option>
                             [{/foreach}]
@@ -38,12 +38,12 @@
             [{if $oView->fcpoBNPLShowFon($sPaymentID)}]
             <div class="form-group">
                 [{if $oView->fcpoIsB2BPov()}]
-                <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BNPL_FON_B2B"}]</label>
+                <label for="fcpopl_secinvoice_fon" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BNPL_FON_B2B"}]</label>
                 [{else}]
-                <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BNPL_FON"}]</label>
+                <label for="fcpopl_secinvoice_fon" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BNPL_FON"}]</label>
                 [{/if}]
                 <div class="col-lg-9">
-                    <input placeholder="[{oxmultilang ident="FCPO_BNPL_FON"}]" class="form-control" type="text" size="20" maxlength="64" name="dynvalue[fcpopl_secinvoice_fon]" value="[{$oView->fcpoGetUserValue('oxfon')}]" required="required">
+                    <input id="fcpopl_secinvoice_fon" placeholder="[{oxmultilang ident="FCPO_BNPL_FON"}]" class="form-control" type="text" size="20" maxlength="64" name="dynvalue[fcpopl_secinvoice_fon]" value="[{$oView->fcpoGetUserValue('oxfon')}]" required="required">
                 </div>
             </div>
             [{/if}]
@@ -51,9 +51,9 @@
             [{if $oView->fcpoIsB2BPov()}]
                 [{if ! $oView->fcpoGetUserValue('oxustid')}]
                     <div class="form-group">
-                        <label class="control-label col-lg-3">[{oxmultilang ident="FCPO_BNPL_USTID"}]</label>
+                        <label for="fcpopl_secinvoice_ustid" class="control-label col-lg-3">[{oxmultilang ident="FCPO_BNPL_USTID"}]</label>
                         <div class="col-lg-7">
-                            <input class="form-control" type="text" size="20" maxlength="64" name="dynvalue[fcpopl_secinvoice_ustid]" value="[{$oView->fcpoGetUserValue('oxustid')}]">
+                            <input id="fcpopl_secinvoice_ustid" class="form-control" type="text" size="20" maxlength="64" name="dynvalue[fcpopl_secinvoice_ustid]" value="[{$oView->fcpoGetUserValue('oxustid')}]">
                         </div>
                         <label class="col-lg-12" style="padding-left: 25px">
                             [{oxmultilang ident="FCPO_BNPL_NO_COMPANY"}]

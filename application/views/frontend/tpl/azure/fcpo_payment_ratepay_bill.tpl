@@ -13,26 +13,26 @@
                 <input type="hidden" name="dynvalue[fcporp_bill_profileid]" value="[{$oView->fcpoGetRatePayMatchedProfile('fcporp_bill')}]">
                 [{if $oView->fcpoRatePayShowUstid()}]
                     <li>
-                        <label>[{oxmultilang ident="FCPO_RATEPAY_USTID"}]:</label>
-                        <input placeholder="[{oxmultilang ident="FCPO_RATEPAY_USTID"}]" type='text' name="dynvalue[fcporp_bill_ustid]" value="[{$oView->fcpoGetUserValue('oxustid')}]">
+                        <label for="fcporp_bill_ustid">[{oxmultilang ident="FCPO_RATEPAY_USTID"}]:</label>
+                        <inpu id="fcporp_bill_ustid" placeholder="[{oxmultilang ident="FCPO_RATEPAY_USTID"}]" type='text' name="dynvalue[fcporp_bill_ustid]" value="[{$oView->fcpoGetUserValue('oxustid')}]">
                     </li>
                 [{/if}]
                 [{if $oView->fcpoRatePayShowBirthdate()}]
                     <li>
                         <label>[{oxmultilang ident="FCPO_RATEPAY_BIRTHDATE"}]:</label>
-                        <select name="dynvalue[fcporp_bill_birthdate_day]">
+                        <select aria-label="[{oxmultilang ident="FCPO_DAY"}]" name="dynvalue[fcporp_bill_birthdate_day]">
                             [{foreach from=$oView->fcpoGetDayRange() item='sDay'}]
                                 <option value="[{$sDay}]" [{if $sDay == $oView->fcpoGetBirthdayField('day')}]selected[{/if}]>[{$sDay}]</option>
                             [{/foreach}]
                         </select>
                         &nbsp;
-                        <select name="dynvalue[fcporp_bill_birthdate_month]">
+                        <select aria-label="[{oxmultilang ident="FCPO_MONTH"}]" name="dynvalue[fcporp_bill_birthdate_month]">
                             [{foreach from=$oView->fcpoGetMonthRange() item='sMonth'}]
                                 <option value="[{$sMonth}]" [{if $sMonth == $oView->fcpoGetBirthdayField('month')}]selected[{/if}]>[{$sMonth}]</option>
                             [{/foreach}]
                         </select>
                         &nbsp;
-                        <select name="dynvalue[fcporp_bill_birthdate_year]">
+                        <select aria-label="[{oxmultilang ident="FCPO_YEAR"}]" name="dynvalue[fcporp_bill_birthdate_year]">
                             [{foreach from=$oView->fcpoGetYearRange() item='sYear'}]
                                 <option value="[{$sYear}]" [{if $sYear == $oView->fcpoGetBirthdayField('year')}]selected[{/if}]>[{$sYear}]</option>
                             [{/foreach}]
@@ -41,8 +41,8 @@
                 [{/if}]
                 [{if $oView->fcpoRatePayShowFon()}]
                     <li>
-                        <label>[{oxmultilang ident="FCPO_RATEPAY_FON"}]:</label>
-                        <input placeholder="[{oxmultilang ident="FCPO_RATEPAY_FON"}]" type='text' name="dynvalue[fcporp_bill_fon]" value="[{$oView->fcpoGetUserValue('oxfon')}]">
+                        <label for="fcporp_bill_fon">[{oxmultilang ident="FCPO_RATEPAY_FON"}]:</label>
+                        <input id="fcporp_bill_fon" placeholder="[{oxmultilang ident="FCPO_RATEPAY_FON"}]" type='text' name="dynvalue[fcporp_bill_fon]" value="[{$oView->fcpoGetUserValue('oxfon')}]">
                     </li>
                 [{/if}]
             </ul>

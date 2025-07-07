@@ -779,11 +779,11 @@ class fcpayone_ajax extends oxBase
         $sHtml .= '        <div colspan="2" class="small text-right">';
         $sHtml .= '             <a class="rp-link" id="' . $sPaymentMethod . '_rp-show-installment-plan-details" onclick="fcpoRpChangeDetails(\'' . $sPaymentMethod . '\')">';
         $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_DETAILS_SHOW');
-        $sHtml .= '                <img src="modules/fc/fcpayone/out/img/icon-enlarge.png" class="rp-details-icon" />';
+        $sHtml .= '                <img alt="Enlarge" src="modules/fc/fcpayone/out/img/icon-enlarge.png" class="rp-details-icon" />';
         $sHtml .= '            </a>';
         $sHtml .= '             <a class="rp-link" id="' . $sPaymentMethod . '_rp-hide-installment-plan-details" onclick="fcpoRpChangeDetails(\'' . $sPaymentMethod . '\')">';
         $sHtml .= $oLang->translateString('FCPO_RATEPAY_CALCULATION_DETAILS_HIDE');
-        $sHtml .= '                <img src="modules/fc/fcpayone/out/img/icon-shrink.png" class="rp-details-icon" />';
+        $sHtml .= '                <img alt="Shrink" src="modules/fc/fcpayone/out/img/icon-shrink.png" class="rp-details-icon" />';
         $sHtml .= '            </a>';
         $sHtml .= '        </div>';
         $sHtml .= '    </div>';

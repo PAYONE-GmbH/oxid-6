@@ -29,19 +29,19 @@
             <div class="form-group">
                 <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_SECINVOICE_BIRTHDATE"}]</label>
                 <div class="col-lg-9">
-                    <select name="dynvalue[fcpopl_secinstallment_birthdate_day]">
+                    <select aria-label="[{oxmultilang ident="FCPO_DAY"}]" name="dynvalue[fcpopl_secinstallment_birthdate_day]">
                         [{foreach from=$oView->fcpoGetDayRange() item='sDay'}]
                         <option value="[{$sDay}]" [{if $sDay == $oView->fcpoGetBirthdayField('day')}]selected[{/if}]>[{$sDay}]</option>
                         [{/foreach}]
                     </select>
                     &nbsp;
-                    <select name="dynvalue[fcpopl_secinstallment_birthdate_month]">
+                    <select aria-label="[{oxmultilang ident="FCPO_MONTH"}]" name="dynvalue[fcpopl_secinstallment_birthdate_month]">
                         [{foreach from=$oView->fcpoGetMonthRange() item='sMonth'}]
                         <option value="[{$sMonth}]" [{if $sMonth == $oView->fcpoGetBirthdayField('month')}]selected[{/if}]>[{$sMonth}]</option>
                         [{/foreach}]
                     </select>
                     &nbsp;
-                    <select name="dynvalue[fcpopl_secinstallment_birthdate_year]">
+                    <select aria-label="[{oxmultilang ident="FCPO_YEAR"}]" name="dynvalue[fcpopl_secinstallment_birthdate_year]">
                         [{foreach from=$oView->fcpoGetYearRange() item='sYear'}]
                         <option value="[{$sYear}]" [{if $sYear == $oView->fcpoGetBirthdayField('year')}]selected[{/if}]>[{$sYear}]</option>
                         [{/foreach}]
@@ -52,17 +52,17 @@
 
             [{if $oView->fcpoBNPLShowFon($sPaymentID)}]
             <div class="form-group">
-                <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BNPL_FON"}]</label>
+                <label for="fcpopl_secinstallment_fon" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BNPL_FON"}]</label>
                 <div class="col-lg-9">
-                    <input placeholder="[{oxmultilang ident="FCPO_BNPL_FON"}]" class="form-control" type="text" size="20" maxlength="64" name="dynvalue[fcpopl_secinstallment_fon]" value="[{$oView->fcpoGetUserValue('oxfon')}]" required="required">
+                    <input id="fcpopl_secinstallment_fon" placeholder="[{oxmultilang ident="FCPO_BNPL_FON"}]" class="form-control" type="text" size="20" maxlength="64" name="dynvalue[fcpopl_secinstallment_fon]" value="[{$oView->fcpoGetUserValue('oxfon')}]" required="required">
                 </div>
             </div>
             [{/if}]
 
             <div class="form-group">
-                <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_IBAN"}]</label>
+                <label for="fcpopl_secinstallment_iban" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_IBAN"}]</label>
                 <div class="col-lg-9">
-                    <input placeholder="[{oxmultilang ident="FCPO_BANK_IBAN"}]" class="form-control js-oxValidate js-oxValidate_notEmpty" type="text" size="20" maxlength="64" name="dynvalue[fcpopl_secinstallment_iban]" value="[{$dynvalue.fcpopl_secinstallment_iban}]" onkeyup="fcHandleDebitInputs();return false;" required="required">
+                    <input id="fcpopl_secinstallment_iban" placeholder="[{oxmultilang ident="FCPO_BANK_IBAN"}]" class="form-control js-oxValidate js-oxValidate_notEmpty" type="text" size="20" maxlength="64" name="dynvalue[fcpopl_secinstallment_iban]" value="[{$dynvalue.fcpopl_secinstallment_iban}]" onkeyup="fcHandleDebitInputs();return false;" required="required">
                     <div id="fcpopl_secinstallment_iban_invalid" class="fcpo_check_error">
                         <p class="oxValidateError" style="display: block;">
                             [{oxmultilang ident="FCPO_IBAN_INVALID"}]
@@ -87,7 +87,7 @@
                     <div></div>
                     [{foreach from=$installmentOptions.plans key=index item=plan}]
                     <div>
-                        <input id="bnplPlan_[{$index}]" type="radio" name="dynvalue[fcpopl_secinstallment_plan]" value="[{$plan.installmentOptionId}]" onclick="fcpoSelectBNPLInstallmentPlan([{$index}])"/>
+                        <input aria-label="[{oxmultilang ident="FCPO_BNPL_SECINSTALLMENT_SELECTION"}]" id="bnplPlan_[{$index}]" type="radio" name="dynvalue[fcpopl_secinstallment_plan]" value="[{$plan.installmentOptionId}]" onclick="fcpoSelectBNPLInstallmentPlan([{$index}])"/>
                         <a href="#" onclick="fcpoSelectBNPLInstallmentPlan([{$index}])">
                             [{$plan.monthlyAmountValue}] [{$plan.monthlyAmountCurrency}] [{oxmultilang ident='FCPO_PAYOLUTION_INSTALLMENT_PER_MONTH'}] - [{$plan.numberOfPayments}] [{oxmultilang ident='FCPO_PAYOLUTION_INSTALLMENT_RATES'}]
                         </a>

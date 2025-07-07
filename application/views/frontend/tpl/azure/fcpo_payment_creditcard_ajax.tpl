@@ -19,16 +19,16 @@
                     </div>
                 </li>
                 <li>
-                    <label>[{oxmultilang ident="FCPO_CREDITCARD"}]:</label>
-                    <select name="dynvalue[fcpo_kktype]">
+                    <label for="fcpo_kktype">[{oxmultilang ident="FCPO_CREDITCARD"}]:</label>
+                    <select id="fcpo_kktype" name="dynvalue[fcpo_kktype]">
                         [{foreach from=$aFcPoCCPaymentMetaData item="oFcPoCCPaymentMetaData"}]
                             <option value="[{$oFcPoCCPaymentMetaData->sPaymentTag}]" [{if $oFcPoCCPaymentMetaData->blSelected}]selected[{/if}]>[{$oFcPoCCPaymentMetaData->sPaymentName}]</option>
                         [{/foreach}]
                     </select>
                 </li>
                 <li>
-                    <label>[{oxmultilang ident="FCPO_NUMBER"}]:</label>
-                    <input placeholder="[{oxmultilang ident="FCPO_NUMBER"}]" autocomplete="off" type="text" class="payment_text" size="20" maxlength="64" name="dynvalue[fcpo_kknumber]" value="[{$dynvalue.fcpo_kknumber}]">
+                    <label for="fcpo_kknumber">[{oxmultilang ident="FCPO_NUMBER"}]:</label>
+                    <input id="fcpo_kknumber" placeholder="[{oxmultilang ident="FCPO_NUMBER"}]" autocomplete="off" type="text" class="payment_text" size="20" maxlength="64" name="dynvalue[fcpo_kknumber]" value="[{$dynvalue.fcpo_kknumber}]">
                     <div id="fcpo_cc_number_invalid" class="fcpo_check_error">
                         <p class="oxValidateError" style="display: block;">
                             [{oxmultilang ident="FCPO_CC_NUMBER_INVALID"}]
@@ -36,7 +36,7 @@
                     </div>
                 </li>
                 <li class="form-group">
-                    <label id="fcpo_cc_cardholder_label" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_CC_CARDHOLDER"}]:</label>
+                    <label for="fcpo_cc_cardholder" id="fcpo_cc_cardholder_label" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_CC_CARDHOLDER"}]:</label>
                     <input autocomplete="off" type="text"
                            class="form-control"
                            size="20" maxlength="50" id="fcpo_cc_cardholder" name="dynvalue[fcpo_kkcardholder]"
@@ -54,7 +54,7 @@
                 </li>
                 <li>
                     <label>[{oxmultilang ident="FCPO_VALID_UNTIL"}]:</label>
-                    <select name="dynvalue[fcpo_kkmonth]">
+                    <select aria-label="[{oxmultilang ident="FCPO_MONTH"}]" name="dynvalue[fcpo_kkmonth]">
                         <option [{if $dynvalue.fcpo_kkmonth == "01"}]selected[{/if}]>01</option>
                         <option [{if $dynvalue.fcpo_kkmonth == "02"}]selected[{/if}]>02</option>
                         <option [{if $dynvalue.fcpo_kkmonth == "03"}]selected[{/if}]>03</option>
@@ -69,7 +69,7 @@
                         <option [{if $dynvalue.fcpo_kkmonth == "12"}]selected[{/if}]>12</option>
                     </select>&nbsp;/&nbsp;
 
-                    <select name="dynvalue[fcpo_kkyear]">
+                    <select aria-label="[{oxmultilang ident="FCPO_YEAR"}]" name="dynvalue[fcpo_kkyear]">
                         [{foreach from=$oView->getCreditYears() item=year}]
                             <option [{if $dynvalue.fcpo_kkyear == $year}]selected[{/if}]>[{$year}]</option>
                         [{/foreach}]
@@ -81,8 +81,8 @@
                     </div>
                 </li>
                 <li>
-                    <label>[{oxmultilang ident="FCPO_CARD_SECURITY_CODE"}]:</label>
-                    <input placeholder="[{oxmultilang ident="FCPO_CARD_SECURITY_CODE"}]" autocomplete="off" type="text" class="payment_text" size="20" maxlength="64" name="dynvalue[fcpo_kkpruef]" value="[{$dynvalue.fcpo_kkpruef}]">
+                    <label for="fcpo_kkpruef">[{oxmultilang ident="FCPO_CARD_SECURITY_CODE"}]:</label>
+                    <input id="fcpo_kkpruef" placeholder="[{oxmultilang ident="FCPO_CARD_SECURITY_CODE"}]" autocomplete="off" type="text" class="payment_text" size="20" maxlength="64" name="dynvalue[fcpo_kkpruef]" value="[{$dynvalue.fcpo_kkpruef}]">
                     <div id="fcpo_cc_cvc2_invalid" class="fcpo_check_error">
                         <p class="oxValidateError" style="display: block;">
                             [{oxmultilang ident="FCPO_CC_CVC2_INVALID"}]

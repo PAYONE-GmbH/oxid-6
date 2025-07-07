@@ -12,8 +12,8 @@
             [{oxmultilang ident="FCPO_AUTHORIZATION_METHOD"}]
         </td>
         <td class="edittext">
-            <input type="radio" name="editval[oxpayments__fcpoauthmode]" value="preauthorization" [{if $edit->oxpayments__fcpoauthmode->value == 'preauthorization'}]checked[{/if}]> [{oxmultilang ident="FCPO_PREAUTHORIZATION"}] [{oxinputhelp ident="FCPO_PREAUTHORIZATION_HELP"}]<br>
-            <input type="radio" name="editval[oxpayments__fcpoauthmode]" value="authorization" [{if $edit->oxpayments__fcpoauthmode->value == 'authorization'}]checked[{/if}]> [{oxmultilang ident="FCPO_AUTHORIZATION"}] [{oxinputhelp ident="FCPO_AUTHORIZATION_HELP"}]
+            <input aria-label="[{oxmultilang ident="FCPO_PREAUTHORIZATION"}]" type="radio" name="editval[oxpayments__fcpoauthmode]" value="preauthorization" [{if $edit->oxpayments__fcpoauthmode->value == 'preauthorization'}]checked[{/if}]> [{oxmultilang ident="FCPO_PREAUTHORIZATION"}] [{oxinputhelp ident="FCPO_PREAUTHORIZATION_HELP"}]<br>
+            <input aria-label="[{oxmultilang ident="FCPO_AUTHORIZATION_METHOD"}]" type="radio" name="editval[oxpayments__fcpoauthmode]" value="authorization" [{if $edit->oxpayments__fcpoauthmode->value == 'authorization'}]checked[{/if}]> [{oxmultilang ident="FCPO_AUTHORIZATION"}] [{oxinputhelp ident="FCPO_AUTHORIZATION_HELP"}]
         </td>
     [{/if}]
     </tr>
@@ -28,8 +28,8 @@
                 <table>
                     <tr>
                         <td>
-                            <input type="radio" name="editval[oxpayments__fcpolivemode]" value="1" [{if $edit->oxpayments__fcpolivemode->value == '1'}]checked[{/if}]> <strong>[{oxmultilang ident="FCPO_LIVE_MODE"}]</strong><br>
-                            <input type="radio" name="editval[oxpayments__fcpolivemode]" value="0" [{if $edit->oxpayments__fcpolivemode->value == '0'}]checked[{/if}]> [{oxmultilang ident="FCPO_TEST_MODE"}]<br>
+                            <input aria-label="[{oxmultilang ident="FCPO_LIVE_MODE"}]" type="radio" name="editval[oxpayments__fcpolivemode]" value="1" [{if $edit->oxpayments__fcpolivemode->value == '1'}]checked[{/if}]> <strong>[{oxmultilang ident="FCPO_LIVE_MODE"}]</strong><br>
+                            <input aria-label="[{oxmultilang ident="FCPO_TEST_MODE"}]" type="radio" name="editval[oxpayments__fcpolivemode]" value="0" [{if $edit->oxpayments__fcpolivemode->value == '0'}]checked[{/if}]> [{oxmultilang ident="FCPO_TEST_MODE"}]<br>
                         </td>
                         <td>
                             [{oxinputhelp ident="FCPO_HELP_OPERATIONMODE"}]
@@ -47,7 +47,7 @@
             </td>
             <td>
                 <input type=hidden name="confbools[blFCPOSofoShowIban]" value="0">
-                <input type="checkbox" name="confbools[blFCPOSofoShowIban]" value="1"  [{if ($confbools.blFCPOSofoShowIban)}]checked[{/if}]>
+                <input aria-label="[{oxmultilang ident="FCPO_SHOW_IBAN_FIELDS"}]" type="checkbox" name="confbools[blFCPOSofoShowIban]" value="1"  [{if ($confbools.blFCPOSofoShowIban)}]checked[{/if}]>
             </td>
         </tr>
     [{/if}]

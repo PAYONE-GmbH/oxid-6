@@ -5,7 +5,7 @@
     <div class="r1">
         <div class="b1">
             <div class="find">
-                <select name="changelang" class="editinput" onChange="Javascript:top.oxid.admin.changeLanguage();">
+                <select aria-label="[{oxmultilang ident="FCPO_CC_LANGUAGE"}]" name="changelang" class="editinput" onChange="Javascript:top.oxid.admin.changeLanguage();">
                     [{foreach from=$languages item=lang}]
                     <option value="[{$lang->id}]" [{if $lang->selected}]SELECTED[{/if}]>[{$lang->name}]</option>
                     [{/foreach}]
@@ -13,9 +13,9 @@
                 <input class="listedit" type="submit" name="submitit" value="[{oxmultilang ident="GENERAL_SEARCH"}]">
             </div>
 
-            <input class="listedit" type="text" size="60" maxlength="128" name="where[oxpayments][oxdesc]" value="[{$where.oxpayments.oxdesc}]">
+            <input aria-label="Description" class="listedit" type="text" size="60" maxlength="128" name="where[oxpayments][oxdesc]" value="[{$where.oxpayments.oxdesc}]">
             <!-- FCPAYONE BEGIN -->
-            | [{oxmultilang ident="FCPO_ONLY_PAYONE"}] <input class="listedit" onchange="this.form.submit();" type="checkbox" name="where[oxpayments][fcpoispayone]" value='1' [{if $where.oxpayments.fcpoispayone == 1}]checked[{/if}]>
+            | [{oxmultilang ident="FCPO_ONLY_PAYONE"}] <input aria-label="[{oxmultilang ident="FCPO_ONLY_PAYONE"}]" class="listedit" onchange="this.form.submit();" type="checkbox" name="where[oxpayments][fcpoispayone]" value='1' [{if $where.oxpayments.fcpoispayone == 1}]checked[{/if}]>
             <!-- FCPAYONE END -->
         </div>
     </div>

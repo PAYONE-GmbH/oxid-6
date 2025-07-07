@@ -5,9 +5,9 @@
     </dt>
     <dd class="[{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]activePayment[{/if}]">
         <div class="form-group" id="fcpo_ou_eps">
-            <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANKGROUPTYPE"}]:</label>
+            <label for="fcpo_so_bankgrouptype_eps" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANKGROUPTYPE"}]:</label>
             <div class="col-lg-9">
-                <select name="dynvalue[fcpo_so_bankgrouptype_eps]" class="form-control selectpicker">
+                <select id="fcpo_so_bankgrouptype_eps" name="dynvalue[fcpo_so_bankgrouptype_eps]" class="form-control selectpicker">
                     <option value="ARZ_OVB" [{if $dynvalue.fcpo_so_bankgrouptype_eps == "ARZ_OVB"}]selected[{/if}]>Volksbanken</option>
                     <option value="ARZ_BAF" [{if $dynvalue.fcpo_so_bankgrouptype_eps == "ARZ_BAF"}]selected[{/if}]>Bank f&uuml;r &Auml;rzte und Freie Berufe</option>
                     <option value="ARZ_NLH" [{if $dynvalue.fcpo_so_bankgrouptype_eps == "ARZ_NLH"}]selected[{/if}]>Nieder&ouml;sterreichische Landes-Hypo</option>

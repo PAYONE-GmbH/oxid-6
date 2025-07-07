@@ -491,7 +491,7 @@
                                             [{oxmultilang ident="FCPO_FORWARD_REDIRECT_FULFILLED_NO"}]
                                         [{/if}]
                                     </td>
-                                    <td><textarea cols="30" rows="5">[{$oForwardRedirect->details}]</textarea></td>
+                                    <td><textarea aria-label="Forward redirect details" cols="30" rows="5">[{$oForwardRedirect->details}]</textarea></td>
                                 </tr>
                             [{/foreach}]
                             <tr>

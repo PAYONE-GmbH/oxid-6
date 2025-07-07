@@ -18,9 +18,9 @@
                     </div>
                 </div>
                 <div class="form-group fcpo_sotype">
-                    <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_ONLINE_UEBERWEISUNG_TYPE"}]:</label>
+                    <label for="fcpo_sotype" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_ONLINE_UEBERWEISUNG_TYPE"}]:</label>
                     <div class="col-lg-9">
-                        <select name="dynvalue[fcpo_sotype]" onchange="fcCheckOUType(this, '[{$oView->fcpoGetSofoShowIban()}]');return false;" class="form-control">
+                        <select id="fcpo_sotype" name="dynvalue[fcpo_sotype]" onchange="fcCheckOUType(this, '[{$oView->fcpoGetSofoShowIban()}]');return false;" class="form-control">
                             [{foreach from=$aFcPoOnlinePaymentMetaData item="oPaymentMetaData"}]
                                 <option value="[{$oPaymentMetaData->sShortcut}]" [{if $oPaymentMetaData->blSelected}]selected[{/if}]>[{$oPaymentMetaData->sCaption}]</option>
                             [{/foreach}]
@@ -29,9 +29,9 @@
                 </div>
                 [{if $oPaymentMetaData->sShortcut != 'PNT' || ($oPaymentMetaData->sShortcut == 'PNT' && $oView->fcpoGetSofoShowIban() == 'true')}]
                     <div class="form-group" id="fcpo_ou_iban">
-                        <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_IBAN"}]:</label>
+                        <label for="fcpo_bank_iban" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_IBAN"}]:</label>
                         <div class="col-lg-9">
-                            <input placeholder="[{oxmultilang ident="FCPO_BANK_IBAN"}]" class="form-control" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_ou_iban]" value="[{$dynvalue.fcpo_ou_iban}]">
+                            <input id="fcpo_bank_iban" placeholder="[{oxmultilang ident="FCPO_BANK_IBAN"}]" class="form-control" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_ou_iban]" value="[{$dynvalue.fcpo_ou_iban}]">
                             <div id="fcpo_ou_iban_invalid" class="fcpo_check_error">
                                 <span class="help-block ">
                                     <ul role="alert" class="list-unstyled text-danger">
@@ -42,9 +42,9 @@
                         </div>
                     </div>
                     <div class="form-group" id="fcpo_ou_bic">
-                        <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_BIC"}]:</label>
+                        <label for="fcpo_bank_bic" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_BIC"}]:</label>
                         <div class="col-lg-9">
-                            <input placeholder="[{oxmultilang ident="FCPO_BANK_BIC"}]" class="form-control" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_ou_bic]" value="[{$dynvalue.fcpo_ou_bic}]">
+                            <input id="fcpo_bank_bic" placeholder="[{oxmultilang ident="FCPO_BANK_BIC"}]" class="form-control" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_ou_bic]" value="[{$dynvalue.fcpo_ou_bic}]">
                             <div id="fcpo_ou_bic_invalid" class="fcpo_check_error">
                                 <span class="help-block ">
                                     <ul role="alert" class="list-unstyled text-danger">
@@ -56,9 +56,9 @@
                     </div>
                 [{/if}]
                 <div class="form-group" id="fcpo_ou_blz">
-                    <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_CODE"}]:</label>
+                    <label for="fcpo_bank_blz" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_CODE"}]:</label>
                     <div class="col-lg-9">
-                        <input placeholder="[{oxmultilang ident="FCPO_BANK_CODE"}]" class="form-control" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_ou_blz]" value="[{$dynvalue.fcpo_ou_blz}]">
+                        <input id="fcpo_bank_blz" placeholder="[{oxmultilang ident="FCPO_BANK_CODE"}]" class="form-control" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_ou_blz]" value="[{$dynvalue.fcpo_ou_blz}]">
                         <div id="fcpo_ou_blz_invalid" class="fcpo_check_error">
                             <span class="help-block ">
                                 <ul role="alert" class="list-unstyled text-danger">
@@ -69,9 +69,9 @@
                     </div>
                 </div>
                 <div class="form-group" id="fcpo_ou_ktonr" style="display: none;">
-                    <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_ACCOUNT_NUMBER"}]:</label>
+                    <label for="fcpo_bank_ktonr" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANK_ACCOUNT_NUMBER"}]:</label>
                     <div class="col-lg-9">
-                        <input placeholder="[{oxmultilang ident="FCPO_BANK_ACCOUNT_NUMBER"}]" class="form-control" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_ou_ktonr]" value="[{$dynvalue.fcpo_ou_ktonr}]">
+                        <input id="fcpo_bank_ktonr" placeholder="[{oxmultilang ident="FCPO_BANK_ACCOUNT_NUMBER"}]" class="form-control" autocomplete="off" type="text" size="20" maxlength="64" name="dynvalue[fcpo_ou_ktonr]" value="[{$dynvalue.fcpo_ou_ktonr}]">
                         <div id="fcpo_ou_ktonr_invalid" class="fcpo_check_error">
                             <span class="help-block ">
                                 <ul role="alert" class="list-unstyled text-danger">
@@ -82,9 +82,9 @@
                     </div>
                 </div>
                 <div class="form-group" id="fcpo_ou_eps" style="display: none;">
-                    <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANKGROUPTYPE"}]:</label>
+                    <label for="fcpo_so_bankgrouptype_eps" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANKGROUPTYPE"}]:</label>
                     <div class="col-lg-9">
-                        <select name="dynvalue[fcpo_so_bankgrouptype_eps]" class="form-control">
+                        <select id="fcpo_so_bankgrouptype_eps" name="dynvalue[fcpo_so_bankgrouptype_eps]" class="form-control">
                             <option value="ARZ_OVB" [{if $dynvalue.fcpo_so_bankgrouptype_eps == "ARZ_OVB"}]selected[{/if}]>Volksbanken</option>
                             <option value="ARZ_BAF" [{if $dynvalue.fcpo_so_bankgrouptype_eps == "ARZ_BAF"}]selected[{/if}]>Bank f&uuml;r &Auml;rzte und Freie Berufe</option>
                             <option value="ARZ_NLH" [{if $dynvalue.fcpo_so_bankgrouptype_eps == "ARZ_NLH"}]selected[{/if}]>Nieder&ouml;sterreichische Landes-Hypo</option>
@@ -129,9 +129,9 @@
                     </div>
                 </div>
                 <div class="form-group" id="fcpo_ou_idl" style="display: none;">
-                    <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANKGROUPTYPE"}]:</label>
+                    <label for="fcpo_so_bankgrouptype_idl" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_BANKGROUPTYPE"}]:</label>
                     <div class="col-lg-9">
-                        <select name="dynvalue[fcpo_so_bankgrouptype_idl]" class="form-control">
+                        <select id="fcpo_so_bankgrouptype_idl" name="dynvalue[fcpo_so_bankgrouptype_idl]" class="form-control">
                             <option value="ABN_AMRO_BANK" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "ABN_AMRO_BANK"}]selected[{/if}]>ABN Amro Bank</option>
                             <option value="ASN_BANK" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "ASN_BANK"}]selected[{/if}]>ASN Bank</option>
                             <option value="BUNQ_BANK" [{if $dynvalue.fcpo_so_bankgrouptype_idl == "BUNQ_BANK"}]selected[{/if}]>Bunq Bank</option>

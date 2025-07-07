@@ -22,9 +22,9 @@
                     </div>
                 </div>
                 <div class="form-group fcpo_kktype">
-                    <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_CREDITCARD"}]:</label>
+                    <label for="fcpo_cc_type" id="fcpo_cc_type_label" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_CREDITCARD"}]:</label>
                     <div class="col-lg-9">
-                        <select name="dynvalue[fcpo_kktype]" class="form-control selectpicker" required="required">
+                        <select id="fcpo_cc_type" name="dynvalue[fcpo_kktype]" class="form-control selectpicker" required="required">
                             [{foreach from=$aFcPoCCPaymentMetaData item="oFcPoCCPaymentMetaData"}]
                                 <option value="[{$oFcPoCCPaymentMetaData->sPaymentTag}]" [{if $oFcPoCCPaymentMetaData->blSelected}]selected[{/if}]>[{$oFcPoCCPaymentMetaData->sPaymentName}]</option>
                             [{/foreach}]
@@ -33,9 +33,9 @@
                 </div>
 
                 <div class="form-group fcpo_kknumber">
-                    <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_NUMBER"}]:</label>
+                    <label for="fcpo_cc_number" id="fcpo_cc_number_label" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_NUMBER"}]:</label>
                     <div class="col-lg-9">
-                        <input placeholder="[{oxmultilang ident="FCPO_NUMBER"}]" autocomplete="off" type="text" class="form-control js-oxValidate js-oxValidate_notEmpty payment_text" size="20" maxlength="64" name="dynvalue[fcpo_kknumber]" value="[{$dynvalue.fcpo_kknumber}]" required="required">
+                        <input id="fcpo_cc_number" placeholder="[{oxmultilang ident="FCPO_NUMBER"}]" autocomplete="off" type="text" class="form-control js-oxValidate js-oxValidate_notEmpty payment_text" size="20" maxlength="64" name="dynvalue[fcpo_kknumber]" value="[{$dynvalue.fcpo_kknumber}]" required="required">
                         <div id="fcpo_cc_number_invalid" class="fcpo_check_error">
                             <span class="help-block">
                                 <ul role="alert" class="list-unstyled text-danger">
@@ -47,9 +47,9 @@
                 </div>
 
                 <div class="form-group fcpo_kkcardholder">
-                    <label id="fcpo_cc_cardholder_label" id="fcpo_cc_cardholder_label" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_CC_CARDHOLDER"}]:</label>
+                    <label for="fcpo_cc_cardholder" id="fcpo_cc_cardholder_label" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_CC_CARDHOLDER"}]:</label>
                     <div class="col-lg-9">
-                        <input for="fcpo_cc_cardholder" autocomplete="off" type="text"
+                        <input autocomplete="off" type="text"
                                class="form-control"
                                size="20" maxlength="50" id="fcpo_cc_cardholder" name="dynvalue[fcpo_kkcardholder]"
                                value="[{$dynvalue.fcpo_kkcardholder}]"
@@ -69,7 +69,7 @@
                 <div class="form-group fcpo_kkexpire">
                     <label class="req control-label col-xs-12 col-lg-3">[{oxmultilang ident="FCPO_VALID_UNTIL"}]:</label>
                     <div class="col-xs-6 col-lg-2">
-                        <select name="dynvalue[fcpo_kkmonth]" class="form-control selectpicker" required="required">
+                        <select aria-label="[{oxmultilang ident="FCPO_MONTH"}]" name="dynvalue[fcpo_kkmonth]" class="form-control selectpicker" required="required">
                             <option [{if $dynvalue.fcpo_kkmonth == "01"}]selected[{/if}]>01</option>
                             <option [{if $dynvalue.fcpo_kkmonth == "02"}]selected[{/if}]>02</option>
                             <option [{if $dynvalue.fcpo_kkmonth == "03"}]selected[{/if}]>03</option>
@@ -85,7 +85,7 @@
                         </select>
                     </div>
                     <div class="col-xs-6 col-lg-2">
-                        <select name="dynvalue[fcpo_kkyear]"class="form-control selectpicker">
+                        <select aria-label="[{oxmultilang ident="FCPO_YEAR"}]" name="dynvalue[fcpo_kkyear]"class="form-control selectpicker">
                             [{foreach from=$oView->getCreditYears() item=year}]
                                 <option [{if $dynvalue.fcpo_kkyear == $year}]selected[{/if}]>[{$year}]</option>
                             [{/foreach}]
@@ -103,9 +103,9 @@
                     </div>
                 </div>
                 <div class="form-group fcpo_kkpruef">
-                    <label class="req control-label col-lg-3">[{oxmultilang ident="FCPO_CARD_SECURITY_CODE"}]:</label>
+                    <label for="fcpo_cc_cvc2" id="fcpo_cc_cvc2_label" class="req control-label col-lg-3">[{oxmultilang ident="FCPO_CARD_SECURITY_CODE"}]:</label>
                     <div class="col-lg-9">
-                        <input placeholder="[{oxmultilang ident="FCPO_CARD_SECURITY_CODE"}]" autocomplete="off" type="text" class="form-control js-oxValidate js-oxValidate_notEmpty payment_text" size="20" maxlength="64" name="dynvalue[fcpo_kkpruef]" value="[{$dynvalue.fcpo_kkpruef}]" required="required">
+                        <input id="fcpo_cc_cvc2" placeholder="[{oxmultilang ident="FCPO_CARD_SECURITY_CODE"}]" autocomplete="off" type="text" class="form-control js-oxValidate js-oxValidate_notEmpty payment_text" size="20" maxlength="64" name="dynvalue[fcpo_kkpruef]" value="[{$dynvalue.fcpo_kkpruef}]" required="required">
                         <div id="fcpo_cc_cvc2_invalid" class="fcpo_check_error">
                             <span class="help-block">
                                 <ul role="alert" class="list-unstyled text-danger">

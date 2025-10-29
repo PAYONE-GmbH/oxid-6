@@ -62,8 +62,7 @@ jobs:
         [ -d /tmp/oxid6/vendor/payone-gmbh/oxid-6 ] && { echo "Removing from vendor"; rm -rf /tmp/oxid6/vendor/payone-gmbh/oxid-6; }
         mkdir -p /tmp/oxid6/source/modules/fc/fcpayone
         cp -R $GITHUB_WORKSPACE/* /tmp/oxid6/source/modules/fc/fcpayone
-        /tmp/oxid6/vendor/bin/oe-console oe:module:install-configuration /tmp/oxid6/source/modules/fc/fcpayone
-        /tmp/oxid6/vendor/bin/oe-console oe:module:apply-configuration
+        /tmp/oxid6/vendor/bin/oe-console oe:module:reset-configurations
     - name: Run tests
       # Run composer update to make services available, see #128
       run: |

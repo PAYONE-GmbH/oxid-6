@@ -2265,13 +2265,18 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrder extends OxidTestCase
         $oMockConfig = $this->getMock('OxConfig', array('getConfigParam'));
         $oMockConfig->expects($this->any())->method('getConfigParam')->will($this->returnValue(false));
 
-        $oMockDb = $this->getMock('oxDb', array('Execute'));
+        $oMockDb = $this->getMock('oxDb', array('Execute', 'GetOne'));
         $oMockDb->expects($this->any())->method('Execute')->will($this->returnValue(true));
+        $oMockDb->expects($this->any())->method('GetOne')->will($this->returnValue(1));
+
+        $oMockRequestLog = $this->getMock('fcporequestlog', array('load'));
+        $oMockRequestLog->expects($this->any())->method('load')->will($this->returnValue(true));
 
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
         $oHelper->expects($this->any())->method('fcpoSetSessionVariable')->will($this->returnValue(true));
         $oHelper->expects($this->any())->method('fcpoGetSessionVariable')->will($this->returnValue('someWorkerId'));
         $oHelper->expects($this->any())->method('fcpoGetConfig')->will($this->returnValue($oMockConfig));
+        $oHelper->expects($this->any())->method('getFactoryObject')->will($this->returnValue($oMockRequestLog));
 
         
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);

@@ -588,6 +588,12 @@ class fcpoRequest extends oxSuperCfg
                 $this->addParameter('add_paydata[paymentdata_token_publickey_hash]', $tokenData['paydata']['paymentdata_token_publickey_hash']);
                 $this->addParameter('add_paydata[paymentdata_token_transaction_id]', $tokenData['paydata']['paymentdata_token_transaction_id']);
                 break;
+            case 'fcpo_googlepay':
+                $tokenData = $this->_oFcpoHelper->fcpoGetRequestParameter('googlepaytoken');
+                $this->addParameter('clearingtype', 'wlt');
+                $this->addParameter('wallettype', 'GGP');
+                $this->addParameter('add_paydata[paymentmethod_token_data]', $tokenData);
+                break;
             default:
                 return false;
         }

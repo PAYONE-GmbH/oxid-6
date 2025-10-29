@@ -75,6 +75,7 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         'fcpopl_secinvoice',
         'fcpopl_secinstallment',
         'fcpopl_secdebitnote',
+        'fcpo_googlepay',
     );
 
     protected static $_aRedirectPayments = array(
@@ -95,6 +96,7 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         'fcpo_bancontact',
         'fcpo_alipay',
         'fcpo_wechatpay',
+        'fcpo_googlepay',
     );
 
     /**

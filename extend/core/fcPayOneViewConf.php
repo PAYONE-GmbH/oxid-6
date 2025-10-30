@@ -982,6 +982,10 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent
         return 'false';
     }
 
+    public function fcpoGooglePayGetGoogleMerchantId() {
+        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+        return $oConfig->getConfigParam('sFCPOGooglepayGoogleMerchantId');
+    }
     public function fcpoGooglePayGetButtonColor() {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         return $oConfig->getConfigParam('sFCPOGooglePayButtonColor');

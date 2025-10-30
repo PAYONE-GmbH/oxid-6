@@ -108,7 +108,7 @@
                 paymentDataRequest.allowedPaymentMethods = [cardPaymentMethod];
                 paymentDataRequest.transactionInfo = getGoogleTransactionInfo();
                 paymentDataRequest.merchantInfo = {
-                    merchantId: '[{$oViewConf->fcpoGooglePayGetMerchantId()}]',
+                    merchantId: '[{$oViewConf->fcpoGooglePayGetGoogleMerchantId()}]',
                     merchantName: '[{$oViewConf->fcpoGooglePayGetShopName()}]',
                 };
                 return paymentDataRequest;

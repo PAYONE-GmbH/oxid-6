@@ -991,6 +991,16 @@
             <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="FCPO_CONFIG_GROUP_GOOGLEPAY"}]</b></a>
             <dl>
                 <dt>
+                    <input aria-label="Set Googlepay Country Code" type="text" class="txt" name="confstrs[sFCPOGooglepayGoogleMerchantId]" value="[{$confstrs.sFCPOGooglepayGoogleMerchantId}]" [{$readonly}]>
+                    [{oxinputhelp ident="FCPO_HELP_GOOGLEPAY_GOOGLEMERCHANTID"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_GOOGLEPAY_GOOGLEMERCHANTID"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+            <dl>
+                <dt>
                     <input type="hidden" name="confbools[blFCPOGoolepayAllowVisa]" value="false">
                     <input aria-label="Allow Visa Cards for Google Pay" type="checkbox" name="confbools[blFCPOGoolepayAllowVisa]" value="true" [{if ($confbools.blFCPOGoolepayAllowVisa)}]checked[{/if}] [{$readonly}]>
                     [{oxinputhelp ident="FCPO_HELP_GOOGLEPAY_ALLOW_VISA"}]

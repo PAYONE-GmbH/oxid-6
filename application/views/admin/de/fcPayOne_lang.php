@@ -496,6 +496,8 @@ Das kleinere Textfeld wird verwendet, um die Zieldatei oder den Pfad zu einer vo
     'PAYONE WeChat Pay' => 'PAYONE WeChat Pay',
     'FCPO_KLARNA' => 'PAYONE Klarna Payments',
     'FCPO_CONFIG_GROUP_GOOGLEPAY'                       => 'Google Pay',
+    'FCPO_HELP_GOOGLEPAY_GOOGLEMERCHANTID'              => 'Google Pay merchant id',
+    'FCPO_GOOGLEPAY_GOOGLEMERCHANTID'                   => 'Google Pay merchant id',
     'FCPO_HELP_GOOGLEPAY_ALLOW_VISA'                    => 'Visa Karten f&uuml;r Google Pay erlauben',
     'FCPO_GOOGLEPAY_ALLOW_VISA'                         => 'Visa Karten f&uuml;r Google Pay erlauben',
     'FCPO_HELP_GOOGLEPAY_ALLOW_MASTERCARD'              => 'Master Card f&uuml;r Google Pay erlauben',

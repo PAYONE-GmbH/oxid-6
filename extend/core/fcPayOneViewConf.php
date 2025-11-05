@@ -978,10 +978,6 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent
         return $oConfig->getConfigParam('blFCPOSendArticlelist');
     }
 
-    public function fcpoGooglePayGetDisplayItems() {
-        return 'false';
-    }
-
     public function fcpoGooglePayGetGoogleMerchantId() {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         return $oConfig->getConfigParam('sFCPOGooglepayGoogleMerchantId');
@@ -1037,6 +1033,35 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent
         }
     }
 
+    public function getGooglePayDisplayItems()
+    {
+        $aOrderlines = [];
+        $oSession = $this->_oFcpoHelper->fcpoGetSession();
+        $oBasket = $oSession->getBasket();
 
+        foreach ($oBasket->getContents() as $oBasketItem) {
+            $oArticle = $oBasketItem->getArticle();
+
+            $aOrderline = array(
+                'reference' => $oArticle->oxarticles__oxartnum->value,
+                'name' =>  $oBasketItem->getTitle(),
+                'quantity' => $oBasketItem->getAmount(),
+                'unit_price' => $oBasketItem->getUnitPrice()->getBruttoPrice() / $oBasketItem->getAmount(),
+                'tax_rate' => $oBasketItem->getVatPercent() * 100,
+                'total_amount' => $oBasketItem->getPrice()->getBruttoPrice(),
+            );
+            $aOrderlines[] = $aOrderline;
+        }
+        $googlePayDisplayItems = [];
+        foreach ($aOrderlines as $index => $displayItem) {
+            $googlePayDisplayItems[] = [
+                'label' => $displayItem['quantity'] . ' x ' . $displayItem['reference'] . ' : ' . $displayItem['name'],
+                'type' => 'LINE_ITEM',
+                'price' => (string) $displayItem['total_amount'],
+            ];
+        }
+        $jsonDisplayItems = json_encode($googlePayDisplayItems);
+        return $jsonDisplayItems;
+    }
 }
 

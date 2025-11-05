@@ -155,7 +155,10 @@
                     totalPriceStatus: 'FINAL',
                     // set to cart total
                     totalPrice: '[{$oViewConf->fcpoGooglePayGetBasketSum()}]',
-                    totalPriceLabel: 'Gesamtsumme'
+                    totalPriceLabel: 'Gesamtsumme',
+                    [{if $oViewConf->fcpoGooglePayGetShowDisplayItems()}]
+                        displayItems: [{$oViewConf->getGooglePayDisplayItems()}]
+                    [{/if}]
                 };
             }
 

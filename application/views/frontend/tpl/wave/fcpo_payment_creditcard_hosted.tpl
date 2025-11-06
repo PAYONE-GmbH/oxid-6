@@ -1,7 +1,7 @@
 [{if $oView->hasPaymentMethodAvailableSubTypes('cc')}]
     [{assign var="dynvalue" value=$oView->getDynValue()}]
     <div class="well well-sm">
-        <dl id="fcpoCreditcard" style="display:none;">
+        <dl id="fcpoCreditcard">
             <dt>
                 <input id="payment_[{$sPaymentID}]" type="radio" name="paymentid" value="[{$sPaymentID}]" [{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]checked[{/if}]>
                 <label for="payment_[{$sPaymentID}]"><b>[{oxmultilang ident=$paymentmethod->oxpayments__oxdesc->value}] [{$oView->fcpoGetFormattedPaymentCosts($paymentmethod)}]</b></label>

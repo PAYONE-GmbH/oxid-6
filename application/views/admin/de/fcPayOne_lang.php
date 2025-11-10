@@ -494,6 +494,7 @@ Das kleinere Textfeld wird verwendet, um die Zieldatei oder den Pfad zu einer vo
     'PAYONE Unzer Rechnungskauf' => 'PAYONE Unzer Rechnungskauf',
     'PAYONE Vorkasse' => 'PAYONE Vorkasse',
     'PAYONE WeChat Pay' => 'PAYONE WeChat Pay',
+    'PAYONE Wero' => 'PAYONE Wero',
     'FCPO_KLARNA' => 'PAYONE Klarna Payments',
 );
 

@@ -48,12 +48,16 @@
     </script>
     <script src="https://x.klarnacdn.net/kp/lib/v1/api.js" async></script>
     [{/if}]
+[{else}]
+    [{assign var="sFcPoTemplatePath" value=$oViewConf->fcpoGetActiveThemePath()|cat:'/fcpo_nosalutation_order.tpl'}]
+    [{include file=$oViewConf->fcpoGetAbsModuleTemplateFrontendPath($sFcPoTemplatePath)}]
+[{/if}]
     [{if $oViewConf->fcpoIsGooglePay()}]
     <script async
             src="https://pay.google.com/gp/p/js/pay.js"
             onload="onGooglePayLoaded()">
     </script>
-<script>
+    <script>
             const baseRequest = {
                 apiVersion: 2,
                 apiVersionMinor: 0
@@ -202,7 +206,3 @@
             }
     </script>
     [{/if}]
-[{else}]
-    [{assign var="sFcPoTemplatePath" value=$oViewConf->fcpoGetActiveThemePath()|cat:'/fcpo_nosalutation_order.tpl'}]
-    [{include file=$oViewConf->fcpoGetAbsModuleTemplateFrontendPath($sFcPoTemplatePath)}]
-[{/if}]

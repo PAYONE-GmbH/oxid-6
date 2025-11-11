@@ -75,6 +75,7 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         'fcpopl_secinvoice',
         'fcpopl_secinstallment',
         'fcpopl_secdebitnote',
+        'fcpo_wero',
         'fcpo_googlepay',
     );
 
@@ -96,6 +97,7 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         'fcpo_bancontact',
         'fcpo_alipay',
         'fcpo_wechatpay',
+        'fcpo_wero',
         'fcpo_googlepay',
     );
 

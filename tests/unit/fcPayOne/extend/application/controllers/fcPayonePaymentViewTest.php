@@ -879,7 +879,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
         $oTestObject->expects($this->any())->method('getBancontact')->will($this->returnValue(true));
         $oTestObject->expects($this->any())->method('_fcpoGetOnlinePaymentData')->will($this->returnValue('someValue'));
 
-        $aExpect = array('someValue', 'someValue', 'someValue', 'someValue', 'someValue', 'someValue', 'someValue', 'someValue');
+        $aExpect = array('someValue', 'someValue', 'someValue', 'someValue', 'someValue', 'someValue', 'someValue');
         $aResponse = $oTestObject->fcpoGetOnlinePaymentMetaData();
 
         $this->assertEquals($aExpect, $aResponse);

@@ -433,8 +433,8 @@ function fcpoStartELVRequest() {
 function fcCheckPaymentSelection() {
     var sCheckedValue = fcpoGetSelectedPaymentMethod();
     if(sCheckedValue != false) {
-        var oForm = fcpoGetPaymentForm();
-        if(sCheckedValue == 'fcpocreditcard' && oForm.fcpo_cc_type.value == 'ajax') {
+        var ccFormType = document.getElementsByName('fcpo_cc_type')[0];
+        if(sCheckedValue == 'fcpocreditcard' && typeof ccFormType != 'undefined' && ccFormType.value == 'ajax') {
             return fcpoStartCCRequest();
         } else if(sCheckedValue == 'fcpodebitnote') {
             return fcpoStartELVRequest(true);
@@ -1126,13 +1126,6 @@ if (fcpoPayolutionInstallmentCheckAvailability.length > 0) {
             }
         });
     }
-    setTimeout(
-        function(){
-            if(document.getElementById('fcpoCreditcard') && typeof PayoneRequest == 'function') {
-                document.getElementById('fcpoCreditcard').style.display = '';
-            }
-        }, 2000
-    );
 
 }(document, 'script'));
 

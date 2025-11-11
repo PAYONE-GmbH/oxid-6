@@ -503,6 +503,7 @@ The smaller text field is used to name the destination file, or path to an exist
     'PAYONE Unzer Rechnungskauf' => 'PAYONE Unzer Rechnungskauf',
     'PAYONE Vorkasse' => 'PAYONE prepayment',
     'PAYONE WeChat Pay' => 'PAYONE WeChat Pay',
+    'PAYONE Wero' => 'PAYONE Wero',
     'FCPO_KLARNA' => 'PAYONE Klarna Payments',
     'FCPO_CONFIG_GROUP_GOOGLEPAY'                       => 'Google Pay',
     'FCPO_HELP_GOOGLEPAY_GOOGLEMERCHANTID'              => 'Google Pay merchant id',

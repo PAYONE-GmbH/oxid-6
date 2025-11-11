@@ -588,6 +588,11 @@ class fcpoRequest extends oxSuperCfg
                 $this->addParameter('add_paydata[paymentdata_token_publickey_hash]', $tokenData['paydata']['paymentdata_token_publickey_hash']);
                 $this->addParameter('add_paydata[paymentdata_token_transaction_id]', $tokenData['paydata']['paymentdata_token_transaction_id']);
                 break;
+            case 'fcpo_wero':
+                $this->addParameter('clearingtype', 'wlt');
+                $this->addParameter('wallettype', 'WRO');
+                $blAddRedirectUrls = true;
+                break;
             default:
                 return false;
         }

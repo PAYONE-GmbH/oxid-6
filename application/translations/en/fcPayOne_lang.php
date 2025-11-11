@@ -334,6 +334,8 @@ The smaller text field is used to name the destination file, or path to an exist
 'FCPO_RATEPAY_INSTALLMENT_TYPE_DEBIT_TITLE' => 'Installment by debit',
 'FCPO_RATEPAY_INSTALLMENT_SWITCH_TO_TRANSFER_LINK' => 'I would like to make the installment payments myself and not pay by direct debit',
 'FCPO_RATEPAY_INSTALLMENT_SWITCH_TO_DEBIT_LINK' => 'I would like to conveniently pay the installments by direct debit',
+
+'PAYONE Google Pay' => 'PAYONE Google Pay',
 );
 
 /*

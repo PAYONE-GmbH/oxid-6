@@ -986,6 +986,106 @@
         </div>
     </div>
 
+    <div class="groupExp">
+        <div>
+            <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="FCPO_CONFIG_GROUP_GOOGLEPAY"}]</b></a>
+            <dl>
+                <dt>
+                    <input aria-label="Set Googlepay Country Code" type="text" class="txt" name="confstrs[sFCPOGooglepayGoogleMerchantId]" value="[{$confstrs.sFCPOGooglepayGoogleMerchantId}]" [{$readonly}]>
+                    [{oxinputhelp ident="FCPO_HELP_GOOGLEPAY_GOOGLEMERCHANTID"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_GOOGLEPAY_GOOGLEMERCHANTID"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+            <dl>
+                <dt>
+                    <input type="hidden" name="confbools[blFCPOGoolepayAllowVisa]" value="false">
+                    <input aria-label="Allow Visa Cards for Google Pay" type="checkbox" name="confbools[blFCPOGoolepayAllowVisa]" value="true" [{if ($confbools.blFCPOGoolepayAllowVisa)}]checked[{/if}] [{$readonly}]>
+                    [{oxinputhelp ident="FCPO_HELP_GOOGLEPAY_ALLOW_VISA"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_GOOGLEPAY_ALLOW_VISA"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+            <dl>
+                <dt>
+                    <input type="hidden" name="confbools[blFCPOGoolepayAllowMasterCard]" value="false">
+                    <input aria-label="Allow Master Cards for Google Pay" type="checkbox" name="confbools[blFCPOGoolepayAllowMasterCard]" value="true" [{if ($confbools.blFCPOGoolepayAllowMasterCard)}]checked[{/if}] [{$readonly}]>
+                    [{oxinputhelp ident="FCPO_HELP_GOOGLEPAY_ALLOW_MASTERCARD"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_GOOGLEPAY_ALLOW_MASTERCARD"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+            <dl>
+                <dt>
+                    <input type="hidden" name="confbools[blFCPOGoolepayAllowPrePaidCards]" value="false">
+                    <input aria-label="Allow Pre-Paid Cards for Google Pay" type="checkbox" name="confbools[blFCPOGoolepayAllowPrePaidCards]" value="true" [{if ($confbools.blFCPOGoolepayAllowPrePaidCards)}]checked[{/if}] [{$readonly}]>
+                    [{oxinputhelp ident="FCPO_HELP_GOOGLEPAY_ALLOW_PREPAIDCARDS"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_GOOGLEPAY_ALLOW_PREPAIDCARDS"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+            <dl>
+                <dt>
+                    <input type="hidden" name="confbools[blFCPOGooglepayAllowCreditCards]" value="false">
+                    <input aria-label="Allow Credit Cards for Google Pay" type="checkbox" name="confbools[blFCPOGooglepayAllowCreditCards]" value="true" [{if ($confbools.blFCPOGooglepayAllowCreditCards)}]checked[{/if}] [{$readonly}]>
+                    [{oxinputhelp ident="FCPO_HELP_GOOGLEPAY_ALLOW_CREDITCARDS"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_GOOGLEPAY_ALLOW_CREDITCARDS"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+            <dl>
+                <dt>
+                    <input aria-label="Set Googlepay Country Code" type="text" class="txt" name="confstrs[sFCPOGooglepayCountrycode]" value="[{$confstrs.sFCPOGooglepayCountrycode}]" [{$readonly}]>
+                    [{oxinputhelp ident="FCPO_HELP_GOOGLEPAY_COUNTRYCODE"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_GOOGLEPAY_COUNTRYCODE"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+            <dl>
+                <dt>
+                    <select aria-label="Set Google Pay Button Color" name="confstrs[sFCPOGooglePayButtonColor]">
+                        <option value="default" [{if $confstrs.sFCPOGooglePayButtonColor == "default"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_GOOGLEPAY_BUTTONCOLOR_DEFAULT"}]</option>
+                        <option value="white" [{if $confstrs.sFCPOGooglePayButtonColor == "white"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_GOOGLEPAY_BUTTONCOLOR_WHITE"}]</option>
+                        <option value="black" [{if $confstrs.sFCPOGooglePayButtonColor == "black"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_GOOGLEPAY_BUTTONCOLOR_BLACK"}]</option>
+                    </select>
+                    [{oxinputhelp ident="FCPO_HELP_GOOGLEPAY_BUTTONCOLOR"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_GOOGLEPAY_BUTTONCOLOR"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+            <dl>
+                <dt>
+                    <select aria-label="Set Google Pay Button Type" name="confstrs[sFCPOGooglePayButtonType]">
+                        <option value="buy" [{if $confstrs.sFCPOGooglePayButtonType == "buy"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_GOOGLEPAY_BUTTONTYPE_BUY"}]</option>
+                        <option value="checkout" [{if $confstrs.sFCPOGooglePayButtonType == "checkout"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_GOOGLEPAY_BUTTONTYPE_CHECKOUT"}]</option>
+                        <option value="order" [{if $confstrs.sFCPOGooglePayButtonType == "order"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_GOOGLEPAY_BUTTONTYPE_ORDER"}]</option>
+                        <option value="pay" [{if $confstrs.sFCPOGooglePayButtonType == "pay"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_GOOGLEPAY_BUTTONTYPE_PAY"}]</option>
+                        <option value="plain" [{if $confstrs.sFCPOGooglePayButtonType == "plain"}]SELECTED[{/if}]>[{oxmultilang ident="FCPO_GOOGLEPAY_BUTTONTYPE_PLAIN"}]</option>
+                    </select>
+                    [{oxinputhelp ident="FCPO_HELP_GOOGLEPAY_BUTTONTYPE"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_GOOGLEPAY_BUTTONTYPE"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+        </div>
+    </div>
+
 
     <br>
     <input type="submit" class="edittext" name="save" value="[{oxmultilang ident="GENERAL_SAVE"}]" onClick="Javascript:document.myedit.fnc.value='save'" [{$readonly}]>

@@ -5,6 +5,14 @@
     [{include file=$oViewConf->fcpoGetAbsModuleTemplateFrontendPath($sFcPoTemplatePath)}]
 [{/if}]
 
+<script type="text/javascript">
+    function fcpoDisableAndSubmit(e, orderForm) {
+        var submitButton = e.submitter;
+        submitButton.disabled = true;
+        orderForm.submit();
+    }
+</script>
+
 [{if $oViewConf->fcpoUserHasSalutation()}]
     [{$smarty.block.parent}]
     [{if $oViewConf->fcpoIsKlarnaPaynow()}]
@@ -39,7 +47,7 @@
                             } else if (res.show_form === false) {
                                 window.location.replace(klarna_cancel_url);
                             } else {
-                                orderForm.submit();
+                                fcpoDisableAndSubmit(e, orderForm);
                             }
                         })
                 }
@@ -47,10 +55,29 @@
         });
     </script>
     <script src="https://x.klarnacdn.net/kp/lib/v1/api.js" async></script>
+    [{else}]
+        <script type="text/javascript">
+            window.addEventListener("load", function(){
+                var orderForm = document.getElementById('orderConfirmAgbBottom');
+                orderForm.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    fcpoDisableAndSubmit(e, orderForm);
+                });
+            });
+        </script>
     [{/if}]
 [{else}]
     [{assign var="sFcPoTemplatePath" value=$oViewConf->fcpoGetActiveThemePath()|cat:'/fcpo_nosalutation_order.tpl'}]
     [{include file=$oViewConf->fcpoGetAbsModuleTemplateFrontendPath($sFcPoTemplatePath)}]
+    <script type="text/javascript">
+        window.addEventListener("load", function(){
+            var orderForm = document.getElementById('orderConfirmAgbBottom');
+            orderForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                fcpoDisableAndSubmit(e, orderForm);
+            });
+        });
+    </script>
 [{/if}]
     [{if $oViewConf->fcpoIsGooglePay()}]
     <script async

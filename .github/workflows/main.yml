@@ -42,6 +42,7 @@ jobs:
       run: |
         mkdir /tmp/oxid6
         cd /tmp/oxid6
+        export COMPOSER_NO_SECURITY_BLOCKING=1
         composer create-project -n --no-progress --no-install oxid-esales/oxideshop-project . ${{ matrix.oxid-versions }}
         composer config --no-plugins allow-plugins.oxid-esales/oxideshop-unified-namespace-generator true
         composer config --no-plugins allow-plugins.oxid-esales/oxideshop-composer-plugin true

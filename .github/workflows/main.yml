@@ -42,11 +42,10 @@ jobs:
       run: |
         mkdir /tmp/oxid6
         cd /tmp/oxid6
-        export COMPOSER_NO_SECURITY_BLOCKING=1
-        composer create-project -n --no-progress --no-install oxid-esales/oxideshop-project . ${{ matrix.oxid-versions }}
+        composer create-project -n --no-progress --no-install --no-audit oxid-esales/oxideshop-project . dev-b-6.3-ce
         composer config --no-plugins allow-plugins.oxid-esales/oxideshop-unified-namespace-generator true
         composer config --no-plugins allow-plugins.oxid-esales/oxideshop-composer-plugin true
-        composer install --no-security-blocking --no-interaction
+        composer update --no-audit --no-interaction
         cp /tmp/oxid6/source/config.inc.php.dist /tmp/oxid6/source/config.inc.php
         sed -i 's|<dbHost>|127.0.0.1|; s|<dbName>|oxideshop|; s|<dbUser>|root|; s|<dbPwd>|root|; s|<sShopURL>|http://localhost|; s|<sShopDir>|/tmp/oxid6/source|; s|<sCompileDir>|/tmp/oxid6/source/tmp|; s|\$this->iDebug = 0|\$this->iDebug = 1|' /tmp/oxid6/source/config.inc.php
         sed -i "s|\$this->edition = ''|\$this->edition = 'CE'|" /tmp/oxid6/source/config.inc.php

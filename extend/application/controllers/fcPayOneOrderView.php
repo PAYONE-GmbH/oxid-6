@@ -136,16 +136,9 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
      * @return mixed
      */
     protected function _fcpoDoesExpressUserAlreadyExist($sEmail) {
-        $sPaymentId = $this->_oFcpoHelper->fcpoGetSessionVariable('paymentid');
         $oOrder = $this->_oFcpoHelper->getFactoryObject('oxOrder');
 
-        $blReturn = $oOrder->fcpoDoesUserAlreadyExist($sEmail);
-        if ($blReturn !== false && in_array($sPaymentId, [fcpopaypalhelper::PPE_EXPRESS, fcpopaypalhelper::PPE_V2_EXPRESS])) { // is express exception
-            // always using the address that has been
-            // sent by express service is mandatory
-            $blReturn = false;
-        }
-        return $blReturn;
+        return $oOrder->fcpoDoesUserAlreadyExist($sEmail);
     }
 
     /**
@@ -329,24 +322,16 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
      * @param array $aResponse
      * @return object
      */
-    protected function _fcpoHandleExpressUser($aResponse) {
+    protected function _fcpoHandleExpressUser($aResponse)
+    {
         $sEmail = $aResponse['add_paydata[email]'];
-        $oCurrentUser = $this->getUser();
-        if ($oCurrentUser) {
-            $sEmail = $oCurrentUser->oxuser__oxusername->value;
-        }
-
         $sUserId = $this->_fcpoDoesExpressUserAlreadyExist($sEmail);
+
         if ($sUserId) {
-            try {
-                $oUser = $this->_fcpoValidateAndGetExpressUser($sUserId, $aResponse);
-            } catch (oxException $oEx) {
-                throw $oEx;
-            }
+            $oUser = $this->_fcpoValidateAndGetExpressUser($sUserId, $aResponse);
         } else {
             $oUser = $this->_fcpoCreateUserByResponse($aResponse);
         }
-
 
         $this->_oFcpoHelper->fcpoSetSessionVariable('usr', $oUser->getId());
         $this->setUser($oUser);
@@ -415,14 +400,19 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
     {
         $oCurrentUser = $this->getUser();
 
+        // PPE user exists in shop, and either
+        //      no user is logged in
+        //   or the session user email does not match with PPE user email
+        if (
+            !$oCurrentUser
+            || ($oCurrentUser->oxuser__oxusername->value !== $aResponse['add_paydata[email]'])
+        ) {
+            $this->_fcpoThrowException('FCPO_PAYPALEXPRESS_USER_EXISTS_ERROR');
+        }
+
         $oUser = $this->_oFcpoHelper->getFactoryObject("oxUser");
         $oUser->load($sUserId);
-        $blSameUser = $this->_fcpoIsSameExpressUser($oUser, $aResponse);
-        $blNoUserException = (!$oCurrentUser && !$blSameUser);
-
-        if ($blNoUserException) {
-            $this->_fcpoThrowException('FCPO_PAYPALEXPRESS_USER_SECURITY_ERROR');
-        }
+        $blSameUser = $this->_fcpoIsSamePayPalUser($oUser, $aResponse);
 
         if (!$blSameUser) {
             $this->_fcpoCreateExpressDelAddress($aResponse, $sUserId);

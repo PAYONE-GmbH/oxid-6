@@ -108,7 +108,9 @@
                 type: 'CARD',
                 parameters: {
                     allowedAuthMethods: allowedCardAuthMethods,
-                    allowedCardNetworks: allowedCardNetworks
+                    allowedCardNetworks: allowedCardNetworks,
+                    allowPrepaidCards: [{$oViewConf->fcpoGooglePayGetAllowPrepaidCards()}],
+                    allowCreditCards: [{$oViewConf->fcpoGooglePayGetAllowCreditCards()}]
                 }
             };
 
@@ -138,7 +140,7 @@
                 paymentDataRequest.transactionInfo = getGoogleTransactionInfo();
                 paymentDataRequest.merchantInfo = {
                     merchantId: '[{$oViewConf->fcpoGooglePayGetGoogleMerchantId()}]',
-                    merchantName: '[{$oViewConf->fcpoGooglePayGetShopName()}]',
+                    merchantName: '[{$oViewConf->fcpoGooglePayGetMerchantName()}]',
                 };
                 return paymentDataRequest;
             }

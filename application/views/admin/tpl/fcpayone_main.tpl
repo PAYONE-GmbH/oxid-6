@@ -1049,7 +1049,7 @@
                     [{oxinputhelp ident="FCPO_HELP_GOOGLEPAY_ALLOW_CREDITCARDS"}]
                 </dt>
                 <dd>
-                    [{oxmultilang ident="FCPO_HELP_GOOGLEPAY_ALLOW_CREDITCARDS"}]
+                    [{oxmultilang ident="FCPO_GOOGLEPAY_ALLOW_CREDITCARDS"}]
                 </dd>
                 <div class="spacer"></div>
             </dl>

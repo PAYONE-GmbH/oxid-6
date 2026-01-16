@@ -927,25 +927,11 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent
     }
 
     public function fcpoGooglePayGetSupportedNetworks() {
-        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
-        $return = $this->getSupportedNetworks($oConfig);
-        return $return;
+        return $this->getSupportedNetworks();
     }
 
     public function fcpoGooglePayGetAllowedCardAuthMethods() {
         return '["PAN_ONLY", "CRYPTOGRAM_3DS"]';
-    }
-
-    public function fcpoGooglePayGetAllowPrepaidCards() {
-        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
-        $allowPrepaid = $oConfig->getConfigParam('blFCPOGoolepayAllowPrePaidCards');
-        return $allowPrepaid ? 'true' : 'false';
-    }
-
-    public function fcpoGooglePayGetAllowCreditCards() {
-        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
-        $return = $oConfig->getConfigParam('blFCPOGooglepayAllowCreditCards');
-        return $return  ? 'true' : 'false';
     }
 
     public function fcpoGooglePayGetMerchantId() {
@@ -957,11 +943,6 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent
         return $sMode;
     }
 
-    public function fcpoGooglePayGetCountry() {
-        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
-        return $oConfig->getConfigParam('sFCPOGooglepayCountrycode');
-    }
-
     public function fcpoGooglePayGetCurrency() {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $oCurr = $oConfig->getActShopCurrencyObject();
@@ -970,7 +951,7 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent
 
     public function fcpoGooglePayGetMerchantName() {
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
-        return $oConfig->getActiveShop()->oxshops__oxname->value;
+        return $oConfig->getConfigParam('sFCPOGooglepayMerchantName');
     }
 
     public function fcpoGooglePayGetShowDisplayItems() {
@@ -1021,16 +1002,8 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent
         return $sRedirectUrl;
     }
 
-    private function getSupportedNetworks($oConfig) {
-        if ($oConfig->getConfigParam('blFCPOGoolepayAllowVisa') == true && $oConfig->getConfigParam('blFCPOGoolepayAllowMasterCard') == true) {
-            return '["VISA", "MASTERCARD"]';
-        } else if ($oConfig->getConfigParam('blFCPOGoolepayAllowVisa') == false && $oConfig->getConfigParam('blFCPOGoolepayAllowMasterCard') == false) {
-            return '[]';
-        } else if ($oConfig->getConfigParam('blFCPOGoolepayAllowVisa') == true && $oConfig->getConfigParam('blFCPOGoolepayAllowMasterCard') == false) {
-            return '["VISA"]';
-        } else if ($oConfig->getConfigParam('blFCPOGoolepayAllowVisa') == false && $oConfig->getConfigParam('blFCPOGoolepayAllowMasterCard') == true) {
-            return '["MASTERCARD"]';
-        }
+    private function getSupportedNetworks() {
+        return '["VISA", "MASTERCARD"]';
     }
 
     public function getGooglePayDisplayItems()

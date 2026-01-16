@@ -108,9 +108,7 @@
                 type: 'CARD',
                 parameters: {
                     allowedAuthMethods: allowedCardAuthMethods,
-                    allowedCardNetworks: allowedCardNetworks,
-                    allowPrepaidCards: [{$oViewConf->fcpoGooglePayGetAllowPrepaidCards()}],
-                    allowCreditCards: [{$oViewConf->fcpoGooglePayGetAllowCreditCards()}]
+                    allowedCardNetworks: allowedCardNetworks
                 }
             };
 

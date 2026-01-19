@@ -140,7 +140,7 @@
                 paymentDataRequest.transactionInfo = getGoogleTransactionInfo();
                 paymentDataRequest.merchantInfo = {
                     merchantId: '[{$oViewConf->fcpoGooglePayGetGoogleMerchantId()}]',
-                    merchantName: '[{$oViewConf->fcpoGooglePayGetShopName()}]',
+                    merchantName: '[{$oViewConf->fcpoGooglePayGetMerchantName()}]',
                 };
                 return paymentDataRequest;
             }

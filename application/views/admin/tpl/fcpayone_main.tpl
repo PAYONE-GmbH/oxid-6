@@ -991,11 +991,21 @@
             <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="FCPO_CONFIG_GROUP_GOOGLEPAY"}]</b></a>
             <dl>
                 <dt>
-                    <input aria-label="Set Googlepay Country Code" type="text" class="txt" name="confstrs[sFCPOGooglepayGoogleMerchantId]" value="[{$confstrs.sFCPOGooglepayGoogleMerchantId}]" [{$readonly}]>
+                    <input aria-label="Set Googlepay Merchant ID" type="text" class="txt" name="confstrs[sFCPOGooglepayGoogleMerchantId]" value="[{$confstrs.sFCPOGooglepayGoogleMerchantId}]" [{$readonly}]>
                     [{oxinputhelp ident="FCPO_HELP_GOOGLEPAY_GOOGLEMERCHANTID"}]
                 </dt>
                 <dd>
                     [{oxmultilang ident="FCPO_GOOGLEPAY_GOOGLEMERCHANTID"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+            <dl>
+                <dt>
+                    <input aria-label="Set Googlepay Merchant Name" type="text" class="txt" name="confstrs[sFCPOGooglepayGoogleMerchantName]" value="[{$confstrs.sFCPOGooglepayGoogleMerchantName}]" [{$readonly}]>
+                    [{oxinputhelp ident="FCPO_HELP_GOOGLEPAY_GOOGLEMERCHANTNAME"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_GOOGLEPAY_GOOGLEMERCHANTNAME"}]
                 </dd>
                 <div class="spacer"></div>
             </dl>
@@ -1040,16 +1050,6 @@
                 </dt>
                 <dd>
                     [{oxmultilang ident="FCPO_GOOGLEPAY_ALLOW_CREDITCARDS"}]
-                </dd>
-                <div class="spacer"></div>
-            </dl>
-            <dl>
-                <dt>
-                    <input aria-label="Set Googlepay Country Code" type="text" class="txt" name="confstrs[sFCPOGooglepayCountrycode]" value="[{$confstrs.sFCPOGooglepayCountrycode}]" [{$readonly}]>
-                    [{oxinputhelp ident="FCPO_HELP_GOOGLEPAY_COUNTRYCODE"}]
-                </dt>
-                <dd>
-                    [{oxmultilang ident="FCPO_GOOGLEPAY_COUNTRYCODE"}]
                 </dd>
                 <div class="spacer"></div>
             </dl>

@@ -508,6 +508,8 @@ The smaller text field is used to name the destination file, or path to an exist
     'FCPO_CONFIG_GROUP_GOOGLEPAY'                       => 'Google Pay',
     'FCPO_HELP_GOOGLEPAY_GOOGLEMERCHANTID'              => 'Google Pay merchant id',
     'FCPO_GOOGLEPAY_GOOGLEMERCHANTID'                   => 'Google Pay merchant id',
+    'FCPO_HELP_GOOGLEPAY_GOOGLEMERCHANTNAME'            => 'Google Pay merchant name',
+    'FCPO_GOOGLEPAY_GOOGLEMERCHANTNAME'                 => 'Google Pay merchant name',
     'FCPO_HELP_GOOGLEPAY_ALLOW_VISA'                    => 'Allow Visa cards for Google Pay',
     'FCPO_GOOGLEPAY_ALLOW_VISA'                         => 'Allow Visa cards for Google Pay',
     'FCPO_HELP_GOOGLEPAY_ALLOW_MASTERCARD'              => 'Allow MasterCard for Google Pay',

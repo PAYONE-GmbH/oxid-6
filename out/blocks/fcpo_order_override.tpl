@@ -181,7 +181,7 @@
 
             function getGoogleTransactionInfo() {
                 return {
-                    countryCode: '[{$oViewConf->fcpoGooglePayGetButtonLocale()}]',
+                    countryCode: '[{$oViewConf->fcpoGooglePayGetCountryCode()}]',
                     currencyCode: '[{$oViewConf->fcpoGooglePayGetCurrency()}]',
                     totalPriceStatus: 'FINAL',
                     // set to cart total

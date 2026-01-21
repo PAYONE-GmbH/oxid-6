@@ -116,6 +116,7 @@ $aLang = array(
     'FCPO_MANAGEMANDATE_ERROR' => 'A problem occurred. Please check the data you entered or choose another payment-type.',
 
     'FCPO_PAYPALEXPRESS_USER_SECURITY_ERROR' => 'Please log in to your shop account and go through the PayPal Express checkout again. The PayPal-deliveryaddress did not match the address of your shop-account.',
+    'FCPO_PAYPALEXPRESS_USER_EXISTS_ERROR'   => 'A customer account with this email address already exists in the shop, and registration via PayPal Express Checkout is not possible. Please log in to the shop and complete the PayPal Express Checkout process again.',
 
     'FCPO_CC_IFRAME_HEADER' => 'Payment with creditcard',
     'FCPO_OR' => 'or',

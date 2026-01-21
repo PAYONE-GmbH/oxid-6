@@ -111,6 +111,7 @@ $aLang = array(
     'FCPO_THANKYOU_PDF_LINK'                              => 'Ihr SEPA-Mandat als PDF',
     'FCPO_MANAGEMANDATE_ERROR'                            => 'Es ist ein Problem aufgetreten. Bitte überprüfen Sie Ihre Eingaben oder wählen Sie eine andere Zahlart.',
     'FCPO_PAYPALEXPRESS_USER_SECURITY_ERROR'              => 'Bitte loggen Sie sich im Shop ein und führen Sie den PayPal Express Checkout nochmal durch. Ihre PayPal-Lieferadresse stimmt nicht mit den im Shop hinterlegten Adressdaten &uuml;berein.',
+    'FCPO_PAYPALEXPRESS_USER_EXISTS_ERROR'                => 'Es existiert bereits ein Kundenkonto mit dieser Emailadresse im Shop und eine Anmeldung über den PayPal Express Checkout ist nicht möglich. Bitte loggen Sie sich im Shop ein und führen Sie den PayPal Express Checkout noch einmal durch.',
     'FCPO_CC_IFRAME_HEADER'                               => 'Bezahlung mit Kreditkarte',
     'FCPO_OR'                                             => 'oder',
     'FCPO_PAYOLUTION_USTID'                               => 'Umsatzsteueridentifikationsnummer (USt-IdNr.)',

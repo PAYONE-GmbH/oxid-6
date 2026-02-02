@@ -3491,7 +3491,7 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOnePaymentView extends O
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
 
         $this->invokeSetAttribute($oTestObject, '_sPayolutionSepaAgreement', 'http://somesepalink.com/');
-        $sExpect = 'http://someshop.com/modules/fc/fcpayone/lib/fcpopopup_content.php?loadurl=http://somesepalink.com/';
+        $sExpect = 'http://someshop.com/modules/fc/fcpayone/lib/fcpopopup_content.php?resource=UnzerSepaAgreement&loadurl=http://somesepalink.com/';
 
         $this->assertEquals($sExpect, $oTestObject->fcpoGetPayolutionSepaAgreementLink());
     }

@@ -182,7 +182,7 @@ class fcpopopup_content extends oxBase
         $aRequestMeta = [
             self::UNZER_CREDIT_INFO_URL_RESOURCE => [
                 'type' => 'regexp',
-                'meta' => '/^https:\/\/test-payment\.paylater\.unzer\.com\/payolution-payment\/rest\/query\/customerinfo\/pdf\?trxId=.+$/'
+                'meta' => '/^https:\/\/(test-)?payment\.paylater\.unzer\.com\/payolution-payment\/rest\/query\/customerinfo\/pdf\?trxId=.+$/'
             ],
             self::UNZER_SEPA_AGREEMENT_RESOURCE => [
                 'type' => 'url',

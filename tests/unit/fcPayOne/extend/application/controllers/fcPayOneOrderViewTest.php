@@ -509,7 +509,6 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
         $oHelper->expects($this->any())->method('fcpoSetSessionVariable')->will($this->returnValue(true));
         $oHelper->expects($this->any())->method('fcpoDeleteSessionVariable')->will($this->returnValue(true));
         $oHelper->expects($this->any())->method('getFactoryObject')->will($this->onConsecutiveCalls(
-            $oMockOrder,
             $oMockUserObject,
             $oMockOrder
         ));

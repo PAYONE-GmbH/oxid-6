@@ -478,6 +478,10 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
         $oMockUserObject->expects($this->any())->method('load')->will($this->returnValue(true));
         $oMockUserObject->oxuser__oxusername = new oxField('someEmail');
 
+        $oMockOrder = $this->getMock('oxOrder', array('fcpoGetAddressIdByResponse', 'fcpoDoesUserAlreadyExist'));
+        $oMockOrder->expects($this->any())->method('fcpoGetAddressIdByResponse')->will($this->returnValue('someAddressId'));
+        $oMockOrder->expects($this->any())->method('fcpoDoesUserAlreadyExist')->will($this->returnValue(true));
+
         $oTestObject = $this->getMock(
             'fcPayOneOrderView', array(
                 'getUser', 
@@ -504,7 +508,11 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
         $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
         $oHelper->expects($this->any())->method('fcpoSetSessionVariable')->will($this->returnValue(true));
         $oHelper->expects($this->any())->method('fcpoDeleteSessionVariable')->will($this->returnValue(true));
-        $oHelper->expects($this->any())->method('getFactoryObject')->will($this->returnValue($oMockUserObject));
+        $oHelper->expects($this->any())->method('getFactoryObject')->will($this->onConsecutiveCalls(
+            $oMockOrder,
+            $oMockUserObject,
+            $oMockOrder
+        ));
         
         
         $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);

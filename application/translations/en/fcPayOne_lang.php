@@ -119,6 +119,7 @@ $aLang = array(
 'FCPO_MANAGEMANDATE_ERROR'                      => 'A problem occurred. Please check the data you entered or choose another payment-type.',
     
 'FCPO_PAYPALEXPRESS_USER_SECURITY_ERROR'        => 'Please log in to your shop account and go through the PayPal Express checkout again. The PayPal-deliveryaddress did not match the address of your shop-account.',
+'FCPO_PAYPALEXPRESS_USER_EXISTS_ERROR'          => 'A customer account with this email address already exists in the shop, and registration via PayPal Express Checkout is not possible. Please log in to the shop and complete the PayPal Express Checkout process again.',
 
 'FCPO_YAPITAL_HEADER'                           => 'Payment with Yapital',
 'FCPO_YAPITAL_TEXT'                             => 'There are 2 possibilities to pay with Yapital. Either you open the Yapital-app, select payment from the app-menu and scan the QR-code or you click the orange LOG IN button and log in on the next site, using your Yapital-login-data. After a successful transaction you will be redirected back to the shop.<br><br>Every transaction is handled in realtime with your Yapital-account. Your bankdata is not transmitted by Yapital, only the necessary transactiondata.<br><br>If you pay with the QR-code please <b>DON\'T</b> click on the links in the window! You will be redirected automatically.',

@@ -28,6 +28,7 @@ function getShopBasePath()
 include_once getShopBasePath() . "/bootstrap.php";
 
 // receive params
+$sResource = filter_input(INPUT_GET, 'resource');
 $sLoadUrl = filter_input(INPUT_GET, 'loadurl');
 $sDuration = filter_input(INPUT_GET, 'duration');
 $sUseLogin = filter_input(INPUT_GET, 'login');
@@ -40,7 +41,9 @@ $sUseLogin = filter_input(INPUT_GET, 'login');
  */
 class fcpopopup_content extends oxBase
 {
-    
+    const UNZER_CREDIT_INFO_URL_RESOURCE = 'UnzerStandardCreditInformation';
+    const UNZER_SEPA_AGREEMENT_RESOURCE = 'UnzerSepaAgreement';
+
     /**
      * url to be fetched
      *
@@ -75,9 +78,9 @@ class fcpopopup_content extends oxBase
      * @param string $sUrl
      * @param bool   $blUseLogin
      */
-    public function __construct($sUrl, $sDuration, $blPdfHeader=true, $blUseLogin=false) 
+    public function __construct($sResource, $sUrl, $sDuration, $blPdfHeader=true, $blUseLogin=false)
     {
-        $this->_sUrl = $sUrl;
+        $this->_sUrl = $this->_fcpoParseRequest($sResource, $sUrl);
         $this->_blUseLogin = $blUseLogin;
         $this->_blPdfHeader = $blPdfHeader;
         $this->_sDuration = $sDuration;
@@ -91,9 +94,14 @@ class fcpopopup_content extends oxBase
      */
     public function fcpo_fetch_content() 
     {
+        if (empty($this->_sUrl)) {
+            return $this->_fcpoReturnErrorMessage('Document loading failed : Invalid URL.');
+        }
+
         $resCurl = curl_init();
-        $sUrl = $this->_sUrl."&duration=".$this->_sDuration;
-        
+        $sUrl = $this->_sUrl
+            . (!empty($this->_sDuration) ? "&duration=".$this->_sDuration : '');
+
         curl_setopt($resCurl, CURLOPT_URL, $sUrl);
         curl_setopt($resCurl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($resCurl, CURLOPT_FOLLOWLOCATION, true);
@@ -161,8 +169,58 @@ class fcpopopup_content extends oxBase
         
         return $aCredentials;
     }
+
+    /**
+     * @param string $sRequestedResource
+     * @return array
+     */
+    protected function _fcpoGetRequestMeta($sRequestedResource)
+    {
+        /** @var fcpopaymenthelper $oFcpoHelper */
+        $oFcpoHelper = new fcpopaymenthelper();
+
+        $aRequestMeta = [
+            self::UNZER_CREDIT_INFO_URL_RESOURCE => [
+                'type' => 'regexp',
+                'meta' => '/^https:\/\/(test-)?payment\.paylater\.unzer\.com\/payolution-payment\/rest\/query\/customerinfo\/pdf\?trxId=.+$/'
+            ],
+            self::UNZER_SEPA_AGREEMENT_RESOURCE => [
+                'type' => 'url',
+                'meta' => $oFcpoHelper->getUnzerSepaAgreement()
+            ],
+        ];
+
+        return isset($aRequestMeta[$sRequestedResource]) ? $aRequestMeta[$sRequestedResource] : [];
+    }
+
+    /**
+     * @param string $sResource
+     * @param string $sUrl
+     * @return string
+     */
+    protected function _fcpoParseRequest($sResource, $sUrl)
+    {
+        if (empty($sResource) || empty($sUrl)) {
+            return '';
+        }
+
+        $aMetaRequest = $this->_fcpoGetRequestMeta($sResource);
+
+        if (empty($aMetaRequest)) {
+            return '';
+        }
+
+        switch ($aMetaRequest['type']) {
+            case 'regexp':
+                return preg_match($aMetaRequest['meta'], $sUrl) ? $sUrl : '';
+            case 'url':
+                return ($aMetaRequest['meta'] == $sUrl) ? $sUrl : '';
+        }
+
+        return '';
+    }
     
 }
 
-$oPopupContent = new fcpopopup_content($sLoadUrl, $sDuration, true, (bool)$sUseLogin);
+$oPopupContent = new fcpopopup_content($sResource, $sLoadUrl, $sDuration, true, (bool)$sUseLogin);
 echo $oPopupContent->fcpo_fetch_content();

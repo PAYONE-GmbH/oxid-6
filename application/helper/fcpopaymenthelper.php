@@ -94,4 +94,12 @@ class fcpopaymenthelper extends fcpobasehelper
         }
         return $blLiveMode;
     }
+
+    /**
+     * @return string
+     */
+    public function getUnzerSepaAgreement ()
+    {
+        return 'https://payment.payolution.com/payolution-payment/infoport/sepa/mandate.pdf';
+    }
 }

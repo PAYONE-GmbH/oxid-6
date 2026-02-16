@@ -3766,7 +3766,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         $sShopUrl = $oConfig->getShopUrl();
         $sLink =
             $sShopUrl .
-            '/modules/fc/fcpayone/lib/fcpopopup_content.php?loadurl=' .
+            '/modules/fc/fcpayone/lib/fcpopopup_content.php?resource=UnzerSepaAgreement&loadurl=' .
             $this->_sPayolutionSepaAgreement;
 
         return $sLink;

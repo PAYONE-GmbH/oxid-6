@@ -366,6 +366,108 @@
             </dl>
         </div>
     </div>
+
+    <div class="groupExp">
+        <div>
+            <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="FCPO_CONFIG_GROUP_CREDITCARDV2"}]</b></a>
+            <dl>
+                <dt>
+                    <input type="hidden" name="confbools[blFCPOCCV2CtpEnabled]" value="false">
+                    <input aria-label="Enable Click2Pay as creditcard payment mode" type="checkbox" name="confbools[blFCPOCCV2CtpEnabled]" value="true"  [{if ($confbools.blFCPOCCV2CtpEnabled)}]checked[{/if}]>
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_CCV2_CTP_ENABLE"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+            <dl>
+                <dt>
+                    <input type="hidden" name="confbools[blFCPOCCV2CtpOnboardingEnabled]" value="false">
+                    <input aria-label="Enable Customer Onboarding for Click2Pay" type="checkbox" name="confbools[blFCPOCCV2CtpOnboardingEnabled]" value="true"  [{if ($confbools.blFCPOCCV2CtpOnboardingEnabled)}]checked[{/if}]>
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_CCV2_CTP_ONBOARDING_ENABLE"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+            <dl>
+                <dt>
+                    <input aria-label="Visa DpaId" type="text" class="txt" name="confstrs[sFCPOCCV2VisaDpaId]" value="[{$confstrs.sFCPOCCV2VisaDpaId}]" [{$readonly}]>
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_CCV2_CTP_VISA_DPAID"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+            <dl>
+                <dt>
+                    <input aria-label="Mastercard DpaId" type="text" class="txt" name="confstrs[sFCPOCCV2MastercardDpaId]" value="[{$confstrs.sFCPOCCV2MastercardDpaId}]" [{$readonly}]>
+                </dt>
+                <dd>
+                    [{oxmultilang ident="FCPO_CCV2_CTP_MASTERCARD_DPAID"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+            <dl>
+                <dt></dt>
+                <dd>
+                    <script type="text/javascript">
+                        function fcpoToggleCCV2Template() {
+                            if(document.getElementById('fcpoCCV2Template').style.display !== "") {
+                                document.getElementById('fcpoCCV2Template').style.display = "";
+                            } else {
+                                document.getElementById('fcpoCCV2Template').style.display = "none";
+                            }
+                        }
+                    </script>
+                    <a href="#" onclick="fcpoToggleCCV2Template();" style="text-decoration: underline;">[{oxmultilang ident="FCPO_CCV2_CUSTOM_TEMPLATE"}]</a>
+                    <div id="fcpoCCV2Template" style="display:none;padding-top:10px;">
+                        <h4>[{oxmultilang ident="FCPO_CCV2_UI_CONFIG_UNDERTITLE"}]</h4>
+                        [{foreach from=$oView->fcpoGetCCV2UIConfigFields() key=sField item=sLabel}]
+                        <dl>
+                            <dt>
+                                [{assign var="sFieldIdent" value="sFCPOCCV2"|cat:$sField}]
+                                <input aria-label="[{$sLabel}]" style="width: 140px" type="text" class="txt" name="confstrs[[{$sFieldIdent}]]" value="[{$confstrs.$sFieldIdent}]" [{$readonly}] >
+                                [{oxinputhelp ident="FCPO_HELP_CCV2_UI_CONFIG_$sField"}]
+                            </dt>
+                            <dd>
+                                [{oxmultilang ident="FCPO_CCV2_UI_CONFIG_$sField"}]
+                            </dd>
+                            <div class="spacer"></div>
+                        </dl>
+                        [{/foreach}]
+                        <h4>[{oxmultilang ident="FCPO_CCV2_CTP_UI_CONFIG_UNDERTITLE"}]</h4>
+                        [{foreach from=$oView->fcpoGetCCV2CTPUIConfigFields() key=sField item=sLabel}]
+                        <dl>
+                            <dt>
+                                [{assign var="sFieldIdent" value="sFCPOCCV2"|cat:$sField}]
+                                [{if $sField eq "buttonStyle"}]
+                                <select aria-label="[{$sLabel}]" style="width: 140px" name="confstrs[[{$sFieldIdent}]]" >
+                                    <option value="outlined" [{if $confstrs.$sFieldIdent == "outlined"}]selected="selected"[{/if}]>[{oxmultilang ident="FCPO_CCV2_CTP_UI_CONFIG_buttonStyle_Outlined"}]</option>
+                                    <option value="filled" [{if $confstrs.$sFieldIdent == "filled"}]selected="selected"[{/if}]>[{oxmultilang ident="FCPO_CCV2_CTP_UI_CONFIG_buttonStyle_Filled"}]</option>
+                                </select>
+                                [{elseif $sField eq "buttonTextCase"}]
+                                <select aria-label="[{$sLabel}]" style="width: 140px" name="confstrs[[{$sFieldIdent}]]" >
+                                    <option value="capitalize" [{if $confstrs.$sFieldIdent == "capitalize"}]selected="selected"[{/if}]>[{oxmultilang ident="FCPO_CCV2_CTP_UI_CONFIG_buttonTextCase_Capitalize"}]</option>
+                                    <option value="uppercase" [{if $confstrs.$sFieldIdent == "uppercase"}]selected="selected"[{/if}]>[{oxmultilang ident="FCPO_CCV2_CTP_UI_CONFIG_buttonTextCase_Uppercase"}]</option>
+                                </select>
+                                [{else}]
+                                    <input aria-label="[{$sLabel}]" style="width: 140px" type="text" class="txt" name="confstrs[[{$sFieldIdent}]]" value="[{$confstrs.$sFieldIdent}]" [{$readonly}] >
+                                [{/if}]
+                                [{oxinputhelp ident="FCPO_HELP_CCV2_CTP_UI_CONFIG_$sField"}]
+                            </dt>
+                            <dd>
+                                [{oxmultilang ident="FCPO_CCV2_CTP_UI_CONFIG_$sField"}]
+                            </dd>
+                            <div class="spacer"></div>
+                        </dl>
+                        [{/foreach}]
+                    </div>
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+        </div>
+    </div>
     
     <div class="groupExp">
         <div>

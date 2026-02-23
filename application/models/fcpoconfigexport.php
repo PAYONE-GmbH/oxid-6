@@ -481,6 +481,7 @@ class fcpoconfigexport extends oxBase
 
         $aAbbreviations = array(
             'fcpocreditcard' => 'cc',
+            'fcpocreditcardv2' => 'cc',
             'fcpocashondel' => 'cod',
             'fcpodebitnote' => 'elv',
             'fcpopayadvance' => 'vor',

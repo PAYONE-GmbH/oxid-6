@@ -102,4 +102,69 @@ class fcpopaymenthelper extends fcpobasehelper
     {
         return 'https://payment.payolution.com/payolution-payment/infoport/sepa/mandate.pdf';
     }
+
+    /**
+     * Returns fields belonging to click to pay UI style config
+     *
+     * @param  void
+     * @return array
+     */
+    public function fcpoGetCCV2UIConfigFields()
+    {
+        return array(
+            'formBgColor' => 'Form Background color',
+            'fieldBgColor' => 'Field Background color',
+            'fieldBorder' => 'Field Border',
+            'fieldOutline' => 'Field Outline',
+            'fieldLabelColor' => 'Field Label color',
+            'fieldPlaceholderColor' => 'Field Placeholder color',
+            'fieldTextColor' => 'Field Text color',
+            'fieldErrorCodeColor' => 'Field Errorcode color',
+        );
+    }
+
+    /**
+     * Returns fields belonging to click to pay CTP UI style config
+     *
+     * @param  void
+     * @return array
+     */
+    public function fcpoGetCCV2CTPUIConfigFields()
+    {
+        return array(
+            'buttonStyle' => 'Button Style',
+            'buttonTextCase' => 'Button Text case',
+            'buttonAndBadgeColor' => 'Button and Badge color',
+            'buttonAndBadgeTextColor' => 'Button and Badge Text color',
+            'buttonDisabledColor' => 'Button disabled color',
+            'buttonFilledHoverColor' => 'Button filled Hover color',
+            'buttonOutlinedHoverColor' => 'Button outline Hover color',
+            'buttonAndInputRadius' => 'Button and Input radius',
+            'cardItemActiveColor' => 'Card item active color',
+            'cardItemRadius' => 'Card item Radius',
+            'linkTextColor' => 'Link Text color',
+            'accentColor' => 'Accent color',
+            'fontFamily' => 'Font Family',
+        );
+    }
+
+    public function fcpoGetCCV2SchemeConfig()
+    {
+        $oHelper = $this->getMainHelper();
+        $oConfig = $oHelper->fcpoGetConfig();
+
+        return [
+            'merchantPresentationName' => "PayoneC2P-00004",
+            'visaConfig' => [
+                'srcInitiatorId' => '2662KBGOLX92KS4XIFYU213JLdGTvLhYkOB-_1gLo1D1jOqgM',
+                'srcDpaId' => $oConfig->getConfigParam('sFCPOCCV2VisaDpaId'),
+                'encryptionKey' => 'GQJIKLOAMZWIT8IRIGHR14vQUlllxiMWf-XSHQHvjI5wuTZ2w',
+                'nModulus' => "kPujwVJjevI_oeZwZoA2Wjt94DFcMvRCab8iRiEGrGfKWtNCwQYkylyuRoB615cYm2BVbvoKH8Yyv0aC3dwah6UmOdJszmL0pV_cbx_tXzWgYg3sYNsp0sBxUFcQ1A6DVbyOxxJbmnwlHGE5fkuzJr-qqul3RswsCG-vPrh_--2_RSipa9lVr9gvfI4AbFABLTqKeto0rWPbIBKdhcGQ7JMPxzq8239KPUZfSyNueAcdL-yHADi3L2VSzdF7tS7si3ue_IFoXDpbggsFxvEt79UlBDOBsagc_ms9_ZsYlJaKCT8ZjwhakMo_-Zdc97mudVj1jz2_L5l4l_zibF5riw",
+            ],
+            'mastercardConfig' => [
+                'srcInitiatorId' => '559003b0-5d17-4d89-aa2b-b02a4023d64d',
+                'srcDpaId' => $oConfig->getConfigParam('sFCPOCCV2MastercardDpaId'),
+            ]
+        ];
+    }
 }

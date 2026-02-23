@@ -266,6 +266,7 @@ The smaller text field is used to name the destination file, or path to an exist
 'PAYONE Klarna Rechnung' => 'PAYONE Klarna Rechnung',
 'PAYONE Klarna Sofort bezahlen' => 'PAYONE Klarna Sofort bezahlen',
 'PAYONE Kreditkarte' => 'PAYONE Credit Card',
+'PAYONE Kreditkarte (Click to Pay)' => 'PAYONE Credit card (Click to Pay)',
 'PAYONE Lastschrift' => 'PAYONE Direct Debit',
 'PAYONE Nachnahme' => 'PAYONE Cash on Delivery',
 'PAYONE PayPal Express' => 'PAYONE PayPal Express',

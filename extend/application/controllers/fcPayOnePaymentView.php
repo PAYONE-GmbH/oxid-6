@@ -3919,4 +3919,125 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         $oUser = $this->getUser();
         return ((is_null($oUser->oxuser__oxbirthdate->value) || $oUser->oxuser__oxbirthdate->value == '0000-00-00'));
     }
+
+    public function fcpoCCV2GetJWT()
+    {
+        /** @var fcpoRequest $oRequest */
+        $oRequest = $this->_oFcpoHelper->getFactoryObject('fcporequest');
+        $aResponse = $oRequest->getJWT();
+
+        return $aResponse['token'] ?? '';
+    }
+
+    /**
+     * @return string
+     */
+    public function fcpoGetCurrency()
+    {
+        $oConfig = $this->_oFcpoHelper->getConfig();
+        $oActCurrency = $oConfig->getActShopCurrencyObject();
+
+        return $oActCurrency->name ?? '';
+    }
+
+    /**
+     * Returns fields belonging to click to pay UI style config
+     *
+     * @param  void
+     * @return array
+     */
+    public function fcpoGetCCV2UIConfigFields()
+    {
+        return fcpopaymenthelper::getInstance()->fcpoGetCCV2UIConfigFields();
+    }
+
+    /**
+     * Returns fields belonging to click to pay CTP UI style config
+     *
+     * @param  void
+     * @return array
+     */
+    public function fcpoGetCCV2CTPUIConfigFields()
+    {
+        return fcpopaymenthelper::getInstance()->fcpoGetCCV2CTPUIConfigFields();
+    }
+
+    /**
+     * @return array
+     */
+    public function fcpoGetUIConfig()
+    {
+        $aValues = [];
+        foreach (array_keys(fcpopaymenthelper::getInstance()->fcpoGetCCV2UIConfigFields()) as $sField) {
+            $aValues[$sField] = $this->getConfigParam('sFCPOCCV2' . $sField);
+        }
+
+        return $aValues;
+    }
+
+    /**
+     * @return array
+     */
+    public function fcpoGetCTPConfig($sToken)
+    {
+        $aCTPUiConfig = [];
+        foreach (array_keys(fcpopaymenthelper::getInstance()->fcpoGetCCV2CTPUIConfigFields()) as $sField) {
+            $aCTPUiConfig[$sField] = $this->getConfigParam('sFCPOCCV2' . $sField);
+        }
+
+        $aConfig = [
+            'enableCTP' => (bool) $this->getConfigParam('blFCPOCCV2CtpEnabled'),
+            'enableCustomerOnboarding' => (bool)  $this->getConfigParam('blFCPOCCV2CtpOnboardingEnabled'),
+            'schemeConfig' => fcpopaymenthelper::getInstance()->fcpoGetCCV2SchemeConfig(),
+            'transactionAmount' => [
+                'amount' => $this->getAmount(),
+                'currencyCode' => $this->fcpoGetCurrency(),
+            ],
+            'uiConfig' =>  $aCTPUiConfig,
+            'shopName' => $this->_oFcpoHelper->fcpoGetShopName(),
+            'token' => $sToken
+        ];
+
+        return $aConfig;
+    }
+
+    /**
+     * @return false|string
+     */
+    public function fcpoGetHostedTokenizationConfig()
+    {
+        $sToken = $this->fcpoCCV2GetJWT();
+        $oPayment = $this->_oFcpoHelper->getFactoryObject('oxPayment');
+        $oPayment->load('fcpocreditcardv2');
+
+        $sLocale = $this->getTplLang() . '_' . $this->fcGetBillCountry();
+
+        $aConfig = [
+            'iframe' => [
+                'iframeWrapperId' => "fcpocreditcardv2-iframe",
+                'zIndex' => 10000,
+                'height' => 500,
+                'width' => 400
+            ],
+            'uiConfig' => (object) $this->fcpoGetUIConfig(),
+            'locale' => $sLocale,
+            'token' => $sToken,
+            'mode' => $oPayment->fcpoGetOperationMode(),
+            'allowedCardSchemes' => [
+                "visa",
+                "mastercard",
+                "amex",
+                "diners",
+                "jcb",
+                "discover",
+                "maestro",
+                "unionpay",
+            ],
+            'CTPConfig' => (object) $this->fcpoGetCTPConfig($sToken)
+        ];
+
+        $sReturn = json_encode($aConfig);
+
+        return ($sReturn !== false) ? $sReturn : '{}';
+    }
 }

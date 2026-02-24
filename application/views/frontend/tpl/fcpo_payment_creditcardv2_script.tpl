@@ -1,4 +1,4 @@
-<script src="https://sdk.tokenization.secure.payone.com/1.2.1/hosted-tokenization-sdk.js" integrity="sha384-oga+IGWvy3VpUUrebY+BnLYvsNZRsB3NUCMSa+j3CfA9ePHUZ++8/SVyim9F7Jm3" crossorigin="anonymous"></script>
+<script src="https://sdk.tokenization.secure.payone.com/1.3.0/hosted-tokenization-sdk.js" crossorigin="anonymous"></script>
 
 <script type="text/javascript">
     let oHostedTokenizationConfig = JSON.parse('[{$oView->fcpoGetHostedTokenizationConfig()}]');

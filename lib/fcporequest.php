@@ -2894,6 +2894,11 @@ class fcpoRequest extends oxSuperCfg
             $aOutput = $this->_addMappedErrorIfAvailable($aOutput);
         }
 
+        // 0126670: We don't log JWT requests, flooding the logs
+        if ($this->getParameter('request') == 'getJWT') {
+            return $aOutput;
+        }
+
         $sResponse = serialize($aOutput);
         $this->_logRequest($sResponse, $aOutput['status']);
 

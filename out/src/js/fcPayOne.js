@@ -993,6 +993,7 @@ function fcpoCCV2TokenizationSuccess(statusCode, token, cardDetails, cardInputMo
     oForm["dynvalue[fcpo_pseudocardpan]"].value = token;
     oForm["dynvalue[fcpo_kkv2number]"].value = cardDetails.cardNumber;
     oForm["dynvalue[fcpo_kkv2cardholder]"].value = cardDetails.cardholderName;
+    oForm["dynvalue[fcpo_kkv2type]"].value = cardDetails.cardType;
     oForm["dynvalue[fcpo_kkv2inputmode]"].value = cardInputMode;
     oForm.submit();
 }

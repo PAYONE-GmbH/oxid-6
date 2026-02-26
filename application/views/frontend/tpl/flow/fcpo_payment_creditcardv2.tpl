@@ -8,6 +8,7 @@
             <input type="hidden" name="dynvalue[fcpo_kkv2number]" value="">
             <input type="hidden" name="dynvalue[fcpo_kkv2inputmode]" value="">
             <input type="hidden" name="dynvalue[fcpo_kkv2cardholder]" value="">
+            <input type="hidden" name="dynvalue[fcpo_kkv2type]" value="">
             <input type="hidden" name="fcpo_mode_[{$sPaymentID}]" value="[{$paymentmethod->fcpoGetOperationMode()}]">
 
             <div class="form-group fcpo_entry_error" id="fcpo_ccv2_error" style="display: none">

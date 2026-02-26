@@ -369,6 +369,7 @@ class fcpoRequest extends oxSuperCfg
             $this->addParameter('add_paydata[paymentcheckout_data]', $aDynvalue['fcpo_pseudocardpan']);
             $this->addParameter('clearingtype', 'wlt');
             $this->addParameter('wallettype', 'CTP');
+            $this->addParameter('cardtype', $this->fcpoCCV2CardType($aDynvalue['fcpo_kkv2type']));
 
         }
 
@@ -3231,6 +3232,22 @@ class fcpoRequest extends oxSuperCfg
         $this->addParameter('mode', 'test');
 
         return $this->send();
+    }
+
+    /**
+     * Returns the card type value for the ClickToPay base on given card type
+     *
+     * @param string $sCardType
+     * @return string
+     */
+    public function fcpoCCV2CardType($sCardType)
+    {
+        $aCCV2CardTypes = [
+            'VISA' => 'V',
+            'MASTERCARD' => 'M',
+        ];
+
+        return $aCCV2CardTypes[$sCardType] ?? $sCardType;
     }
 
 }

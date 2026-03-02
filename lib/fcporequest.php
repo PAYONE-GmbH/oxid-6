@@ -138,6 +138,8 @@ class fcpoRequest extends oxSuperCfg
         'fcporp_installment',
     );
 
+    protected $_sCustomAcceptHeader = '';
+
     /**
      * Class constructor, sets all required parameters for requests.
      */
@@ -349,6 +351,32 @@ class fcpoRequest extends oxSuperCfg
     }
 
     /**
+     * Set payment params for creditcard Click to pay
+     *
+     * @param  array $aDynvalue
+     * @return boolean
+     */
+    protected function _setPaymentParamsCCV2($aDynvalue)
+    {
+        if ($aDynvalue['fcpo_kkv2inputmode'] == 'manual') {
+
+            $this->addParameter('pseudocardpan', $aDynvalue['fcpo_pseudocardpan']);
+            $this->addParameter('clearingtype', 'cc');
+            $this->addParameter('cardholder', $aDynvalue['fcpo_kkv2cardholder']);
+
+        } elseif (in_array($aDynvalue['fcpo_kkv2inputmode'], ['clickToPay', 'register'])) {
+
+            $this->addParameter('add_paydata[paymentcheckout_data]', $aDynvalue['fcpo_pseudocardpan']);
+            $this->addParameter('clearingtype', 'wlt');
+            $this->addParameter('wallettype', 'CTP');
+            $this->addParameter('cardtype', $this->fcpoCCV2CardType($aDynvalue['fcpo_kkv2type']));
+
+        }
+
+        return true;
+    }
+
+    /**
      * Set payment params for debitnote
      *
      * @param  array $aDynvalue
@@ -480,6 +508,9 @@ class fcpoRequest extends oxSuperCfg
         switch ($sPaymentId) {
             case 'fcpocreditcard':
                 $blAddRedirectUrls = $this->_setPaymentParamsCC($aDynvalue);
+                break;
+            case 'fcpocreditcardv2':
+                $blAddRedirectUrls = $this->_setPaymentParamsCCV2($aDynvalue);
                 break;
             case 'fcpocashondel':
                 $this->addParameter('clearingtype', 'cod'); //Payment method
@@ -2737,6 +2768,10 @@ class fcpoRequest extends oxSuperCfg
             $sRequestHeader .= "Content-Type: application/x-www-form-urlencoded\r\n";
             $sRequestHeader .= "Content-Length: " . strlen($aUrlArray['query']) . "\r\n";
             $sRequestHeader .= "Connection: close\r\n\r\n";
+            if (!empty($this->_sCustomAcceptHeader)) {
+                $sRequestHeader .= $this->_sCustomAcceptHeader . "\r\n";
+            }
+            $sRequestHeader .= "Connection: close\r\n\r\n";
             $sRequestHeader .= $aUrlArray['query'];
 
             fwrite($oFsockOpen, $sRequestHeader);
@@ -2801,6 +2836,10 @@ class fcpoRequest extends oxSuperCfg
         curl_setopt($oCurl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($oCurl, CURLOPT_TIMEOUT, 45);
 
+        if (!empty($this->_sCustomAcceptHeader)) {
+            curl_setopt($oCurl, CURLOPT_HTTPHEADER, [$this->_sCustomAcceptHeader]);
+        }
+
         $result = curl_exec($oCurl);
         if (curl_error($oCurl)) {
             $aResponse[] = "connection-type: 1 - errormessage=" . curl_errno($oCurl) . ": " . curl_error($oCurl);
@@ -2854,6 +2893,11 @@ class fcpoRequest extends oxSuperCfg
         if (is_array($aResponse)) {
             $aOutput = $this->_getResponseOutput($aResponse);
             $aOutput = $this->_addMappedErrorIfAvailable($aOutput);
+        }
+
+        // 0126670: We don't log JWT requests, flooding the logs
+        if ($this->getParameter('request') == 'getJWT') {
+            return $aOutput;
         }
 
         $sResponse = serialize($aOutput);
@@ -3173,6 +3217,37 @@ class fcpoRequest extends oxSuperCfg
         }
 
         return -abs($dInitialPr);
+    }
+
+    /**
+     * Fetch a JsonWebToken for Click2Pay (creditcard)
+     *
+     * @return array
+     */
+    public function getJWT()
+    {
+        $this->_sCustomAcceptHeader = 'Accept: text/plain';
+
+        $this->addParameter('request', 'getJWT');
+        $this->addParameter('mode', 'test');
+
+        return $this->send();
+    }
+
+    /**
+     * Returns the card type value for the ClickToPay base on given card type
+     *
+     * @param string $sCardType
+     * @return string
+     */
+    public function fcpoCCV2CardType($sCardType)
+    {
+        $aCCV2CardTypes = [
+            'VISA' => 'V',
+            'MASTERCARD' => 'M',
+        ];
+
+        return $aCCV2CardTypes[$sCardType] ?? $sCardType;
     }
 
 }

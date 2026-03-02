@@ -94,6 +94,12 @@ function fcpoResetErrorContainers() {
     if(document.getElementById('fcpo_cc_error_content')) {
         document.getElementById('fcpo_cc_error_content').innerHTML = '';
     }
+    if(document.getElementById('fcpo_ccv2_error')) {
+        document.getElementById('fcpo_ccv2_error').style.display = '';
+    }
+    if(document.getElementById('fcpo_ccv2_error_content')) {
+        document.getElementById('fcpo_ccv2_error_content').innerHTML = '';
+    }
     if(document.getElementById('fcpo_elv_error_blocked')) {
         document.getElementById('fcpo_elv_error_blocked').style.display = '';
     }
@@ -440,6 +446,9 @@ function fcCheckPaymentSelection() {
             return fcpoStartELVRequest(true);
         } else if(sCheckedValue == 'fcpopl_secinstallment' || sCheckedValue == 'fcpopl_secdebitnote') {
             return fcpoValidateBNPLIban(sCheckedValue);
+        } else if(sCheckedValue == 'fcpocreditcard') {
+            fcpoResetErrorContainers();
+            return true;
         }
     }
     return true;
@@ -976,6 +985,41 @@ function fcpoSelectBNPLInstallmentPlan(iIndex) {
 // BNPL INSTALLMENT <<<<
 
 
+
+// >>>>>> CREDITCARD V2 (Click2Pay)
+
+function fcpoCCV2TokenizationSuccess(statusCode, token, cardDetails, cardInputMode) {
+    var oForm = fcpoGetPaymentForm();
+    oForm["dynvalue[fcpo_pseudocardpan]"].value = token;
+    oForm["dynvalue[fcpo_kkv2number]"].value = cardDetails.cardNumber;
+    oForm["dynvalue[fcpo_kkv2cardholder]"].value = cardDetails.cardholderName;
+    oForm["dynvalue[fcpo_kkv2type]"].value = cardDetails.cardType;
+    oForm["dynvalue[fcpo_kkv2inputmode]"].value = cardInputMode;
+    oForm.submit();
+}
+
+function fcpoCCV2TokenizationFailure(statusCode, errorResponse) {
+    fcpoCCV2DisplayError(errorResponse.error, statusCode);
+}
+
+function fcpoCCV2HostedInitCallback(statusCode, res) {
+    if (statusCode === "ReadyToPay" && res === 0) {
+        console.log("fcpoCCV2HostedInitCallback::statusCode:", statusCode);
+    } else {
+        if (res >= 400 && res <= 599) {
+            fcpoCCV2DisplayError(statusCode, res);
+        }
+    }
+}
+
+function fcpoCCV2DisplayError(message, code) {
+    document.getElementById('fcpo_ccv2_error_content').innerHTML = message;
+    document.getElementById('fcpo_ccv2_error').style.display = 'block';
+}
+
+// CREDITCARD V2 (Click2Pay) <<<<<<
+
+
 /**
  * Triggers precheck for payolution installment via ajax
  *
@@ -1276,6 +1320,18 @@ function fcpoValidateCardTypeCCHosted(e) {
 }
 
 /**
+ * Triggers CC CTP Tokenization
+ * @param e
+ */
+function fcpoCCV2Tokenization(e) {
+    e.preventDefault();
+    var paymentId = $('input[name=paymentid]:checked').val();
+    if (paymentId == 'fcpocreditcardv2') {
+        window.HostedTokenizationSdk.submitForm(fcpoCCV2TokenizationSuccess, fcpoCCV2TokenizationFailure);
+    }
+}
+
+/**
  * validate input like cvc and missing fields
  *
  * @param e
@@ -1363,6 +1419,7 @@ $(document).ready(function() {
                     }
                 }
             }
+            fcpoCCV2Tokenization(e);
         });
     }
 

@@ -56,6 +56,7 @@
     </script>
     <script src="https://x.klarnacdn.net/kp/lib/v1/api.js" async></script>
     [{else}]
+        [{if !$oViewConf->fcpoIsApplePay()}]
         <script type="text/javascript">
             window.addEventListener("load", function(){
                 var orderForm = document.getElementById('orderConfirmAgbBottom');
@@ -65,10 +66,12 @@
                 });
             });
         </script>
+        [{/if}]
     [{/if}]
 [{else}]
     [{assign var="sFcPoTemplatePath" value=$oViewConf->fcpoGetActiveThemePath()|cat:'/fcpo_nosalutation_order.tpl'}]
     [{include file=$oViewConf->fcpoGetAbsModuleTemplateFrontendPath($sFcPoTemplatePath)}]
+    [{if !$oViewConf->fcpoIsApplePay()}]
     <script type="text/javascript">
         window.addEventListener("load", function(){
             var orderForm = document.getElementById('orderConfirmAgbBottom');
@@ -78,6 +81,7 @@
             });
         });
     </script>
+    [{/if}]
 [{/if}]
     [{if $oViewConf->fcpoIsGooglePay()}]
     <script async

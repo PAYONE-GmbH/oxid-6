@@ -321,6 +321,19 @@ class fcPayOneViewConf extends fcPayOneViewConf_parent
     }
 
     /**
+     * Checks if selected payment method is pay now
+     *
+     * @return bool
+     */
+    public function fcpoIsApplePay()
+    {
+        $oSession = $this->_oFcpoHelper->fcpoGetSession();
+        /** @var oxBasket $oBasket */
+        $oBasket = $oSession->getBasket();
+        return ($oBasket->getPaymentId() === 'fcpo_apple_pay');
+    }
+
+    /**
      * Returns if amazonpay is active and though button can be displayed
      *
      * @return bool

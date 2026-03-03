@@ -450,6 +450,7 @@ $aLang = array(
     'FCPO_CC_IFRAME_CUSTOM'                            => 'Custom',
     'FCPO_CC_USE_CVC'                                  => 'Use CVC as mandatory field',
 
+    'FCPO_CCV2_LIVE_MODE_ALERT'                        => 'Click to Pay works in LIVE mode only (set automatically)',
     'FCPO_CCV2_CTP_ENABLE'                             => 'Enable Click2Pay',
     'FCPO_CCV2_CTP_ONBOARDING_ENABLE'                  => 'Enable Click2Pay Customer Onboarding',
     'FCPO_CCV2_CTP_VISA_DPAID'                         => 'Visa DpaId',

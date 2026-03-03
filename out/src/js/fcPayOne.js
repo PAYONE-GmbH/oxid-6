@@ -446,7 +446,7 @@ function fcCheckPaymentSelection() {
             return fcpoStartELVRequest(true);
         } else if(sCheckedValue == 'fcpopl_secinstallment' || sCheckedValue == 'fcpopl_secdebitnote') {
             return fcpoValidateBNPLIban(sCheckedValue);
-        } else if(sCheckedValue == 'fcpocreditcard') {
+        } else if(sCheckedValue == 'fcpocreditcardv2') {
             fcpoResetErrorContainers();
             return true;
         }
@@ -1004,7 +1004,7 @@ function fcpoCCV2TokenizationFailure(statusCode, errorResponse) {
 
 function fcpoCCV2HostedInitCallback(statusCode, res) {
     if (statusCode === "ReadyToPay" && res === 0) {
-        console.log("fcpoCCV2HostedInitCallback::statusCode:", statusCode);
+        console.log("Click to pay: ", statusCode);
     } else {
         if (res >= 400 && res <= 599) {
             fcpoCCV2DisplayError(statusCode, res);
@@ -1324,9 +1324,9 @@ function fcpoValidateCardTypeCCHosted(e) {
  * @param e
  */
 function fcpoCCV2Tokenization(e) {
-    e.preventDefault();
     var paymentId = $('input[name=paymentid]:checked').val();
     if (paymentId == 'fcpocreditcardv2') {
+        e.preventDefault();
         window.HostedTokenizationSdk.submitForm(fcpoCCV2TokenizationSuccess, fcpoCCV2TokenizationFailure);
     }
 }

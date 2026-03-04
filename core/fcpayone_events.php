@@ -421,6 +421,7 @@ class fcpayone_events
         'fcpodebitnote' => 'PAYONE Lastschrift',
         'fcpocashondel' => 'PAYONE Nachnahme',
         'fcpocreditcard' => 'PAYONE Kreditkarte',
+        'fcpocreditcardv2' => 'PAYONE Kreditkarte (Click to Pay)',
         'fcpopaypal' => 'PAYONE PayPal',
         'fcpopaypal_express' => 'PAYONE PayPal Express',
         'fcpopaypalv2' => 'PAYONE PayPal V2',

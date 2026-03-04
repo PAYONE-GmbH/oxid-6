@@ -255,6 +255,7 @@ Das kleinere Textfeld wird verwendet, um die Zieldatei oder den Pfad zu einer vo
     'PAYONE Klarna Rechnung' => 'PAYONE Klarna Rechnung',
     'PAYONE Klarna Sofort bezahlen' => 'PAYONE Klarna Sofort bezahlen',
     'PAYONE Kreditkarte' => 'PAYONE Kreditkarte',
+    'PAYONE Kreditkarte (Click to Pay)' => 'PAYONE Kreditkarte (Click to Pay)',
     'PAYONE Lastschrift' => 'PAYONE Lastschrift',
     'PAYONE Nachnahme' => 'PAYONE Nachnahme',
     'PAYONE PayPal Express' => 'PAYONE PayPal Express',

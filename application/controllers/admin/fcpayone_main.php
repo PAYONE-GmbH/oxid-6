@@ -773,6 +773,28 @@ class fcpayone_main extends fcpayone_admindetails
     }
 
     /**
+     * Returns fields belonging to click to pay UI style config
+     *
+     * @param  void
+     * @return array
+     */
+    public function fcpoGetCCV2UIConfigFields()
+    {
+        return fcpopaymenthelper::getInstance()->fcpoGetCCV2UIConfigFields();
+    }
+
+    /**
+     * Returns fields belonging to click to pay CTP UI style config
+     *
+     * @param  void
+     * @return array
+     */
+    public function fcpoGetCCV2CTPUIConfigFields()
+    {
+        return fcpopaymenthelper::getInstance()->fcpoGetCCV2CTPUIConfigFields();
+    }
+
+    /**
      * Return array of cc types
      * 
      * @param  string $sField

@@ -46,6 +46,7 @@ class fcPayOnePayment extends fcPayOnePayment_parent
         'fcpodebitnote',
         'fcpocashondel',
         'fcpocreditcard',
+        'fcpocreditcardv2',
         'fcpopaypal',
         'fcpopaypal_express',
         'fcpopaypalv2',
@@ -233,6 +234,11 @@ class fcPayOnePayment extends fcPayOnePayment_parent
             if (in_array($sPaymentId, array_keys($aMap))) {
                 $blLivemode = $aMap[$sPaymentId];
             }
+        }
+
+        // Click2Pay is available only as live mode
+        if ($this->getId() == 'fcpocreditcardv2') {
+            $blLivemode = true;
         }
 
         $sReturn = ($blLivemode == true) ? 'live' : 'test';

@@ -38,6 +38,14 @@ function fcpoToggleHostedTemplate() {
     }
 }
 
+function fcpoToggleCCV2Template() {
+    if(document.getElementById('fcpoCCV2Template').style.display !== "") {
+        document.getElementById('fcpoCCV2Template').style.display = "";
+    } else {
+        document.getElementById('fcpoCCV2Template').style.display = "none";
+    }
+}
+
 function fcpoTogglePreview() {
     if(document.getElementById('fcpoHostedCCPreview').style.display !== "") {
         document.getElementById('fcpoHostedCCPreview').style.display = "";

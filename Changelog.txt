@@ -1,3 +1,14 @@
+==1.13.0==
+
+New Features
+
+* New payment method: Creditcard (Click to Pay)
+
+Maintenance
+
+* tested with 6.5
+
+
 ==1.12.1==
 
 Bugfixes
@@ -9,8 +20,9 @@ Bugfixes
 
 Maintenance
 
-* updated github install actions
+* updated github install actions 
 * tested with 6.5
+
 
 ==1.12.0==
 

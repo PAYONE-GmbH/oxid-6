@@ -371,6 +371,12 @@
         <div>
             <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="FCPO_CONFIG_GROUP_CREDITCARDV2"}]</b></a>
             <dl>
+                <dt></dt>
+                <dd>
+                    <div class="warning">[{oxmultilang ident="FCPO_CCV2_LIVE_MODE_ALERT"}]</div>
+                </dd>
+            </dl>
+            <dl>
                 <dt>
                     <input type="hidden" name="confbools[blFCPOCCV2CtpEnabled]" value="false">
                     <input aria-label="Enable Click2Pay as creditcard payment mode" type="checkbox" name="confbools[blFCPOCCV2CtpEnabled]" value="true"  [{if ($confbools.blFCPOCCV2CtpEnabled)}]checked[{/if}]>

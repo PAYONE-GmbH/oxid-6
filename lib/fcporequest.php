@@ -3224,12 +3224,12 @@ class fcpoRequest extends oxSuperCfg
      *
      * @return array
      */
-    public function getJWT()
+    public function getJWT($sMode)
     {
         $this->_sCustomAcceptHeader = 'Accept: text/plain';
 
         $this->addParameter('request', 'getJWT');
-        $this->addParameter('mode', 'test');
+        $this->addParameter('mode', $sMode);
 
         return $this->send();
     }

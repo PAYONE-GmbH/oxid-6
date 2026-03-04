@@ -2,7 +2,6 @@
 
 <script type="text/javascript">
     let oHostedTokenizationConfig = JSON.parse('[{$oView->fcpoGetHostedTokenizationConfig()}]');
-    console.log(oHostedTokenizationConfig);
 
     document.addEventListener('DOMContentLoaded', function() {
         if (window.HostedTokenizationSdk) {

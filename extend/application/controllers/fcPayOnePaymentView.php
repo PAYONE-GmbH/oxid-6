@@ -3920,11 +3920,11 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         return ((is_null($oUser->oxuser__oxbirthdate->value) || $oUser->oxuser__oxbirthdate->value == '0000-00-00'));
     }
 
-    public function fcpoCCV2GetJWT()
+    public function fcpoCCV2GetJWT($sMode)
     {
         /** @var fcpoRequest $oRequest */
         $oRequest = $this->_oFcpoHelper->getFactoryObject('fcporequest');
-        $aResponse = $oRequest->getJWT();
+        $aResponse = $oRequest->getJWT($sMode);
 
         return $aResponse['token'] ?? '';
     }
@@ -4006,9 +4006,9 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
      */
     public function fcpoGetHostedTokenizationConfig()
     {
-        $sToken = $this->fcpoCCV2GetJWT();
         $oPayment = $this->_oFcpoHelper->getFactoryObject('oxPayment');
         $oPayment->load('fcpocreditcardv2');
+        $sToken = $this->fcpoCCV2GetJWT($oPayment->fcpoGetOperationMode());
 
         $sLocale = $this->getTplLang() . '_' . $this->fcGetBillCountry();
 

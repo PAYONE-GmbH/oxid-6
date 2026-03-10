@@ -503,7 +503,15 @@ class fcPayOneOrder extends fcPayOneOrder_parent
             $this->_updateOrderDate();
         }
 
-        $this->_fcpoSetOrderStatus();
+        /**
+         * OX6-160 : This parameter forces the check of DB for appointed TxStatus
+	 * That helps preventing incorrect order status (error) when TxStatus handling finished late, at the wrong moment
+         */
+        $blFcpoRefreshFromDb = true;
+        $this->_fcpoSetOrderStatus($blFcpoRefreshFromDb);
+        if ($blFcpoRefreshFromDb) {
+            $this->save();
+        }
 
         // store orderid
         $oBasket->setOrderId($this->getId());
@@ -986,9 +994,9 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      * 
      * @return void
      */
-    protected function _fcpoSetOrderStatus() {
+    protected function _fcpoSetOrderStatus($blFcpoRefreshFromDb = false) {
         $blIsAmazonPending = $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoAmazonPayOrderIsPending');
-        $blOrderOk = $this->_fcpoValidateOrderAgainstProblems();
+        $blOrderOk = $this->_fcpoValidateOrderAgainstProblems($blFcpoRefreshFromDb);
 
         if ($blIsAmazonPending) {
             $this->_setOrderStatus('PENDING');
@@ -1008,7 +1016,12 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      * @param void
      * @return bool
      */
-    protected function _fcpoValidateOrderAgainstProblems() {
+    protected function _fcpoValidateOrderAgainstProblems($blFcpoRefreshFromDb = false) {
+
+        if ($blFcpoRefreshFromDb) {
+            $this->_fcpoCheckTxid();
+        }
+
         $blOrderOk = (
            $this->_fcpoGetAppointedError() === false &&
            $this->_blOrderHasProblems === false
@@ -1088,6 +1101,9 @@ class fcPayOneOrder extends fcPayOneOrder_parent
     {
         $blAppointedError = false;
         $sTxid = $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoTxid');
+        if (!$sTxid) {
+            $sTxid = $this->oxorder__fcpotxid->value;
+        }
 
         $sTestOxid = '';
         if ($sTxid) {
@@ -1095,13 +1111,20 @@ class fcPayOneOrder extends fcPayOneOrder_parent
             $sTestOxid = $this->_oFcpoDb->getOne($sQuery);
         }
 
+        $oLang = $this->_oFcpoHelper->fcpoGetLang();
+        $sCurrentRemark = $this->oxorder__oxremark->value;
+        $sAppointedErrorRemark = $oLang->translateString('FCPO_REMARK_APPOINTED_MISSING');
+        $blAppointedRemarkExists = strpos($sCurrentRemark, $sAppointedErrorRemark);
         if (!$sTestOxid) {
             $blAppointedError = true;
             $this->oxorder__oxfolder = new oxField('ORDERFOLDER_PROBLEMS', oxField::T_RAW);
-            $oLang = $this->_oFcpoHelper->fcpoGetLang();
-            $sCurrentRemark = $this->oxorder__oxremark->value;
-            $sAddErrorRemark = $oLang->translateString('FCPO_REMARK_APPOINTED_MISSING');
-            $sNewRemark = $sCurrentRemark." ".$sAddErrorRemark;
+            if ($blAppointedRemarkExists === false) {
+                $sNewRemark = $sCurrentRemark." ".$sAppointedErrorRemark;
+                $this->oxorder__oxremark = new oxField($sNewRemark, oxField::T_RAW);
+            }
+        } else {
+            $this->oxorder__oxfolder = new oxField('ORDERFOLDER_NEW', oxField::T_RAW);
+            $sNewRemark = str_replace($sAppointedErrorRemark, '', $sCurrentRemark);
             $this->oxorder__oxremark = new oxField($sNewRemark, oxField::T_RAW);
         }
         $this->_fcpoSetAppointedError($blAppointedError);

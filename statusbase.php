@@ -95,11 +95,15 @@ class fcPayOneTransactionStatusBase extends oxBase {
         if($this->_aShopList === null) {
             $aShops = array();
 
+            $oDb = $this->_fcpoGetPdoDb();
             $sQuery = "SELECT oxid FROM oxshops";
-            $aRows = oxDb::getDb()->getAll($sQuery);
-
-            foreach ($aRows as $aRow) {
-                $aShops[] = $aRow[0];
+            try {
+                $aRows = $oDb->fetchAllAssociative($sQuery);
+                foreach ($aRows as $aRow) {
+                    $aShops[] = $aRow['oxid'];
+                }
+            } catch (\Doctrine\DBAL\Exception $e) {
+                $this->_logException($e->getMessage());
             }
 
             $this->_aShopList = $aShops;
@@ -229,6 +233,8 @@ class fcPayOneTransactionStatusBase extends oxBase {
     protected function _addQueueEntries($sStatusmessageId, $sPayoneStatus=null)
     {
         try {
+            $oDb = $this->_fcpoGetPdoDb();
+
             if ($sPayoneStatus === null) {
                 $sPayoneStatus = $this->fcGetPostParam('txaction');
             }
@@ -239,14 +245,15 @@ class fcPayOneTransactionStatusBase extends oxBase {
             FROM 
                 fcpostatusforwarding 
             WHERE 
-                fcpo_payonestatus = '{$sPayoneStatus}'";
-
-            $aRows = oxDb::getDb()->getAll($sQuery);
+                fcpo_payonestatus = :sPayoneStatus";
+            $aRows = $oDb->fetchAllAssociative($sQuery, [
+                'sPayoneStatus' => $sPayoneStatus
+            ]);
 
             $this->_logForwardMessage('Add fowardings to queue: '.print_r($aRows, true));
 
             foreach ($aRows as $aRow) {
-                $sForwardId = (string) $aRow[0];
+                $sForwardId = (string) $aRow['OXID'];
                 $this->_addToQueue($sStatusmessageId, $sForwardId);
             }
         } catch (Exception $e) {
@@ -265,6 +272,8 @@ class fcPayOneTransactionStatusBase extends oxBase {
     protected function _addToQueue($sStatusmessageId, $sForwardId)
     {
         try {
+            $oDb = $this->_fcpoGetPdoDb();
+
             if ($this->_queueEntryExists($sStatusmessageId, $sForwardId)) {
                 $this->_logForwardMessage(
                     'Entry already exitsts. Skipping. StatusmessageId: '.
@@ -290,17 +299,22 @@ class fcPayOneTransactionStatusBase extends oxBase {
                 )
                 VALUES
                 (
-                    '{$sOxid}',
-                    '{$sStatusmessageId}',
-                    '{$sForwardId}',
+                    :sOxid,
+                    :sStatusmessageId,
+                    :sStatusforwardId,
                     '0',
                     '0000-00-00 00:00:00',
                     '',
                     ''
                 )
             ";
+            $aParams = [
+                ':sOxid' => $sOxid,
+                ':sStatusmessageId' => $sStatusmessageId,
+                ':sStatusforwardId' => $sForwardId
+            ];
+            $oDb->executeStatement($sQuery, $aParams);
 
-            oxDb::getDb()->Execute($sQuery);
         } catch (Exception $e) {
             throw $e;
         }
@@ -316,16 +330,35 @@ class fcPayOneTransactionStatusBase extends oxBase {
      */
     protected function _queueEntryExists($sStatusmessageId, $sForwardId)
     {
+        $oDb = $this->_fcpoGetPdoDb();
         $sQuery = "
                 SELECT COUNT(*) 
                 FROM fcpostatusforwardqueue
                 WHERE
-                    FCSTATUSMESSAGEID='{$sStatusmessageId}' AND
-                    FCSTATUSFORWARDID='{$sForwardId}'
+                    FCSTATUSMESSAGEID = :sStatusmessageId
+                AND
+                    FCSTATUSFORWARDID = :sStatusforwardId
         ";
+        try {
+            $iRows = $oDb->fetchOne($sQuery, [
+                'sStatusmessageId' => $sStatusmessageId,
+                'sStatusforwardId' => $sForwardId
+            ]);
+        } catch (\Doctrine\DBAL\Exception $e) {
+            $this->_logException($e->getMessage());
+            $iRows = -1;
+        }
 
-        $iRows = (int) oxDb::getDb()->getOne($sQuery);
+        return ($iRows > 0);
+    }
 
-        return (bool) ($iRows > 0);
+    /**
+     * @return \Doctrine\DBAL\Connection
+     */
+    protected function _fcpoGetPdoDb()
+    {
+        $oContainer = \OxidEsales\EshopCommunity\Internal\Container\ContainerFactory::getInstance()->getContainer();
+
+        return $oContainer->get(\Doctrine\DBAL\Connection::class);
     }
 }

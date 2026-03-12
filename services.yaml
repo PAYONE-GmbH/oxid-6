@@ -1,0 +1,4 @@
+services:
+  fcpayone.db_connection:
+    alias: 'Doctrine\DBAL\Connection'
+    public: true

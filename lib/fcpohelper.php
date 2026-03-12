@@ -694,6 +694,6 @@ class fcpohelper extends oxBase
     {
         $oContainer = \OxidEsales\EshopCommunity\Internal\Container\ContainerFactory::getInstance()->getContainer();
 
-        return $oContainer->get(\Doctrine\DBAL\Connection::class);
+        return $oContainer->get('fcpayone.db_connection');
     }
 }

@@ -686,4 +686,14 @@ class fcpohelper extends oxBase
             return -1;
         }
     }
+
+    /**
+     * @return \Doctrine\DBAL\Connection
+     */
+    public function fcpoGetPdoDb()
+    {
+        $oContainer = \OxidEsales\EshopCommunity\Internal\Container\ContainerFactory::getInstance()->getContainer();
+
+        return $oContainer->get(\Doctrine\DBAL\Connection::class);
+    }
 }

@@ -964,8 +964,16 @@ class fcpoRequest extends oxSuperCfg
             }
         }
 
-        $sQuery = "SELECT IF(SUM(fcpocapturedamount) = 0, 1, 0) AS b FROM oxorderarticles WHERE oxorderid = '{$oOrder->getId()}' GROUP BY oxorderid";
-        $blFirstCapture = (bool) oxDb::getDb()->GetOne($sQuery);
+        $oDb = $this->_oFcpoHelper->fcpoGetPdoDb();
+        $sQuery = "
+            SELECT IF(SUM(fcpocapturedamount) = 0, 1, 0) AS b
+            FROM oxorderarticles
+            WHERE oxorderid = :sOxid
+            GROUP BY oxorderid
+        ";
+        $blFirstCapture = (bool) $oDb->fetchOne($sQuery, [
+            'sOxid' => $oOrder->getId()
+        ]);
 
         if ($aPositions === false || $blFirstCapture === true || $blDebit === true) {
             $oLang = $this->_oFcpoHelper->fcpoGetLang();
@@ -2803,8 +2811,8 @@ class fcpoRequest extends oxSuperCfg
     {
         $aResponse = array();
 
-        $sPostUrl = $aUrlArray['scheme'] . "://" . $aUrlArray['host'] . $aUrlArray['path'];
-        $sPostData = $aUrlArray['query'];
+        $sPostUrl =  escapeshellarg($aUrlArray['scheme'] . "://" . $aUrlArray['host'] . $aUrlArray['path']);
+        $sPostData = escapeshellarg($aUrlArray['query']);
 
         $sCommand = $sCurlPath . " -m 45 -k -d \"" . $sPostData . "\" " . $sPostUrl;
         $iSysOut = -1;

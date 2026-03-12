@@ -34,7 +34,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
     /**
      * Helper object for dealing with different shop versions
      *
-     * @var object
+     * @var fcpohelper
      */
     protected $_oFcpoHelper = null;
 
@@ -931,7 +931,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         $sSerializedShadowBasket = $oDb->GetOne($sQuery);
 
         if ($sSerializedShadowBasket) {
-            $oShadowBasket = unserialize(base64_decode($sSerializedShadowBasket));
+            $oShadowBasket = unserialize(base64_decode($sSerializedShadowBasket), ['allowed_classes' => false]);
         }
 
         return $oShadowBasket;
@@ -976,8 +976,20 @@ class fcPayOneOrder extends fcPayOneOrder_parent
     protected function _fcpoSaveAfterRedirect($blSaveAfterRedirect)
     {
         if ($blSaveAfterRedirect === true && !empty($this->oxorder__fcpotxid->value)) {
-            $sQuery = "UPDATE fcpotransactionstatus SET fcpo_ordernr = '{$this->oxorder__oxordernr->value}' WHERE fcpo_txid = '".$this->oxorder__fcpotxid->value."'";
-            $this->_oFcpoDb->Execute($sQuery);
+
+            $oDb = $this->_oFcpoHelper->fcpoGetDb();
+            $sQuery = "
+                UPDATE
+                    fcpotransactionstatus
+                SET
+                    fcpo_ordernr = :iOrderNr
+                WHERE
+                    fcpo_txid = :sTxid
+            ";
+            $oDb->execute($sQuery, [
+                'iOrderNr' => $this->oxorder__oxordernr->value,
+                'sTxid' => $this->oxorder__fcpotxid->value
+            ]);
         }
     }
 
@@ -1180,7 +1192,17 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         }
 
         if ($blReturn) {
-            $iCount = $this->_oFcpoDb->GetOne("SELECT COUNT(*) FROM fcpotransactionstatus WHERE fcpo_txid = '{$this->oxorder__fcpotxid->value}'");
+            $oDb = $this->_oFcpoHelper->fcpoGetPdoDb();
+
+            $sQuery = "
+                SELECT COUNT(*)
+                FROM fcpotransactionstatus
+                WHERE fcpo_txid = :sTxid
+            ";
+            $iCount = $oDb->fetchOne($sQuery, [
+                'sTxid' => $this->oxorder__fcpotxid->value
+            ]);
+
             $blReturn = ($iCount == 0) ? false : true;
         }
 
@@ -1199,17 +1221,21 @@ class fcPayOneOrder extends fcPayOneOrder_parent
 
         if ($blIsAuthorization) return true;
 
+        $oDb = $this->_oFcpoHelper->fcpoGetPdoDb();
         $sQuery = "
-            SELECT 
-                COUNT(*) 
-            FROM 
-                fcpotransactionstatus 
-            WHERE 
-                fcpo_txid = '{$this->oxorder__fcpotxid->value}' AND 
-                fcpo_txaction = 'appointed'
+            SELECT
+                COUNT(*)
+            FROM
+                fcpotransactionstatus
+            WHERE
+                fcpo_txid = :sTxid
+            AND
+                fcpo_txaction = :sTxaction
         ";
-
-        $iCount = (int) $this->_oFcpoDb->GetOne($sQuery);
+        $iCount = (int) $oDb->fetchOne($sQuery, [
+            'sTxid' => $this->oxorder__fcpotxid->value,
+            'sTxaction' => 'appointed'
+        ]);
 
         $blReturn = ($iCount === 1);
 
@@ -1643,9 +1669,17 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      */
     public function fcpoGetMandateFilename() 
     {
+        $oDb = $this->_oFcpoHelper->fcpoGetPdoDb();
+
         $sOxid = $this->getId();
-        $sQuery = "SELECT fcpo_filename FROM fcpopdfmandates WHERE oxorderid = '{$sOxid}'";
-        $sFile = $this->_oFcpoDb->GetOne($sQuery);
+        $sQuery = "
+            SELECT fcpo_filename
+            FROM fcpopdfmandates
+            WHERE oxorderid = :sOxid
+        ";
+        $sFile = $oDb->fetchOne($sQuery, [
+            'sOxid' => $sOxid
+        ]);
 
         return $sFile;
     }

@@ -1082,7 +1082,11 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         if ($sWorkorderId) {
             $this->oxorder__fcpoworkorderid = new oxField($sWorkorderId, oxField::T_RAW);
         }
-        $this->_oFcpoDb->Execute("UPDATE fcporefnr SET fcpo_txid = '" . $sTxid . "' WHERE fcpo_refnr = '" . $this->_oFcpoHelper->fcpoGetRequestParameter('refnr') . "'");
+        $this->_oFcpoDb->Execute("
+            UPDATE fcporefnr
+            SET fcpo_txid = " . $this->_oFcpoDb->quote($sTxid) . "
+            WHERE fcpo_refnr = '" . $this->_oFcpoDb->quote($this->_oFcpoHelper->fcpoGetRequestParameter('refnr')) . "'
+        ");
         $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoOrderNr');
         $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoTxid');
         $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoRefNr');
@@ -1326,7 +1330,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      */
     public function getSequenceNumber() 
     {
-        $iCount = $this->_oFcpoDb->GetOne("SELECT MAX(fcpo_sequencenumber) FROM fcpotransactionstatus WHERE fcpo_txid = '{$this->oxorder__fcpotxid->value}'");
+        $iCount = $this->_oFcpoDb->GetOne("SELECT MAX(fcpo_sequencenumber) FROM fcpotransactionstatus WHERE fcpo_txid = " . $this->_oFcpoDb->quote($this->oxorder__fcpotxid->value));
 
         $iReturn = ($iCount === null) ? 0 : $iCount + 1;
 
@@ -1340,7 +1344,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      */
     public function getLastStatus() 
     {
-        $sOxid = $this->_oFcpoDb->GetOne("SELECT * FROM fcpotransactionstatus WHERE fcpo_txid = '{$this->oxorder__fcpotxid->value}' ORDER BY fcpo_sequencenumber DESC, oxtimestamp DESC");
+        $sOxid = $this->_oFcpoDb->GetOne("SELECT * FROM fcpotransactionstatus WHERE fcpo_txid = " . $this->_oFcpoDb->quote($this->oxorder__fcpotxid->value) . " ORDER BY fcpo_sequencenumber DESC, oxtimestamp DESC");
         if ($sOxid) {
             $oStatus = $this->_oFcpoHelper->getFactoryObject('fcpotransactionstatus');
             $oStatus->load($sOxid);
@@ -1387,7 +1391,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
             $sSelect = "
                 SELECT oxid 
                 FROM fcporequestlog 
-                WHERE fcpo_refnr = '{$this->oxorder__fcporefnr->value}' 
+                WHERE fcpo_refnr = ". $this->_oFcpoDb->quote($this->oxorder__fcporefnr->value) . "
                 AND (
                     fcpo_requesttype = 'preauthorization' OR 
                     fcpo_requesttype = 'authorization'
@@ -1692,7 +1696,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
      */
     public function fcpoGetStatus() 
     {
-        $sQuery = "SELECT oxid FROM fcpotransactionstatus WHERE fcpo_txid = '{$this->oxorder__fcpotxid->value}' ORDER BY fcpo_sequencenumber ASC";
+        $sQuery = "SELECT oxid FROM fcpotransactionstatus WHERE fcpo_txid = " . $this->_oFcpoDb->quote($this->oxorder__fcpotxid->value) . " ORDER BY fcpo_sequencenumber ASC";
         $aRows = $this->_oFcpoDb->getAll($sQuery);
 
         $aStatus = array();
@@ -2131,17 +2135,18 @@ class fcPayOneOrder extends fcPayOneOrder_parent
             }
 
             if(!empty($aUpdatedFields)) {
+                $oDb = oxdb::getDb();
                 $sQuery = 'UPDATE oxorder SET ';
 
                 foreach ($aUpdatedFields as $sField => $sValue) {
-                    $sQuery .= " $sField = '$sValue',";
+                    $sQuery .= " $sField = " . $oDb->quote($sValue) . ",";
                 }
 
                 $sQuery = substr($sQuery, 0, strlen($sQuery)-1);
 
                 $sQuery .= " WHERE oxid='" . $this->oxorder__oxid . "'";
 
-                oxdb::getDb()->execute($sQuery);
+                $oDb->execute($sQuery);
             }
         }
     }

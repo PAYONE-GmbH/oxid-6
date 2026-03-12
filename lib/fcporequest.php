@@ -2966,29 +2966,30 @@ class fcpoRequest extends oxSuperCfg
         $sQuery = " INSERT INTO fcporequestlog (
                         FCPO_REFNR, FCPO_REQUESTTYPE, FCPO_RESPONSESTATUS, FCPO_REQUEST, FCPO_RESPONSE, FCPO_PORTALID, FCPO_AID
                     ) VALUES (
-                        '{$this->getParameter('reference')}', 
-                        '{$this->getParameter('request')}', 
-                        '{$sStatus}', 
+                        " . $oDb->quote($this->getParameter('reference')) . ",
+                        " . $oDb->quote($this->getParameter('request')) . ",
+                        " . $oDb->quote($sStatus) . ",
                         " . $oDb->quote($sRequest) . ", 
                         " . $oDb->quote($sResponse) . ", 
-                        '{$oConfig->getConfigParam('sFCPOPortalID')}', 
-                        '{$oConfig->getConfigParam('sFCPOSubAccountID')}'
+                        " . $oDb->quote($oConfig->getConfigParam('sFCPOPortalID')) . ",
+                        " . $oDb->quote($oConfig->getConfigParam('sFCPOSubAccountID')) . "
                     )";
         $oDb->Execute($sQuery);
     }
 
     protected function _getPayoneUserIdByCustNr($sCustNr)
     {
+        $oDb = oxDb::getDb();
         $sQuery = " SELECT 
                         fcpo_userid 
                     FROM 
                         fcpotransactionstatus 
                     WHERE 
-                        fcpo_customerid = '{$sCustNr}' 
+                        fcpo_customerid = " . $oDb->quote($sCustNr) . "
                     ORDER BY 
                         oxtimestamp DESC 
                     LIMIT 1";
-        $sPayOneUserId = oxDb::getDb()->GetOne($sQuery);
+        $sPayOneUserId = $oDb->GetOne($sQuery);
         return $sPayOneUserId;
     }
 
@@ -3199,7 +3200,7 @@ class fcpoRequest extends oxSuperCfg
             $sQuery = "SELECT MAX(fcpo_refnr) FROM fcporefnr WHERE fcpo_refprefix = {$sPrefix}";
             $iMaxRefNr = $oDb->GetOne($sQuery);
             $sRefNr = (int) $iMaxRefNr + 1;
-            $sQuery = "INSERT INTO fcporefnr (fcpo_refnr, fcpo_txid, fcpo_refprefix)  VALUES ('{$sRefNr}', '', {$sPrefix})";
+            $sQuery = "INSERT INTO fcporefnr (fcpo_refnr, fcpo_txid, fcpo_refprefix)  VALUES (" . $oDb->quote($sRefNr) . ", '', " . $oDb->quote($sPrefix) . ")";
 
             $oDb->Execute($sQuery);
         }

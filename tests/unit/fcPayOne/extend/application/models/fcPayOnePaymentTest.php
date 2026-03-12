@@ -248,8 +248,9 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOnePaymentTest extends OxidTe
         $aExpect = array('someValue');
         
         $aMockResult = array(array('someValue','someValue','someValue','someValue', 'someValue'));
-        $oMockDatabase = $this->getMock('oxDb', array('getAll'));
+        $oMockDatabase = $this->getMock('oxDb', array('getAll', 'quote'));
         $oMockDatabase->expects($this->any())->method('getAll')->will($this->returnValue($aMockResult));
+        $oMockDatabase->expects($this->any())->method('quote')->will($this->returnValue('someValue'));
         
         $oTestObject = oxNew('fcPayOnePayment');
         

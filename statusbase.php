@@ -309,9 +309,9 @@ class fcPayOneTransactionStatusBase extends oxBase {
                 )
             ";
             $aParams = [
-                ':sOxid' => $sOxid,
-                ':sStatusmessageId' => $sStatusmessageId,
-                ':sStatusforwardId' => $sForwardId
+                'sOxid' => $sOxid,
+                'sStatusmessageId' => $sStatusmessageId,
+                'sStatusforwardId' => $sForwardId
             ];
             $oDb->executeStatement($sQuery, $aParams);
 

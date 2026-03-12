@@ -1099,9 +1099,13 @@ class Unit_fcPayOne_Extend_Application_Models_fcPayOneOrder extends OxidTestCase
         $oTestObject = $this->getMock('fcPayOneOrder', array('getId'));
         $oTestObject->expects($this->any())->method('getId')->will($this->returnValue('someId'));
 
-        $oMockDatabase = $this->getMock('oxDb', array('GetOne'));
-        $oMockDatabase->expects($this->any())->method('GetOne')->will($this->returnValue('someFile'));
-        $this->invokeSetAttribute($oTestObject, '_oFcpoDb', $oMockDatabase);
+        $oMockPdoDb = $this->getMockBuilder(\Doctrine\DBAL\Connection::class)->disableOriginalConstructor()->getMock();
+        $oMockPdoDb->expects($this->any())->method('fetchOne')->will($this->returnValue('someFile'));
+
+        $oHelper = $this->getMockBuilder('fcpohelper')->disableOriginalConstructor()->getMock();
+        $oHelper->expects($this->any())->method('fcpoGetPdoDb')->willReturn($oMockPdoDb);
+
+        $this->invokeSetAttribute($oTestObject, '_oFcpoHelper', $oHelper);
 
         $this->assertEquals('someFile', $oTestObject->fcpoGetMandateFilename());
     }

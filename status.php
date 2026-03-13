@@ -265,7 +265,7 @@ class fcPayOneTransactionStatusHandler extends fcPayOneTransactionStatusBase
             'customerid' => $this->fcGetPostParam('customerid'),
             'balance' => $this->fcGetPostParam('balance'),
             'receivable' => $this->fcGetPostParam('receivable'),
-            'clearing_bankaccounthold' => $this->fcGetPostParam('clearing_bankaccountholder'),
+            'clearing_bankaccountholder' => $this->fcGetPostParam('clearing_bankaccountholder'),
             'clearing_bankaccount' => $this->fcGetPostParam('clearing_bankaccount'),
             'clearing_bankcode' => $this->fcGetPostParam('clearing_bankcode'),
             'clearing_bankname' => $this->fcGetPostParam('clearing_bankname'),

@@ -1085,7 +1085,7 @@ class fcPayOneOrder extends fcPayOneOrder_parent
         $this->_oFcpoDb->Execute("
             UPDATE fcporefnr
             SET fcpo_txid = " . $this->_oFcpoDb->quote($sTxid) . "
-            WHERE fcpo_refnr = '" . $this->_oFcpoDb->quote($this->_oFcpoHelper->fcpoGetRequestParameter('refnr')) . "'
+            WHERE fcpo_refnr = " . $this->_oFcpoDb->quote($this->_oFcpoHelper->fcpoGetRequestParameter('refnr')) . "
         ");
         $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoOrderNr');
         $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoTxid');

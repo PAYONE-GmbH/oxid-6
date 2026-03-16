@@ -930,8 +930,12 @@ class fcPayOneOrder extends fcPayOneOrder_parent
 
         $sSerializedShadowBasket = $oDb->GetOne($sQuery);
 
-        if ($sSerializedShadowBasket) {
-            $oShadowBasket = unserialize(base64_decode($sSerializedShadowBasket), ['allowed_classes' => false]);
+        if (!empty($sSerializedShadowBasket)) {
+            try {
+                $oShadowBasket = unserialize(base64_decode($sSerializedShadowBasket), ['allowed_classes' => true]);
+            } catch (Exception $oEx) {
+                $oShadowBasket = false;
+            }
         }
 
         return $oShadowBasket;

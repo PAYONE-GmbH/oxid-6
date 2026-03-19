@@ -332,11 +332,11 @@ class fcPayOnePayment extends fcPayOnePayment_parent
      */
     public function isPaymentMethodAvailableToUser($sSubPaymentId, $sType, $sUserBillCountryId, $sUserDelCountryId) 
     {
-        $sBaseQuery = "SELECT COUNT(*) FROM fcpopayment2country WHERE fcpo_paymentid = '{$sSubPaymentId}' AND fcpo_type = '{$sType}'";
+        $sBaseQuery = "SELECT COUNT(*) FROM fcpopayment2country WHERE fcpo_paymentid = " . $this->_oFcpoDb->quote($sSubPaymentId) . " AND fcpo_type = " . $this->_oFcpoDb->quote($sType);
         if ($sUserDelCountryId !== false && $sUserBillCountryId != $sUserDelCountryId) {
-            $sWhereCountry = "AND (fcpo_countryid = '{$sUserBillCountryId}' || fcpo_countryid = '{$sUserDelCountryId}')";
+            $sWhereCountry = "AND (fcpo_countryid = " . $this->_oFcpoDb->quote($sUserBillCountryId) . " || fcpo_countryid = " . $this->_oFcpoDb->quote($sUserDelCountryId) . ")";
         } else {
-            $sWhereCountry = "AND fcpo_countryid = '{$sUserBillCountryId}'";
+            $sWhereCountry = "AND fcpo_countryid = " . $this->_oFcpoDb->quote($sUserBillCountryId);
         }
         $sQuery = "SELECT IF(({$sBaseQuery} LIMIT 1) > 0,IF(({$sBaseQuery} {$sWhereCountry} LIMIT 1) > 0,1,0),1)";
 
@@ -412,7 +412,7 @@ class fcPayOnePayment extends fcPayOnePayment_parent
     {
         $aCountries = array();
 
-        $sQuery = "SELECT fcpo_countryid FROM fcpopayment2country WHERE fcpo_paymentid = 'KLR_{$sCampaignId}'";
+        $sQuery = "SELECT fcpo_countryid FROM fcpopayment2country WHERE fcpo_paymentid = " . $this->_oFcpoDb->quote('KLR_' .$sCampaignId);
         $aRows = $this->_oFcpoDb->getAll($sQuery);
         foreach ($aRows as $aRow) {
             $aCountries[] = $aRow[0];

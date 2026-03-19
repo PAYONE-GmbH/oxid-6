@@ -111,8 +111,9 @@ class Unit_fcPayOne_Application_Models_fcpotransactionstatus extends OxidTestCas
     {
         $oTestObject = oxNew('fcpotransactionstatus');
 
-        $oMockDatabase = $this->getMock('oxDb', array('GetOne'));
+        $oMockDatabase = $this->getMock('oxDb', array('GetOne', 'quote'));
         $oMockDatabase->expects($this->any())->method('GetOne')->will($this->returnValue('someOxid'));
+        $oMockDatabase->expects($this->any())->method('quote')->will($this->returnValue('someValue'));
         $this->invokeSetAttribute($oTestObject, '_oFcpoDb', $oMockDatabase);
 
         $oMockOrder = $this->getMock('oxOrder', array('load'));

@@ -215,7 +215,7 @@ class fcpoTransactionStatus extends oxBase
                 sfq.FCRESPONSEINFO
             FROM fcpostatusforwardqueue sfq
             LEFT JOIN fcpostatusforwarding sf ON (sfq.FCSTATUSFORWARDID = sf.OXID)
-            WHERE sfq.FCSTATUSMESSAGEID='{$sStatusmessageId}'  
+            WHERE sfq.FCSTATUSMESSAGEID= " . $this->_oFcpoDb->quote($sStatusmessageId) . "
         ";
 
         $aRows = $this->_oFcpoDb->GetAll($sQuery);
@@ -283,7 +283,7 @@ class fcpoTransactionStatus extends oxBase
      */
     protected function _fcpoGetOrderByTxid($sTxid) 
     {
-        $sOxid = $this->_oFcpoDb->GetOne("SELECT oxid FROM oxorder WHERE fcpotxid = '{$sTxid}'");
+        $sOxid = $this->_oFcpoDb->GetOne("SELECT oxid FROM oxorder WHERE fcpotxid = " . $this->_oFcpoDb->quote($sTxid));
         $oOrder = $this->_oFcpoHelper->getFactoryObject('oxorder');
         $oOrder->load($sOxid);
 

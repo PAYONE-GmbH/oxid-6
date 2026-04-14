@@ -387,8 +387,6 @@ $aLang = array(
     'FCPO_CCV2_LIVE_MODE_ALERT'         => 'Click to Pay funktioniert nur im Live-Modus (automatische Einstellung)',
     'FCPO_CCV2_CTP_ENABLE'              => 'Click2Pay aktivieren',
     'FCPO_CCV2_CTP_ONBOARDING_ENABLE'   => 'Click2Pay Onboarding aktivieren',
-    'FCPO_CCV2_CTP_VISA_DPAID'          => 'Visa DpaId',
-    'FCPO_CCV2_CTP_MASTERCARD_DPAID'    => 'Mastercard DpaId',
 
     'FCPO_CONFIG_GROUP_PAYOLUTION'                     => 'Unzer',
     'FCPO_PAYOLUTION_B2BMODE'                          => 'Unzer im B2B-Modus betreiben',

@@ -397,24 +397,6 @@
                 <div class="spacer"></div>
             </dl>
             <dl>
-                <dt>
-                    <input aria-label="Visa DpaId" type="text" class="txt" name="confstrs[sFCPOCCV2VisaDpaId]" value="[{$confstrs.sFCPOCCV2VisaDpaId}]" [{$readonly}]>
-                </dt>
-                <dd>
-                    [{oxmultilang ident="FCPO_CCV2_CTP_VISA_DPAID"}]
-                </dd>
-                <div class="spacer"></div>
-            </dl>
-            <dl>
-                <dt>
-                    <input aria-label="Mastercard DpaId" type="text" class="txt" name="confstrs[sFCPOCCV2MastercardDpaId]" value="[{$confstrs.sFCPOCCV2MastercardDpaId}]" [{$readonly}]>
-                </dt>
-                <dd>
-                    [{oxmultilang ident="FCPO_CCV2_CTP_MASTERCARD_DPAID"}]
-                </dd>
-                <div class="spacer"></div>
-            </dl>
-            <dl>
                 <dt></dt>
                 <dd>
                     <script type="text/javascript">

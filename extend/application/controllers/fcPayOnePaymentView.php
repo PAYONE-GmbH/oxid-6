@@ -3909,6 +3909,18 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
     }
 
     /**
+     * Template getter for email address
+     *
+     * @param  void
+     * @return bool
+     */
+    public function getEmail()
+    {
+        $oUser = $this->getUser();
+        return $oUser->oxuser__oxusername->value;
+    }
+
+    /**
      * Template getter which checks if requesting birthdate is needed
      *
      * @param  void
@@ -3988,7 +4000,6 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
         $aConfig = [
             'enableCTP' => (bool) $this->getConfigParam('blFCPOCCV2CtpEnabled'),
             'enableCustomerOnboarding' => (bool)  $this->getConfigParam('blFCPOCCV2CtpOnboardingEnabled'),
-            'schemeConfig' => fcpopaymenthelper::getInstance()->fcpoGetCCV2SchemeConfig(),
             'transactionAmount' => [
                 'amount' => $this->getAmount(),
                 'currencyCode' => $this->fcpoGetCurrency(),
@@ -4022,6 +4033,7 @@ class fcPayOnePaymentView extends fcPayOnePaymentView_parent
             'uiConfig' => (object) $this->fcpoGetUIConfig(),
             'locale' => $sLocale,
             'token' => $sToken,
+            'email' => $this->getEmail(),
             'mode' => $oPayment->fcpoGetOperationMode(),
             'allowedCardSchemes' => [
                 "visa",

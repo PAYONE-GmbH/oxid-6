@@ -453,8 +453,6 @@ $aLang = array(
     'FCPO_CCV2_LIVE_MODE_ALERT'                        => 'Click to Pay works in LIVE mode only (set automatically)',
     'FCPO_CCV2_CTP_ENABLE'                             => 'Enable Click2Pay',
     'FCPO_CCV2_CTP_ONBOARDING_ENABLE'                  => 'Enable Click2Pay Customer Onboarding',
-    'FCPO_CCV2_CTP_VISA_DPAID'                         => 'Visa DpaId',
-    'FCPO_CCV2_CTP_MASTERCARD_DPAID'                   => 'Mastercard DpaId',
 
     'FCPO_CONFIG_DEBIT_BIC_MANDATORY'                  => 'Entering BIC is mandatory',
     'FCPO_CONFIG_GROUP_SECINVOICE'                     => 'Secure Invoice (rec/POV)',

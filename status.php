@@ -372,6 +372,10 @@ class fcPayOneTransactionStatusHandler extends fcPayOneTransactionStatusBase
 
         $oDb = $this->_fcpoGetPdoDb();
         $oOrder = $this->_getOrder($sTxid);
+        if (!$oOrder->getId()) {
+            $e = new \Exception('status.php: Could not load order from txid: '.$sTxid);
+            throw $e;
+        }
         $sPaymentId = $oOrder->oxorder__oxpaymenttype->value;
         
         $sQuery = "

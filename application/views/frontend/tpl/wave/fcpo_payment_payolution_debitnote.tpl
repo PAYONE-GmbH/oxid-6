@@ -7,6 +7,7 @@
         <dd class="[{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}] activePayment[{else}]payment-option[{/if}]">
             <script src="[{$oViewConf->fcpoGetModuleJsPath('jquery-3.6.0.min.js')}]"></script>
             <script src="[{$oViewConf->fcpoGetModuleJsPath()}]lightview/lightview.js"></script>
+            <div id="paysafe_fraud_prevention_debitnote"></div>
             <input type="hidden" name="fcpo_mode_[{$sPaymentID}]" value="[{$paymentmethod->fcpoGetOperationMode()}]">
 
             [{if $oView->fcpoShowPayolutionB2C()}]
@@ -63,7 +64,11 @@
             </div>
 
             <div class="alert alert-info col-lg-offset-3 desc">
-                <input aria-label="Payolution agreement" name="dynvalue[fcpo_payolution_debitnote_agreed]" value="agreed" type="checkbox">&nbsp;[{$oView->fcpoGetPoAgreementInit($sPaymentID)}] <a href='[{$oView->fcpoGetPayolutionAgreementLink()}]' class="lightview fcpoPayolutionAgreeRed" data-lightview-type="iframe" data-lightview-options="width: 800, height: 600, viewport: 'scale',background: { color: '#fff', opacity: 1 },skin: 'light'">[{oxmultilang ident="FCPO_PAYOLUTION_AGREE"}]</a> [{oxmultilang ident="FCPO_PAYOLUTION_AGREEMENT_PART_2"}]
+                <input aria-label="Payolution agreement"
+                       onchange="fcpoGetPaySafeFraudSnippet('fcpo_payolution_debitnote_agreed', 'paysafe_fraud_prevention_debitnote')"
+                       name="dynvalue[fcpo_payolution_debitnote_agreed]" 
+                       value="agreed" type="checkbox"
+                >&nbsp;[{$oView->fcpoGetPoAgreementInit($sPaymentID)}] <a href='[{$oView->fcpoGetPayolutionAgreementLink()}]' class="lightview fcpoPayolutionAgreeRed" data-lightview-type="iframe" data-lightview-options="width: 800, height: 600, viewport: 'scale',background: { color: '#fff', opacity: 1 },skin: 'light'">[{oxmultilang ident="FCPO_PAYOLUTION_AGREE"}]</a> [{oxmultilang ident="FCPO_PAYOLUTION_AGREEMENT_PART_2"}]
             </div>
             <div class="alert alert-info col-lg-offset-3 desc">
                 <input aria-label="Payolution sepa agreement" name="dynvalue[fcpo_payolution_debitnote_sepa_agreed]" value="agreed" type="checkbox">&nbsp;[{oxmultilang ident="FCPO_PAYOLUTION_SEPA_AGREEMENT_PART_1"}] <a href='[{$oView->fcpoGetPayolutionSepaAgreementLink()}]' class="lightview fcpoPayolutionAgreeRed" data-lightview-type="iframe" data-lightview-options="width: 800, height: 600, viewport: 'scale',background: { color: '#fff', opacity: 1 },skin: 'light'">[{oxmultilang ident="FCPO_PAYOLUTION_SEPA_AGREE"}]</a>

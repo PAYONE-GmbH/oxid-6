@@ -5,6 +5,7 @@
             <label for="payment_[{$sPaymentID}]"><b>[{oxmultilang ident=$paymentmethod->oxpayments__oxdesc->value}] [{$oView->fcpoGetFormattedPaymentCosts($paymentmethod)}]</b></label>
         </dt>
         <dd class="[{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}] activePayment[{else}]payment-option[{/if}]">
+            <div id="paysafe_fraud_prevention_bill"></div>
             <input type="hidden" name="fcpo_mode_[{$sPaymentID}]" value="[{$paymentmethod->fcpoGetOperationMode()}]">
             <link href="[{$oViewConf->fcpoGetModuleCssPath('lightview.css')}]" rel="stylesheet">
             <script src="[{$oViewConf->fcpoGetModuleJsPath('jquery-3.6.0.min.js')}]"></script>
@@ -49,7 +50,11 @@
                 </div>
             [{/if}]
             <div class="alert alert-info col-lg-offset-3 desc">
-                <input aria-label="Payolution agreement" name="dynvalue[fcpo_payolution_bill_agreed]" value="agreed" type="checkbox">&nbsp;[{$oView->fcpoGetPoAgreementInit($sPaymentID)}] <a href='[{$oView->fcpoGetPayolutionAgreementLink()}]' class="lightview fcpoPayolutionAgreeRed" data-lightview-type="iframe" data-lightview-options="width: 800, height: 600, viewport: 'scale',background: { color: '#fff', opacity: 1 },skin: 'light'">[{oxmultilang ident="FCPO_PAYOLUTION_AGREE"}]</a> [{oxmultilang ident="FCPO_PAYOLUTION_AGREEMENT_PART_2"}]
+                <input aria-label="Payolution agreement"
+                       onchange="fcpoGetPaySafeFraudSnippet('fcpo_payolution_bill_agreed', 'paysafe_fraud_prevention_bill')"
+                       name="dynvalue[fcpo_payolution_bill_agreed]" 
+                       value="agreed" type="checkbox"
+                >&nbsp;[{$oView->fcpoGetPoAgreementInit($sPaymentID)}] <a href='[{$oView->fcpoGetPayolutionAgreementLink()}]' class="lightview fcpoPayolutionAgreeRed" data-lightview-type="iframe" data-lightview-options="width: 800, height: 600, viewport: 'scale',background: { color: '#fff', opacity: 1 },skin: 'light'">[{oxmultilang ident="FCPO_PAYOLUTION_AGREE"}]</a> [{oxmultilang ident="FCPO_PAYOLUTION_AGREEMENT_PART_2"}]
             </div>
             [{block name="checkout_payment_longdesc"}]
                 [{if $paymentmethod->oxpayments__oxlongdesc->value}]

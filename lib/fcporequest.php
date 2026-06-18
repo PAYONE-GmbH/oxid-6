@@ -1606,7 +1606,8 @@ class fcpoRequest extends oxSuperCfg
         $aBankData = $this->_oFcpoHelper->fcpoGetSessionVariable('payolution_bankdata');
         $sInstallmentDuration = $this->_oFcpoHelper->fcpoGetSessionVariable('payolution_installment_duration');
         $sFieldNameAddition = str_replace("fcpopo_", "", $sPaymentId);
-
+        $sPaySafeSessionId = $this->_oFcpoHelper->fcpoGetSessionVariable('paySafeSessionId');
+        $this->addParameter('add_paydata[analysis_session_id]', $sPaySafeSessionId);
         $this->addParameter('clearingtype', 'fnc');
         $sPaymentType = $this->_fcpoGetPayolutionPaymentTypeById($sPaymentId);
         $sFinancignType = $this->_fcpoGetFinancingTypeByPaymentId($sPaymentId);
@@ -1705,6 +1706,8 @@ class fcpoRequest extends oxSuperCfg
         $this->addParameter('request', $sRequestMethod); //Request method
         $this->addParameter('mode', $this->getOperationMode($sPaymentId)); //PayOne Portal Operation Mode (live or test)
         $this->addParameter('aid', $oConfig->getConfigParam('sFCPOSubAccountID')); //ID of PayOne Sub-Account
+        $sPaySafeSessionId = $this->_oFcpoHelper->fcpoGetSessionVariable('paySafeSessionId');
+        $this->addParameter('add_paydata[analysis_session_id]', $sPaySafeSessionId);
 
         $this->addParameter('clearingtype', 'fnc');
 
@@ -1767,6 +1770,8 @@ class fcpoRequest extends oxSuperCfg
         $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
         $oSession = $this->_oFcpoHelper->fcpoGetSession();
 
+        $sPaySafeSessionId = $this->_oFcpoHelper->fcpoGetSessionVariable('paySafeSessionId');
+        $this->addParameter('add_paydata[analysis_session_id]', $sPaySafeSessionId);
         $this->addParameter('request', 'genericpayment'); //Request method
         $this->addParameter('mode', $this->getOperationMode($sPaymentId)); //PayOne Portal Operation Mode (live or test)
         $this->addParameter('aid', $oConfig->getConfigParam('sFCPOSubAccountID')); //ID of PayOne Sub-Account

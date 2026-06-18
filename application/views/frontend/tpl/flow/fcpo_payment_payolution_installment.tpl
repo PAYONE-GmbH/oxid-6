@@ -6,6 +6,8 @@
     <dd class="[{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]activePayment[{/if}]">
         <script src="[{$oViewConf->fcpoGetModuleJsPath('jquery-3.6.0.min.js')}]"></script>
         <script src="[{$oViewConf->fcpoGetModuleJsPath()}]lightview/lightview.js"></script>
+        <div id="paysafe_fraud_prevention_installment"></div>
+        <input type="hidden" id="fcpo_ajax_controller_url" name="fcpo_ajax_controller_url_name" value="[{$oViewConf->fcpoGetAjaxControllerUrl()}]">
         <input type="hidden" name="fcpo_mode_[{$sPaymentID}]" value="[{$paymentmethod->fcpoGetOperationMode()}]">
         <div class="fcRow">
             <div class="fcCol fcCol-1">
@@ -32,7 +34,11 @@
                             [{/foreach}]
                         </select>
                         <br>
-                        <input aria-label="Payolution agreement" name="dynvalue[fcpo_payolution_installment_agreed]" value="agreed" type="checkbox">&nbsp;[{$oView->fcpoGetPoAgreementInit($sPaymentID)}] <a href='[{$oView->fcpoGetPayolutionAgreementLink()}]' class="lightview fcpoPayolutionAgreeRed" data-lightview-type="iframe" data-lightview-options="width: 800, height: 600, viewport: 'scale',background: { color: '#fff', opacity: 1 },skin: 'light'">[{oxmultilang ident="FCPO_PAYOLUTION_AGREE"}]</a> [{oxmultilang ident="FCPO_PAYOLUTION_AGREEMENT_PART_2"}]
+                        <input aria-label="Payolution agreement"
+                               onchange="fcpoGetPaySafeFraudSnippet('fcpo_payolution_installment_agreed', 'paysafe_fraud_prevention_installment')"
+                               name="dynvalue[fcpo_payolution_installment_agreed]" 
+                               value="agreed" type="checkbox"
+                        >&nbsp;[{$oView->fcpoGetPoAgreementInit($sPaymentID)}] <a href='[{$oView->fcpoGetPayolutionAgreementLink()}]' class="lightview fcpoPayolutionAgreeRed" data-lightview-type="iframe" data-lightview-options="width: 800, height: 600, viewport: 'scale',background: { color: '#fff', opacity: 1 },skin: 'light'">[{oxmultilang ident="FCPO_PAYOLUTION_AGREE"}]</a> [{oxmultilang ident="FCPO_PAYOLUTION_AGREEMENT_PART_2"}]
                     </p>
                 </div>
                 <input type="button" id="payolution_installment_check_availability" class="fcBTN-bot" value="[{oxmultilang ident="FCPO_PAYOLUTION_CHECK_INSTALLMENT_AVAILABILITY"}]">

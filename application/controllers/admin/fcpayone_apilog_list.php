@@ -30,11 +30,18 @@ class fcpayone_apilog_list extends fcpayone_adminlist
     protected $_sListClass = 'fcporequestlog';
 
     /**
-     * Default SQL sorting parameter (default null).
+     * Default sorting field
      *
      * @var string
      */
-    protected $_sDefSort = "fcporequestlog.oxtimestamp desc";
+    protected $_sDefSortField = 'oxtimestamp';
+
+    /**
+     * Enable/disable sorting by DESC (SQL) (default false - disable).
+     *
+     * @var bool
+     */
+    protected $_blDesc = true;
 
     /**
      * Current class template name

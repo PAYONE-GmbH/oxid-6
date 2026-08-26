@@ -495,13 +495,15 @@ $aLang = array(
     'FCPO_APPLE_PAY_MERCHANT_ID'                       => "Merchant ID",
     'FCPO_HELP_APPLE_PAY_CERTIFICATE'                  => "Der Name des Zertifikats wird dem Textfeld entnommen . Es kann in jeden gewünschten Namen geändert werden. Wenn beim Speichern der hochgeladenen Datei leer ist, wird standardmäßig der ursprüngliche Name der Datei verwendet.<br/>Das Textfeld kann auch verwendet werden, um eine vorhandene Zertifikatsdatei auf dem Server zu benennen, ohne eine neue Datei hochzuladen.",
     'FCPO_APPLE_PAY_CERTIFICATE'                       => "Händleridentifikationszertifikat",
-    'FCPO_APPLE_PAY_CONFIG_CERTIFICATE_MISSING'        => "Die aktuell konfigurierte Zertifikatsdatei existiert nicht.<br/>Apple Pay kann nicht als Zahlungsmethode verwendet werden.",
-    'FCPO_HELP_APPLE_PAY_KEY'                          => "Dies ist ein Mehrfachfeld. Sie können eine Datei mit dem Schlüssel hochladen, oder den Inhalt des Schlüssels direkt in das Textfeld unten eingeben. Priorität hat die hochgeladene Datei, wenn beide Optionen verwendet werden!<br/><br/>
-Das kleinere Textfeld wird verwendet, um die Zieldatei oder den Pfad zu einer vorhandenen Schlüsseldatei auf dem Server zu benennen.<br/>
-- Wenn beim Speichern der hochgeladenen Datei leer, wird der ursprüngliche Name der hochgeladenen Datei verwendet.<br/>
-- Wenn beim Speichern der Direkteingabe leer, wird der Standardname 'merchant_id.key' verwendet.<br/>
-- Wenn leer, während keines davon ausgeführt wird, wird ein leerer Wert angenommen.",
-    'FCPO_APPLE_PAY_KEY'                               => "Privater Schlüssel des Zertifikats",
+    'FCPO_APPLE_PAY_CONFIG_CERTIFICATE_MISSING'        => "Die aktuell konfigurierte Zertifikatsdatei existiert nicht. Apple Pay kann nicht als Zahlungsmethode verwendet werden.",
+    'FCPO_HELP_APPLE_PAY_KEY_KEY'                      => "Feld zum Hochladen einer Datei, die den Schlüssel enthält.<br/><br/>
+Das Textfeld dient zur Angabe des Zieldateinamens oder des Pfads zu einer bereits auf dem Server vorhandenen Schlüsseldatei.<br/>
+- Ist das Feld beim Speichern einer hochgeladenen Datei leer, wird der ursprüngliche Name der hochgeladenen Datei verwendet.<br/>
+- Ist das Feld beim Speichern einer direkten Eingabe leer, wird der Standardname 'merchant_id.key' verwendet.<br/>
+- Trifft keiner der genannten Fälle zu und ist das Feld leer, wird ein leerer Wert verwendet.",
+    'FCPO_APPLE_PAY_KEY'                               => "Datei für den privaten Zertifikatsschlüssel",
+    'FCPO_HELP_APPLE_PAY_KEY_TEXT'                     => "Inhalt des Schlüssels, falls keine Datei bereitgestellt wird. Werden beide Optionen genutzt, hat die hochgeladene Datei Vorrang!",
+    'FCPO_APPLE_PAY_KEY_TEXT'                          => "Inhalt des privaten Schlüssels",
     'FCPO_HELP_APPLE_PAY_PASSWORD'                     => "Passwort für Zertifikatsschlüssel",
     'FCPO_APPLE_PAY_PASSWORD'                          => "Passwort für Zertifikatsschlüssel",
     'FCPO_APPLE_PAY_CREDITCARD'                        => "Erlaubte Kreditkarten",

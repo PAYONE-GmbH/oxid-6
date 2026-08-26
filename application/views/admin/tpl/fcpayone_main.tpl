@@ -937,6 +937,8 @@
 
                     <br />
                     <textarea aria-label="Set Appel Pay key content" name="fcpoAplKeyText"></textarea>
+                    &nbsp;[{oxinputhelp ident="FCPO_HELP_APPLE_PAY_KEY_TEXT"}]
+                    &nbsp;<span style="font-weight: normal">[{oxmultilang ident="FCPO_APPLE_PAY_KEY_TEXT"}]</span>
                 </dt>
                 <dd>
                     [{oxmultilang ident="FCPO_APPLE_PAY_KEY"}]

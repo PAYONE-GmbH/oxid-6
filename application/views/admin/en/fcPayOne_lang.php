@@ -501,8 +501,8 @@ $aLang = array(
     'FCPO_FORWARD_REDIRECT_TRIGGER'                    => 'Trigger all missing/unfulfilled calls',
 
     'FCPO_CONFIG_GROUP_APPLE_PAY'                      => "Apple Pay",
-    'FCPO_HELP_APPLE_PAY_MERCHANT_ID'                  => "Merchant ID",
-    'FCPO_APPLE_PAY_MERCHANT_ID'                       => "Merchant ID",
+    'FCPO_HELP_APPLE_PAY_MERCHANT_ID'                  => "The identifier of your Apple Pay Merchant ID from the Apple Developer Portal, e.g. merchant.com.yourdomain.shop. You can find it under Certificates, Identifiers & Profiles → Identifiers → Merchant IDs. Not to be confused with your PAYONE Merchant ID (MID).",
+    'FCPO_APPLE_PAY_MERCHANT_ID'                       => "Apple Pay Merchant ID",
     'FCPO_HELP_APPLE_PAY_CERTIFICATE'                  => "This text field is used to specify the certificate filename. You can assign any name you wish. If the field is left blank when saving, the original name of the uploaded file is used. You can also use this field to rename a certificate file that already exists on the server without uploading a new file.",
     'FCPO_APPLE_PAY_CERTIFICATE'                       => "Merchant Identification Certificate file",
     'FCPO_APPLE_PAY_CONFIG_CERTIFICATE_MISSING'        => "The current configured certificate file doesn't exist. Apple Pay cannot be used as payment method.",

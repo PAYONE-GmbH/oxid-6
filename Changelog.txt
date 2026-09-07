@@ -1,3 +1,18 @@
+==1.13.2==
+
+New Features 
+
+Fraud Protection: Integrated fraud prevention mechanisms for Unzer payment methods.
+Compatibility: Added support for PHP 8.1 and OXID 6.5.
+Apple Pay: Updated configuration settings, including improved labels and clearer instruction text for certificate file uploads to enhance user guidance.
+
+Bug Fixes
+
+Click to Pay (CTP): Updated to version 1.5.
+PayPal V2: Fixed an issue with incorrect articleId values in checkout requests and cleaned up redundant commented-out code.
+Order Processing: Improved error handling by logging exceptions when an order cannot be retrieved via the transaction ID (txid).
+Workflow: General bug fixes related to project workflows and stability. 
+
 ==1.13.1==
 
 Maintenance

@@ -31,11 +31,18 @@ class fcpayone_log_list extends fcpayone_adminlist
     protected $_sListClass = 'fcpotransactionstatus';
 
     /**
-     * Default SQL sorting parameter (default null).
+     * Default sorting field
      *
      * @var string
      */
-    protected $_sDefSort = "fcpotransactionstatus.oxtimestamp desc";
+    protected $_sDefSortField = 'oxtimestamp';
+
+    /**
+     * Enable/disable sorting by DESC (SQL) (default false - disable).
+     *
+     * @var bool
+     */
+    protected $_blDesc = true;
 
     /**
      * Current class template name

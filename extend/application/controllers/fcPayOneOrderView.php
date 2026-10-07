@@ -1,5 +1,7 @@
 <?php
 
+use OxidEsales\Eshop\Core\Registry;
+
 /** 
  * PAYONE OXID Connector is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -67,6 +69,39 @@ class fcPayOneOrderView extends fcPayOneOrderView_parent {
     }
     
     
+    /**
+     *  Extends oxid standard method render()
+     *  Checks if checkout flow was not broken by browser navigation
+     */
+    public function render()
+    {
+        $blIsRedirectOnGoing = $this->_oFcpoHelper->fcpoGetSessionVariable('fcpoRedirectOnGoing');
+
+        $oConfig = $this->_oFcpoHelper->fcpoGetConfig();
+        $blPresaveOrder = (bool) $oConfig->getConfigParam('blFCPOPresaveOrder');
+
+        if ($blIsRedirectOnGoing && $blPresaveOrder) {
+            Registry::getLogger()->error("Checkout interrupted due to irregular navigation.");
+
+            $sOrderId = $this->_oFcpoHelper->fcpoGetSessionVariable('sess_challenge');
+            $oOrder = $this->_oFcpoHelper->getFactoryObject('oxorder');
+            if ($oOrder->load($sOrderId)) {
+                Registry::getLogger()->error("Order " . $oOrder->oxorder__oxordernr->value . " got cancelled due to back navigation during redirection.");
+                $oOrder->cancelOrder();
+            }
+
+            $this->_oFcpoHelper->fcpoDeleteSessionVariable('sess_challenge');
+            $this->_oFcpoHelper->fcpoDeleteSessionVariable('fcpoRedirectOnGoing');
+
+            $sCancelUrl = fcporedirecthelper::getInstance()->getCancelUrl('payment');
+
+            Registry::getUtils()->redirect($sCancelUrl);
+        } else {
+            return parent::render();
+        }
+    }
+
+
     /**
      * Extends oxid standard method execute()
      * Check if debitnote mandate was accepted

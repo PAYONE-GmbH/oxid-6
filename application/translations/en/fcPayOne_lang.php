@@ -339,7 +339,7 @@ The smaller text field is used to name the destination file, or path to an exist
 
 'PAYONE Google Pay' => 'PAYONE Google Pay',
 
-'FCPO_CHECKOUT_MANIPULATION' => 'Checkout was interrupted due to irregular navigation.',
+'FCPO_CHECKOUT_MANIPULATION' => 'The payment process was interrupted due to an invalid page refresh in the browser.',
 );
 
 /*

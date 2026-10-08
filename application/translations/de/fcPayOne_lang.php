@@ -328,7 +328,7 @@ Das kleinere Textfeld wird verwendet, um die Zieldatei oder den Pfad zu einer vo
 
     'PAYONE Google Pay' => 'PAYONE Google Pay',
 
-    'FCPO_CHECKOUT_MANIPULATION' => 'Der Bezahlvorgang wurde aufgrund von Navigationsfehlern unterbrochen.',
+    'FCPO_CHECKOUT_MANIPULATION' => 'Aufgrund einer ungültigen Seitenaktualisierung im Browser wurde der Bezahlvorgang unterbrochen.',
 );
 
 /*

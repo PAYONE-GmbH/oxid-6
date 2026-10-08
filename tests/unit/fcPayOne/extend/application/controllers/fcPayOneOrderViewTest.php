@@ -65,8 +65,9 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
      */
     public function test_execute_Mandate() 
     {
-        $oTestObject = $this->getMock('fcPayOneOrderView', array('_fcpoMandateAcceptanceNeeded'));
+        $oTestObject = $this->getMock('fcPayOneOrderView', array('_fcpoMandateAcceptanceNeeded', 'fcpoIsPresaveOrder'));
         $oTestObject->expects($this->any())->method('_fcpoMandateAcceptanceNeeded')->will($this->returnValue(true));
+        $oTestObject->expects($this->any())->method('fcpoIsPresaveOrder')->will($this->returnValue(false));
 
         $oMockConfig = $this->getMock('oxConfig', array('getConfigParam'));
         $oMockConfig->expects($this->any())->method('getConfigParam')->will($this->returnValue(true));
@@ -92,8 +93,9 @@ class Unit_fcPayOne_Extend_Application_Controllers_fcPayOneOrderView extends Oxi
      */
     public function test_execute_Parent() 
     {
-        $oTestObject = $this->getMock('fcPayOneOrderView', array('_fcpoMandateAcceptanceNeeded'));
+        $oTestObject = $this->getMock('fcPayOneOrderView', array('_fcpoMandateAcceptanceNeeded', 'fcpoIsPresaveOrder'));
         $oTestObject->expects($this->any())->method('_fcpoMandateAcceptanceNeeded')->will($this->returnValue(false));
+        $oTestObject->expects($this->any())->method('fcpoIsPresaveOrder')->will($this->returnValue(false));
 
         $oMockConfig = $this->getMock('oxConfig', array('getConfigParam'));
         $oMockConfig->expects($this->any())->method('getConfigParam')->will($this->returnValue(true));

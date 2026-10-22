@@ -865,6 +865,25 @@ function fcpoGetAplOrderInfo (placeOrderButtonForm) {
                       return false;
                     }
 
+                    let fcpoAgbCheck = 0;
+                    let fcpoAgbCheckElem = window.document.getElementsByName('ord_agb');
+                    fcpoAgbCheckElem.forEach(function (elem) {
+                        if (elem.checked) {
+                            fcpoAgbCheck = 1;
+                        }
+                        if ((elem.type === 'checkbox') && elem.checked) {
+                            fcpoAgbCheck = 1;
+                        }
+                        else if (elem.type === 'hidden' && elem.value == '1') {
+                            fcpoAgbCheck = 1;
+                        }
+                    });
+
+                    if (fcpoAgbCheck === 0) {
+                        alert(info.agbError);
+                        return false;
+                    }
+
                     fcpoPayWithApplePay(
                         info.amount,
                         info.country,

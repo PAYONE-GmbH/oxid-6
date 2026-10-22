@@ -691,7 +691,8 @@ class fcpayone_ajax extends oxBase
                 'currency' => $sCurrency,
                 'country' => $sCountry,
                 'supportedNetworks' => $aSupportedNetwork,
-                'errorMessage' => ''
+                'errorMessage' => '',
+                'agbError' => $oLang->translateString('READ_AND_CONFIRM_TERMS')
             ]
         ];
 

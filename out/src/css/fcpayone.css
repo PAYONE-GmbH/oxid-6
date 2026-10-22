@@ -247,6 +247,29 @@
 /* END RATEPAY */
 
 
+/* GOOGLE PAY */
+.fcpo-googlepay-disabled {
+    pointer-events: none !important;
+    cursor: not-allowed;
+}
+
+.fcpo-googlepay-disabled #payonegooglepaycontainer {
+    opacity: 0.5;
+}
+
+.fcpo-googlepay-disabled-error-msg {
+    display: none;
+    color: red;
+    opacity: 1;
+    margin-top: 5px;
+}
+
+.fcpo-googlepay-disabled .fcpo-googlepay-disabled-error-msg {
+    display: block;
+}
+/* END GOOGLE PAY */
+
+
 /* overwriting OXID base style */
 .payment dl dd.activePayment {
     display: block;
